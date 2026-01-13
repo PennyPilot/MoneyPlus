@@ -1,0 +1,30 @@
+name: Flutter CI
+
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    name: App Build
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Flutter clean
+        run: flutter clean
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Build Android
+        run: flutter build apk --debug
+
+      - name: Build iOS (simulator)
+        run: flutter build ios --simulator
