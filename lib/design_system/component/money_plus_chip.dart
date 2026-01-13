@@ -35,13 +35,13 @@ class MoneyPlusChip extends StatelessWidget {
             Text(
               text,
               style: typography.label.medium.copyWith(
-                color: isSelected ? colors.onPrimary : colors.primary,
+                color: isSelected ? colors.onPrimary : colors.title,
               ),
             ),
             SizedBox(width: 8),
             SvgPicture.asset(
               iconSvgPath,
-              color: isSelected ? colors.onPrimary : colors.primary,
+              color: isSelected ? colors.onPrimary : colors.title,
               width: 20,
               height: 20,
             ),
