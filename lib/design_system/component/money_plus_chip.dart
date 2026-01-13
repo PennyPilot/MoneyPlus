@@ -24,10 +24,27 @@ class MoneyPlusChip extends StatelessWidget {
     return GestureDetector(
       onTap: onChipClicked,
       child: Container(
-        padding: EdgeInsetsGeometry.symmetric(vertical: 6, horizontal: 12),
+        padding: EdgeInsetsGeometry.symmetric(vertical: 6, horizontal: 16),
         decoration: BoxDecoration(
           color: isSelected ? colors.primary : colors.surfaceLow,
           borderRadius: BorderRadius.circular(12),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: colors.primaryVariant.withOpacity(0.50),
+                    blurRadius: 12,
+                    spreadRadius: 2,
+                    offset: Offset(0, 4),
+                    blurStyle: BlurStyle.inner,
+                  ),
+                  BoxShadow(
+                    color: colors.primary.withOpacity(0.16),
+                    blurRadius: 8,
+                    spreadRadius: 2,
+                    offset: Offset(0, 4),
+                  ),
+                ]
+              : [],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
