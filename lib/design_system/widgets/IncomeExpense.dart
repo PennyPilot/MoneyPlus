@@ -34,7 +34,6 @@ class IncomeExpense extends StatelessWidget {
         : 'assets/icons/ic_arrow_up.svg';
 
     return Container(
-      height: 44,
       decoration: BoxDecoration(
         color: colors.surface,
         borderRadius: BorderRadius.circular(100),
@@ -49,7 +48,7 @@ class IncomeExpense extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             padding: const EdgeInsets.all(6),
-            margin: const EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
             child: SvgPicture.asset(
               iconPath,
               width: 20,
@@ -57,32 +56,37 @@ class IncomeExpense extends StatelessWidget {
               colorFilter: ColorFilter.mode(operationColor, BlendMode.srcIn),
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: typography.label.xSmall),
-              Row(
-                children: [
-                  Text(
-                    isIncome ? '+' : '-',
-                    style: typography.title.medium.copyWith(
-                      color: operationColor,
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 4, 10, 4),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: typography.label.xSmall?.copyWith(color: colors.body),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      isIncome ? '+' : '-',
+                      style: typography.title.medium.copyWith(
+                        color: operationColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 2),
-                  Text(
-                    '$amount IQD ',
-                    style: TextStyle(
-                      color: colors.title,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(width: 2),
+                    Text(
+                      '$amount IQD ',
+                      style: TextStyle(
+                        color: colors.title,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 4),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
