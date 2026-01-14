@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
-class CustomButton extends StatelessWidget {
+class MButton extends StatelessWidget {
   final double cornerRadius;
   final Color backgroundColor;
   final Color textColor;
@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   final IconData? icon;
   final double height;
 
-  const CustomButton({
+  const MButton({
     super.key,
     this.cornerRadius = 16,
     required this.backgroundColor,
@@ -27,12 +27,12 @@ class CustomButton extends StatelessWidget {
     this.height = 52
   });
 
-  factory CustomButton.defultButton({
+  factory MButton.defult({
     required String text,
     required VoidCallback onPressed,
     IconData? icon,
   }) {
-    return CustomButton(
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -41,12 +41,12 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.variantButton({
+  factory MButton.variant({
     required String text,
     required VoidCallback onPressed,
     IconData? icon,
   }) {
-    return CustomButton(
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -57,8 +57,8 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.disabledButton({required String text, IconData? icon, VoidCallback? onPressed }) {
-    return CustomButton(
+  factory MButton.disabled({required String text, IconData? icon, VoidCallback? onPressed }) {
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -67,12 +67,12 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.defultSecondaryButton({
+  factory MButton.defultSecondary({
     required String text,
     required VoidCallback onPressed,
     IconData? icon,
   }) {
-    return CustomButton(
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -83,12 +83,12 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.variantSecondaryButton({
+  factory MButton.variantSecondary({
     required String text,
     required VoidCallback onPressed,
     IconData? icon,
   }) {
-    return CustomButton(
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -101,8 +101,8 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.disabledSecondaryButton({required String text, IconData? icon,VoidCallback? onPressed}) {
-    return CustomButton(
+  factory MButton.disabledSecondary({required String text, IconData? icon,VoidCallback? onPressed}) {
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -114,8 +114,8 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.defultErrorButton({required String text, IconData? icon, VoidCallback? onPressed}) {
-    return CustomButton(
+  factory MButton.defultError({required String text, IconData? icon, VoidCallback? onPressed}) {
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
@@ -126,8 +126,8 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-factory CustomButton.variantErrorButton({required String text, IconData? icon, VoidCallback? onPressed}) {
-    return CustomButton(
+factory MButton.variantError({required String text, IconData? icon, VoidCallback? onPressed}) {
+    return MButton(
       text: text,
       onPressed: onPressed,
       icon: icon,
