@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
+enum IncomeExpenseType { income, expense }
+
 class IncomeExpense extends StatelessWidget {
-  const IncomeExpense({super.key});
+  final IncomeExpenseType type;
+  final String label;
+  final String amount;
+
+  const IncomeExpense({
+    super.key,
+    required this.type,
+    required this.label,
+    required this.amount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +22,17 @@ class IncomeExpense extends StatelessWidget {
     if (colors == null) {
       return const SizedBox();
     }
+
+    final isIncome = type == IncomeExpenseType.income;
+
+    final Color operationColor = isIncome ? colors.green : colors.red;
+    final Color backgroundColor = isIncome
+        ? colors.greenVariant
+        : colors.redVariant;
+
+    final String iconPath = isIncome
+        ? 'assets/icons/ic_arrow_down.svg'
+        : 'assets/icons/ic_arrow_up.svg';
 
     return Container(
       height: 44,
@@ -24,16 +46,16 @@ class IncomeExpense extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: colors.greenVariant,
+              color: backgroundColor,
               shape: BoxShape.circle,
             ),
             padding: const EdgeInsets.all(6),
-            margin: EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
             child: SvgPicture.asset(
-              'assets/icons/ic_arrow_down.svg',
+              iconPath,
               width: 20,
               height: 20,
-              colorFilter: ColorFilter.mode(colors.green, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(operationColor, BlendMode.srcIn),
             ),
           ),
           Column(
@@ -41,7 +63,7 @@ class IncomeExpense extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'income',
+                label,
                 style: TextStyle(
                   color: colors.body,
                   fontSize: 12,
@@ -51,22 +73,23 @@ class IncomeExpense extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '+',
+                    isIncome ? '+' : '-',
                     style: TextStyle(
-                      color: colors.green,
+                      color: operationColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  const SizedBox(width: 2),
                   Text(
-                    '1,500,000 IQD ',
+                    '$amount IQD ',
                     style: TextStyle(
                       color: colors.title,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                 ],
               ),
             ],
