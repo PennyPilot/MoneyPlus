@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
     final typography = context.typography;
     return Scaffold(
       body: ElevatedButton(onPressed: (){
-        moneySnackBar(context, "Error description", SnackBarType.error);
+        moneySnackBar(context, " Success description", SnackBarType.success);
       }, child: Text("press"),
       ),
     );

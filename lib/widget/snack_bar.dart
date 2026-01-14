@@ -42,33 +42,41 @@ void moneySnackBar(BuildContext context, String message, SnackBarType type) {
               ),
             ],
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              Center(child: SvgPicture.asset(leadingIcon, height: 32, width: 32)),
-              SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      snackTitle,
-                      style: context.typography.title.small.copyWith(
-                        color: context.colors.title,
-                      ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(leadingIcon, height: 32, width: 32),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          snackTitle,
+                          style: context.typography.title.small.copyWith(
+                            color: context.colors.title,
+                          ),
+                        ),
+                        Text(
+                          message,
+                          style: context.typography.body.small.copyWith(
+                            color: context.colors.body,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
-                    Text(
-                      message,
-                      style: context.typography.body.small.copyWith(
-                        color: context.colors.body,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-               GestureDetector(
+              Positioned(
+                top: 0,
+                right: 0,
+                child: GestureDetector(
                   onTap: () {
                     overlayEntry.remove();
                   },
@@ -78,6 +86,7 @@ void moneySnackBar(BuildContext context, String message, SnackBarType type) {
                     height: 20,
                   ),
                 ),
+              ),
             ],
           ),
         ),
