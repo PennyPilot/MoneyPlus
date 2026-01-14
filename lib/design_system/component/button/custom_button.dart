@@ -57,10 +57,10 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.disabledButton({required String text, IconData? icon}) {
+  factory CustomButton.disabledButton({required String text, IconData? icon, VoidCallback? onPressed }) {
     return CustomButton(
       text: text,
-      onPressed: null,
+      onPressed: onPressed,
       icon: icon,
       backgroundColor: MoneyColors.light.disabled,
       textColor: MoneyColors.light.onPrimary,
@@ -101,10 +101,10 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.disabledSecondaryButton({required String text, IconData? icon}) {
+  factory CustomButton.disabledSecondaryButton({required String text, IconData? icon,VoidCallback? onPressed}) {
     return CustomButton(
       text: text,
-      onPressed: null,
+      onPressed: onPressed,
       icon: icon,
       backgroundColor: MoneyColors.light.surfaceLow,
       textColor: MoneyColors.light.title,
@@ -114,10 +114,10 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-  factory CustomButton.defultErrorButton({required String text, IconData? icon}) {
+  factory CustomButton.defultErrorButton({required String text, IconData? icon, VoidCallback? onPressed}) {
     return CustomButton(
       text: text,
-      onPressed: null,
+      onPressed: onPressed,
       icon: icon,
       backgroundColor: MoneyColors.light.redVariant,
       textColor: MoneyColors.light.red,
@@ -126,10 +126,10 @@ class CustomButton extends StatelessWidget {
     );
   }
 
-factory CustomButton.variantErrorButton({required String text, IconData? icon}) {
+factory CustomButton.variantErrorButton({required String text, IconData? icon, VoidCallback? onPressed}) {
     return CustomButton(
       text: text,
-      onPressed: null,
+      onPressed: onPressed,
       icon: icon,
       backgroundColor: MoneyColors.light.disabled,
       textColor: MoneyColors.light.onPrimary,
