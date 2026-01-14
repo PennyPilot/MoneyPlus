@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
+
+import '../theme/money_extension_context.dart';
 
 enum IncomeExpenseType { income, expense }
 
@@ -18,10 +19,8 @@ class IncomeExpense extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<MoneyColors>();
-    if (colors == null) {
-      return const SizedBox();
-    }
+    final colors = context.colors;
+    final typography = context.typography;
 
     final isIncome = type == IncomeExpenseType.income;
 
@@ -62,22 +61,13 @@ class IncomeExpense extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: colors.body,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              Text(label, style: typography.label.xSmall),
               Row(
                 children: [
                   Text(
                     isIncome ? '+' : '-',
-                    style: TextStyle(
+                    style: typography.title.medium.copyWith(
                       color: operationColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(width: 2),
