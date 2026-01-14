@@ -21,28 +21,23 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        leadingContent ?? _buildDefaultLeadingContent(context),
+        leadingContent ??
+            Text(
+              title ?? "",
+              style: typography.title.small.copyWith(color: colors.title),
+            ),
         GestureDetector(
           onTap: () => {onClickTrailingContent?.call()},
-          child: trailingContent ?? _buildDefaultTrailingContent(),
+          child:
+              trailingContent ??
+              SvgPicture.asset(MoneyAssets.icArrowRight, height: 20, width: 20),
         ),
       ],
-    );
-  }
-
-  Widget _buildDefaultTrailingContent() {
-    return SvgPicture.asset(MoneyAssets.icArrowRight, height: 20, width: 20);
-  }
-
-  Widget _buildDefaultLeadingContent(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    return Text(
-      title ?? "",
-      style: typography.title.small.copyWith(color: colors.title),
     );
   }
 }
