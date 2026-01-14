@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 
+import 'spending_screen.dart';
+
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
 
@@ -12,7 +14,7 @@ class MoneyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Money++',
       theme: MoneyTheme.lightTheme,
-      home: HomeScreen(),
+      home: SpendingScreen(),
     );
   }
 }
