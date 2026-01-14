@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/component/button/custom_button.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 
@@ -25,10 +26,43 @@ class HomeScreen extends StatelessWidget {
     final colors = context.colors;
     final typography = context.typography;
     return Scaffold(
-      body: Center(
-        child: Text(
-          'Welcome Flutter!',
-          style: typography.headline.small.copyWith(color: colors.primary),
+      body: Padding(
+        padding: EdgeInsetsGeometry.only(right: 16, left: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              spacing: 12,
+              children: [
+                CustomButton.defultButton(text: 'Login', onPressed: () {}),
+                CustomButton.variantButton(text: 'Login', onPressed: () {}),
+                CustomButton.disabledButton(text: 'Login'),
+              ],
+            ),
+            SizedBox(height: 4),
+            Column(
+              spacing: 12,
+              children: [
+                CustomButton.defultSecondaryButton(
+                  text: 'Login',
+                  onPressed: () {},
+                ),
+                CustomButton.variantSecondaryButton(
+                  text: 'Login',
+                  onPressed: () {},
+                ),
+                CustomButton.disabledSecondaryButton(text: 'Login'),
+              ],
+            ),
+            SizedBox(height: 4),
+            Column(
+              spacing: 12,
+              children: [
+                CustomButton.defultErrorButton(text: 'Login'),
+                CustomButton.variantErrorButton(text: 'Login'),
+              ],
+            ),
+          ],
         ),
       ),
     );
