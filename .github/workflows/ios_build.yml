@@ -1,4 +1,4 @@
-name: Flutter CI
+name: iOS CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [dev, main]
 jobs:
   build:
-    name: App Android-build
+    name: App iOS-build
     runs-on: macos-latest
 
     steps:
@@ -24,9 +24,6 @@ jobs:
 
       - name: Flutter pub get
         run: flutter pub get
-
-      - name: Build Android
-        run: flutter build apk --debug
 
       - name: Build iOS (simulator)
         run: flutter build ios --simulator

@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Android CI
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: App Android-build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -27,6 +27,3 @@ jobs:
 
       - name: Build Android
         run: flutter build apk --debug
-
-      - name: Build iOS (simulator)
-        run: flutter build ios --simulator
