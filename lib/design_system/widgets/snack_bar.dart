@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-import 'package:moneyplus/utils/assets.dart';
+
+import '../assets/app_assets.dart';
 
 class MoneySnackBar {
   final String message;
@@ -21,7 +22,7 @@ class MoneySnackBar {
       message: message,
       title: "Success",
       shadowColor: const Color(0xFF51AC46),
-      leadingIcon: Assets.iconSuccess,
+      leadingIcon: AppAssets.iconSuccess,
     );
   }
 
@@ -30,7 +31,7 @@ class MoneySnackBar {
       message: message,
       title: "Error",
       shadowColor: const Color(0xFFE54F40),
-      leadingIcon: Assets.iconError,
+      leadingIcon: AppAssets.iconError,
     );
   }
 
@@ -100,7 +101,7 @@ class MoneySnackBar {
                       overlayEntry.remove();
                     },
                     child: SvgPicture.asset(
-                      Assets.iconCancel,
+                      AppAssets.iconCancel,
                       width: 20,
                       height: 20,
                     ),
