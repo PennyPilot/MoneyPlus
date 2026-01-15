@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../assets/money_images.dart';
+import '../assets/app_assets.dart';
 import '../theme/money_extension_context.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -32,10 +32,10 @@ class SectionHeader extends StatelessWidget {
               style: typography.title.small.copyWith(color: colors.title),
             ),
         GestureDetector(
-          onTap:onClickTrailingContent,
+          onTap: onClickTrailingContent,
           child:
               trailingContent ??
-              SvgPicture.asset(MoneyAssets.icArrowRight, height: 20, width: 20),
+              SvgPicture.asset(AppAssets.icArrowRight, height: 20, width: 20),
         ),
       ],
     );
