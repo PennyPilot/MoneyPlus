@@ -59,7 +59,6 @@ class NavBar extends StatelessWidget {
                     width: 24,
                     height: 24,
                   ),
-                  if (!isSelected) SizedBox(height: 8),
                   if (isSelected) ...[
                     Text(
                       tab.title,
@@ -70,7 +69,7 @@ class NavBar extends StatelessWidget {
                     Container(
                       width: 32,
                       height: 4,
-                      padding: EdgeInsetsGeometry.directional(top: 11),
+                      margin: EdgeInsetsGeometry.directional(top: 11),
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
