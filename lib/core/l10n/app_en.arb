@@ -1,0 +1,11 @@
+{
+  "income": "Income",
+  "expense": "Expense",
+  "moneyAmount": "{amount} {currency} ",
+  "@moneyAmount": {
+    "placeholders": {
+      "amount": {},
+      "currency": {}
+    }
+  }
+}
