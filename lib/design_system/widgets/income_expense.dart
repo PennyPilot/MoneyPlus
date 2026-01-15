@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/l10n/app_localizations.dart';
+import '../assets/app_assets.dart';
 import '../theme/money_extension_context.dart';
 
 enum IncomeExpenseType { income, expense }
 
 class IncomeExpense extends StatelessWidget {
   final IncomeExpenseType type;
-  final String label;
   final String amount;
+  final String currency;
 
   const IncomeExpense({
     super.key,
     required this.type,
-    required this.label,
     required this.amount,
+    this.currency = 'IQD',
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
 
     final isIncome = type == IncomeExpenseType.income;
 
+    final label = isIncome ? l10n.income : l10n.expense;
     final Color operationColor = isIncome ? colors.green : colors.red;
     final Color backgroundColor = isIncome
         ? colors.greenVariant
         : colors.redVariant;
-
     final String iconPath = isIncome
-        ? 'assets/icons/ic_arrow_down.svg'
-        : 'assets/icons/ic_arrow_up.svg';
+        ? AppAssets.icArrowDown
+        : AppAssets.icArrowUp;
 
     return Container(
       decoration: BoxDecoration(
@@ -74,9 +77,11 @@ class IncomeExpense extends StatelessWidget {
                         color: operationColor,
                       ),
                     ),
-                    const SizedBox(width: 2),
                     Text(
-                      '$amount IQD ',
+                        l10n.moneyAmount(
+                          amount,
+                          currency
+                        ),
                       style: TextStyle(
                         color: colors.title,
                         fontSize: 14,
