@@ -32,7 +32,7 @@ class SectionHeader extends StatelessWidget {
               style: typography.title.small.copyWith(color: colors.title),
             ),
         GestureDetector(
-          onTap: () => {onClickTrailingContent?.call()},
+          onTap:onClickTrailingContent,
           child:
               trailingContent ??
               SvgPicture.asset(MoneyAssets.icArrowRight, height: 20, width: 20),
