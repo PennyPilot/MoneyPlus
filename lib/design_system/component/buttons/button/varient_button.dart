@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/component/buttons/money_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
-class VarientButton extends StatelessWidget {
+class VarientButton extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;
   final String? iconPath;
@@ -19,13 +19,18 @@ class VarientButton extends StatelessWidget {
   });
 
   @override
+  State<VarientButton> createState() => _VarientButtonState();
+}
+
+class _VarientButtonState extends State<VarientButton> {
+  @override
   Widget build(BuildContext context) {
     return MoneyButton(
-      text: text,
-      onPressed: onPressed,
-      iconPath: iconPath,
-      isLoading: isLoading,
-      isEnabled: isEnabled,
+      text: widget.text,
+      onPressed: widget.onPressed,
+      iconPath: widget.iconPath,
+      isLoading: widget.isLoading,
+      isEnabled: widget.isEnabled,
       cornerRadius: 100,
       fontSize: 12,
       height: 36,
