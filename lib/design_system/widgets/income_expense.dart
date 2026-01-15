@@ -38,7 +38,7 @@ class IncomeExpense extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: colors.surface,
+        color: colors.surfaceLow,
         borderRadius: BorderRadius.circular(100),
       ),
       child: Row(
