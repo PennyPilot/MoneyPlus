@@ -34,6 +34,9 @@ dependencies:
   get_it: ^7.6.0
   flutter_bloc: ^8.1.3
   flutter_svg: ^2.0.9
+  flutter_dotenv: ^6.0.0
+  supabase_flutter: ^2.12.0
+  logging: ^1.3.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -60,6 +63,7 @@ flutter:
   generate: true
   assets:
     - assets/icons/
+    - secrets.env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
