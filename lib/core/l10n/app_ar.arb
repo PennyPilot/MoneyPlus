@@ -1,0 +1,5 @@
+{
+  "income": "الدخل",
+  "expense": "المصروف",
+  "moneyAmount": "{amount} {currency} "
+}
