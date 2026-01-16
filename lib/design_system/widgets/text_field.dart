@@ -2,23 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../theme/money_extension_context.dart';
 
-class MoneyTextField extends StatefulWidget {
+class MTextField extends StatefulWidget {
   final String hint;
   final String value;
   final ValueChanged<String> onChanged;
-  final IconData? leadingIcon;
+  final Widget? leading;
+  final Widget? trailing;
+  final double spacing;
   final String? errorText;
   final TextInputType? keyboardType;
   final bool obscureText;
   final int? minLines;
   final int? maxLines;
 
-  const MoneyTextField({
+  const MTextField({
     super.key,
     required this.hint,
     required this.value,
     required this.onChanged,
-    this.leadingIcon,
+    this.leading,
+    this.trailing,
+    this.spacing = 0,
     this.errorText,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -27,10 +31,10 @@ class MoneyTextField extends StatefulWidget {
   });
 
   @override
-  State<MoneyTextField> createState() => _MoneyTextFieldState();
+  State<MTextField> createState() => _MTextFieldState();
 }
 
-class _MoneyTextFieldState extends State<MoneyTextField> {
+class _MTextFieldState extends State<MTextField> {
   late FocusNode _focusNode;
   late TextEditingController _controller;
 
@@ -81,19 +85,9 @@ class _MoneyTextFieldState extends State<MoneyTextField> {
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: widget.spacing,
             children: [
-              if (widget.leadingIcon != null)
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 14,
-                    right: 8,
-                  ),
-                  child: Icon(
-                    widget.leadingIcon,
-                    color: showBorder ? borderColor : colors.body,
-                    size: 24,
-                  ),
-                ),
+              if (widget.leading != null) widget.leading!,
               Expanded(
                 child: TextField(
                   controller: _controller,
@@ -115,6 +109,7 @@ class _MoneyTextFieldState extends State<MoneyTextField> {
                   ),
                 ),
               ),
+              if (widget.trailing != null) widget.trailing!,
             ],
           ),
         ),
@@ -122,7 +117,7 @@ class _MoneyTextFieldState extends State<MoneyTextField> {
         // Error text below the border
         if (_hasError) ...[
           Padding(
-            padding: const EdgeInsets.only(top: 4, left: 16),
+            padding: const EdgeInsetsGeometry.directional(top: 4, start: 16),
             child: Text(
               widget.errorText!,
               style: typography.label.small.copyWith(color: colors.red),
