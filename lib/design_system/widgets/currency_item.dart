@@ -26,33 +26,31 @@ class CurrencyItem extends StatelessWidget {
     final contentColor = isSelected ? colors.primary : colors.title;
     final subTitleColor = isSelected ? colors.primary : colors.body;
 
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    name,
-                    style: typo.title.medium.copyWith(color: contentColor),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    country,
-                    style: typo.body.medium.copyWith(color: subTitleColor),
-                  ),
-                ],
-              ),
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              spacing: 2,
+              children: [
+                Text(
+                  name,
+                  style: typo.title.medium.copyWith(color: contentColor),
+                ),
+                Text(
+                  country,
+                  style: typo.body.medium.copyWith(color: subTitleColor),
+                ),
+              ],
             ),
-            Text(code, style: typo.title.medium.copyWith(color: contentColor)),
-          ],
-        ),
+          ),
+          Text(code, style: typo.title.medium.copyWith(color: contentColor)),
+        ],
       ),
     );
   }
