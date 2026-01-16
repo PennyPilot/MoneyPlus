@@ -18,7 +18,7 @@ Future<void> initDI() async {
     await Supabase.initialize(
       url: dotenv.env['SUPA_BASE_URL'] ?? "",
       anonKey: dotenv.env['SUPA_API_KEY'] ?? "",
-      debug: true,
+      debug: kDebugMode,
     ),
   );
   getIt.registerFactory<LoginCubit>(() => LoginCubit());
