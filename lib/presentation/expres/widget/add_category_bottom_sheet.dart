@@ -67,7 +67,7 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomBottomSheet(
+    return BottomSheet(
       title: 'Add custom category',
       content: _content,
       actionButtons: [_addButton],

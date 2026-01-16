@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
-class CustomBottomSheet extends StatelessWidget {
+class BottomSheet extends StatelessWidget {
   final String title;
   final Widget content;
   final List<Widget> actionButtons;
 
-  const CustomBottomSheet({
+  const BottomSheet({
     super.key,
     required this.title,
     required this.content,
@@ -105,7 +105,7 @@ void showCustomBottomSheet({
     backgroundColor: Colors.transparent,
     builder: (context) => BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-      child: CustomBottomSheet(
+      child: BottomSheet(
         title: title,
         content: content,
         actionButtons: actionButtons,
