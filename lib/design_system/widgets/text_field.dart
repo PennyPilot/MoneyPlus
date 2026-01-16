@@ -6,9 +6,9 @@ class MTextField extends StatefulWidget {
   final String hint;
   final String value;
   final ValueChanged<String> onChanged;
+  final IconData? leadingIcon;
   final Widget? leading;
   final Widget? trailing;
-  final double spacing;
   final String? errorText;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -20,9 +20,9 @@ class MTextField extends StatefulWidget {
     required this.hint,
     required this.value,
     required this.onChanged,
+    this.leadingIcon,
     this.leading,
     this.trailing,
-    this.spacing = 0,
     this.errorText,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -85,9 +85,17 @@ class _MTextFieldState extends State<MTextField> {
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: widget.spacing,
             children: [
               if (widget.leading != null) widget.leading!,
+              if (widget.leadingIcon != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 14, right: 8),
+                  child: Icon(
+                    widget.leadingIcon,
+                    color: showBorder ? borderColor : colors.body,
+                    size: 24,
+                  ),
+                ),
               Expanded(
                 child: TextField(
                   controller: _controller,
