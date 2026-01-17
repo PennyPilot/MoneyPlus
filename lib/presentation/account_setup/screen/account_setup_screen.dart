@@ -41,7 +41,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                 ),
               ),
               SizedBox(height: 4),
-              Expanded(
+              Flexible(
                 child: PageView(
                   controller: pageController,
                   onPageChanged: (index) {
@@ -50,7 +50,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                     });
                   },
                   children: [
-                    Page1()
+                    SingleChildScrollView(child: Page1())
                     // page2()
                     // page3()
                   ],

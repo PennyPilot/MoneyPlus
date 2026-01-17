@@ -78,7 +78,7 @@ class _Page1State extends State<Page1> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                color: context.colors.surfaceLow,
+                color: context.colors.surface,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
@@ -97,6 +97,7 @@ class _Page1State extends State<Page1> {
             dayController.text = value;
           },
         ),
+        SizedBox(height: 16,)
       ],
     );
   }
