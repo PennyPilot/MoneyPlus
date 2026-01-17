@@ -12,6 +12,7 @@ class AppAssets {
   static const String iconSearch = "${_icons}ic_search.svg";
   static const String iconCalender = "${_icons}ic_calendar.svg";
   static const String iconMoney = "${_icons}ic_money.svg";
+  static const String playArrow = "${_icons}play_arrow.svg";
 
 
 }

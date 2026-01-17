@@ -19,57 +19,59 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
     return Scaffold(
       backgroundColor: context.colors.surface,
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Indicator(currentIndex: currentIndex),
-            SizedBox(height: 16,),
-            Text(
-              "Step ${currentIndex+1} of 3",
-              style: context.typography.label.small.copyWith(
-                color: context.colors.body,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Indicator(currentIndex: currentIndex),
+              SizedBox(height: 16,),
+              Text(
+                "Step ${currentIndex+1} of 3",
+                style: context.typography.label.small.copyWith(
+                  color: context.colors.body,
+                ),
               ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              "Let’s set up your account",
-              style: context.typography.headline.medium.copyWith(
-                color: context.colors.title,
+              SizedBox(height: 4),
+              Text(
+                "Let’s set up your account",
+                style: context.typography.headline.medium.copyWith(
+                  color: context.colors.title,
+                ),
               ),
-            ),
-            SizedBox(height: 4),
-            Expanded(
-              child: PageView(
-                controller: pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
+              SizedBox(height: 4),
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
+                  children: [
+                    Page1()
+                    // page2()
+                    // page3()
+                  ],
+                ),
+              ),
+              DefaultButton(
+                text: currentIndex == 2 ? "Finish setup" : "Next",
+                isEnabled: false,
+                onPressed: () {
+                  if (currentIndex < 2) {
+                    pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  } else {
+                    // Navigate to home
+                  }
                 },
-                children: [
-                  Page1()
-                  // page2()
-                  // page3()
-                ],
               ),
-            ),
-            DefaultButton(
-              text: currentIndex == 2 ? "Finish setup" : "Next",
-              isEnabled: false,
-              onPressed: () {
-                if (currentIndex < 2) {
-                  pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                } else {
-                  // Navigate to home
-                }
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -5,17 +5,42 @@ import 'package:moneyplus/design_system/component/buttons/button/default_button.
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 
-class CurrencyBottomSheet extends StatelessWidget {
+import 'currency_list.dart';
+
+class Test {
+  final title;
+  final subTitle;
+  final currency;
+
+  Test({required this.title, required this.subTitle, required this.currency});
+}
+
+class CurrencyBottomSheet extends StatefulWidget {
   const CurrencyBottomSheet({super.key});
 
   @override
+  State<CurrencyBottomSheet> createState() => _CurrencyBottomSheetState();
+}
+
+class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
+  final TextEditingController searchController = TextEditingController();
+  String? selectedCurrency;
+  final List<Test> list = [
+    Test(title: "Iraq", subTitle: "Iraqi Dinar", currency: "JOD"),
+    Test(title: "Egypt", subTitle: "Egyptian Pound", currency: "EGP"),
+    Test(title: "Syria", subTitle: "Syrian Pound", currency: "SYP"),
+    Test(title: "Lebanon", subTitle: "Lebanese Pound", currency: "LBP"),
+    Test(title: "Jordan", subTitle: "Jordanian Dinar", currency: "JOD"),
+    Test(title: "Qatar", subTitle: "Qatari Riyal", currency: "QAR"),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
             children: [
               Expanded(
                 child: Text(
@@ -27,7 +52,7 @@ class CurrencyBottomSheet extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, selectedCurrency);
                 },
                 child: SvgPicture.asset(
                   AppAssets.iconCancel,
@@ -37,87 +62,95 @@ class CurrencyBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
-          Divider(color: context.colors.stroke, thickness: 1, height: 1),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: MTextField(
-              hint: "Search...",
-              value: "",
-              onChanged: (value) {},
-              leading: SvgPicture.asset(AppAssets.iconSearch),
+        ),
+        SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Divider(color: context.colors.stroke, thickness: 1, height: 1),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          child: MTextField(
+            hint: "Search...",
+            value: searchController.text,
+            onChanged: (value) {
+              searchController.text = value;
+            },
+            leading: Padding(
+              padding: const EdgeInsets.only(top: 14, bottom: 14, right: 8),
+              child: SvgPicture.asset(AppAssets.iconSearch),
             ),
           ),
-          Expanded(
-            child: Row(
-              children: [
-                if(!isSelected)
-                  MediaQuery.removePadding(
-                    context: context,
-                    removeLeft: true,
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 24,
-                      color: context.colors.primary,
-                    ),
-                  ),
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: 30,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        trailing: Text("JOD"),
-                        leadingAndTrailingTextStyle: context.typography.label.medium
-                            .copyWith(
-                              color: isSelected
-                                  ? context.colors.primary
-                                  : context.colors.title,
-                            ),
-                        onTap: () {
-                          isSelected = !isSelected;
-                        },
-                        selected: isSelected,
-                        focusColor: context.colors.primary.withAlpha(8),
-                        subtitleTextStyle: context.typography.label.small.copyWith(
-                          color: isSelected
-                              ? context.colors.primary
-                              : context.colors.body,
-                        ),
-                        titleTextStyle: context.typography.label.medium.copyWith(
-                          color: isSelected
-                              ? context.colors.primary
-                              : context.colors.title,
-                        ),
-                        title: Text("Iraqi Dinar"),
-                        subtitle: Text("Egypt"),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider(
-                          color: context.colors.stroke,
-                          thickness: 1,
-                          height: 1,
-                        ),
-                      );
-                    },
+        ),
+        Expanded(
+          child: ListView.separated(
+            itemCount: list.length,
+            padding: EdgeInsets.zero,
+            itemBuilder: (BuildContext context, int index) {
+              final currencyList = list[index];
+              final isSelected =
+                  selectedCurrency ==
+                  "${currencyList.subTitle}-${currencyList.currency}";
+
+              return CurrencyList(
+                trailing: Text(
+                  currencyList.currency,
+                  style: context.typography.label.medium.copyWith(
+                    color: isSelected
+                        ? context.colors.primary
+                        : context.colors.title,
                   ),
                 ),
-              ],
-            ),
-          ),
-          DefaultButton(
-            text: "Select",
-            isEnabled: false,
-            onPressed: () {
-              //  + select currency
-              Navigator.pop(context);
+                contentPadding: EdgeInsets.only(
+                  right: 16,
+                  bottom: 8,
+                  top: 8,
+                  left: isSelected ? 7 : 16,
+                ),
+                onTap: () {
+                  setState(() {
+                    selectedCurrency =
+                        "${currencyList.subTitle}-${currencyList.currency}";
+                  });
+                },
+                subtitleTextStyle: context.typography.label.small.copyWith(
+                  color: isSelected
+                      ? context.colors.primary
+                      : context.colors.body,
+                ),
+                titleTextStyle: context.typography.label.medium.copyWith(
+                  color: isSelected
+                      ? context.colors.primary
+                      : context.colors.title,
+                ),
+                title: currencyList.subTitle,
+                subtitle: currencyList.title,
+                leading: isSelected ? SvgPicture.asset(AppAssets.playArrow,) : null,
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(
+                  color: context.colors.stroke,
+                  thickness: 1,
+                  height: 1,
+                ),
+              );
             },
           ),
-        ],
-      ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: DefaultButton(
+            text: "Select",
+            isEnabled: selectedCurrency != null,
+            onPressed: () {
+              Navigator.pop(context, selectedCurrency);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
