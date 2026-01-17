@@ -2,78 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
+import '../../utils/Assets.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
+  final Widget? leading;
+  final Widget? trailing;
 
-  final String? leadingSvg;
-  final VoidCallback? onLeadingPressed;
-
-  final VoidCallback? onCalendarTap;
-  final String? calendarDate;
-
-  final String? trailingSvg;
-  final VoidCallback? onTrailingPressed;
-
-  const CustomAppBar({
-    super.key,
-    this.title,
-    this.leadingSvg,
-    this.onLeadingPressed,
-    this.onCalendarTap,
-    this.calendarDate,
-    this.trailingSvg,
-    this.onTrailingPressed,
-  });
+  const CustomAppBar({super.key, this.title, this.leading, this.trailing});
 
   @override
   Widget build(BuildContext context) {
+    final typo = context.typography;
+    final colors = context.colors;
+    final contentColor = colors.title;
+
     return AppBar(
-      titleSpacing: 0,
-      leadingWidth: leadingSvg != null ? 56 : 172,
+      titleSpacing: 8,
+      leadingWidth: leading != null ? 240 : 56,
       automaticallyImplyLeading: false,
 
       title: title != null
-          ? Text(
-        title!,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      )
+          ? Text(title!, style: typo.title.small.copyWith(color: contentColor))
           : null,
 
-      leading: leadingSvg != null
-          ? Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: _CircleSvgIcon(
-          assetPath: leadingSvg!,
-          onTap: onLeadingPressed,
-        ),
-      )
-          : Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: _CalendarWidget(
-          onTap: onCalendarTap ?? () {},
-          date: calendarDate ?? "",
-        ),
-      ),
+      leading: leading != null
+          ? Padding(padding: const EdgeInsets.only(left: 16.0), child: leading!)
+          : null,
 
       actions: [
-        if (trailingSvg != null) ...[
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: onTrailingPressed != null
-                ? _CircleSvgIcon(
-              assetPath: trailingSvg!,
-              onTap: onTrailingPressed,
-            )
-                : SizedBox(
-              width: 65,
-              height: 26,
-              child: SvgPicture.asset(
-                trailingSvg!,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-        ],
+        if (trailing != null)
+          Padding(padding: const EdgeInsets.only(right: 16), child: trailing!),
       ],
     );
   }
@@ -82,42 +41,43 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class _CircleSvgIcon extends StatelessWidget {
+class AppBarCircleButton extends StatelessWidget {
   final String assetPath;
   final VoidCallback? onTap;
 
-  const _CircleSvgIcon({required this.assetPath, this.onTap});
+  const AppBarCircleButton({super.key, required this.assetPath, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: context.colors.surfaceHigh,
-            shape: BoxShape.circle,
-          ),
-          alignment: Alignment.center,
-          child: SvgPicture.asset(assetPath, width: 20, height: 20),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: context.colors.surfaceHigh,
+          shape: BoxShape.circle,
         ),
+        alignment: Alignment.center,
+        child: SvgPicture.asset(assetPath, width: 20, height: 20),
       ),
     );
   }
 }
 
-class _CalendarWidget extends StatelessWidget {
+class AppBarCalendar extends StatelessWidget {
   final VoidCallback onTap;
   final String date;
 
-  const _CalendarWidget({required this.onTap, required this.date});
+  const AppBarCalendar({super.key, required this.onTap, required this.date});
 
   @override
   Widget build(BuildContext context) {
+    final typo = context.typography;
+    final colors = context.colors;
+    final contentColor = colors.title;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
@@ -126,13 +86,10 @@ class _CalendarWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              date,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
+            Text(date, style: typo.label.small.copyWith(color: contentColor)),
             const SizedBox(width: 4),
             SvgPicture.asset(
-              "assets/svgs/arrow-down.svg",
+              Assets.icArrowDown,
               width: 20,
               height: 20,
             ),
