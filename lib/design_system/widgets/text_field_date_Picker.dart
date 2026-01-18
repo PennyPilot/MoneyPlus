@@ -8,7 +8,7 @@ class TextFieldDatePicker extends StatefulWidget {
   final String? errorText;
   final String hint;
   final VoidCallback onError;
-  final void Function(String) onDateChange;
+  final void Function(DateTime) onDateChange;
 
   const TextFieldDatePicker({
     super.key,
@@ -118,7 +118,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                       setState(() {
                         dateInput.text = formattedDate;
                       });
-                      widget.onDateChange(formattedDate);
+                      widget.onDateChange(pickedDate);
                     } else {
                       widget.onError();
                     }
