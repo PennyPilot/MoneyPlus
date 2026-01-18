@@ -7,5 +7,28 @@
       "amount": {},
       "currency": {}
     }
-  }
+  },
+  "setUpYourAccount": "Let’s set up your account",
+  "setSalary": "Set Salary",
+  "currency": "Currency",
+  "salaryDay": "Salary day",
+  "fromEachMonth": "from each month",
+  "salary": "Salary",
+  "accountSetup": "Account setup",
+  "search": "Search...",
+  "select": "Select",
+  "next": "Next",
+  "finishSetup": "Finish setup",
+  "stepOf": "Step {current} of {total}",
+  "@stepOf": {
+      "placeholders": {
+        "current": {
+          "type": "int"
+        },
+        "total": {
+          "type": "int"
+        }
+      }
+    }
+
 }

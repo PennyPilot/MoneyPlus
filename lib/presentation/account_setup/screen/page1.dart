@@ -34,6 +34,7 @@ class _Page1State extends State<Page1> {
         SizedBox(height: 24),
         MTextField(
           hint: "Currency",
+          controller: currencyController,
           leading: Padding(
             padding: const EdgeInsets.only(top: 14,bottom: 14,right: 8),
             child: SvgPicture.asset(AppAssets.iconMoney),
