@@ -1,11 +1,16 @@
 {
   "income": "Income",
   "expense": "Expense",
-  "moneyAmount": "{amount} {currency} ",
+  "moneyAmount": "{amount} {currency}",
   "@moneyAmount": {
     "placeholders": {
       "amount": {},
       "currency": {}
     }
-  }
+  },
+  "forgetPasswordAppBarTitle": "Forget Password",
+  "forgetPasswordTitle": "Forget your password",
+  "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
+  "forgetPasswordEmailHint": "Email",
+  "forgetPasswordButton": "Send Reset Link"
 }

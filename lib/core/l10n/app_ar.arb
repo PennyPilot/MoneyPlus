@@ -1,5 +1,10 @@
 {
   "income": "الدخل",
   "expense": "المصروف",
-  "moneyAmount": "{amount} {currency} "
+  "moneyAmount": "{amount} {currency} ",
+  "forgetPasswordAppBarTitle": "نسيت كلمة السر",
+  "forgetPasswordTitle": "نسيت كلمة المرور الخاصة بك",
+  "forgetPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة التعيين",
+  "forgetPasswordEmailHint": "البريد الإلكتروني",
+  "forgetPasswordButton": "إرسال رابط إعادة التعيين"
 }
