@@ -27,12 +27,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
 
       leading: leading != null
-          ? Padding(padding: const EdgeInsets.only(left: 16.0), child: leading!)
+          ? Padding(
+              padding: const EdgeInsetsDirectional.only(start: 16.0),
+              child: leading!,
+            )
           : null,
 
       actions: [
         if (trailing != null)
-          Padding(padding: const EdgeInsets.only(right: 16), child: trailing!),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 16),
+            child: trailing!,
+          ),
       ],
     );
   }
@@ -78,21 +84,17 @@ class AppBarCalendar extends StatelessWidget {
     final colors = context.colors;
     final contentColor = colors.title;
 
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          spacing: 4,
           children: [
             Text(date, style: typo.label.small.copyWith(color: contentColor)),
-            const SizedBox(width: 4),
-            SvgPicture.asset(
-              Assets.icArrowDown,
-              width: 20,
-              height: 20,
-            ),
+            SvgPicture.asset(Assets.icArrowDown, width: 20, height: 20),
           ],
         ),
       ),
