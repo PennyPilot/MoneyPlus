@@ -13,6 +13,7 @@ class AppAssets {
   static const String iconCalender = "${_icons}ic_calendar.svg";
   static const String iconMoney = "${_icons}ic_money.svg";
   static const String playArrow = "${_icons}play_arrow.svg";
-
+  static const icAdd = '${_icons}ic_add.svg';
+  static const icEdit = '${_icons}ic_edit.svg';
 
 }
