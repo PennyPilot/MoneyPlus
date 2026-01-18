@@ -41,13 +41,13 @@ class MChip extends StatelessWidget {
           boxShadow: selected
               ? [
                   BoxShadow(
-                    color: colors.primaryVariant.withOpacity(0.50),
+                    color: colors.primaryVariant.withValues(alpha: 0.50),
                     blurRadius: 12,
                     spreadRadius: 2,
                     offset: const Offset(0, 4),
                   ),
                   BoxShadow(
-                    color: colors.primary.withOpacity(0.16),
+                    color: colors.primary.withValues(alpha: 0.16),
                     blurRadius: 8,
                     spreadRadius: 2,
                     offset: const Offset(0, 4),
