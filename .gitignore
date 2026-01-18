@@ -11,7 +11,10 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
-
+*.env
+*.secret
+*.properties
+*.lock
 # IntelliJ related
 *.iml
 *.ipr
