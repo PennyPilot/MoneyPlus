@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/widgets/chip.dart';
+import '../../design_system/widgets/chip.dart';
 
 enum SelectionMode { single, multi }
 enum ChipGroupLayout { wrap, row }
@@ -13,7 +13,7 @@ class ChipGroup extends StatelessWidget {
   final ChipGroupLayout layout;
   final ValueChanged<Set<String>>? onChanged;
   final VoidCallback? onAdd;
-  final Widget? trailing;
+  final ValueChanged<String>? onEdit;
   final double horizontalSpacing;
   final double verticalSpacing;
 
@@ -25,12 +25,17 @@ class ChipGroup extends StatelessWidget {
     this.layout = ChipGroupLayout.wrap,
     this.onChanged,
     this.onAdd,
-    this.trailing,
+    this.onEdit,
     this.horizontalSpacing = 8,
     this.verticalSpacing = 8,
   });
 
   void _handleTap(String item) {
+    if (onEdit != null) {
+      onEdit!(item);
+      return;
+    }
+
     if (onChanged == null) return;
 
     Set<String> newSelection;
@@ -51,7 +56,7 @@ class ChipGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chips = _buildChips();
+    final chips = _buildChips(context);
 
     return switch (layout) {
       ChipGroupLayout.wrap => Wrap(
@@ -61,14 +66,12 @@ class ChipGroup extends StatelessWidget {
       ),
       ChipGroupLayout.row => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: _buildChipsWithSpacing(chips),
-        ),
+        child: Row(children: _buildChipsWithSpacing(chips)),
       ),
     };
   }
 
-  List<Widget> _buildChips() {
+  List<Widget> _buildChips(BuildContext context) {
     return [
       ...items.map((item) {
         final isSelected = selected.contains(item);
@@ -76,7 +79,7 @@ class ChipGroup extends StatelessWidget {
           label: item,
           selected: isSelected,
           onTap: () => _handleTap(item),
-          trailing: trailing,
+          trailing: onEdit != null ? SvgPicture.asset(AppAssets.icEdit) : null,
         );
       }),
       if (onAdd != null)
