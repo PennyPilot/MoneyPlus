@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-import 'package:moneyplus/utils/Assets.dart';
 import 'package:svg_flutter/svg.dart';
 
 class TextFieldDatePicker extends StatefulWidget {
@@ -72,7 +72,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: 16,),
-              SvgPicture.asset(Assets.icCalender, width: 24, height: 24),
+              SvgPicture.asset(AppAssets.icCalender, width: 24, height: 24),
               SizedBox(width: 8,),
               Expanded(
                 child: TextField(
@@ -122,7 +122,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                   },
                 ),
               ),
-              SvgPicture.asset(Assets.icArrowDownRound, width: 24, height: 24),
+              SvgPicture.asset(AppAssets.icArrowDownRound, width: 24, height: 24),
               SizedBox(width: 16,),
             ],
           ),

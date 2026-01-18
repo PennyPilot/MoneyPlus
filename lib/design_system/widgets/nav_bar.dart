@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-import 'package:moneyplus/utils/Assets.dart';
 
 enum NavBarTab {
-  home(Assets.icHomePrimary, Assets.icHomeGray, 'Home'),
+  home(AppAssets.icHomePrimary, AppAssets.icHomeGray, 'Home'),
   transaction(
-    Assets.icTransactionPrimary,
-    Assets.icTransactionGray,
+    AppAssets.icTransactionPrimary,
+    AppAssets.icTransactionGray,
     'Transaction',
   ),
-  statistics(Assets.icStatisticsPrimary, Assets.icStatisticsGray, 'Statistics'),
-  account(Assets.icAccountPrimary, Assets.icAccountGray, 'Account');
+  statistics(AppAssets.icStatisticsPrimary, AppAssets.icStatisticsGray, 'Statistics'),
+  account(AppAssets.icAccountPrimary, AppAssets.icAccountGray, 'Account');
 
   final String assetSelected;
   final String assetUnselected;
