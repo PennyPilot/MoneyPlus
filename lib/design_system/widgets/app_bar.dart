@@ -8,8 +8,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final Widget? leading;
   final Widget? trailing;
+  final double? leadingWidth;
 
-  const CustomAppBar({super.key, this.title, this.leading, this.trailing});
+  const CustomAppBar({
+    super.key,
+    this.title,
+    this.leading,
+    this.trailing,
+    this.leadingWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       titleSpacing: 8,
-      leadingWidth: leading != null ? 240 : 56,
+      leadingWidth: leadingWidth,
       automaticallyImplyLeading: false,
 
       title: title != null
