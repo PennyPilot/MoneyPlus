@@ -4,7 +4,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/chip.dart';
 
 enum SelectionMode { single, multi }
-enum ChipGroupLayout { wrap, row, scrollableRow }
+enum ChipGroupLayout { wrap, row }
 
 class ChipGroup extends StatelessWidget {
   final List<String> items;
@@ -59,11 +59,7 @@ class ChipGroup extends StatelessWidget {
         runSpacing: verticalSpacing,
         children: chips,
       ),
-      ChipGroupLayout.row => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildChipsWithSpacing(chips),
-      ),
-      ChipGroupLayout.scrollableRow => SingleChildScrollView(
+      ChipGroupLayout.row => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: _buildChipsWithSpacing(chips),
