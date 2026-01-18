@@ -62,9 +62,9 @@ class AppBarCircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
-      behavior: HitTestBehavior.opaque,
+      borderRadius: BorderRadius.circular(20),
       child: Container(
         width: 40,
         height: 40,
