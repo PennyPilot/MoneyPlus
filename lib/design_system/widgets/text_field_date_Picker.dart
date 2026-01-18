@@ -73,9 +73,9 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 16,),
+              SizedBox(width: 16),
               SvgPicture.asset(AppAssets.icCalender, width: 24, height: 24),
-              SizedBox(width: 8,),
+              SizedBox(width: 8),
               Expanded(
                 child: TextField(
                   controller: dateInput,
@@ -83,7 +83,9 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                   readOnly: true,
                   style: typography.body.medium.copyWith(color: colors.title),
                   decoration: InputDecoration(
-                    hintText: dateInput.text != "" ? dateInput.text : widget.hint,
+                    hintText: dateInput.text != ""
+                        ? dateInput.text
+                        : widget.hint,
                     hintStyle: typography.label.medium.copyWith(
                       color: colors.body,
                     ),
@@ -125,8 +127,12 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                   },
                 ),
               ),
-              SvgPicture.asset(AppAssets.icArrowDownRound, width: 24, height: 24),
-              SizedBox(width: 16,),
+              SvgPicture.asset(
+                AppAssets.icArrowDownRound,
+                width: 24,
+                height: 24,
+              ),
+              SizedBox(width: 16),
             ],
           ),
         ),
