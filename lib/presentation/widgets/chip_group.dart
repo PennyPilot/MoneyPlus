@@ -14,8 +14,8 @@ class ChipGroup extends StatelessWidget {
   final ValueChanged<Set<String>>? onChanged;
   final VoidCallback? onAdd;
   final Widget Function(String item, bool isSelected)? trailingBuilder;
-  final double spacing;
-  final double runSpacing;
+  final double horizontalSpacing;
+  final double verticalSpacing;
 
   const ChipGroup({
     super.key,
@@ -26,8 +26,8 @@ class ChipGroup extends StatelessWidget {
     this.onChanged,
     this.onAdd,
     this.trailingBuilder,
-    this.spacing = 8,
-    this.runSpacing = 8,
+    this.horizontalSpacing = 8,
+    this.verticalSpacing = 8,
   });
 
   void _handleTap(String item) {
@@ -55,8 +55,8 @@ class ChipGroup extends StatelessWidget {
 
     return switch (layout) {
       ChipGroupLayout.wrap => Wrap(
-        spacing: spacing,
-        runSpacing: runSpacing,
+        spacing: horizontalSpacing,
+        runSpacing: verticalSpacing,
         children: chips,
       ),
       ChipGroupLayout.row => Row(
@@ -97,7 +97,7 @@ class ChipGroup extends StatelessWidget {
     for (int i = 0; i < chips.length; i++) {
       result.add(chips[i]);
       if (i < chips.length - 1) {
-        result.add(SizedBox(width: spacing));
+        result.add(SizedBox(width: horizontalSpacing));
       }
     }
     return result;
