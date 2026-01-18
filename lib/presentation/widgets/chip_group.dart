@@ -13,7 +13,7 @@ class ChipGroup extends StatelessWidget {
   final ChipGroupLayout layout;
   final ValueChanged<Set<String>>? onChanged;
   final VoidCallback? onAdd;
-  final Widget Function(String item, bool isSelected)? trailingBuilder;
+  final Widget? trailing;
   final double horizontalSpacing;
   final double verticalSpacing;
 
@@ -25,7 +25,7 @@ class ChipGroup extends StatelessWidget {
     this.layout = ChipGroupLayout.wrap,
     this.onChanged,
     this.onAdd,
-    this.trailingBuilder,
+    this.trailing,
     this.horizontalSpacing = 8,
     this.verticalSpacing = 8,
   });
@@ -76,7 +76,7 @@ class ChipGroup extends StatelessWidget {
           label: item,
           selected: isSelected,
           onTap: () => _handleTap(item),
-          trailing: trailingBuilder?.call(item, isSelected),
+          trailing: trailing,
         );
       }),
       if (onAdd != null)
