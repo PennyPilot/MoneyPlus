@@ -26,33 +26,35 @@ class _CurrentBalanceState extends State<CurrentBalance> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = MoneyColors.light;
+    final typography = MoneyTypography.typography;
     var balanceIcon = showBalance ? AppAssets.openEye : AppAssets.closedEye;
     var balance = showBalance ? widget.balance : _getHiddenBalance(widget.balance);
     var topPadding = showBalance ? 0.0 : 4.0;
     var percentageIcon = widget.percentage > 0 ? AppAssets.tradeUp : AppAssets.tradeDown;
     var percentageText = widget.percentage > 0 ? 'Saving' : 'Spending';
-    var percentageColor = widget.percentage > 0 ? MoneyColors.light.green : MoneyColors.light.red;
+    var percentageColor = widget.percentage > 0 ? colors.green : colors.red;
 
     return SizedBox(
-      height: 72,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             "Current Balance",
-            style: MoneyTypography.typography.label.small.copyWith(
-              color: MoneyColors.light.body,
+            style: typography.label.small.copyWith(
+              color: colors.body,
             ),
           ),
           Row(
+            spacing: 8,
             children: [
               Text(
                 balance,
-                style: MoneyTypography.typography.headline.small.copyWith(
-                  color: MoneyColors.light.title,
+                style: typography.headline.small.copyWith(
+                  color: colors.title,
                 ),
               ),
-              SizedBox(width: 8),
               GestureDetector(
                 onTap: (){triggerBalanceVisibility();},
                 child: Container(
@@ -74,12 +76,12 @@ class _CurrentBalanceState extends State<CurrentBalance> {
           ),
           SizedBox(height: 6),
           Row(
+            spacing: 4,
             children: [
               SvgPicture.asset(percentageIcon, width: 16, height: 16),
-              SizedBox(width: 4),
               Text(
                 "${widget.percentage}% $percentageText",
-                style: MoneyTypography.typography.label.xSmall?.copyWith(
+                style: typography.label.xSmall?.copyWith(
                   color: percentageColor,
                 ),
               ),
