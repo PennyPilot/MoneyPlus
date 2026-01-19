@@ -8,5 +8,8 @@
       "currency": {}
     }
   },
-  "date": "Date"
+  "date": "Date",
+  "amount": "Amount",
+  "addIncome": "Add income",
+  "note": "Note"
 }

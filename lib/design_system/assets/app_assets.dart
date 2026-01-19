@@ -25,5 +25,6 @@ class AppAssets {
   static const String icArrowLeft = '$_icons/ic_arrow_left.svg';
   static const String appBrand = '$_icons/ic_app_brand.svg';
   static const String notification = '$_icons/ic_notification.svg';
+  static const icMoneyAmount = '$_icons/ic_money_amount.svg';
 
 }

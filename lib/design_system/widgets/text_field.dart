@@ -84,7 +84,7 @@ class _MTextFieldState extends State<MTextField> {
             color: colors.surfaceLow,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (widget.leading != null) widget.leading!,
               if (widget.leadingIcon != null)
