@@ -15,7 +15,10 @@ void initDI() {
     () => SupabaseService(appSecretsProvider: getIt<AppSecretsProvider>()),
   );
   getIt.registerLazySingleton<AuthenticationRepository>(
-    () => AuthenticationRepositoryImp(),
+    () => AuthenticationRepositoryImpl(
+      getIt<SupabaseService>(),
+      getIt<AppSecretsProvider>(),
+    ),
   );
 
   getIt.registerFactory<LoginCubit>(() => LoginCubit());
