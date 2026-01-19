@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-
-import '../../utils/Assets.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -94,7 +93,7 @@ class AppBarCalendar extends StatelessWidget {
           spacing: 4,
           children: [
             Text(date, style: typo.label.small.copyWith(color: contentColor)),
-            SvgPicture.asset(Assets.icArrowDown, width: 20, height: 20),
+            SvgPicture.asset(AppAssets.icNormalArrowDown, width: 20, height: 20),
           ],
         ),
       ),
