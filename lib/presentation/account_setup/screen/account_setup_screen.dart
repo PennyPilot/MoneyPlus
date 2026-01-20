@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/component/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
 
 import '../../../design_system/theme/money_extension_context.dart';
-import '../../../utils/Assets.dart';
 
 class AccountSetupScreen extends StatefulWidget {
   const AccountSetupScreen({super.key});
@@ -29,9 +29,9 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppBar(
-                leading: AppBarCircleButton(assetPath: Assets.icArrowLeft,onTap: () {}) ,
+                leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft,onTap: () {}) ,
                 title:"Account setup" ,
-                trailing: SvgPicture.asset(Assets.appBrand,),
+                trailing: SvgPicture.asset(AppAssets.appBrand,),
               ),
               SizedBox(height: 36,),
               Indicator(currentIndex: currentIndex),
