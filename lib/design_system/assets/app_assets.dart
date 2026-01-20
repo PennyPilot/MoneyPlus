@@ -29,5 +29,7 @@ class AppAssets {
   static const String openEye = '$_icons/ic_open_eye.svg';
   static const String tradeUp = '$_icons/ic_trade_up.svg';
   static const String tradeDown = '$_icons/ic_trade_down.svg';
-
+  static const String icSquareLock = '$_icons/ic_square_lock.svg';
+  static const String icMail = '$_icons/ic_mail.svg';
+  static const String icUser = '$_icons/ic_user_square.svg';
 }
