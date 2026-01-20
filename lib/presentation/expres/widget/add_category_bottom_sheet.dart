@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
@@ -41,9 +42,9 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
       value: _controller.text,
       onChanged: (value) => _controller.text = value,
       leading: Padding(
-        padding: const EdgeInsets.only(right: 8, top: 14, bottom: 14),
+        padding: const EdgeInsetsDirectional.only(start: 8, top: 14, bottom: 14),
         child: SvgPicture.asset(
-          'assets/icons/ic_menu-square.svg',
+          AppAssets.icCategory,
           width: 24,
           height: 24,
           color: MoneyColors.light.body,

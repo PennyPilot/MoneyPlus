@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
+import 'package:moneyplus/design_system/theme/money_typography.dart';
 
 class BottomSheet extends StatelessWidget {
   final String title;
@@ -25,12 +26,7 @@ class BottomSheet extends StatelessWidget {
           topRight: Radius.circular(24),
         ),
       ),
-      padding: const EdgeInsets.only(
-        top: 24,
-        bottom: 24,
-        left: 16,
-        right: 16,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -40,9 +36,7 @@ class BottomSheet extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                style: MoneyTypography.typography.title.small.copyWith(
                   color: Colors.black,
                 ),
               ),
@@ -54,10 +48,7 @@ class BottomSheet extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: const Color(0xFFE5E7EB),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: MoneyColors.light.body,
-                      width: 1,
-                    ),
+                    border: Border.all(color: MoneyColors.light.body, width: 1),
                   ),
                   child: Icon(
                     Icons.close,
