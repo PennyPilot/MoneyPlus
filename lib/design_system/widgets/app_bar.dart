@@ -27,6 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 8,
       leadingWidth: leadingWidth,
       automaticallyImplyLeading: false,
+      backgroundColor: colors.surfaceLow,
 
       title: title != null
           ? Text(title!, style: typo.title.small.copyWith(color: contentColor))
