@@ -83,7 +83,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
               trailing: AppLogo(assetPath: AppAssets.icAppLogo),
             ),
             bottomNavigationBar: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.all(16),
               child: DefaultButton(
                 text: l10n.updatePasswordButton,
                 isLoading: isLoading,

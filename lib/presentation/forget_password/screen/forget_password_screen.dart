@@ -64,7 +64,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
               leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
             ),
             bottomNavigationBar: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.all(16),
               child: DefaultButton(
                 text: l10n.forgetPasswordButton,
                 isEnabled: _email.isNotEmpty,
