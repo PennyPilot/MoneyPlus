@@ -3,7 +3,7 @@ class AppAssets {
 
   static const _icons = 'assets/icons/';
 
-  static const imgAppLogo = '$_icons/img_app_logo.svg';
+  static const icAppLogo = '${_icons}ic_app_logo.svg';
   static const icArrowDown = '${_icons}ic_arrow_down.svg';
   static const icArrowUp = '${_icons}ic_arrow_up.svg';
   static const icArrowRight = '${_icons}ic_arrow_right.svg';

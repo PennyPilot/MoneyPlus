@@ -60,7 +60,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
             backgroundColor: colors.surface,
             appBar: CustomAppBar(
               title: l10n.forgetPasswordAppBarTitle,
-              trailing: AppLogo(assetPath: AppAssets.imgAppLogo),
+              trailing: AppLogo(assetPath: AppAssets.icAppLogo),
               leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
             ),
             bottomNavigationBar: Padding(

@@ -80,7 +80,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
             appBar: CustomAppBar(
               title: l10n.updatePasswordAppBarTitle,
               leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
-              trailing: AppLogo(assetPath: AppAssets.imgAppLogo),
+              trailing: AppLogo(assetPath: AppAssets.icAppLogo),
             ),
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
