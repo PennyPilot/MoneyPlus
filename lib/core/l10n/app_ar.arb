@@ -2,6 +2,7 @@
   "income": "الدخل",
   "expense": "المصروف",
   "moneyAmount": "{amount} {currency} ",
+  "date": "التاريخ"
   "forgetPasswordAppBarTitle": "نسيت كلمة السر",
   "forgetPasswordTitle": "نسيت كلمة المرور الخاصة بك",
   "forgetPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة التعيين",
