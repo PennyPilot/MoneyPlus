@@ -2,6 +2,8 @@
   "income": "الدخل",
   "expense": "المصروف",
   "moneyAmount": "{amount} {currency} ",
+  "date": "التاريخ"
+  "moneyAmount": "{amount} {currency} ",
   "setUpYourAccount": "لنقم بإعداد حسابك",
     "setSalary": "تحديد الراتب",
     "currency": "العملة",

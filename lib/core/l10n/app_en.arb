@@ -8,6 +8,8 @@
       "currency": {}
     }
   },
+  "date": "Date"
+  },
   "setUpYourAccount": "Let’s set up your account",
   "setSalary": "Set Salary",
   "currency": "Currency",

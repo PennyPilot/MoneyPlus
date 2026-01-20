@@ -7,7 +7,7 @@ on:
     branches: [dev, main]
 jobs:
   build:
-    name: App Build(android-ios)
+    name: App Build (Android & iOS)
     runs-on: macos-latest
 
     steps:
@@ -18,6 +18,11 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+
+      - name: Create secrets.env file
+        run: |
+          echo "SUPA_BASE_URL=${{ secrets.SUPA_BASE_URL }}" > secrets.env
+          echo "SUPA_API_KEY=${{ secrets.SUPA_API_KEY }}" >> secrets.env
 
       - name: Flutter clean
         run: flutter clean
