@@ -16,7 +16,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> resetPasswordForEmail(String email) async {
     final client = await supabaseService.getClient();
-    await client.client.auth.resetPasswordForEmail(
+    await client.auth.resetPasswordForEmail(
       email,
       redirectTo: AppConstants.resetPasswordRedirect,
     );
@@ -26,13 +26,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Stream<AuthState> get onAuthStateChange {
     final supabaseClientFuture = supabaseService.getClient();
     return Stream.fromFuture(supabaseClientFuture).asyncExpand((supabase) {
-      return supabase.client.auth.onAuthStateChange;
+      return supabase.auth.onAuthStateChange;
     });
   }
 
   @override
   Future<void> updatePassword(String password) async {
     final client = await supabaseService.getClient();
-    await client.client.auth.updateUser(UserAttributes(password: password));
+    await client.auth.updateUser(UserAttributes(password: password));
   }
 }
