@@ -5,6 +5,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/component/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
+import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/di/injection.dart';
@@ -79,6 +80,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
             appBar: CustomAppBar(
               title: l10n.updatePasswordAppBarTitle,
               leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
+              trailing: AppLogo(assetPath: AppAssets.imgAppLogo),
             ),
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
