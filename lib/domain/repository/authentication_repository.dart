@@ -6,4 +6,6 @@ abstract class AuthenticationRepository {
   Future<void> resetPasswordForEmail(String email);
 
   Stream<AuthState> get onAuthStateChange;
+
+  Future<void> updatePassword(String password);
 }

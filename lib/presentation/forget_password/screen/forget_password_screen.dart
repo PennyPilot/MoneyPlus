@@ -9,13 +9,14 @@ import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/forget_password/cubit/forget_password_cubit.dart';
+import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 import 'package:svg_flutter/svg.dart';
 
 import '../../../design_system/theme/money_extension_context.dart';
 import '../cubit/forget_password_state.dart';
 
-class ForgetPassword extends StatelessWidget {
-  const ForgetPassword({super.key});
+class ForgetPasswordScreen extends StatelessWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,11 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
     return BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
       listener: (context, state) {
         if (state.status == ForgetPasswordStatus.passwordRecovery) {
-          // TODO: Navigate to the UpdatePasswordScreen
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => UpdatePasswordScreen(email: _email),
+            ),
+          );
         }
       },
       builder: (context, state) {
@@ -66,8 +71,8 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
                 isLoading: state.status == ForgetPasswordStatus.loading,
                 onPressed: () {
                   context.read<ForgetPasswordCubit>().onClickForgetPassword(
-                    _email,
-                  );
+                        _email,
+                      );
                 },
               ),
             ),

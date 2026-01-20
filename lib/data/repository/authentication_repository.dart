@@ -29,4 +29,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return supabase.client.auth.onAuthStateChange;
     });
   }
+
+  @override
+  Future<void> updatePassword(String password) async {
+    final client = await supabaseService.getClient();
+    await client.client.auth.updateUser(UserAttributes(password: password));
+  }
 }

@@ -6,5 +6,11 @@
   "forgetPasswordTitle": "نسيت كلمة المرور الخاصة بك",
   "forgetPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة التعيين",
   "forgetPasswordEmailHint": "البريد الإلكتروني",
-  "forgetPasswordButton": "إرسال رابط إعادة التعيين"
+  "forgetPasswordButton": "إرسال رابط إعادة التعيين",
+
+  "updatePasswordAppBarTitle": "تحديث كلمة المرور",
+  "updatePasswordTitle": "أدخل كلمة مرور جديدة لـ",
+  "updatePasswordPasswordHint": "كلمة المرور الجديدة",
+  "updatePasswordConfirmHint": "تأكيد كلمة المرور الجديدة",
+  "updatePasswordButton": "تحديث كلمة المرور"
 }
