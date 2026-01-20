@@ -53,7 +53,9 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
     return BlocConsumer<UpdatePasswordCubit, UpdatePasswordState>(
       listener: (context, state) {
         if (state.status == UpdatePasswordStatus.success) {
-          // navigate to login screen when merged
+          MoneySnackBar.success(
+            message: l10n.updatePasswordSuccessMessage,
+          ).showSnackBar(context: context);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (_) => const MoneyApp()),
             (route) => false,
@@ -61,7 +63,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
         }
         if (state.status == UpdatePasswordStatus.error) {
           MoneySnackBar.error(
-            message: 'Error updating password',
+            message: l10n.updatePasswordErrorMessage,
           ).showSnackBar(context: context);
         }
       },
@@ -90,8 +92,8 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
                 isEnabled: isButtonEnabled,
                 onPressed: () {
                   context.read<UpdatePasswordCubit>().updatePassword(
-                    _newPassword,
-                  );
+                        _newPassword,
+                      );
                 },
               ),
             ),

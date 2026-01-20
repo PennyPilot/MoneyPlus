@@ -12,5 +12,7 @@
   "updatePasswordTitle": "أدخل كلمة مرور جديدة لـ",
   "updatePasswordPasswordHint": "كلمة المرور الجديدة",
   "updatePasswordConfirmHint": "تأكيد كلمة المرور الجديدة",
-  "updatePasswordButton": "تحديث كلمة المرور"
+  "updatePasswordButton": "تحديث كلمة المرور",
+  "updatePasswordSuccessMessage": "تم تحديث كلمة المرور بنجاح",
+  "updatePasswordErrorMessage": "خطأ في تحديث كلمة المرور"
 }

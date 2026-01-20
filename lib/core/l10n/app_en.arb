@@ -18,5 +18,7 @@
   "updatePasswordTitle": "Enter a new password for",
   "updatePasswordPasswordHint": "New Password",
   "updatePasswordConfirmHint": "Confirm New Password",
-  "updatePasswordButton": "Update Password"
+  "updatePasswordButton": "Update Password",
+  "updatePasswordSuccessMessage": "Password updated successfully",
+  "updatePasswordErrorMessage": "Error updating password"
 }
