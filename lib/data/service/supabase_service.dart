@@ -15,11 +15,13 @@ class SupabaseService {
 
     final dotEnvInstance = await appSecretsProvider.getEnvVariables();
 
-    _supabaseClient = await Supabase.initialize(
+    final supabase = await Supabase.initialize(
       url: dotEnvInstance.env[AppConstants.supabaseUrl] ?? "",
       anonKey: dotEnvInstance.env[AppConstants.supabaseApiKey] ?? "",
       debug: kDebugMode,
-    ).then((onValue)=>onValue.client);
+    );
+
+    _supabaseClient = supabase.client;
 
 
     return _supabaseClient!;
