@@ -25,6 +25,10 @@ class AppAssets {
   static const String icArrowLeft = '$_icons/ic_arrow_left.svg';
   static const String appBrand = '$_icons/ic_app_brand.svg';
   static const String notification = '$_icons/ic_notification.svg';
+  static const String closedEye = '$_icons/ic_closed_eye.svg';
+  static const String openEye = '$_icons/ic_open_eye.svg';
+  static const String tradeUp = '$_icons/ic_trade_up.svg';
+  static const String tradeDown = '$_icons/ic_trade_down.svg';
   static const icMoneyAmount = '$_icons/ic_money_amount.svg';
 
 }
