@@ -12,5 +12,9 @@
   "amount": "Amount",
   "addIncome": "Add income",
   "note": "Note",
-  "add": "Add"
+  "add": "Add",
+  "saving": "Saving...",
+  "incomeAddedSuccessfully": "Income added successfully!",
+  "failedToAddIncome": "Failed to add income",
+  "salary": "Salary"
 }
