@@ -2,96 +2,122 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../../models/data_point.dart';
 import '../../../config/chart_theme.dart';
+import '../../../config/chart_constants.dart';
 import '../utils/chart_formatter.dart';
 
+/// Touch callback function type for handling touch events.
+typedef TouchCallback = void Function(int?);
+
+/// Handler for chart touch interactions and tooltips.
+///
+/// This class follows the Single Responsibility Principle by focusing
+/// solely on touch interaction and tooltip display.
 class TouchHandler {
-  final List<DataPoint> data;
-  final String currency;
-  final Function(int?) onTouch;
+  final BuildContext _context;
+  final List<DataPoint> _data;
+  final String _currency;
+  final TouchCallback _onTouch;
 
   const TouchHandler({
-    required this.data,
-    required this.currency,
-    required this.onTouch,
-  });
+    required BuildContext context,
+    required List<DataPoint> data,
+    required String currency,
+    required TouchCallback onTouch,
+  })  : _context = context,
+        _data = data,
+        _currency = currency,
+        _onTouch = onTouch;
 
+  /// Builds touch interaction configuration.
   LineTouchData build() {
     return LineTouchData(
       enabled: true,
       touchTooltipData: _buildTooltipData(),
       touchCallback: _handleTouch,
       handleBuiltInTouches: true,
-      getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-        return spotIndexes.map((index) {
-          return TouchedSpotIndicatorData(
-            FlLine(
-              color: Colors.transparent,
-              strokeWidth: 0,
-            ),
-            FlDotData(show: false),
-          );
-        }).toList();
-      },
+      getTouchedSpotIndicator: _buildSpotIndicator,
     );
   }
 
+  /// Configures tooltip appearance and content.
   LineTouchTooltipData _buildTooltipData() {
     return LineTouchTooltipData(
-      getTooltipColor: (LineBarSpot touchedSpot) => ChartTheme.tooltipBackground,
-      tooltipBorderRadius: BorderRadius.circular(ChartTheme.tooltipRadius),
+      getTooltipColor: (_) => ChartTheme.getTooltipBackground(_context),
+      tooltipBorderRadius: BorderRadius.circular(ChartConstants.tooltipRadius),
       tooltipPadding: const EdgeInsets.symmetric(
-        horizontal: ChartTheme.tooltipPaddingHorizontal,
-        vertical: ChartTheme.tooltipPaddingVertical,
+        horizontal: ChartConstants.tooltipPaddingHorizontal,
+        vertical: ChartConstants.tooltipPaddingVertical,
       ),
-      tooltipMargin: 12,
+      tooltipMargin: ChartConstants.tooltipMargin,
       tooltipBorder: BorderSide(
-        color: ChartTheme.tooltipBorder,
-        width: ChartTheme.tooltipBorderWidth,
+        color: ChartTheme.getTooltipBorder(_context),
+        width: ChartConstants.tooltipBorderWidth,
       ),
       fitInsideHorizontally: true,
       fitInsideVertically: true,
-      maxContentWidth: 200,
-      getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
-        return touchedBarSpots.map((barSpot) {
-          final index = barSpot.spotIndex;
-          if (index < 0 || index >= data.length) {
-            return null;
-          }
-
-          final date = data[index].date;
-          final amount = barSpot.y;
-
-          return LineTooltipItem(
-            '${ChartFormatter.formatDate(date)}\n',
-            ChartTheme.tooltipTextStyle,
-            textAlign: TextAlign.left,
-            children: [
-              TextSpan(
-                text: '${ChartFormatter.formatFullAmount(amount)} $currency',
-                style: ChartTheme.tooltipTextStyle,
-              ),
-            ],
-          );
-        }).toList();
-      },
+      maxContentWidth: ChartConstants.tooltipMaxContentWidth,
+      getTooltipItems: _buildTooltipItems,
     );
   }
 
+  /// Creates tooltip content for touched spots.
+  List<LineTooltipItem?> _buildTooltipItems(List<LineBarSpot> touchedBarSpots) {
+    return touchedBarSpots.map((barSpot) {
+      final index = barSpot.spotIndex;
+      if (index < 0 || index >= _data.length) {
+        return null;
+      }
+
+      final date = _data[index].date;
+      final amount = barSpot.y;
+      final textStyle = ChartTheme.getTooltipTextStyle(_context);
+
+      return LineTooltipItem(
+        '${ChartFormatter.formatDate(date)}\n',
+        textStyle,
+        textAlign: TextAlign.left,
+        children: [
+          TextSpan(
+            text: '${ChartFormatter.formatFullAmount(amount)} $_currency',
+            style: textStyle,
+          ),
+        ],
+      );
+    }).toList();
+  }
+
+  /// Builds transparent indicators (we don't show vertical lines).
+  List<TouchedSpotIndicatorData> _buildSpotIndicator(
+    LineChartBarData barData,
+    List<int> spotIndexes,
+  ) {
+    return spotIndexes.map((_) {
+      return TouchedSpotIndicatorData(
+        const FlLine(color: Colors.transparent, strokeWidth: 0),
+        FlDotData(show: false),
+      );
+    }).toList();
+  }
+
+  /// Handles touch events and updates touched index.
   void _handleTouch(FlTouchEvent event, LineTouchResponse? touchResponse) {
+    // Clear touch on tap up, pan end, or long press end
     if (event is FlTapUpEvent ||
         event is FlPanEndEvent ||
         event is FlLongPressEnd) {
-      onTouch(null);
+      _onTouch(null);
       return;
     }
 
+    // Clear touch if no valid response
     if (touchResponse == null ||
         touchResponse.lineBarSpots == null ||
         touchResponse.lineBarSpots!.isEmpty) {
-      onTouch(null);
+      _onTouch(null);
       return;
     }
 
-    onTouch(touchResponse.lineBarSpots!.first.spotIndex);
+    // Update touched spot
+    _onTouch(touchResponse.lineBarSpots!.first.spotIndex);
   }
 }

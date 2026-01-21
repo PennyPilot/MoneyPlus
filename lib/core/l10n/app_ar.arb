@@ -2,5 +2,7 @@
   "income": "الدخل",
   "expense": "المصروف",
   "moneyAmount": "{amount} {currency} ",
-  "date": "التاريخ"
+  "date": "التاريخ",
+  "spendingTrend": "اتجاه الإنفاق",
+  "noDataAvailable": "لا توجد بيانات متاحة"
 }

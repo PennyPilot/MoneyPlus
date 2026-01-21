@@ -7,36 +7,52 @@ class SpendingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sampleData = _generateSampleData();
+    final normalData = _generateNormalData();
+    final longData = _generateLongData();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Money Tracker')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: SpendingTrendGraph(
-          data: sampleData,
-          title: 'Spending Trend',
-          currency: 'IDR',
+        child: Column(
+          children: [
+            // Normal chart (no scrolling) - uses localized title
+            SpendingTrendGraph(
+              data: normalData,
+              currency: 'IDR',
+            ),
+            const SizedBox(height: 24),
+            // Long chart (with scrolling)
+            SpendingTrendGraph(
+              data: longData,
+              title: 'Long Data Chart (Scrollable)',
+              currency: 'USD',
+            ),
+          ],
         ),
       ),
     );
   }
 
-  List<DataPoint> _generateSampleData() {
+  /// Generates normal data (< 7 points, no scrolling)
+  List<DataPoint> _generateNormalData() {
     return [
       DataPoint(date: DateTime(2023, 12, 1), amount: 50000),
-      DataPoint(date: DateTime(2023, 12, 2), amount: 750),
-      DataPoint(date: DateTime(2023, 12, 3), amount: 60),
-      DataPoint(date: DateTime(2023, 12, 4), amount: 15),
-      DataPoint(date: DateTime(2023, 12, 5), amount: 120),
-      DataPoint(date: DateTime(2023, 12, 6), amount: 400),
-      DataPoint(date: DateTime(2023, 12, 7), amount: 300),
-      DataPoint(date: DateTime(2023, 12, 8), amount: 1000),
-      DataPoint(date: DateTime(2023, 12, 4), amount: 15),
-      DataPoint(date: DateTime(2023, 12, 5), amount: 12),
-      DataPoint(date: DateTime(2023, 12, 6), amount: 40),
-      DataPoint(date: DateTime(2023, 12, 7), amount: 30),
-
+      DataPoint(date: DateTime(2023, 12, 2), amount: 75000),
+      DataPoint(date: DateTime(2023, 12, 3), amount: 60000),
+      DataPoint(date: DateTime(2023, 12, 4), amount: 85000),
+      DataPoint(date: DateTime(2023, 12, 5), amount: 120000),
+      DataPoint(date: DateTime(2023, 12, 6), amount: 95000),
     ];
+  }
+
+  /// Generates long data (> 7 points, triggers scrolling)
+  List<DataPoint> _generateLongData() {
+    return List.generate(30, (index) {
+      return DataPoint(
+        date: DateTime(2023, 12, index + 1),
+        amount: 50000 + (index * 10000) + (index.isEven ? 5000 : -3000),
+      );
+    });
   }
 }

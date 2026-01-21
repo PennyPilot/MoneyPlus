@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 
@@ -14,7 +15,9 @@ class MoneyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Money++',
       theme: MoneyTheme.lightTheme,
-      home: SpendingScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const SpendingScreen(),
     );
   }
 }

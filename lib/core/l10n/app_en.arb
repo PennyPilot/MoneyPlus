@@ -8,5 +8,7 @@
       "currency": {}
     }
   },
-  "date": "Date"
+  "date": "Date",
+  "spendingTrend": "Spending Trend",
+  "noDataAvailable": "No data available"
 }
