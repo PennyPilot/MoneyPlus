@@ -12,9 +12,9 @@ import 'utils/chart_calculator.dart';
 
 class SpendingTrendGraph extends StatefulWidget {
 
-  static const double chartHeight = 200.0;
-  static const double containerPadding = 16.0;
-  static const double titleSpacing = 20.0;
+  static const double chartHeight = 238.0;
+  static const double containerPadding = 12.0;
+  static const double titleSpacing = 16.0;
   static const double borderRadius = 12.0;
   static const double minWidthPerDataPoint = 50.0;
   static const int maxDataPointsBeforeScroll = 7;
@@ -120,7 +120,7 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
       height: SpendingTrendGraph.chartHeight,
       child: Center(
         child: Text(
-          localizations?.noDataAvailable ?? 'No data available',
+          localizations?.noDataAvailable ?? '',
           style: ChartTheme.getEmptyStateStyle(context).copyWith(
             color: ChartTheme.getTextSecondary(context),
           ),
