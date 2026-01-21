@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/component/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+import '../../../design_system/widgets/buttons/button/default_button.dart';
 
 class AccountSetupScreen extends StatefulWidget {
   const AccountSetupScreen({super.key});
