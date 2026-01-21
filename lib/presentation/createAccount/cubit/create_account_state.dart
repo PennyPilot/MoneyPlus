@@ -38,7 +38,7 @@ class CreateAccountState {
 
   User toEntity() {
     return User(
-      id: 0,
+      id: "",
       email: email,
       username: name,
     );
