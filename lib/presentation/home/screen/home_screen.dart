@@ -231,7 +231,10 @@ Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
               ],
             ),
           ),
-          SafeArea(child: homeAppBar(month: state.selectedMonth, year: state.selectedYear)),
+          SafeArea(child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 19),
+            child: homeAppBar(month: state.selectedMonth, year: state.selectedYear),
+          )),
         ],
       ),
     );
