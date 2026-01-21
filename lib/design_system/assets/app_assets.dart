@@ -2,6 +2,7 @@ class AppAssets {
   AppAssets._();
 
   static const _icons = 'assets/icons';
+  static const _images = 'assets/images';
 
   static const icArrowDown = '$_icons/ic_arrow_down.svg';
   static const icArrowUp = '$_icons/ic_arrow_up.svg';
@@ -29,5 +30,10 @@ class AppAssets {
   static const String openEye = '$_icons/ic_open_eye.svg';
   static const String tradeUp = '$_icons/ic_trade_up.svg';
   static const String tradeDown = '$_icons/ic_trade_down.svg';
+  static const String arrowDownV2 = '$_icons/ic_arrow_down_v2.svg';
+  static const String flowerShape1 = '$_images/flower-shape-1.png';
+  static const String flowerShape2 = '$_images/flower-shape-2.png';
+  static const String addMoney = '$_icons/ic_add_money.svg';
+  static const String spendMoney = '$_icons/ic_spend_money.svg';
 
 }

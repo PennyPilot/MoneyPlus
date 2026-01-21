@@ -64,6 +64,7 @@ flutter:
   generate: true
   assets:
     - assets/icons/
+    - assets/images/
     - secrets.env
 
   # The following line ensures that the Material Icons font is
