@@ -27,12 +27,12 @@ class HomeScreen extends StatelessWidget {
     final colors = context.colors;
     final typography = context.typography;
     return Scaffold(
-      body: Center(
-        child: Text(
-          'Welcome Flutter!',
-          style: typography.headline.small.copyWith(color: colors.primary),
+        body: Center(
+          child: Text(
+            'Welcome Flutter!',
+            style: typography.headline.small.copyWith(color: colors.primary),
+          ),
         ),
-      ),
     );
   }
 }
