@@ -171,7 +171,7 @@ Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
       width: double.infinity,
       height: 232,
       decoration: BoxDecoration(
-        color: MoneyColors.light.surfaceLow,
+        color: colors.surfaceLow,
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(24),
           bottomLeft: Radius.circular(24),
@@ -186,7 +186,7 @@ Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
               AppAssets.flowerShape1,
               height: 165,
               width: 72,
-              color: MoneyColors.light.surface,
+              color: colors.surface,
             ),
           ),
           Positioned(
@@ -196,7 +196,7 @@ Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
               AppAssets.flowerShape2,
               height: 232,
               width: 72,
-              color: MoneyColors.light.surface,
+              color: colors.surface,
             ),
           ),
           Positioned(
