@@ -30,6 +30,13 @@
           "type": "int"
         }
       }
-    }
+    },
+    "stepOfTotal": "Step {current} of {total}",
+      "@stepOfTotal": {
+        "placeholders": {
+          "current": {},
+          "total": {}
+        }
+      }
 
 }

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 
+import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import 'currency_bottom_sheet.dart';
 
@@ -21,31 +22,31 @@ class _Page1State extends State<Page1> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Set Salary",
+          l10n.setSalary,
           style: context.typography.label.small.copyWith(
             color: context.colors.body,
           ),
         ),
         SizedBox(height: 24),
         MTextField(
-          hint: "Currency",
-          controller: currencyController,
+          hint: l10n.currency,
           leading: Padding(
-            padding: const EdgeInsets.only(top: 14,bottom: 14,right: 8),
+            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
             child: SvgPicture.asset(AppAssets.iconMoney),
           ),
           trailing: Padding(
-            padding: const EdgeInsets.only(top: 14,bottom: 14,right: 8),
+            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
             child: GestureDetector(
               onTap: () {
                _openCurrencyBottomSheet();
               },
-              child: Icon(Icons.keyboard_arrow_down, size: 20),
+              child: SvgPicture.asset(AppAssets.icArrowDownRound, height: 20,width: 20,),
             ),
           ),
           keyboardType: TextInputType.number,
@@ -56,9 +57,9 @@ class _Page1State extends State<Page1> {
         ),
         SizedBox(height: 12),
         MTextField(
-          hint: "Salary",
+          hint: l10n.salary,
           leading: Padding(
-            padding: const EdgeInsets.only(top: 14,bottom: 14,right: 8),
+            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
             child: SvgPicture.asset(AppAssets.iconMoney),
           ),
           keyboardType: TextInputType.number,
@@ -69,22 +70,22 @@ class _Page1State extends State<Page1> {
         ),
         SizedBox(height: 12),
         MTextField(
-          hint: "Salary day",
+          hint: l10n.salaryDay,
           leading: Padding(
-            padding: const EdgeInsets.only(top: 14,bottom: 14,right: 8),
+            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
             child: SvgPicture.asset(AppAssets.iconCalender),
           ),
           trailing: Padding(
-            padding: const EdgeInsets.only(top: 14,bottom: 14,right: 8),
+            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
                 color: context.colors.surface,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+                padding: const EdgeInsetsDirectional.symmetric(vertical: 4,horizontal: 8),
                 child: Text(
-                  "from each month",
+                  l10n.fromEachMonth,
                   style: context.typography.label.small.copyWith(
                     color: context.colors.body,
                   ),

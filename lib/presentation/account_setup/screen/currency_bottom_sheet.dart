@@ -5,6 +5,7 @@ import 'package:moneyplus/design_system/component/buttons/button/default_button.
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 
+import '../../../core/l10n/app_localizations.dart';
 import 'currency_list.dart';
 
 class Test {
@@ -36,15 +37,17 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsetsDirectional.all(16),
           child: Row(
             children: [
               Expanded(
                 child: Text(
-                  "Currency",
+                  l10n.currency,
                   style: context.typography.title.small.copyWith(
                     color: context.colors.title,
                   ),
@@ -65,19 +68,19 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
         ),
         SizedBox(height: 12),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
           child: Divider(color: context.colors.stroke, thickness: 1, height: 1),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          padding: const EdgeInsetsDirectional.symmetric(vertical: 16, horizontal: 16),
           child: MTextField(
-            hint: "Search...",
+            hint: l10n.search,
             value: searchController.text,
             onChanged: (value) {
               searchController.text = value;
             },
             leading: Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 14, right: 8),
+              padding: const EdgeInsetsDirectional.only(top: 14, bottom: 14, end: 8),
               child: SvgPicture.asset(AppAssets.iconSearch),
             ),
           ),
@@ -101,11 +104,11 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
                         : context.colors.title,
                   ),
                 ),
-                contentPadding: EdgeInsets.only(
-                  right: 16,
+                contentPadding: EdgeInsetsDirectional.only(
+                  end: 16,
                   bottom: 8,
                   top: 8,
-                  left: isSelected ? 7 : 16,
+                  start: isSelected ? 7 : 16,
                 ),
                 onTap: () {
                   setState(() {
@@ -130,7 +133,7 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
             },
             separatorBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
                 child: Divider(
                   color: context.colors.stroke,
                   thickness: 1,
@@ -141,9 +144,9 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsetsDirectional.all(16),
           child: DefaultButton(
-            text: "Select",
+            text: l10n.select,
             isEnabled: selectedCurrency != null,
             onPressed: () {
               Navigator.pop(context, selectedCurrency);

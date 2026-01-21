@@ -26,7 +26,6 @@ class CurrencyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      highlightColor: Theme.of(context).primaryColor.withAlpha(20),
       child: Stack(
         children: [
           Row(
@@ -37,9 +36,9 @@ class CurrencyList extends StatelessWidget {
                   padding: contentPadding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 2,
                     children: [
                       Text(title, style: titleTextStyle),
-                      SizedBox(height: 2),
                       Text(subtitle, style: subtitleTextStyle),
                     ],
                   ),
@@ -47,8 +46,8 @@ class CurrencyList extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
-            right: 0,
+          PositionedDirectional(
+            end: 0,
             top: 0,
             child: Padding(
               padding: contentPadding,
