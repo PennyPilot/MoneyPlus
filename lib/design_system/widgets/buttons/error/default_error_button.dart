@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:moneyplus/design_system/component/buttons/money_button.dart';
+import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
-class DefaultButton extends StatefulWidget {
+class DefaultErrorButton extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;
   final String? iconPath;
   final bool isLoading;
   final bool isEnabled;
 
-  const DefaultButton({
+  const DefaultErrorButton({
     super.key,
     required this.text,
     this.onPressed,
@@ -19,10 +19,10 @@ class DefaultButton extends StatefulWidget {
   });
 
   @override
-  State<DefaultButton> createState() => _DefaultButtonState();
+  State<DefaultErrorButton> createState() => _DefaultErrorButtonState();
 }
 
-class _DefaultButtonState extends State<DefaultButton> {
+class _DefaultErrorButtonState extends State<DefaultErrorButton> {
   @override
   Widget build(BuildContext context) {
     return MoneyButton(
@@ -31,23 +31,14 @@ class _DefaultButtonState extends State<DefaultButton> {
       iconPath: widget.iconPath,
       isLoading: widget.isLoading,
       isEnabled: widget.isEnabled,
-      backgroundColor: MoneyColors.light.primary,
+      backgroundColor: MoneyColors.light.redVariant,
       disabledBackgroundColor: MoneyColors.light.disabled,
-      textColor: MoneyColors.light.onPrimary,
+      textColor: MoneyColors.light.red,
       disabledTextColor: MoneyColors.light.onPrimary,
-      hasShadow: true,
-      innerShadow: BoxShadow(
-        color: const Color(0x80FDECF0),
-        offset: const Offset(0, 4),
-        blurRadius: 12,
-        spreadRadius: 0,
-      ),
-      outerShadow: BoxShadow(
-        color: const Color(0x29DC143C),
-        offset: const Offset(0, 4),
-        blurRadius: 8,
-        spreadRadius: 0,
-      ),
+      hasShadow: false,
+      fontSize: 14,
+      borderColor:  MoneyColors.light.stroke,
+      borderWidth: 0.5,
     );
   }
 }
