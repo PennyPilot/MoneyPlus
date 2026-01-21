@@ -1,6 +1,4 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/repository/authentication_repository.dart';
 import '../data/service/app_secrets_provider.dart';
@@ -17,15 +15,10 @@ void initDI() {
     () => SupabaseService(appSecretsProvider: getIt<AppSecretsProvider>()),
   );
   getIt.registerLazySingleton<AuthenticationRepository>(
-    () => AuthenticationRepositoryImp(),
-  );
-  await dotenv.load(fileName: "secrets.env");
-  getIt.registerSingleton<Supabase>(
-    await Supabase.initialize(
-      url: dotenv.env['SUPA_BASE_URL'] ?? "",
-      anonKey: dotenv.env['SUPA_API_KEY'] ?? "",
-      debug: true,
-    ),
+        () => AuthenticationRepositoryImpl(
+          supabaseService: getIt<SupabaseService>(),
+          appSecrets: getIt<AppSecretsProvider>(),
+        ),
   );
   getIt.registerFactory<LoginCubit>(() => LoginCubit());
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
