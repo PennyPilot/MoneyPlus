@@ -6,10 +6,9 @@ import '../utils/amount_formatter.dart';
 import '../utils/date_formatter.dart';
 
 class ChartTooltipBuilder {
-
   static const double radius = 8.0;
-  static const double paddingHorizontal = 12.0;
-  static const double paddingVertical = 8.0;
+  static const double paddingHorizontal = 5.5;
+  static const double paddingVertical = 4.0;
   static const double margin = 12.0;
   static const double maxContentWidth = 200.0;
   static const double borderWidth = 0.5;
@@ -22,23 +21,26 @@ class ChartTooltipBuilder {
     required BuildContext context,
     required List<DataPoint> data,
     required String currency,
-  })  : _context = context,
-        _data = data,
-        _currency = currency;
+  }) : _context = context,
+       _data = data,
+       _currency = currency;
 
   LineTouchTooltipData buildTooltipData() {
     return LineTouchTooltipData(
       getTooltipColor: (_) => ChartTheme.getTooltipBackground(_context),
-      tooltipBorderRadius: BorderRadius.circular(radius),
+      tooltipBorderRadius: BorderRadius.only(
+        bottomRight: Radius.circular(2),
+        bottomLeft: Radius.circular(radius),
+        topLeft: Radius.circular(radius),
+        topRight: Radius.circular(radius),
+      ),
       tooltipPadding: const EdgeInsets.symmetric(
         horizontal: paddingHorizontal,
         vertical: paddingVertical,
       ),
+      tooltipHorizontalAlignment: .left,
+      tooltipHorizontalOffset: 0,
       tooltipMargin: margin,
-      tooltipBorder: BorderSide(
-        color: ChartTheme.getTooltipBorder(_context),
-        width: borderWidth,
-      ),
       fitInsideHorizontally: true,
       fitInsideVertically: true,
       maxContentWidth: maxContentWidth,
@@ -72,9 +74,9 @@ class ChartTooltipBuilder {
   }
 
   List<TouchedSpotIndicatorData> buildSpotIndicators(
-      LineChartBarData barData,
-      List<int> spotIndexes,
-      ) {
+    LineChartBarData barData,
+    List<int> spotIndexes,
+  ) {
     return spotIndexes.map((_) {
       return TouchedSpotIndicatorData(
         const FlLine(color: Colors.transparent, strokeWidth: 0),
