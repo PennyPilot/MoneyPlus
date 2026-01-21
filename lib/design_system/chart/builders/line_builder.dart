@@ -1,14 +1,16 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../../models/data_point.dart';
-import '../../../config/chart_theme.dart';
-import '../../../config/chart_constants.dart';
+import '../theme/chart_theme.dart';
+import 'package:moneyplus/design_system/chart/models/data_point.dart';
 
-/// Builder for chart line visualization.
-///
-/// This class follows the Single Responsibility Principle by focusing
-/// solely on creating the line chart appearance.
 class LineBuilder {
+
+  static const double lineWidth = 2.0;
+  static const double dotRadius = 0.0;
+  static const double touchedDotRadius = 4.0;
+  static const double dotStrokeWidth = 0.0;
+  static const double touchedDotStrokeWidth = 2.0;
+
   final BuildContext _context;
   final List<DataPoint> _data;
   final int? _touchedIndex;
@@ -21,20 +23,18 @@ class LineBuilder {
         _data = data,
         _touchedIndex = touchedIndex;
 
-  /// Builds the line chart bar data with all styling.
   LineChartBarData build() {
     return LineChartBarData(
       spots: _createSpots(),
       isCurved: true,
       color: ChartTheme.getPrimaryColor(_context),
-      barWidth: ChartConstants.lineWidth,
+      barWidth: lineWidth,
       isStrokeCapRound: true,
       dotData: _buildDotData(),
       belowBarData: _buildBelowBarData(),
     );
   }
 
-  /// Converts data points to chart spots.
   List<FlSpot> _createSpots() {
     return _data
         .asMap()
@@ -46,18 +46,13 @@ class LineBuilder {
         .toList();
   }
 
-  /// Configures dot styling with touch interaction.
   FlDotData _buildDotData() {
     return FlDotData(
       show: true,
       getDotPainter: (spot, percent, barData, index) {
         final isTouched = index == _touchedIndex;
-        final radius = isTouched
-            ? ChartConstants.touchedDotRadius
-            : ChartConstants.dotRadius;
-        final strokeWidth = isTouched
-            ? ChartConstants.touchedDotStrokeWidth
-            : ChartConstants.dotStrokeWidth;
+        final radius = isTouched ? touchedDotRadius : dotRadius;
+        final strokeWidth = isTouched ? touchedDotStrokeWidth : dotStrokeWidth;
 
         return FlDotCirclePainter(
           radius: radius,
@@ -69,7 +64,6 @@ class LineBuilder {
     );
   }
 
-  /// Configures gradient area below the line.
   BarAreaData _buildBelowBarData() {
     return BarAreaData(
       show: true,

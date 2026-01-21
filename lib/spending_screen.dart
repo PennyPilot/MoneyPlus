@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'design_system/chart/models/data_point.dart';
-import 'design_system/chart/widgets/spending_trend_graph/spending_trend_graph.dart';
+import 'design_system/chart/spending_trend_graph.dart';
 
 class SpendingScreen extends StatelessWidget {
   const SpendingScreen({super.key});

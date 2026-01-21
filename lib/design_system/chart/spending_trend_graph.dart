@@ -1,24 +1,24 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../../../core/l10n/app_localizations.dart';
-import '../../models/data_point.dart';
-import '../../config/chart_theme.dart';
-import '../../config/chart_constants.dart';
-import 'components/line_builder.dart';
-import 'components/grid_builder.dart';
-import 'components/titles_builder.dart';
-import 'components/touch_handler.dart';
+import 'package:moneyplus/core/l10n/app_localizations.dart';
+import 'package:moneyplus/design_system/chart/touch_handler.dart';
+import 'package:moneyplus/design_system/chart/models/data_point.dart';
+import 'builders/grid_builder.dart';
+import 'builders/line_builder.dart';
+import 'builders/titles_builder.dart';
+import 'builders/tooltip_builder.dart';
+import 'theme/chart_theme.dart';
 import 'utils/chart_calculator.dart';
 
-/// A widget that displays a spending trend line chart.
-///
-/// This widget follows clean code principles:
-/// - Uses localization for all text
-/// - Integrates with app theme system
-/// - Extracts all magic numbers to constants
-/// - Implements horizontal scrolling for long data sets
-/// - Follows Single Responsibility Principle
 class SpendingTrendGraph extends StatefulWidget {
+
+  static const double chartHeight = 200.0;
+  static const double containerPadding = 16.0;
+  static const double titleSpacing = 20.0;
+  static const double borderRadius = 12.0;
+  static const double minWidthPerDataPoint = 50.0;
+  static const int maxDataPointsBeforeScroll = 7;
+
   final List<DataPoint> data;
   final String? title;
   final String currency;
@@ -40,32 +40,31 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(ChartConstants.containerPadding),
+      padding: const EdgeInsets.all(SpendingTrendGraph.containerPadding),
       decoration: _buildContainerDecoration(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTitle(context),
-          const SizedBox(height: ChartConstants.titleSpacing),
+          const SizedBox(height: SpendingTrendGraph.titleSpacing),
           _buildChartContent(context),
         ],
       ),
     );
   }
 
-  /// Builds the container decoration with theme-aware colors.
   BoxDecoration _buildContainerDecoration(BuildContext context) {
     return BoxDecoration(
       color: ChartTheme.getSurfaceColor(context),
-      borderRadius: BorderRadius.circular(ChartConstants.borderRadius),
+      borderRadius: BorderRadius.circular(SpendingTrendGraph.borderRadius),
       boxShadow: ChartTheme.getChartShadow(context),
     );
   }
 
-  /// Builds the chart title using localized text.
   Widget _buildTitle(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    final titleText = widget.title ?? localizations?.spendingTrend ?? 'Spending Trend';
+    final titleText =
+        widget.title ?? localizations?.spendingTrend ?? '';
 
     return Text(
       titleText,
@@ -73,7 +72,6 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
     );
   }
 
-  /// Builds the chart content with optional horizontal scrolling.
   Widget _buildChartContent(BuildContext context) {
     if (widget.data.isEmpty) {
       return _buildEmptyState(context);
@@ -84,51 +82,42 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
         : _buildStaticChart(context);
   }
 
-  /// Determines if horizontal scrolling should be enabled.
-  ///
-  /// Scrolling is enabled when data points exceed the threshold.
   bool _shouldEnableScrolling() {
-    return widget.data.length > ChartConstants.maxDataPointsBeforeScroll;
+    return widget.data.length > SpendingTrendGraph.maxDataPointsBeforeScroll;
   }
 
-  /// Builds a scrollable chart for large data sets.
   Widget _buildScrollableChart(BuildContext context) {
     final chartWidth = _calculateChartWidth();
 
     return SizedBox(
-      height: ChartConstants.chartHeight,
+      height: SpendingTrendGraph.chartHeight,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
           width: chartWidth,
-          height: ChartConstants.chartHeight,
+          height: SpendingTrendGraph.chartHeight,
           child: _buildChart(context),
         ),
       ),
     );
   }
 
-  /// Builds a static (non-scrollable) chart.
   Widget _buildStaticChart(BuildContext context) {
     return SizedBox(
-      height: ChartConstants.chartHeight,
+      height: SpendingTrendGraph.chartHeight,
       child: _buildChart(context),
     );
   }
 
-  /// Calculates the width needed for scrollable chart.
-  ///
-  /// Ensures minimum width per data point for readability.
   double _calculateChartWidth() {
-    return widget.data.length * ChartConstants.minWidthPerDataPoint;
+    return widget.data.length * SpendingTrendGraph.minWidthPerDataPoint;
   }
 
-  /// Builds the empty state when no data is available.
   Widget _buildEmptyState(BuildContext context) {
     final localizations = AppLocalizations.of(context);
 
     return SizedBox(
-      height: ChartConstants.chartHeight,
+      height: SpendingTrendGraph.chartHeight,
       child: Center(
         child: Text(
           localizations?.noDataAvailable ?? 'No data available',
@@ -140,14 +129,10 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
     );
   }
 
-  /// Builds the actual line chart.
   Widget _buildChart(BuildContext context) {
     return LineChart(_buildChartData(context));
   }
 
-  /// Builds the chart data configuration.
-  ///
-  /// Delegates to specialized builder classes following SRP.
   LineChartData _buildChartData(BuildContext context) {
     final calculator = ChartCalculator(widget.data);
 
@@ -168,10 +153,14 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
       calculator: calculator,
     );
 
-    final touchHandler = TouchHandler(
+    final tooltipBuilder = ChartTooltipBuilder(
       context: context,
       data: widget.data,
       currency: widget.currency,
+    );
+
+    final touchHandler = TouchHandler(
+      tooltipProvider: tooltipBuilder,
       onTouch: _updateTouchedIndex,
     );
 
@@ -181,14 +170,13 @@ class _SpendingTrendGraphState extends State<SpendingTrendGraph> {
       titlesData: titlesBuilder.build(),
       borderData: FlBorderData(show: false),
       minX: 0,
-      maxX: calculator.calculateMaxX(),
-      minY: calculator.calculateMinY(),
-      maxY: calculator.calculateMaxY(),
+      maxX: calculator.maxX,
+      minY: calculator.minY,
+      maxY: calculator.maxY,
       lineBarsData: [lineBuilder.build()],
     );
   }
 
-  /// Updates the touched index and triggers rebuild.
   void _updateTouchedIndex(int? index) {
     if (mounted) {
       setState(() {

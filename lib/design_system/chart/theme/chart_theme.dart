@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../../theme/money_colors.dart';
-import '../../theme/money_typography.dart';
-import 'chart_constants.dart';
+import 'package:moneyplus/design_system/theme/money_colors.dart';
+import 'package:moneyplus/design_system/theme/money_typography.dart';
 
-/// Chart theme configuration that integrates with the app's design system.
-///
-/// This class provides theme-aware styling for charts by using
-/// [MoneyColors] and [MoneyTypography] from the app's theme.
 class ChartTheme {
   ChartTheme._();
 
-  // Color Accessors
+  static const double gradientStartOpacity = 0.32;
+  static const double gradientEndOpacity = 0.0;
+  static const double shadowOpacity = 0.1;
+  static const double shadowSpreadRadius = 1.0;
+  static const double shadowBlurRadius = 10.0;
+
   static Color getPrimaryColor(BuildContext context) {
     return Theme.of(context).extension<MoneyColors>()?.primary ?? Colors.blue;
   }
@@ -65,23 +65,20 @@ class ChartTheme {
 
   // Gradient Colors
   static Color getGradientStartColor(BuildContext context) {
-    return getPrimaryColor(context)
-        .withValues(alpha: ChartConstants.gradientStartOpacity);
+    return getPrimaryColor(context).withValues(alpha: gradientStartOpacity);
   }
 
   static Color getGradientEndColor(BuildContext context) {
-    return getPrimaryColor(context)
-        .withValues(alpha: ChartConstants.gradientEndOpacity);
+    return getPrimaryColor(context).withValues(alpha: gradientEndOpacity);
   }
 
   // Shadow Configuration
   static List<BoxShadow> getChartShadow(BuildContext context) {
     return [
       BoxShadow(
-        color: getShadowColor(context)
-            .withValues(alpha: ChartConstants.shadowOpacity),
-        spreadRadius: ChartConstants.shadowSpreadRadius,
-        blurRadius: ChartConstants.shadowBlurRadius,
+        color: getShadowColor(context).withValues(alpha: shadowOpacity),
+        spreadRadius: shadowSpreadRadius,
+        blurRadius: shadowBlurRadius,
       ),
     ];
   }
