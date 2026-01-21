@@ -16,7 +16,7 @@ class AmountFormatter {
   }
 
   static String formatWithCurrency(double amount, String currency) {
-    return '${formatCompact(amount)} $currency';
+    return '${formatFull(amount)} $currency';
   }
 
   static String formatFull(double amount) {

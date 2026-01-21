@@ -7,7 +7,7 @@ class LineBuilder {
 
   static const double lineWidth = 2.0;
   static const double dotRadius = 0.0;
-  static const double touchedDotRadius = 4.0;
+  static const double touchedDotRadius = 2.0;
   static const double dotStrokeWidth = 0.0;
   static const double touchedDotStrokeWidth = 2.0;
 
