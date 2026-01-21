@@ -2,5 +2,14 @@
   "income": "الدخل",
   "expense": "المصروف",
   "moneyAmount": "{amount} {currency} ",
-  "date": "التاريخ"
+  "date": "التاريخ",
+
+  "createAccount": "إنشاء حساب",
+  "createNewAccount": "إنشاء حساب جديد",
+  "startTakingControl": "ابدأ بالتحكم في أموالك",
+  "email": "البريد الإلكتروني",
+  "name": "الاسم",
+  "password": "كلمة المرور",
+  "passwordLimit": "*استخدم 8 أحرف على الأقل، وتأكد من وجود حرف كبير ورمز واحد على الأقل.",
+  "create": "إنشاء حساب"
 }

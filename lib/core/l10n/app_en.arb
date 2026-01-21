@@ -8,5 +8,15 @@
       "currency": {}
     }
   },
-  "date": "Date"
+  "date": "Date",
+
+  "createAccount": "Create Account",
+  "createNewAccount": "Create new account",
+  "startTakingControl": "Start taking control of your money",
+  "email": "Email",
+  "name": "Name",
+  "password": "Password",
+  "passwordLimit": "*Use at least 8 characters, Contain at least one capital letter and one symbol.",
+  "create": "Create"
+
 }

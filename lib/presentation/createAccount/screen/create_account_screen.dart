@@ -4,6 +4,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:svg_flutter/svg.dart';
 
+import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/component/buttons/button/default_button.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
@@ -25,6 +26,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (context) => CreateAccountCubit(
@@ -36,7 +38,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           final cubit = context.read<CreateAccountCubit>();
           return Scaffold(
             appBar: CustomAppBar(
-              title: "Create Account",
+              title: l10n.createAccount,
               trailing: AppLogo(assetPath: AppAssets.appBrand),
               leading: AppBarCircleButton(
                 assetPath: AppAssets.icArrowLeft,
@@ -53,26 +55,26 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Create new account",
+                      l10n.createNewAccount,
                       style: typography.headline.medium.copyWith(
                         color: colors.title,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Start taking control of your money",
+                      l10n.startTakingControl,
                       style: typography.body.small.copyWith(color: colors.body),
                     ),
                     const SizedBox(height: 24),
                     _textField(
-                      hint: 'Email',
+                      hint: l10n.email,
                       value: state.email,
                       onChanged: cubit.emailChanged,
                       assetPath: AppAssets.icMail,
                     ),
                     const SizedBox(height: 12),
                     _textField(
-                      hint: 'Name',
+                      hint: l10n.name,
                       value: state.name,
                       onChanged: cubit.nameChanged,
                       assetPath: AppAssets.icUser,
@@ -80,14 +82,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     const SizedBox(height: 12),
                     _passwordTextField(
                       password: state.password,
-                      hint: 'Password',
+                      hint: l10n.password,
                       isPasswordVisible: state.isPasswordVisible,
                       onPasswordChanged: cubit.passwordChanged,
                       onToggleVisibility: cubit.togglePasswordVisibility,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "*Use at least 8 characters, Contain at least one capital letter and one symbol.",
+                      l10n.passwordLimit,
                       style: typography.label.small.copyWith(
                         color: colors.yellow,
                       ),
@@ -107,7 +109,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               child: SafeArea(
                 child: DefaultButton(
-                  text: "Create Account",
+                  text: l10n.create,
                   onPressed: () => cubit.submit(),
                   isEnabled: state.isEnabled,
                   isLoading: state.isLoading,
@@ -133,7 +135,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       minLines: 1,
       maxLines: 1,
       leading: Padding(
-        padding: EdgeInsetsGeometry.only(top: 14, bottom: 14, right: 8),
+        padding: EdgeInsetsGeometry.directional(top: 14, bottom: 14, end: 8),
         child: SvgPicture.asset(assetPath),
       ),
     );
