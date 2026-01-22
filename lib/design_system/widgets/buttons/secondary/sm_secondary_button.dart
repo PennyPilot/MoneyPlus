@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moneyplus/design_system/component/buttons/money_button.dart';
+import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
 class SMSecondaryButton extends StatefulWidget {
