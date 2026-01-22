@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../core/app_constants.dart';
+import '../../core/constants/app_constants.dart';
 import 'app_secrets_provider.dart';
 
 class SupabaseService {
