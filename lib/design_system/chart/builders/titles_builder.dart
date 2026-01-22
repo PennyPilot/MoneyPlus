@@ -8,9 +8,9 @@ import '../utils/date_formatter.dart';
 
 class TitlesBuilder {
 
-  static const double leftAxisReservedSize = 50.0;
+  static const double leftAxisReservedSize = 40.0;
   static const double bottomAxisReservedSize = 30.0;
-  static const double bottomAxisPaddingTop = 8.0;
+  static const double bottomAxisPaddingTop = 16.0;
   static const double axisInterval = 1.0;
 
   final BuildContext _context;
@@ -33,7 +33,11 @@ class TitlesBuilder {
         sideTitles: SideTitles(showTitles: false),
       ),
       topTitles: const AxisTitles(
-        sideTitles: SideTitles(showTitles: false),
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 12, // Reserve space for half of the top label height
+          getTitlesWidget: _buildEmptyTitleWidget,
+        ),
       ),
     );
   }
@@ -87,5 +91,8 @@ class TitlesBuilder {
         ),
       ),
     );
+  }
+  static Widget _buildEmptyTitleWidget(double value, TitleMeta meta) {
+    return const SizedBox.shrink();
   }
 }
