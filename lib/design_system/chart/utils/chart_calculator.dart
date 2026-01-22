@@ -35,8 +35,10 @@ class ChartCalculator {
 
     final minAmount = _getMinAmount();
     final paddedMin = minAmount * (1 - bottomPaddingPercentage);
+    final interval = gridInterval;
 
-    return math.max(0, paddedMin);
+    final snappedMin = (paddedMin / interval).floor() * interval;
+    return math.max(0, snappedMin);
   }
 
   /// The maximum X value based on data point count.
