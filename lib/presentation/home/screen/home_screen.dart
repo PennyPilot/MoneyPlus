@@ -5,6 +5,7 @@ import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/income_expense.dart';
 import 'package:moneyplus/design_system/widgets/top_spending_card.dart';
+import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 import 'package:moneyplus/presentation/home/widget/current_balance.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-      HomeCubit()
+      getIt<HomeCubit>()
         ..getData(month: Month.november, year: 2026),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
