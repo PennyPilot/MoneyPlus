@@ -78,7 +78,7 @@ class _MTextFieldState extends State<MTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          // padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
@@ -114,6 +114,7 @@ class _MTextFieldState extends State<MTextField> {
                   maxLines: widget.maxLines,
                   cursorColor: borderColor,
                   cursorWidth: 1,
+                  obscuringCharacter: '*',
                   style: typography.body.medium.copyWith(color: colors.title),
                   onChanged: widget.onChanged,
                   decoration: InputDecoration(

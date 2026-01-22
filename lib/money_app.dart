@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
+import 'package:moneyplus/di/injection.dart';
+import 'package:moneyplus/presentation/login/cubit/login_cubit.dart';
+import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
@@ -12,25 +15,10 @@ class MoneyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Money++',
       theme: MoneyTheme.lightTheme,
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    return Scaffold(
-        body: Center(
-          child: Text(
-            'Welcome Flutter!',
-            style: typography.headline.small.copyWith(color: colors.primary),
-          ),
-        ),
+      home: BlocProvider(
+        create: (context) => getIt<LoginCubit>(),
+        child: const LoginScreen(),
+      ),
     );
   }
 }

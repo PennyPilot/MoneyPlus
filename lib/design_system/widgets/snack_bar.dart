@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
+import '../../core/l10n/app_localizations.dart';
 import '../assets/app_assets.dart';
 
 class MoneySnackBar {
@@ -17,19 +18,25 @@ class MoneySnackBar {
     required this.shadowColor,
   });
 
-  factory MoneySnackBar.success({required String message}) {
+  factory MoneySnackBar.success({
+    required String message,
+    required String title,
+  }) {
     return MoneySnackBar._(
       message: message,
-      title: "Success",
+      title: title,
       shadowColor: const Color(0xFF51AC46),
       leadingIcon: AppAssets.iconSuccess,
     );
   }
 
-  factory MoneySnackBar.error({required String message}) {
+  factory MoneySnackBar.error({
+    required String message,
+    required String title,
+  }) {
     return MoneySnackBar._(
       message: message,
-      title: "Error",
+      title: title,
       shadowColor: const Color(0xFFE54F40),
       leadingIcon: AppAssets.iconError,
     );
@@ -64,47 +71,44 @@ class MoneySnackBar {
             ),
             child: Stack(
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(leadingIcon, height: 32, width: 32),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: context.typography.title.small.copyWith(
-                              color: context.colors.title,
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(leadingIcon, height: 32, width: 32),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: context.typography.title.small.copyWith(
+                                color: context.colors.title,
+                              ),
                             ),
-                          ),
-                          Text(
-                            message,
-                            style: context.typography.body.small.copyWith(
-                              color: context.colors.body,
+                            Text(
+                              message,
+                              style: context.typography.body.small.copyWith(
+                                color: context.colors.body,
+                              ),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      overlayEntry.remove();
-                    },
-                    child: SvgPicture.asset(
-                      AppAssets.iconCancel,
-                      width: 20,
-                      height: 20,
-                    ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: GestureDetector(
+                          onTap: () => overlayEntry.remove(),
+                          child: SvgPicture.asset(
+                            AppAssets.iconCancel,
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -116,7 +120,7 @@ class MoneySnackBar {
 
     overlayState.insert(overlayEntry);
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 2), () {
       overlayEntry.remove();
     });
   }
