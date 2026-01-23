@@ -9,6 +9,7 @@ class AppAssets {
   static const String iconCancel = "${_icons}ic_cancel.svg";
   static const String iconError = "${_icons}ic_error.svg";
   static const String iconSuccess = "${_icons}ic_success.svg";
+  static const String icCategory = "${_icons}ic_menu-square.svg";
   static const icAdd = '$_icons/ic_add.svg';
   static const icEdit = '$_icons/ic_edit.svg';
   static const String icHomePrimary = '$_icons/ic_home_primary.svg';
