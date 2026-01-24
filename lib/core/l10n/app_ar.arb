@@ -15,6 +15,5 @@
     "select": "اختيار",
     "next": "التالي",
     "finishSetup": "إنهاء الإعداد",
-    "stepOf": "الخطوة {current} من {total}",
     "stepOfTotal": "الخطوة {current} من {total}"
 }
