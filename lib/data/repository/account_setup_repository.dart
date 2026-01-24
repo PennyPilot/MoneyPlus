@@ -10,9 +10,13 @@ class AccountSetupRepositoryImpl extends AccountSetupRepository {
 
   @override
   Future<List<Currency>> getCurrency() async{
-    final client = await supabaseService.getClient();
-    final response = await client.from('currencies').select();
-    return response.map((e) => Currency.fromJson(e)).toList();
+    try{
+      final client = await supabaseService.getClient();
+      final response = await client.from('currencies').select();
+      return response.map((e) => Currency.fromJson(e)).toList();
+    }catch(e){
+      throw Exception('Failed to fetch currencies');
+    }
 
   }
 
