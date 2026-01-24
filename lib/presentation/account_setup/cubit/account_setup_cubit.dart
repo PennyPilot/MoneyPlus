@@ -9,7 +9,7 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   Future<void> fetchCurrencies() async {
     try{
-      final currencies = await _accountSetupRepository.getCurrency();
+      final currencies = await _accountSetupRepository.getCurrencies();
       emit(state.copyWith(currencies : currencies,isLoading: false));
     }catch(e){
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));

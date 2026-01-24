@@ -9,7 +9,7 @@ class AccountSetupRepositoryImpl extends AccountSetupRepository {
   AccountSetupRepositoryImpl({required this.supabaseService});
 
   @override
-  Future<List<Currency>> getCurrency() async{
+  Future<List<Currency>> getCurrencies() async{
     try{
       final client = await supabaseService.getClient();
       final response = await client.from('currencies').select();
