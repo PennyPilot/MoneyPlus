@@ -9,7 +9,35 @@
     }
   },
   "date": "Date",
-
+  "setUpYourAccount": "Let’s set up your account",
+  "setSalary": "Set Salary",
+  "currency": "Currency",
+  "salaryDay": "Salary day",
+  "fromEachMonth": "from each month",
+  "salary": "Salary",
+  "accountSetup": "Account setup",
+  "search": "Search...",
+  "select": "Select",
+  "next": "Next",
+  "finishSetup": "Finish setup",
+  "stepOf": "Step {current} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stepOfTotal": "Step {current} of {total}",
+  "@stepOfTotal": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
   "createAccount": "Create Account",
   "createNewAccount": "Create new account",
   "startTakingControl": "Start taking control of your money",
@@ -18,5 +46,4 @@
   "password": "Password",
   "passwordLimit": "*Use at least 8 characters, Contain at least one capital letter and one symbol.",
   "create": "Create"
-
 }
