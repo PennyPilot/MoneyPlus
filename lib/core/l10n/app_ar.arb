@@ -2,5 +2,19 @@
   "income": "الدخل",
   "expense": "المصروف",
   "moneyAmount": "{amount} {currency} ",
-  "date": "التاريخ"
+  "date": "التاريخ",
+  "moneyAmount": "{amount} {currency} ",
+  "setUpYourAccount": "لنقم بإعداد حسابك",
+    "setSalary": "تحديد الراتب",
+    "currency": "العملة",
+    "salaryDay": "يوم الراتب",
+    "fromEachMonth": "من كل شهر",
+    "salary": "الراتب",
+    "accountSetup": "إعداد الحساب",
+    "search": "...بحث",
+    "select": "اختيار",
+    "next": "التالي",
+    "finishSetup": "إنهاء الإعداد",
+    "stepOf": "الخطوة {current} من {total}",
+    "stepOfTotal": "الخطوة {current} من {total}"
 }

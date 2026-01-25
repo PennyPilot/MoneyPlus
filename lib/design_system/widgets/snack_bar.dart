@@ -4,21 +4,21 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 import '../assets/app_assets.dart';
 
-class MoneySnackBar {
+class MSnackBar {
   final String message;
   final String title;
   final String leadingIcon;
   final Color shadowColor;
 
-  MoneySnackBar._({
+  MSnackBar._({
     required this.message,
     required this.title,
     required this.leadingIcon,
     required this.shadowColor,
   });
 
-  factory MoneySnackBar.success({required String message}) {
-    return MoneySnackBar._(
+  factory MSnackBar.success({required String message}) {
+    return MSnackBar._(
       message: message,
       title: "Success",
       shadowColor: const Color(0xFF51AC46),
@@ -26,8 +26,8 @@ class MoneySnackBar {
     );
   }
 
-  factory MoneySnackBar.error({required String message}) {
-    return MoneySnackBar._(
+  factory MSnackBar.error({required String message}) {
+    return MSnackBar._(
       message: message,
       title: "Error",
       shadowColor: const Color(0xFFE54F40),
