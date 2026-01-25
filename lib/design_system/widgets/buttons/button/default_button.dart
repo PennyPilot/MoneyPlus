@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:moneyplus/design_system/component/buttons/money_button.dart';
+import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 
-class DefaultSecondaryButton extends StatefulWidget {
+class DefaultButton extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;
   final String? iconPath;
   final bool isLoading;
   final bool isEnabled;
 
-  const DefaultSecondaryButton({
+  const DefaultButton({
     super.key,
     required this.text,
     this.onPressed,
@@ -19,10 +19,10 @@ class DefaultSecondaryButton extends StatefulWidget {
   });
 
   @override
-  State<DefaultSecondaryButton> createState() => _DefaultSecondaryButtonState();
+  State<DefaultButton> createState() => _DefaultButtonState();
 }
 
-class _DefaultSecondaryButtonState extends State<DefaultSecondaryButton> {
+class _DefaultButtonState extends State<DefaultButton> {
   @override
   Widget build(BuildContext context) {
     return MoneyButton(
@@ -31,14 +31,23 @@ class _DefaultSecondaryButtonState extends State<DefaultSecondaryButton> {
       iconPath: widget.iconPath,
       isLoading: widget.isLoading,
       isEnabled: widget.isEnabled,
-      backgroundColor: MoneyColors.light.surfaceLow,
+      backgroundColor: MoneyColors.light.primary,
       disabledBackgroundColor: MoneyColors.light.disabled,
-      textColor: MoneyColors.light.title,
+      textColor: MoneyColors.light.onPrimary,
       disabledTextColor: MoneyColors.light.onPrimary,
-      hasShadow: false,
-      fontSize: 14,
-      borderColor:  MoneyColors.light.stroke,
-      borderWidth: 0.5,
+      hasShadow: true,
+      innerShadow: BoxShadow(
+        color: const Color(0x80FDECF0),
+        offset: const Offset(0, 4),
+        blurRadius: 12,
+        spreadRadius: 0,
+      ),
+      outerShadow: BoxShadow(
+        color: const Color(0x29DC143C),
+        offset: const Offset(0, 4),
+        blurRadius: 8,
+        spreadRadius: 0,
+      ),
     );
   }
 }
