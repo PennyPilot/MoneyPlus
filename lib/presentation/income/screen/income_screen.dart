@@ -5,9 +5,9 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
 
 import '../../../core/l10n/app_localizations.dart';
-import '../../../design_system/component/buttons/button/default_button.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
+import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../../../design_system/widgets/text_field_date_Picker.dart';
@@ -50,13 +50,13 @@ class _IncomeScreenContent extends StatelessWidget {
           final l10n = AppLocalizations.of(context)!;
           
           if (state.status == FormStatus.success) {
-            MoneySnackBar.success(
+            MSnackBar.success(
               message: l10n.incomeAddedSuccessfully,
             ).showSnackBar(context: context);
             
             Navigator.pop(context);
           } else if (state.status == FormStatus.failure) {
-            MoneySnackBar.error(
+            MSnackBar.error(
               message: state.errorMessage ?? l10n.failedToAddIncome,
             ).showSnackBar(context: context);
           }

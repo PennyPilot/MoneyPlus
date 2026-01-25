@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
+import 'package:moneyplus/presentation/income/screen/income_screen.dart';
 
 import 'core/l10n/app_localizations.dart';
 
@@ -13,16 +14,6 @@ class MoneyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Money++',
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ar'),
-      ],
       theme: MoneyTheme.lightTheme,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -31,7 +22,7 @@ class MoneyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomeScreen(),
+      home: const IncomeScreen(),
     );
   }
 }

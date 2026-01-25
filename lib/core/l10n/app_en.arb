@@ -9,37 +9,6 @@
     }
   },
   "date": "Date",
-  "setUpYourAccount": "Let’s set up your account",
-  "setSalary": "Set Salary",
-  "currency": "Currency",
-  "salaryDay": "Salary day",
-  "fromEachMonth": "from each month",
-  "salary": "Salary",
-  "accountSetup": "Account setup",
-  "search": "Search...",
-  "select": "Select",
-  "next": "Next",
-  "finishSetup": "Finish setup",
-  "stepOf": "Step {current} of {total}",
-  "@stepOf": {
-      "placeholders": {
-        "current": {
-          "type": "int"
-        },
-        "total": {
-          "type": "int"
-        }
-      }
-    },
-    "stepOfTotal": "Step {current} of {total}",
-      "@stepOfTotal": {
-        "placeholders": {
-          "current": {},
-          "total": {}
-        }
-      }
-
-  "date": "Date",
   "amount": "Amount",
   "addIncome": "Add income",
   "note": "Note",
@@ -47,5 +16,33 @@
   "saving": "Saving...",
   "incomeAddedSuccessfully": "Income added successfully!",
   "failedToAddIncome": "Failed to add income",
-  "salary": "Salary"
+  "salary": "Salary",
+  "setUpYourAccount": "Let's set up your account",
+  "setSalary": "Set Salary",
+  "currency": "Currency",
+  "salaryDay": "Salary day",
+  "fromEachMonth": "from each month",
+  "accountSetup": "Account setup",
+  "search": "Search...",
+  "select": "Select",
+  "next": "Next",
+  "finishSetup": "Finish setup",
+  "stepOf": "Step {current} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stepOfTotal": "Step {current} of {total}",
+  "@stepOfTotal": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  }
 }
