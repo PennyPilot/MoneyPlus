@@ -4,6 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
+import 'package:moneyplus/presentation/home/screen/home_screen.dart';
+
 import 'core/l10n/app_localizations.dart';
 
 final _router = GoRouter(
@@ -32,24 +34,6 @@ class MoneyApp extends StatelessWidget {
       ],
       theme: MoneyTheme.lightTheme,
       routerConfig: _router,
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    return Scaffold(
-        body: Center(
-          child: Text(
-            'Welcome Flutter!',
-            style: typography.headline.small.copyWith(color: colors.primary),
-          ),
-        ),
     );
   }
 }
