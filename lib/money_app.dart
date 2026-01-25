@@ -6,6 +6,8 @@ import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'core/l10n/app_localizations.dart';
 
+import 'core/l10n/app_localizations.dart';
+
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
 
@@ -15,6 +17,16 @@ class MoneyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Money++',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+      ],
       theme: MoneyTheme.lightTheme,
       localizationsDelegates: const [
         AppLocalizations.delegate,
