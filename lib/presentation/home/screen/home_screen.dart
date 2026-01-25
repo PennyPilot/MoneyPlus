@@ -11,6 +11,7 @@ import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 import 'package:moneyplus/presentation/home/widget/current_balance.dart';
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
+import '../../../design_system/widgets/custom_date_picker.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
 import 'package:month_year_picker/month_year_picker.dart';
@@ -110,13 +111,15 @@ Widget _loadedContent({
                 showAppBarOnly: showAppBarOnly,
                 state: state,
                 onClickDateChip: () async {
-                  DateTime? pickedDate = await showMonthYearPicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2050),
+                  final picked = await showMonthYearDialog(
+                    context,
+                    initialMonth: state.selectedMonth.index + 1,
+                    initialYear: state.selectedYear,
                   );
-                  setSelectedDate(pickedDate!);
+
+                  if (picked != null) {
+                    setSelectedDate(picked);
+                  }
                 },
               ),
             ),
