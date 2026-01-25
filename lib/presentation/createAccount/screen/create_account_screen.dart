@@ -5,9 +5,9 @@ import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:svg_flutter/svg.dart';
 
 import '../../../core/l10n/app_localizations.dart';
-import '../../../design_system/component/buttons/button/default_button.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
+import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../../../di/cubit_injection.dart';
 import '../../../domain/repository/authentication_repository.dart';
@@ -68,17 +68,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                     const SizedBox(height: 24),
                     _textField(
-                      hint: l10n.email,
-                      value: state.email,
-                      onChanged: cubit.emailChanged,
-                      assetPath: AppAssets.icMail,
-                    ),
-                    const SizedBox(height: 12),
-                    _textField(
                       hint: l10n.name,
                       value: state.name,
                       onChanged: cubit.nameChanged,
                       assetPath: AppAssets.icUser,
+                    ),
+                    const SizedBox(height: 12),
+                    _textField(
+                      hint: l10n.email,
+                      value: state.email,
+                      onChanged: cubit.emailChanged,
+                      assetPath: AppAssets.icMail,
                     ),
                     const SizedBox(height: 12),
                     _passwordTextField(
