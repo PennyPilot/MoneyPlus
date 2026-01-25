@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
-import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 
 import 'core/l10n/app_localizations.dart';
 
