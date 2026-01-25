@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 import 'package:moneyplus/presentation/home/screen/home_screen.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'core/l10n/app_localizations.dart';
 
 class MoneyApp extends StatelessWidget {
@@ -20,6 +21,7 @@ class MoneyApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        MonthYearPickerLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('en'),

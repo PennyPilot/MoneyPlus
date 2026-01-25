@@ -24,6 +24,14 @@ class HomeCubit extends Cubit<HomeState> {
 
   }
 
+  void setSelectedDate(Month month, int year){
+    print('setSelectedDate in cubit is: $month');
+    if(state is HomeLoaded){
+      final s = state as HomeLoaded;
+      emit(s.copyWith(selectedMonth: month, selectedYear: year));
+    }
+  }
+
   Future<double> getTotalBalance() async {
     // TODO: Fetch from repository
     return 500_000;

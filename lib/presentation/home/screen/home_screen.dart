@@ -13,6 +13,7 @@ import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,16 +49,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentDate = DateTime.now();
     return BlocProvider(
       create: (context) =>
-      getIt<HomeCubit>()
-        ..getData(month: Month.november, year: 2026),
+          getIt<HomeCubit>()..getData(month: Month.values[currentDate.month - 1], year: currentDate.year),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          var content = switch(state){
-            HomeLoading() => Scaffold(body: Center(child: CircularProgressIndicator(color: MoneyColors.light.primary,))),
-            HomeLoaded() => _loadedContent(context,state,_scrollController, showAppBarOnly),
-            HomeError() => Scaffold(body: Center(child: Text(state.errorMessage))),
+          var content = switch (state) {
+            HomeLoading() => Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: MoneyColors.light.primary,
+                ),
+              ),
+            ),
+            HomeLoaded() => _loadedContent(
+              context: context,
+              state: state,
+              scrollController: _scrollController,
+              showAppBarOnly: showAppBarOnly,
+              setSelectedDate: (date) {
+                context.read<HomeCubit>().setSelectedDate(
+                  Month.values[date.month - 1],
+                  date.year,
+                );
+              },
+            ),
+            HomeError() => Scaffold(
+              body: Center(child: Text(state.errorMessage)),
+            ),
           };
           return content;
         },
@@ -66,9 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget _loadedContent(BuildContext context, HomeLoaded state, ScrollController scrollController, bool showAppBarOnly) {
-  final topSpendingCategories = state.topSpendingCategories;
+Widget _loadedContent({
+  required BuildContext context,
+  required HomeLoaded state,
+  required ScrollController scrollController,
+  required bool showAppBarOnly,
+  required Function(DateTime) setSelectedDate,
+}) {
   final colors = context.colors;
+  final topSpendingCategories = state.topSpendingCategories;
   final typography = context.typography;
   return Scaffold(
     body: Container(
@@ -80,66 +106,95 @@ Widget _loadedContent(BuildContext context, HomeLoaded state, ScrollController s
             curve: Curves.easeInOut,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
-              child: _topSection(showAppBarOnly: showAppBarOnly,state: state),
+              child: _topSection(
+                showAppBarOnly: showAppBarOnly,
+                state: state,
+                onClickDateChip: () async {
+                  DateTime? pickedDate = await showMonthYearPicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2050),
+                  );
+                  setSelectedDate(pickedDate!);
+                },
+              ),
             ),
           ),
           Expanded(
-            child: CustomScrollView(
-              controller: scrollController,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 16),
-                        Row(
+            child: Stack(
+              children: [
+                CustomScrollView(
+                  controller: scrollController,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: IncomeExpense(
-                                type: IncomeExpenseType.income,
-                                currency: state.currency,
-                                amount: formatWithCommas(state.totalMonthIncome).toString(),
+                            SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: IncomeExpense(
+                                    type: IncomeExpenseType.income,
+                                    currency: state.currency,
+                                    amount: formatWithCommas(
+                                      state.totalMonthIncome,
+                                    ).toString(),
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: IncomeExpense(
+                                    type: IncomeExpenseType.expense,
+                                    currency: state.currency,
+                                    amount: formatWithCommas(
+                                      state.totalMonthExpense,
+                                    ).toString(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 24),
+                            Text(
+                              "Top spending category",
+                              style: typography.title.small.copyWith(
+                                color: colors.title,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: IncomeExpense(
-                                type: IncomeExpenseType.expense,
-                                currency: state.currency,
-                                amount: formatWithCommas(state.totalMonthExpense).toString(),
-                              ),
-                            ),
+                            SizedBox(height: 8),
                           ],
                         ),
-                        SizedBox(height: 24),
-                        Text(
-                          "Top spending category",
-                          style: typography.title.small.copyWith(
-                            color: colors.title,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      childCount: topSpendingCategories.length, (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 12, left: 16, right: 16),
-                      child: TopSpendingCard(
-                        expenseCategory: topSpendingCategories[index].categoryName,
-                        amount: "${formatWithCommas(topSpendingCategories[index].amount)} ${state.currency}",
-                        transactionCount: topSpendingCategories[index].transactionCount,
-                        percentage: topSpendingCategories[index].percentage,
                       ),
-                    );
-                  }),
+                    ),
+
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: topSpendingCategories.length,
+                        (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 12,
+                              left: 16,
+                              right: 16,
+                            ),
+                            child: TopSpendingCard(
+                              expenseCategory:
+                                  topSpendingCategories[index].categoryName,
+                              amount:
+                                  "${formatWithCommas(topSpendingCategories[index].amount)} ${state.currency}",
+                              transactionCount:
+                                  topSpendingCategories[index].transactionCount,
+                              percentage:
+                                  topSpendingCategories[index].percentage,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -150,7 +205,11 @@ Widget _loadedContent(BuildContext context, HomeLoaded state, ScrollController s
   );
 }
 
-Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
+Widget _topSection({
+  required bool showAppBarOnly,
+  required HomeLoaded state,
+  required Function onClickDateChip,
+}) {
   final colors = MoneyColors.light;
   if (showAppBarOnly) {
     return Container(
@@ -162,7 +221,11 @@ Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
           padding: EdgeInsets.symmetric(horizontal: 16),
           width: double.infinity,
           color: colors.surfaceLow,
-          child: homeAppBar(month: state.selectedMonth, year: state.selectedYear),
+          child: homeAppBar(
+            month: state.selectedMonth,
+            year: state.selectedYear,
+            onClickDateChip: onClickDateChip,
+          ),
         ),
       ),
     );
@@ -232,10 +295,16 @@ Widget _topSection({required bool showAppBarOnly, required HomeLoaded state}) {
               ],
             ),
           ),
-          SafeArea(child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 19),
-            child: homeAppBar(month: state.selectedMonth, year: state.selectedYear),
-          )),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 19),
+              child: homeAppBar(
+                month: state.selectedMonth,
+                year: state.selectedYear,
+                onClickDateChip: onClickDateChip,
+              ),
+            ),
+          ),
         ],
       ),
     );

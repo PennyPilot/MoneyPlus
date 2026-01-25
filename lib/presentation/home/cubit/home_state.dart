@@ -33,6 +33,28 @@ class HomeLoaded extends HomeState {
     required this.selectedMonth,
     required this.selectedYear,
   });
+
+  HomeLoaded copyWith({
+    Month? selectedMonth,
+    int? selectedYear,
+    double? currentBalance,
+    double? currentSavingSpendingPercentage,
+    double? totalMonthIncome,
+    double? totalMonthExpense,
+    String? currency,
+    List<CategoryExpense>? topSpendingCategories,
+  }) {
+    return HomeLoaded(
+      selectedMonth: selectedMonth ?? this.selectedMonth,
+      selectedYear: selectedYear ?? this.selectedYear,
+      currentBalance: currentBalance ?? this.currentBalance,
+      currentSavingSpendingPercentage: currentSavingSpendingPercentage ?? this.currentSavingSpendingPercentage,
+      totalMonthIncome: totalMonthIncome ?? this.totalMonthIncome,
+      totalMonthExpense: totalMonthExpense ?? this.totalMonthExpense,
+      currency: currency ?? this.currency,
+      topSpendingCategories: topSpendingCategories ?? this.topSpendingCategories,
+    );
+  }
 }
 
 class HomeError extends HomeState {
