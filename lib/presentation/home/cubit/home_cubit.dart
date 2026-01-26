@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final loadedContent = HomeLoaded(
         currentBalance: await getTotalBalance(),
-        currentSavingSpendingPercentage: await getSavingSpendingPercentage(),
+        currentSavingSpendingPercentage: await getSavingSpendingPercentage(month, year),
         totalMonthIncome: await getTotalMonthIncome(month, year),
         totalMonthExpense: await getTotalMonthExpense(month, year),
         topSpendingCategories: await getTopSpendingCategories(month, year),
@@ -23,6 +23,7 @@ class HomeCubit extends Cubit<HomeState> {
       );
       emit(loadedContent);
     } catch (e) {
+      print("error in home cubit: $e");
       emit(HomeError(errorMessage: "Failed to get Data"));
     }
   }
@@ -50,9 +51,8 @@ class HomeCubit extends Cubit<HomeState> {
     return await userMoneyRepository.getTotalBalance();
   }
 
-  Future<double> getSavingSpendingPercentage() async {
-    // TODO: Fetch from repository
-    return 30;
+  Future<double> getSavingSpendingPercentage(Month month, int year) async {
+    return await userMoneyRepository.getSavingSpendingPercentage(month, year);
   }
 
   Future<double> getTotalMonthIncome(Month month, int year) async {

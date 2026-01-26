@@ -66,7 +66,10 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(Month month, int year) async {
+  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(
+    Month month,
+    int year,
+  ) async {
     // requires RPC function to get categories(category id) with total spending
     return getFakeTopSpendingCategories();
   }
@@ -80,6 +83,33 @@ class UserRepositoryImpl implements UserMoneyRepository {
     //     .select('currency');
     // return response[0]['currency'] as String;
     return 'EGY';
+  }
+
+  @override
+  Future<double> getSavingSpendingPercentage(Month month, int year) async {
+    final isJanuary = month.index == 0;
+    final previousMonth = Month.values[isJanuary ? 11 : month.index - 1];
+    final previousYear = isJanuary ? year - 1 : year;
+
+    final [
+      currentIncome,
+      currentExpense,
+      previousIncome,
+      previousExpense,
+    ] = await Future.wait([
+      getMonthIncome(month, year),
+      getMonthExpense(month, year),
+      getMonthIncome(previousMonth, previousYear),
+      getMonthExpense(previousMonth, previousYear),
+    ]);
+
+    final currentMonthBalance = currentIncome - currentExpense;
+    final previousMonthBalance = previousIncome - previousExpense;
+
+    if (previousMonthBalance == 0) {
+      return 100;
+    }
+    return ((currentMonthBalance - previousMonthBalance) / previousMonthBalance) * 100;
   }
 }
 

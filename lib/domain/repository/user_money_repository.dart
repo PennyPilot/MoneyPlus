@@ -11,4 +11,6 @@ abstract class UserMoneyRepository {
   Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(Month month, int year);
 
   Future<String> getCurrency();
+
+  Future<double> getSavingSpendingPercentage(Month month, int year);
 }
