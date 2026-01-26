@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
+import '../../../domain/repository/model/month_enum.dart';
 import '../models/CategoryExpense.dart';
 import 'home_cubit.dart';
 
@@ -8,9 +10,7 @@ sealed class HomeState {
 }
 
 class HomeLoading extends HomeState {
-  final bool isLoading;
-
-  const HomeLoading({required this.isLoading});
+  const HomeLoading();
 }
 
 class HomeLoaded extends HomeState {
@@ -21,7 +21,7 @@ class HomeLoaded extends HomeState {
   final double totalMonthIncome;
   final double totalMonthExpense;
   final String currency;
-  final List<CategoryExpense> topSpendingCategories;
+  final List<TopSpendingCategory> topSpendingCategories;
 
   const HomeLoaded({
     required this.currentBalance,
@@ -42,7 +42,7 @@ class HomeLoaded extends HomeState {
     double? totalMonthIncome,
     double? totalMonthExpense,
     String? currency,
-    List<CategoryExpense>? topSpendingCategories,
+    List<TopSpendingCategory>? topSpendingCategories,
   }) {
     return HomeLoaded(
       selectedMonth: selectedMonth ?? this.selectedMonth,
