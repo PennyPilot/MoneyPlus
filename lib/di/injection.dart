@@ -1,9 +1,11 @@
 import 'package:get_it/get_it.dart';
 
 import '../data/repository/authentication_repository.dart';
+import '../data/repository/user_money_repository.dart';
 import '../data/service/app_secrets_provider.dart';
 import '../data/service/supabase_service.dart';
 import '../domain/repository/authentication_repository.dart';
+import '../domain/repository/user_money_repository.dart';
 import '../presentation/home/cubit/home_cubit.dart';
 import '../presentation/login/cubit/login_cubit.dart';
 
@@ -17,7 +19,12 @@ void initDI() {
   getIt.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImp(),
   );
+  getIt.registerLazySingleton<UserMoneyRepository>(
+    () => UserRepositoryImpl(service: getIt<SupabaseService>()),
+  );
 
   getIt.registerFactory<LoginCubit>(() => LoginCubit());
-  getIt.registerFactory<HomeCubit>(() => HomeCubit());
+  getIt.registerFactory<HomeCubit>(
+    () => HomeCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
+  );
 }
