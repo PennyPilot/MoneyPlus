@@ -9,12 +9,13 @@ import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 import 'package:moneyplus/presentation/home/widget/current_balance.dart';
+
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
 import '../../../design_system/widgets/custom_date_picker.dart';
+import '../../../domain/repository/model/month_enum.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -185,11 +186,11 @@ Widget _loadedContent({
                             ),
                             child: TopSpendingCard(
                               expenseCategory:
-                                  topSpendingCategories[index].categoryName,
+                                  topSpendingCategories[index].category.name,
                               amount:
-                                  "${formatWithCommas(topSpendingCategories[index].amount)} ${state.currency}",
+                                  "${formatWithCommas(topSpendingCategories[index].total)} ${topSpendingCategories[index].currency}",
                               transactionCount:
-                                  topSpendingCategories[index].transactionCount,
+                                  topSpendingCategories[index].numberOfTransactions,
                               percentage:
                                   topSpendingCategories[index].percentage,
                             ),
