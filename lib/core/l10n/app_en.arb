@@ -37,6 +37,18 @@
           "current": {},
           "total": {}
         }
-      }
+      },
+  "forgetPasswordAppBarTitle": "Forget Password",
+  "forgetPasswordTitle": "Forget your password",
+  "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
+  "forgetPasswordEmailHint": "Email",
+  "forgetPasswordButton": "Send Reset Link",
 
+  "updatePasswordAppBarTitle": "Update Password",
+  "updatePasswordTitle": "Enter a new password for",
+  "updatePasswordPasswordHint": "New Password",
+  "updatePasswordConfirmHint": "Confirm New Password",
+  "updatePasswordButton": "Update Password",
+  "updatePasswordSuccessMessage": "Password updated successfully",
+  "updatePasswordErrorMessage": "Error updating password"
 }
