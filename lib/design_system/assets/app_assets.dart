@@ -3,7 +3,7 @@ class AppAssets {
 
   static const _icons = 'assets/icons';
   static const _images = 'assets/images';
-
+  static const icAppLogo = '${_icons}ic_app_logo.svg';
   static const icArrowDown = '$_icons/ic_arrow_down.svg';
   static const icArrowUp = '$_icons/ic_arrow_up.svg';
   static const icArrowRight ='$_icons/ic_arrow_right.svg';
@@ -41,4 +41,7 @@ class AppAssets {
   static const String iconMoney = "$_icons/ic_money.svg";
   static const String playArrow = "$_icons/play_arrow.svg";
 
+  static const String imgForgetPasswordLock = "${_icons}img_forget_password_lock.png";
+  static const String icEmail = "${_icons}ic_email.svg";
+  static const String icAppBrand = "${_icons}ic_app_brand.svg";
 }
