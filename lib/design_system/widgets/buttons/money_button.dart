@@ -97,9 +97,9 @@ class MoneyButton extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            if (iconPath != null) ...[
+            if (isLoading) ...[
               const SizedBox(width: 8),
-              isLoading
+              iconPath == null
                   ? SizedBox(
                       width: iconWidth,
                       height: iconHeight,
