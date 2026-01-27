@@ -1,21 +1,17 @@
-import 'package:moneyplus/data/service/supabase_service.dart';
-import 'package:moneyplus/domain/entity/user.dart' as user_entity;
-
-
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:moneyplus/data/service/supabase_service.dart';
+import 'package:moneyplus/domain/entity/user.dart' as user_entity;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/app_constants.dart';
 import '../../domain/repository/authentication_repository.dart';
 import '../service/app_secrets_provider.dart';
-import '../service/supabase_service.dart';
-
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
-  final SupabaseService _supabaseService;
+  final SupabaseService supabaseService;
+  final AppSecretsProvider appSecrets;
 
-  AuthenticationRepositoryImpl(this._supabaseService);
   AuthenticationRepositoryImpl({
     required this.supabaseService,
     required this.appSecrets,
@@ -23,13 +19,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<void> register(user_entity.User user, String password) async {
-    final client = await _supabaseService.getClient();
+    final client = await supabaseService.getClient();
     await client.auth.signUp(
       email: user.email,
       password: password,
       data: {"name": user.username, "is_complete": false},
     );
   }
+
   @override
   void signInWithGoogle() async {
     try {
@@ -69,6 +66,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   static const String _googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
   static const String _googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
   static const List<String> _googleScopes = ['email', 'profile', 'openid'];
+
   @override
   Stream<AuthState> get onAuthStateChange {
     final supabaseClientFuture = supabaseService.getClient();
@@ -85,6 +83,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       redirectTo: AppConstants.resetPasswordRedirect,
     );
   }
+
   @override
   Future<void> updatePassword(String password) async {
     final client = await supabaseService.getClient();

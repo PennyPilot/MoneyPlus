@@ -78,7 +78,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       hint: l10n.email,
                       value: state.email,
                       onChanged: cubit.emailChanged,
-                      assetPath: AppAssets.icMail,
+                      assetPath: AppAssets.icEmail,
                     ),
                     const SizedBox(height: 12),
                     _passwordTextField(
