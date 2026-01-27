@@ -16,8 +16,7 @@
     "next": "التالي",
     "finishSetup": "إنهاء الإعداد",
     "stepOf": "الخطوة {current} من {total}",
-    "stepOfTotal": "الخطوة {current} من {total}"
-  "date": "التاريخ",
+    "stepOfTotal": "الخطوة {current} من {total}",
   "forgetPasswordAppBarTitle": "نسيت كلمة السر",
   "forgetPasswordTitle": "نسيت كلمة المرور الخاصة بك",
   "forgetPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة التعيين",

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../core/app_constants.dart';
 import '../../domain/repository/authentication_repository.dart';
 import '../service/app_secrets_provider.dart';
 import '../service/supabase_service.dart';
@@ -63,6 +64,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     });
   }
 
+  @override
+  Future<void> resetPasswordForEmail(String email) async {
+    final client = await supabaseService.getClient();
+    await client.auth.resetPasswordForEmail(
+      email,
+      redirectTo: AppConstants.resetPasswordRedirect,
+    );
+  }
   @override
   Future<void> updatePassword(String password) async {
     final client = await supabaseService.getClient();

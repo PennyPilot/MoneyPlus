@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/component/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
@@ -12,6 +11,7 @@ import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/money_app.dart';
 
+import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../cubit/update_password_cubit.dart';
 import '../cubit/update_password_state.dart';
 
@@ -53,7 +53,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
     return BlocConsumer<UpdatePasswordCubit, UpdatePasswordState>(
       listener: (context, state) {
         if (state.status == UpdatePasswordStatus.success) {
-          MoneySnackBar.success(
+          MSnackBar.success(
             message: l10n.updatePasswordSuccessMessage,
           ).showSnackBar(context: context);
           Navigator.of(context).pushAndRemoveUntil(
@@ -62,7 +62,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
           );
         }
         if (state.status == UpdatePasswordStatus.error) {
-          MoneySnackBar.error(
+          MSnackBar.error(
             message: l10n.updatePasswordErrorMessage,
           ).showSnackBar(context: context);
         }
