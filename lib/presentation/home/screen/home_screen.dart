@@ -174,6 +174,20 @@ Widget _loadedContent({
                       ),
                     ),
 
+                    if (topSpendingCategories.isEmpty)
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            "No spending categories available",
+                            style: typography.body.medium.copyWith(
+                              color: colors.primary,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         childCount: topSpendingCategories.length,
