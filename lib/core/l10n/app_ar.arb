@@ -24,5 +24,17 @@
   "name": "الاسم",
   "password": "كلمة المرور",
   "passwordLimit": "*استخدم 8 أحرف على الأقل، وتأكد من وجود حرف كبير ورمز واحد على الأقل.",
-  "create": "إنشاء حساب"
+  "create": "إنشاء حساب",
+  "forgetPasswordAppBarTitle": "نسيت كلمة السر",
+  "forgetPasswordTitle": "نسيت كلمة المرور الخاصة بك",
+  "forgetPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة التعيين",
+  "forgetPasswordEmailHint": "البريد الإلكتروني",
+  "forgetPasswordButton": "إرسال رابط إعادة التعيين",
+  "updatePasswordAppBarTitle": "تحديث كلمة المرور",
+  "updatePasswordTitle": "أدخل كلمة مرور جديدة لـ",
+  "updatePasswordPasswordHint": "كلمة المرور الجديدة",
+  "updatePasswordConfirmHint": "تأكيد كلمة المرور الجديدة",
+  "updatePasswordButton": "تحديث كلمة المرور",
+  "updatePasswordSuccessMessage": "تم تحديث كلمة المرور بنجاح",
+  "updatePasswordErrorMessage": "خطأ في تحديث كلمة المرور"
 }
