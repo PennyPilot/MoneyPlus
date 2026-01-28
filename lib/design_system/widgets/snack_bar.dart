@@ -5,24 +5,24 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../assets/app_assets.dart';
 
-class MoneySnackBar {
+class MSnackBar {
   final String message;
   final String title;
   final String leadingIcon;
   final Color shadowColor;
 
-  MoneySnackBar._({
+  MSnackBar._({
     required this.message,
     required this.title,
     required this.leadingIcon,
     required this.shadowColor,
   });
 
-  factory MoneySnackBar.success({
+  factory MSnackBar.success({
     required String message,
     required String title,
   }) {
-    return MoneySnackBar._(
+    return MSnackBar._(
       message: message,
       title: title,
       shadowColor: const Color(0xFF51AC46),
@@ -30,11 +30,11 @@ class MoneySnackBar {
     );
   }
 
-  factory MoneySnackBar.error({
+  factory MSnackBar.error({
     required String message,
     required String title,
   }) {
-    return MoneySnackBar._(
+    return MSnackBar._(
       message: message,
       title: title,
       shadowColor: const Color(0xFFE54F40),

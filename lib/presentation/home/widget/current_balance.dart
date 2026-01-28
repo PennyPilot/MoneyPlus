@@ -4,9 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
+import '../utils/StringFormattingHelpers.dart';
 
-class CurrentBalance extends StatefulWidget {
-  const CurrentBalance({
+class CurrentBalanceCard extends StatefulWidget {
+  const CurrentBalanceCard({
     super.key,
     required this.balance,
     required this.percentage,
@@ -17,11 +18,11 @@ class CurrentBalance extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _CurrentBalanceState();
+    return _CurrentBalanceCardState();
   }
 }
 
-class _CurrentBalanceState extends State<CurrentBalance> {
+class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
   var showBalance = true;
 
   @override
@@ -29,7 +30,7 @@ class _CurrentBalanceState extends State<CurrentBalance> {
     final colors = MoneyColors.light;
     final typography = MoneyTypography.typography;
     var balanceIcon = showBalance ? AppAssets.openEye : AppAssets.closedEye;
-    var balance = showBalance ? widget.balance : _getHiddenBalance(widget.balance);
+    var balance = showBalance ? widget.balance : getHiddenBalance(widget.balance);
     var topPadding = showBalance ? 0.0 : 4.0;
     var percentageIcon = widget.percentage > 0 ? AppAssets.tradeUp : AppAssets.tradeDown;
     var percentageText = widget.percentage > 0 ? 'Saving' : 'Spending';
@@ -97,8 +98,4 @@ class _CurrentBalanceState extends State<CurrentBalance> {
       showBalance = !showBalance;
     });
   }
-}
-
-String _getHiddenBalance(String balance){
-  return List.filled(balance.length + 5, '•').join();
 }

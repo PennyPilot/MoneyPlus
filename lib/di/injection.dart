@@ -21,7 +21,12 @@ void initDI() {
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(service: getIt()),
   );
-
+  getIt.registerLazySingleton<AuthenticationRepository>(
+        () => AuthenticationRepositoryImpl(
+          supabaseService: getIt<SupabaseService>(),
+          appSecrets: getIt<AppSecretsProvider>(),
+        ),
+  );
   getIt.registerLazySingleton<AuthenticationValidator>(
     () => AuthenticationValidator(),
   );
@@ -33,5 +38,6 @@ void initDI() {
     ),
   );
 
+  getIt.registerFactory<LoginCubit>(() => LoginCubit());
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
 }

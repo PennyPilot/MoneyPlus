@@ -5,22 +5,25 @@ import '../../core/constants/app_constants.dart';
 import 'app_secrets_provider.dart';
 
 class SupabaseService {
-  Supabase? _supabase;
+  SupabaseClient? _supabaseClient;
   final AppSecretsProvider appSecretsProvider;
 
   SupabaseService({required this.appSecretsProvider});
 
-  Future<Supabase> getClient() async {
-    if (_supabase != null) return _supabase!;
+  Future<SupabaseClient> getClient() async {
+    if (_supabaseClient != null) return _supabaseClient!;
 
     final dotEnvInstance = await appSecretsProvider.getEnvVariables();
 
-    _supabase = await Supabase.initialize(
+    final supabase = await Supabase.initialize(
       url: dotEnvInstance.env[AppConstants.supabaseUrl] ?? "",
       anonKey: dotEnvInstance.env[AppConstants.supabaseApiKey] ?? "",
       debug: kDebugMode,
     );
 
-    return _supabase!;
+    _supabaseClient = supabase.client;
+
+
+    return _supabaseClient!;
   }
 }
