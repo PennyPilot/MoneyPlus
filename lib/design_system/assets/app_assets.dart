@@ -46,4 +46,5 @@ class AppAssets {
   static const String icAppBrand = "${_icons}ic_app_brand.svg";
   static const String icSquareLock = '$_icons/ic_square_lock.svg';
   static const String icUser = '$_icons/ic_user_square.svg';
+  static const String icLoading = "$_icons/ic_loading.svg";
 }
