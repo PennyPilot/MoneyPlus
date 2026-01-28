@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/home/screen/home_screen.dart';
+import 'package:moneyplus/presentation/login/screen/login_screen.dart';
+
+import '../../di/injection.dart';
+import '../login/cubit/login_cubit.dart';
 
 part 'routes.g.dart';
 
@@ -33,16 +38,9 @@ class LoginRoute extends GoRouteData with $LoginRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Login screen"),
-            ElevatedButton(onPressed: (){ HomeRoute().push(context);}, child: Text("Go to Home"))
-          ],
-        ),
-      ),
+    return BlocProvider(
+      create: (context) => getIt<LoginCubit>(),
+      child: const LoginScreen(),
     );
   }
 }

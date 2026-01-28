@@ -1,10 +1,16 @@
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
-import '../../core/app_constants.dart';
+import '../../core/constants/app_constants.dart';
+import '../../core/errors/error_model.dart';
+import '../../core/errors/result.dart';
+import '../../core/errors/supabase_auth_error.dart';
 import '../../domain/repository/authentication_repository.dart';
+import '../../domain/entity/user.dart';
 import '../service/app_secrets_provider.dart';
 import '../service/supabase_service.dart';
 
@@ -76,5 +82,33 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<void> updatePassword(String password) async {
     final client = await supabaseService.getClient();
     await client.auth.updateUser(UserAttributes(password: password));
+  }
+
+  @override
+  Future<Result<User>> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final client = await supabaseService.getClient();
+      final response = await client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      if (response.user != null) {
+        final user = User(
+          id: response.user!.id,
+          email: response.user!.email ?? '',
+          name: response.user!.userMetadata?['name'] ?? 'Unknown',
+        );
+        return Result.success(user);
+      }
+      return Result.error(ErrorModel('User data is null'));
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
+    } catch (error) {
+      log('error in data $error');
+      return Result.error(ErrorModel(error.toString()));
+    }
   }
 }
