@@ -18,7 +18,10 @@ void initDI() {
     () => SupabaseService(appSecretsProvider: getIt<AppSecretsProvider>()),
   );
   getIt.registerLazySingleton<AuthenticationRepository>(
-    () => AuthenticationRepositoryImp(),
+        () => AuthenticationRepositoryImpl(
+          supabaseService: getIt<SupabaseService>(),
+          appSecrets: getIt<AppSecretsProvider>(),
+        ),
   );
   getIt.registerLazySingleton<AccountSetupRepository>(
     () => AccountSetupRepositoryImpl(supabaseService: getIt<SupabaseService>()
