@@ -1,12 +1,12 @@
 import 'package:moneyplus/domain/entity/currency.dart';
 
-import '../../domain/repository/account_setup_repository.dart';
+import '../../domain/repository/account_repository.dart';
 import '../service/supabase_service.dart';
 
-class AccountSetupRepositoryImpl extends AccountSetupRepository {
+class AccountRepositoryImpl extends AccountRepository {
   final SupabaseService supabaseService;
 
-  AccountSetupRepositoryImpl({required this.supabaseService});
+  AccountRepositoryImpl({required this.supabaseService});
 
   @override
   Future<List<Currency>> getCurrencies() async{

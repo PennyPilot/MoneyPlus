@@ -42,7 +42,7 @@ class AppAssets {
   static const String playArrow = "$_icons/play_arrow.svg";
 
   static const String imgForgetPasswordLock = "${_icons}img_forget_password_lock.png";
-  static const String icEmail = "${_icons}ic_email.svg";
+  static const String icEmail = "$_icons/ic_email.svg";
   static const String icAppBrand = "${_icons}ic_app_brand.svg";
   static const String icLoading = "$_icons/ic_loading.svg";
 }

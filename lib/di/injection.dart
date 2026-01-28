@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.dart';
 
-import '../data/repository/account_setup_repository.dart';
+import '../data/repository/account_repository.dart';
 import '../data/repository/authentication_repository.dart';
 import '../data/service/app_secrets_provider.dart';
 import '../data/service/supabase_service.dart';
-import '../domain/repository/account_setup_repository.dart';
+import '../domain/repository/account_repository.dart';
 import '../domain/repository/authentication_repository.dart';
 import '../presentation/home/cubit/home_cubit.dart';
 import '../presentation/login/cubit/login_cubit.dart';
@@ -23,12 +23,12 @@ void initDI() {
           appSecrets: getIt<AppSecretsProvider>(),
         ),
   );
-  getIt.registerLazySingleton<AccountSetupRepository>(
-    () => AccountSetupRepositoryImpl(supabaseService: getIt<SupabaseService>()
+  getIt.registerLazySingleton<AccountRepository>(
+    () => AccountRepositoryImpl(supabaseService: getIt<SupabaseService>()
     )
   );
 
-  getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountSetupRepository>()));
+  getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountRepository>()));
 
   getIt.registerFactory<LoginCubit>(() => LoginCubit());
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
