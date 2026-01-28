@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BottomSheet;
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';

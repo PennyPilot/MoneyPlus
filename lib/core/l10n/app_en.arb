@@ -23,21 +23,59 @@
   "next": "Next",
   "finishSetup": "Finish setup",
   "stepOf": "Step {current} of {total}",
-  "@stepOf": {
-      "placeholders": {
-        "current": {
-          "type": "int"
-        },
-        "total": {
-          "type": "int"
-        }
-      }
-    },
     "stepOfTotal": "Step {current} of {total}",
       "@stepOfTotal": {
         "placeholders": {
           "current": {},
           "total": {}
         }
-      }
+      },
+  "forgetPasswordAppBarTitle": "Forget Password",
+  "forgetPasswordTitle": "Forget your password",
+  "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
+  "forgetPasswordEmailHint": "Email",
+  "forgetPasswordButton": "Send Reset Link",
+
+  "updatePasswordAppBarTitle": "Update Password",
+  "updatePasswordTitle": "Enter a new password for",
+  "updatePasswordPasswordHint": "New Password",
+  "updatePasswordConfirmHint": "Confirm New Password",
+  "updatePasswordButton": "Update Password",
+  "updatePasswordSuccessMessage": "Password updated successfully",
+  "updatePasswordErrorMessage": "Error updating password",
+
+  "error": "Error",
+  "success" : "Success",
+  "loading" : "Loading",
+  "login_successfully" : "Login Successfully",
+  "login_welcome_title": "Welcome again!",
+  "login_welcome_subtitle": "Enter your credentials to access your account",
+  "login_email_hint": "Email",
+  "login_password_hint": "Password",
+  "login_forget_password": "Forget password?",
+  "login_button": "Login",
+  "login_or_separator": "or",
+  "login_google_button": "Continue with Google",
+  "login_create_account": "Create new account",
+  "auth_error_invalid_credentials": "Invalid email or password",
+  "auth_error_user_not_found": "User not found",
+  "auth_error_user_already_exists": "An account with this email or phone number already exists",
+  "auth_error_not_confirmed": "Please confirm your email or phone number first",
+  "auth_error_invalid_email": "Invalid email address",
+  "auth_error_email_not_authorized": "This email is not authorized to use the system",
+  "auth_error_signup_disabled": "Sign-ups are currently disabled",
+  "auth_error_weak_password": "Password is too weak. Please choose a stronger one",
+  "auth_error_captcha_failed": "CAPTCHA verification failed",
+  "auth_error_session_expired": "Your session has expired. Please log in again",
+  "auth_error_rate_limit": "Too many requests. Please try again later",
+  "auth_error_user_banned": "This user account is temporarily banned",
+  "auth_error_unexpected": "An unexpected error occurred. Please try again",
+  "auth_error_unknown": "Authentication error",
+  "auth_error_forbidden": "You do not have permission to perform this action",
+  "auth_error_unprocessable": "The request could not be processed at the moment",
+  "auth_error_too_many_requests": "Rate limit exceeded. Please wait and try again",
+  "auth_error_server_error": "Internal server error. Please try again later",
+  "auth_error_not_implemented": "This feature is not available on the server",
+  "auth_error_default": "An unexpected error occurred. Please try again later",
+  "no_internet_connection": "No internet connection"
 }

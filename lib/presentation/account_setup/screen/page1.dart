@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
+import 'package:moneyplus/presentation/account_setup/cubit/account_setup_state.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import 'currency_bottom_sheet.dart';
 
 class Page1 extends StatefulWidget {
-  const Page1({super.key});
+  final AccountSetupState state;
+  const Page1({super.key, required this.state});
 
   @override
   State<Page1> createState() => _Page1State();
@@ -44,7 +46,7 @@ class _Page1State extends State<Page1> {
             padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
             child: GestureDetector(
               onTap: () {
-               _openCurrencyBottomSheet();
+               _openCurrencyBottomSheet(widget.state);
               },
               child: SvgPicture.asset(AppAssets.icArrowDownRound, height: 20,width: 20,),
             ),
@@ -103,7 +105,7 @@ class _Page1State extends State<Page1> {
       ],
     );
   }
-  Future<void> _openCurrencyBottomSheet() async {
+  Future<void> _openCurrencyBottomSheet(AccountSetupState state) async {
     final result = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
@@ -112,7 +114,7 @@ class _Page1State extends State<Page1> {
       ),
       backgroundColor: context.colors.surface,
       useSafeArea: true,
-      builder: (context) => CurrencyBottomSheet(),
+      builder: (context) => CurrencyBottomSheet(state: state),
     );
 
     if (result != null) {
