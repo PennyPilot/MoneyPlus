@@ -1,12 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/component/buttons/money_button.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
 
+import '../../core/l10n/app_localizations.dart';
+import '../../design_system/widgets/buttons/money_button.dart';
 import '../../design_system/widgets/chip.dart';
 
 class ExpenseScreen extends StatefulWidget {
@@ -36,12 +38,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: "Make an expense",
+        title: l10n.makeAnExpense,
         leading: AppBarCircleButton(
           assetPath: AppAssets.icArrowLeft,
           onTap: () => Navigator.pop(context),
@@ -55,9 +57,9 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   _buildAmountSection(context),
-                  _buildDateSection(),
+                  _buildDateSection(context),
                   _buildCategorySection(context),
-                  _buildNoteSection(),
+                  _buildNoteSection(context),
                 ],
               ),
             ),
@@ -71,11 +73,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   Widget _buildAmountSection(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: MTextField(
-        hint: 'Amount',
+        hint: l10n.amount,
         value: _amount,
         keyboardType: TextInputType.number,
         leading: Padding(
@@ -108,11 +111,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     );
   }
 
-  Widget _buildDateSection() {
+  Widget _buildDateSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: TextFieldDatePicker(
-        hint: 'Date',
+        hint: l10n.date,
         onError: () {},
         onDateChange: (date) {
           setState(() {});
@@ -124,6 +128,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   Widget _buildCategorySection(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +136,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 16),
           child: Text(
-            'Categories',
+            l10n.categories,
             style: typography.title.small.copyWith(color: colors.title),
           ),
         ),
@@ -173,11 +178,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     );
   }
 
-  Widget _buildNoteSection() {
+  Widget _buildNoteSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: MTextField(
-        hint: 'Note',
+        hint: l10n.note,
         value: _note,
         minLines: 4,
         maxLines: 6,
@@ -188,11 +194,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   Widget _buildSaveButton(BuildContext context) {
     final colors = context.colors;
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: MoneyButton(
-        text: 'Save',
+        text: l10n.save,
         backgroundColor: colors.primary,
         disabledBackgroundColor: colors.disabled,
         textColor: colors.onPrimary,

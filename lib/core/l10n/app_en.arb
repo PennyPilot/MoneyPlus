@@ -1,6 +1,11 @@
 {
   "income": "Income",
   "expense": "Expense",
+  "makeAnExpense": "Make an expense",
+  "amount": "Amount",
+  "categories": "Categories",
+  "note": "Note",
+  "save": "Save",
   "moneyAmount": "{amount} {currency} ",
   "@moneyAmount": {
     "placeholders": {

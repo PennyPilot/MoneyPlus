@@ -1,6 +1,11 @@
 {
   "income": "الدخل",
   "expense": "المصروف",
+  "makeAnExpense": "تسجيل مصروف",
+  "amount": "المبلغ",
+  "categories": "التصنيفات",
+  "note": "ملاحظة",
+  "save": "حفظ",
   "moneyAmount": "{amount} {currency} ",
   "date": "التاريخ",
   "moneyAmount": "{amount} {currency} ",
