@@ -3,7 +3,7 @@ class AppAssets {
 
   static const _icons = 'assets/icons';
   static const _images = 'assets/images';
-
+  static const icAppLogo = '${_icons}ic_app_logo.svg';
   static const icArrowDown = '$_icons/ic_arrow_down.svg';
   static const icArrowUp = '$_icons/ic_arrow_up.svg';
   static const icArrowRight ='$_icons/ic_arrow_right.svg';
@@ -40,7 +40,18 @@ class AppAssets {
   static const String iconCalender = "$_icons/ic_calendar.svg";
   static const String iconMoney = "$_icons/ic_money.svg";
   static const String playArrow = "$_icons/play_arrow.svg";
+  static const String eyeClose = "$_icons/ic_eye_close.svg";
+  static const String eyeOpen = "$_icons/ic_eye_open.svg";
+  static const String lock = "$_icons/ic_lock.svg";
+  static const String email = "$_icons/ic_email.svg";
+  static const String google = "$_icons/ic_google.svg";
 
+  static const String imgForgetPasswordLock = "$_icons/img_forget_password_lock.png";
+  static const String icEmail = "$_icons/ic_email.svg";
+  static const String icAppBrand = "$_icons/ic_app_brand.svg";
+  static const String background = "$_images/background.png";
+  static const String logo = "$_images/logo.png";
+  static const String icLoading = "$_icons/ic_loading.svg";
   static const String icAmountPrimary = '$_icons/ic_amount_primary.svg';
   static const String icAmountGray = '$_icons/ic_amount_gray.svg';
 }
