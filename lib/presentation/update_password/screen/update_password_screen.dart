@@ -54,7 +54,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
       listener: (context, state) {
         if (state.status == UpdatePasswordStatus.success) {
           MSnackBar.success(
-            message: l10n.updatePasswordSuccessMessage,
+            message: l10n.updatePasswordSuccessMessage, title: ''
           ).showSnackBar(context: context);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (_) => const MoneyApp()),
@@ -63,7 +63,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
         }
         if (state.status == UpdatePasswordStatus.error) {
           MSnackBar.error(
-            message: l10n.updatePasswordErrorMessage,
+            message: l10n.updatePasswordErrorMessage, title: ''
           ).showSnackBar(context: context);
         }
       },

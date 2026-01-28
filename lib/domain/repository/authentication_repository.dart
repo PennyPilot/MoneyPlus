@@ -1,6 +1,9 @@
 import 'dart:async';
 
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
+
+import '../../core/errors/result.dart';
+import '../../domain/entity/user.dart';
 
 abstract class AuthenticationRepository {
   void signInWithGoogle();
@@ -9,4 +12,6 @@ abstract class AuthenticationRepository {
   Stream<AuthState> get onAuthStateChange;
 
   Future<void> updatePassword(String password);
+
+  Future<Result<User>> signIn({required String email, required String password});
 }

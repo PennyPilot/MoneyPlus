@@ -1,9 +1,11 @@
 class User {
-  final int id;
-  final String username;
+  final String id;
+  final String email;
+  final String name;
 
-  User({
+  const User({
     required this.id,
-    required this.username,
+    required this.email,
+    required this.name,
   });
 }
