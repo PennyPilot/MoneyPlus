@@ -29,7 +29,7 @@
   "updatePasswordConfirmHint": "تأكيد كلمة المرور الجديدة",
   "updatePasswordButton": "تحديث كلمة المرور",
   "updatePasswordSuccessMessage": "تم تحديث كلمة المرور بنجاح",
-  "updatePasswordErrorMessage": "خطأ في تحديث كلمة المرور"
+  "updatePasswordErrorMessage": "خطأ في تحديث كلمة المرور",
   "error": "خطأ",
   "success" : "نجاح",
   "loading" : "تحميل",

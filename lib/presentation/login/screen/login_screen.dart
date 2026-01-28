@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/component/buttons/money_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
+import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/snack_bar.dart';
@@ -102,12 +102,12 @@ class LoginScreen extends StatelessWidget {
     AppLocalizations localizations,
   ) {
     if (state.status == LoginStatus.failure) {
-      MoneySnackBar.error(
+      MSnackBar.error(
         message: state.error?.localize(context) ?? "Error",
         title: localizations.error,
       ).showSnackBar(context: context);
     } else if (state.status == LoginStatus.success) {
-      MoneySnackBar.success(
+      MSnackBar.success(
         message: localizations.login_successfully,
         title: localizations.success,
       ).showSnackBar(context: context);

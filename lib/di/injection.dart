@@ -1,11 +1,9 @@
 import 'package:get_it/get_it.dart';
 
-import '../data/remote/auth_supabase_data_source_impl.dart';
-import '../data/repository/auth_repository_impl.dart';
-import '../data/repository/data_source/auth_supabase_data_source.dart';
+import '../data/repository/authentication_repository.dart';
 import '../data/service/app_secrets_provider.dart';
 import '../data/service/supabase_service.dart';
-import '../domain/repository/auth_repository.dart';
+import '../domain/repository/authentication_repository.dart';
 import '../domain/validator/authentication_validator.dart';
 import '../presentation/home/cubit/home_cubit.dart';
 import '../presentation/login/cubit/login_cubit.dart';
@@ -18,14 +16,11 @@ void initDI() {
     () => SupabaseService(appSecretsProvider: getIt<AppSecretsProvider>()),
   );
 
-  getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(service: getIt()),
-  );
   getIt.registerLazySingleton<AuthenticationRepository>(
-        () => AuthenticationRepositoryImpl(
-          supabaseService: getIt<SupabaseService>(),
-          appSecrets: getIt<AppSecretsProvider>(),
-        ),
+    () => AuthenticationRepositoryImpl(
+      supabaseService: getIt<SupabaseService>(),
+      appSecrets: getIt<AppSecretsProvider>(),
+    ),
   );
   getIt.registerLazySingleton<AuthenticationValidator>(
     () => AuthenticationValidator(),
@@ -33,11 +28,10 @@ void initDI() {
 
   getIt.registerFactory<LoginCubit>(
     () => LoginCubit(
-      authRepository: getIt<AuthRepository>(),
+      authRepository: getIt<AuthenticationRepository>(),
       validator: getIt<AuthenticationValidator>(),
     ),
   );
 
-  getIt.registerFactory<LoginCubit>(() => LoginCubit());
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
 }

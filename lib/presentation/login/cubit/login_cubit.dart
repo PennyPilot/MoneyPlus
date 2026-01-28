@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../domain/repository/auth_repository.dart';
+import '../../../domain/repository/authentication_repository.dart';
 import '../../../domain/validator/authentication_validator.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AuthRepository authRepository;
+  final AuthenticationRepository authRepository;
   final AuthenticationValidator validator;
 
   LoginCubit({required this.authRepository, required this.validator})

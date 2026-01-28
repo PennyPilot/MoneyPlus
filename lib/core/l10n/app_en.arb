@@ -50,7 +50,7 @@
   "updatePasswordConfirmHint": "Confirm New Password",
   "updatePasswordButton": "Update Password",
   "updatePasswordSuccessMessage": "Password updated successfully",
-  "updatePasswordErrorMessage": "Error updating password"
+  "updatePasswordErrorMessage": "Error updating password",
 
   "error": "Error",
   "success" : "Success",
