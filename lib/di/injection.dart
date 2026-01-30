@@ -1,8 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.dart';
 
+import '../data/repository/account_repository.dart';
 import '../data/repository/authentication_repository.dart';
 import '../data/service/app_secrets_provider.dart';
 import '../data/service/supabase_service.dart';
+import '../domain/repository/account_repository.dart';
 import '../domain/repository/authentication_repository.dart';
 import '../domain/validator/authentication_validator.dart';
 import '../presentation/createAccount/cubit/create_account_cubit.dart';
@@ -30,6 +33,13 @@ void initDI() {
       validator: getIt<AuthenticationValidator>(),
     ),
   );
+
+  getIt.registerLazySingleton<AccountRepository>(
+    () => AccountRepositoryImpl(supabaseService: getIt<SupabaseService>()
+    )
+  );
+
+  getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountRepository>()));
 
   getIt.registerFactory<HomeCubit>(() => HomeCubit());
   getIt.registerFactory<AuthenticationValidator>(

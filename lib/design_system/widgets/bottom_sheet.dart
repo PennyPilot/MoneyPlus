@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
 
-class BottomSheet extends StatelessWidget {
+class MBottomSheet extends StatelessWidget {
   final String title;
   final Widget content;
   final List<Widget> actionButtons;
 
-  const BottomSheet({
+  const MBottomSheet({
     super.key,
     required this.title,
     required this.content,
@@ -96,7 +96,7 @@ void showCustomBottomSheet({
     backgroundColor: Colors.transparent,
     builder: (context) => BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-      child: BottomSheet(
+      child: MBottomSheet(
         title: title,
         content: content,
         actionButtons: actionButtons,
