@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
 import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
@@ -53,5 +54,16 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return HomeScreen();
+  }
+}
+
+@TypedGoRoute<CreateAccountRoute>(path: '/createAccount')
+@immutable
+class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
+  const CreateAccountRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreateAccountScreen();
   }
 }

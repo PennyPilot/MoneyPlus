@@ -6,7 +6,7 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$onBoardingRoute, $loginRoute, $homeRoute];
+List<RouteBase> get $appRoutes => [$onBoardingRoute, $loginRoute, $homeRoute, $createAccountRoute];
 
 RouteBase get $onBoardingRoute =>
     GoRouteData.$route(path: '/', factory: $OnBoardingRoute._fromState);
@@ -63,6 +63,30 @@ mixin $HomeRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/home');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $createAccountRoute =>
+    GoRouteData.$route(path: '/createAccount', factory: $CreateAccountRoute._fromState);
+
+mixin $CreateAccountRoute on GoRouteData {
+  static $CreateAccountRoute _fromState(GoRouterState state) =>
+      const CreateAccountRoute();
+
+  @override
+  String get location => GoRouteData.$location('/createAccount');
 
   @override
   void go(BuildContext context) => context.go(location);
