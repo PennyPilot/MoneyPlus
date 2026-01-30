@@ -4,6 +4,8 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
+
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/snack_bar.dart';
@@ -137,16 +139,12 @@ class _LoginHeader extends StatelessWidget {
       children: [
         Text(
           localizations.login_welcome_title,
-          style: typography.headline.medium.copyWith(
-            color: colors.title,
-          ),
+          style: typography.headline.medium.copyWith(color: colors.title),
         ),
         const SizedBox(height: 4),
         Text(
           localizations.login_welcome_subtitle,
-          style: typography.body.small.copyWith(
-            color: colors.body,
-          ),
+          style: typography.body.small.copyWith(color: colors.body),
         ),
       ],
     );
@@ -229,7 +227,9 @@ class _SocialMediaButtons extends StatelessWidget {
         ),
         SizedBox(height: 8),
         MoneyButton(
-          onPressed: () {},
+          onPressed: () {
+            CreateAccountRoute().push(context);
+          },
           backgroundColor: colors.surfaceLow,
           disabledBackgroundColor: Colors.red,
           borderWidth: 0.5,
