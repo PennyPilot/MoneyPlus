@@ -21,19 +21,18 @@
   "next": "Next",
   "finishSetup": "Finish setup",
   "stepOf": "Step {current} of {total}",
-    "stepOfTotal": "Step {current} of {total}",
-      "@stepOfTotal": {
-        "placeholders": {
-          "current": {},
-          "total": {}
-        }
-      },
+  "stepOfTotal": "Step {current} of {total}",
+  "@stepOfTotal": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
   "forgetPasswordAppBarTitle": "Forget Password",
   "forgetPasswordTitle": "Forget your password",
   "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
   "forgetPasswordEmailHint": "Email",
   "forgetPasswordButton": "Send Reset Link",
-
   "updatePasswordAppBarTitle": "Update Password",
   "updatePasswordTitle": "Enter a new password for",
   "updatePasswordPasswordHint": "New Password",
@@ -41,11 +40,10 @@
   "updatePasswordButton": "Update Password",
   "updatePasswordSuccessMessage": "Password updated successfully",
   "updatePasswordErrorMessage": "Error updating password",
-
   "error": "Error",
-  "success" : "Success",
-  "loading" : "Loading",
-  "login_successfully" : "Login Successfully",
+  "success": "Success",
+  "loading": "Loading",
+  "login_successfully": "Login Successfully",
   "login_welcome_title": "Welcome again!",
   "login_welcome_subtitle": "Enter your credentials to access your account",
   "login_email_hint": "Email",
@@ -75,5 +73,13 @@
   "auth_error_server_error": "Internal server error. Please try again later",
   "auth_error_not_implemented": "This feature is not available on the server",
   "auth_error_default": "An unexpected error occurred. Please try again later",
-  "no_internet_connection": "No internet connection"
+  "no_internet_connection": "No internet connection",
+  "account": "Account",
+  "manageCategories": "Manage categories",
+  "appLanguage": "App language",
+  "appTheme": "App theme",
+  "salarySettings": "Salary settings",
+  "frequentlyAskedQuestion": "Frequently asked question",
+  "helpAndSupport": "Help & Support",
+  "appVersion": "App version"
 }
