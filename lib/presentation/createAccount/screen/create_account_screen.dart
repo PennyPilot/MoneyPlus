@@ -28,7 +28,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (context) => CreateAccountCubit(
@@ -40,7 +40,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           if (state.errorMessage != null) {
             MSnackBar.error(
               message: state.errorMessage!,
-              title: l10n.error,
+              title: localizations.error,
             ).showSnackBar(context: context);
           }
         },
@@ -48,7 +48,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           final cubit = context.read<CreateAccountCubit>();
           return Scaffold(
             appBar: CustomAppBar(
-              title: l10n.createAccount,
+              title: localizations.createAccount,
               trailing: AppLogo(assetPath: AppAssets.appBrand),
               leading: AppBarCircleButton(
                 assetPath: AppAssets.icArrowLeft,
@@ -65,26 +65,26 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.createNewAccount,
+                      localizations.createNewAccount,
                       style: typography.headline.medium.copyWith(
                         color: colors.title,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      l10n.startTakingControl,
+                      localizations.startTakingControl,
                       style: typography.body.small.copyWith(color: colors.body),
                     ),
                     const SizedBox(height: 24),
                     _textField(
-                      hint: l10n.name,
+                      hint: localizations.name,
                       value: state.name,
                       onChanged: cubit.nameChanged,
                       assetPath: AppAssets.icUser,
                     ),
                     const SizedBox(height: 12),
                     _textField(
-                      hint: l10n.email,
+                      hint: localizations.email,
                       value: state.email,
                       onChanged: cubit.emailChanged,
                       assetPath: AppAssets.icEmail,
@@ -92,14 +92,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     const SizedBox(height: 12),
                     _passwordTextField(
                       password: state.password,
-                      hint: l10n.password,
+                      hint: localizations.password,
                       isPasswordVisible: state.isPasswordVisible,
                       onPasswordChanged: cubit.passwordChanged,
                       onToggleVisibility: cubit.togglePasswordVisibility,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      l10n.passwordLimit,
+                      localizations.passwordLimit,
                       style: typography.label.small.copyWith(
                         color: colors.yellow,
                       ),
@@ -119,7 +119,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               child: SafeArea(
                 child: DefaultButton(
-                  text: l10n.create,
+                  text: localizations.create,
                   onPressed: () => cubit.submit(),
                   isEnabled: state.isEnabled,
                   isLoading: state.isLoading,
