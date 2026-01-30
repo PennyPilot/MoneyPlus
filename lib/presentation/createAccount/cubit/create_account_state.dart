@@ -7,6 +7,7 @@ class CreateAccountState {
   final bool isLoading;
   final bool isEnabled;
   final bool isPasswordVisible;
+  final String? errorMessage;
 
   const CreateAccountState({
     this.email = "",
@@ -15,6 +16,7 @@ class CreateAccountState {
     this.isLoading = false,
     this.isEnabled = false,
     this.isPasswordVisible = false,
+    this.errorMessage,
   });
 
   CreateAccountState copyWith({
@@ -25,6 +27,7 @@ class CreateAccountState {
     bool? isEnabled,
     bool? showPasswordRequirements,
     bool? isPasswordVisible,
+    String? errorMessage,
   }) {
     return CreateAccountState(
       email: email ?? this.email,
@@ -33,6 +36,7 @@ class CreateAccountState {
       isLoading: isLoading ?? this.isLoading,
       isEnabled: isEnabled ?? this.isEnabled,
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
@@ -40,7 +44,7 @@ class CreateAccountState {
     return User(
       id: "",
       email: email,
-      username: name,
+      name: name,
     );
   }
 }

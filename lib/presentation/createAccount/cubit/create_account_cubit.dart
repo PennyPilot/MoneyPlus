@@ -40,8 +40,22 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
     }
   }
 
-  void submit() {
-    _authenticationRepository.register(state.toEntity(), state.password);
+  Future<void> submit() async {
+    emit(state.copyWith(isLoading: true));
+    final result = await _authenticationRepository.register(
+      state.toEntity(),
+      state.password,
+    );
+    result.when(
+      onSuccess: (user) {
+        emit(state.copyWith(isLoading: false));
+      },
+      onError: (error){
+        emit(state.copyWith(isLoading: false));
+        emit(state.copyWith(errorMessage: error.message));
+        emit(state.copyWith(errorMessage: null));
+      },
+    );
   }
 
   void togglePasswordVisibility() {

@@ -23,13 +23,25 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   });
 
   @override
-  Future<void> register(User user, String password) async {
-    final client = await supabaseService.getClient();
-    await client.auth.signUp(
-      email: user.email,
-      password: password,
-      data: {"name": user.name, "is_complete": false},
-    );
+  Future<Result<void>> register(User user, String password) async {
+    try {
+      final client = await supabaseService.getClient();
+      final response = await client.auth.signUp(
+        email: user.email,
+        password: password,
+        data: {"name": user.name, "is_complete": false},
+      );
+
+      if (response.user != null) {
+        return Result.success(null);
+      } else {
+        return Result.error(ErrorModel('User data is null'));
+      }
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
+    } catch (error) {
+      return Result.error(ErrorModel(error.toString()));
+    }
   }
 
   @override
@@ -83,7 +95,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> resetPasswordForEmail(String email) async {
     final client = await supabaseService.getClient();
-    await client.auth.resetPasswordForEmail(
+    final response = await client.auth.resetPasswordForEmail(
       email,
       redirectTo: AppConstants.resetPasswordRedirect,
     );

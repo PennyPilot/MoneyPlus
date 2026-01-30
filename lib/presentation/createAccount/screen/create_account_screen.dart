@@ -8,6 +8,7 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
+import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../../../di/cubit_injection.dart';
 import '../../../domain/repository/authentication_repository.dart';
@@ -34,7 +35,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         getIt<AuthenticationValidator>(),
         getIt<AuthenticationRepository>(),
       ),
-      child: BlocBuilder<CreateAccountCubit, CreateAccountState>(
+      child: BlocConsumer<CreateAccountCubit, CreateAccountState>(
+        listener: (context, state) {
+          if (state.errorMessage != null) {
+            MSnackBar.error(
+              message: state.errorMessage!,
+              title: l10n.error,
+            ).showSnackBar(context: context);
+          }
+        },
         builder: (context, state) {
           final cubit = context.read<CreateAccountCubit>();
           return Scaffold(
@@ -136,7 +145,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       minLines: 1,
       maxLines: 1,
       leading: Padding(
-        padding: EdgeInsetsGeometry.directional(top: 14, bottom: 14, end: 8),
+        padding: EdgeInsetsGeometry.symmetric(vertical: 14, horizontal: 8),
         child: SvgPicture.asset(assetPath),
       ),
     );
@@ -157,7 +166,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       minLines: 1,
       maxLines: 1,
       leading: Padding(
-        padding: const EdgeInsetsDirectional.only(top: 14, bottom: 14, end: 8),
+        padding: const EdgeInsetsDirectional.symmetric(
+          vertical: 14,
+          horizontal: 8,
+        ),
         child: SvgPicture.asset(AppAssets.icSquareLock),
       ),
       trailing: Padding(

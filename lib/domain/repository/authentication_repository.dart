@@ -8,7 +8,7 @@ import '../../core/errors/result.dart';
 import '../../domain/entity/user.dart';
 
 abstract class AuthenticationRepository {
-  void register(user_entity.User user, String password);
+  Future<Result<void>> register(user_entity.User user, String password);
   void signInWithGoogle();
   Future<void> resetPasswordForEmail(String email);
 
