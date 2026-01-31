@@ -10,7 +10,7 @@ import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
-import '../../../di/cubit_injection.dart';
+import '../../../di/injection.dart';
 import '../../../domain/repository/authentication_repository.dart';
 import '../../../domain/validator/authentication_validator.dart';
 import '../cubit/create_account_cubit.dart';
