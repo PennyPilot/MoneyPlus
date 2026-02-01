@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../assets/app_assets.dart';
+import '../circular_loading_animation.dart';
+
 class MoneyButton extends StatelessWidget {
   final double cornerRadius;
   final Color backgroundColor;
@@ -51,8 +54,9 @@ class MoneyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isInteractive = isEnabled && !isLoading;
 
-    final Color finalBackgroundColor =
-        isEnabled ? backgroundColor : disabledBackgroundColor;
+    final Color finalBackgroundColor = isEnabled
+        ? backgroundColor
+        : disabledBackgroundColor;
 
     final Color finalTextColor = isEnabled ? textColor : disabledTextColor;
 
@@ -97,27 +101,23 @@ class MoneyButton extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            if (iconPath != null) ...[
+            if (iconPath != null || isLoading) ...[
               const SizedBox(width: 8),
               isLoading
-                  ? SizedBox(
+                  ? CircularLoadingAnimation(
+                      iconPath: AppAssets.icLoading,
                       width: iconWidth,
                       height: iconHeight,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          finalIconColor,
-                        ),
-                      ),
+                      color: finalIconColor,
                     )
                   : SvgPicture.asset(
                       iconPath!,
                       width: iconWidth,
                       height: iconHeight,
-                      colorFilter: ColorFilter.mode(
-                        finalIconColor,
-                        BlendMode.srcIn,
-                      ),
+                      // colorFilter: ColorFilter.mode(
+                      //   finalIconColor,
+                      //   BlendMode.srcIn,
+                      // ),
                     ),
             ],
           ],

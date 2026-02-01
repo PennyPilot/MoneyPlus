@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../core/app_constants.dart';
+import '../../core/constants/app_constants.dart';
+
 
 class AppSecretsProvider {
   DotEnv? _dotenv;
