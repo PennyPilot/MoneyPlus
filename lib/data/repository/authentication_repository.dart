@@ -1,7 +1,6 @@
-
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
@@ -24,7 +23,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   });
 
   @override
-  void signInWithGoogle() async {
+  Future<Result<bool>> signInWithGoogle() async {
     try {
       final env = await appSecrets.getEnvVariables();
       final GoogleSignIn signIn = GoogleSignIn.instance;
@@ -43,7 +42,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final accessToken = googleAuthorization?.accessToken;
 
       if (idToken == null) {
-        throw 'No ID Token found.';
+        return Result.error(ErrorModel('No ID Token found from Google.'));
       }
       final client = await supabaseService.getClient();
       await client.auth.signInWithIdToken(
@@ -51,17 +50,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         idToken: idToken,
         accessToken: accessToken,
       );
+      return Result.success(true);
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
-      if (kDebugMode) {
-        print('Caught error during Google Sign-In: $error');
-      }
-      rethrow;
+      log('error in data $error');
+      return Result.error(ErrorModel(error.toString()));
     }
   }
 
-  static const String _googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
-  static const String _googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
-  static const List<String> _googleScopes = ['email', 'profile', 'openid'];
   @override
   Stream<AuthState> get onAuthStateChange {
     final supabaseClientFuture = supabaseService.getClient();
@@ -71,17 +68,34 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<void> resetPasswordForEmail(String email) async {
-    final client = await supabaseService.getClient();
-    await client.auth.resetPasswordForEmail(
-      email,
-      redirectTo: AppConstants.resetPasswordRedirect,
-    );
+  Future<Result<bool>> resetPasswordForEmail(String email) async {
+    try {
+      final client = await supabaseService.getClient();
+      await client.auth.resetPasswordForEmail(
+        email,
+        redirectTo: AppConstants.resetPasswordRedirect,
+      );
+      return Result.success(true);
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
+    } catch (error) {
+      log('error in data $error');
+      return Result.error(ErrorModel(error.toString()));
+    }
   }
+
   @override
-  Future<void> updatePassword(String password) async {
-    final client = await supabaseService.getClient();
-    await client.auth.updateUser(UserAttributes(password: password));
+  Future<Result<bool>> updatePassword(String password) async {
+    try {
+      final client = await supabaseService.getClient();
+      await client.auth.updateUser(UserAttributes(password: password));
+      return Result.success(true);
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
+    } catch (error) {
+      log('error in data $error');
+      return Result.error(ErrorModel(error.toString()));
+    }
   }
 
   @override
@@ -111,4 +125,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Result.error(ErrorModel(error.toString()));
     }
   }
+  static const String _googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
+  static const String _googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
+  static const List<String> _googleScopes = ['email', 'profile', 'openid'];
 }

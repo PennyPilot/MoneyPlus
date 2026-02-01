@@ -27,7 +27,7 @@ class LoginCubit extends Cubit<LoginState> {
     checkIsInputsValid();
   }
 
-  Future<void> login() async {
+  void login() async {
     emit(state.copyWith(status: LoginStatus.loading));
 
     final result = await authRepository.signIn(
@@ -38,6 +38,21 @@ class LoginCubit extends Cubit<LoginState> {
     result.when(
       onSuccess: (user) {
         emit(state.copyWith(status: LoginStatus.success, user: user));
+      },
+      onError: (error) {
+        emit(state.copyWith(status: LoginStatus.failure, error: error));
+      },
+    );
+  }
+
+  void signInWithGoogle() async {
+    emit(state.copyWith(status: LoginStatus.loading));
+
+    final result = await authRepository.signInWithGoogle();
+
+    result.when(
+      onSuccess: (success) {
+        emit(state.copyWith(status: LoginStatus.success));
       },
       onError: (error) {
         emit(state.copyWith(status: LoginStatus.failure, error: error));
