@@ -52,6 +52,8 @@ class AppAssets {
   static const String background = "$_images/background.png";
   static const String logo = "$_images/logo.png";
   static const String icLoading = "$_icons/ic_loading.svg";
+  static const String icAmountPrimary = '$_icons/ic_amount_primary.svg';
+  static const String icAmountGray = '$_icons/ic_amount_gray.svg';
   static const String icCoins = "$_icons/ic_coins.svg";
   static const String icCustomerSupport = "$_icons/ic_customer_support.svg";
   static const String icHelp = "$_icons/ic_help.svg";

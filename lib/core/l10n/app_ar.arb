@@ -1,9 +1,13 @@
 {
   "income": "الدخل",
   "expense": "المصروف",
+  "makeAnExpense": "تسجيل مصروف",
+  "amount": "المبلغ",
+  "categories": "التصنيفات",
+  "note": "ملاحظة",
+  "save": "حفظ",
   "moneyAmount": "{amount} {currency} ",
   "date": "التاريخ",
-  "moneyAmount": "{amount} {currency} ",
   "setUpYourAccount": "لنقم بإعداد حسابك",
     "setSalary": "تحديد الراتب",
     "currency": "العملة",
@@ -63,6 +67,8 @@
   "auth_error_server_error": "خطأ في الخادم الداخلي. يرجى المحاولة لاحقاً",
   "auth_error_not_implemented": "هذه الميزة غير متوفرة على الخادم",
   "auth_error_default": "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً",
+  "spendingTrend": "اتجاه الإنفاق",
+  "noDataAvailable": "لا توجد بيانات متاحة"
   "no_internet_connection": "لا يوجد اتصال بالانترنت",
   "account": "حساب",
   "manageCategories": "إدارة الفئات",

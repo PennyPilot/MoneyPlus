@@ -1,6 +1,11 @@
 {
   "income": "Income",
   "expense": "Expense",
+  "makeAnExpense": "Make an expense",
+  "amount": "Amount",
+  "categories": "Categories",
+  "note": "Note",
+  "save": "Save",
   "moneyAmount": "{amount} {currency} ",
   "@moneyAmount": {
     "placeholders": {
@@ -8,6 +13,8 @@
       "currency": {}
     }
   },
+  "spendingTrend": "Spending Trend",
+  "noDataAvailable": "No data available",
   "date": "Date",
   "setUpYourAccount": "Let’s set up your account",
   "setSalary": "Set Salary",
