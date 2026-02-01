@@ -12,67 +12,39 @@ class UserRepositoryImpl implements UserMoneyRepository {
 
   @override
   Future<double> getMonthExpense(Month month, int year) async {
+
     final client = await service.getClient();
+    final response = await client.rpc(
+      'get_month_expense',
+      params: {
+        'p_month': month.index + 1,
+        'p_year': year,
+      },
+    );
 
-    final transactionResponse = await client
-        .from('transaction_type')
-        .select('id')
-        .eq('name', 'expense');
-
-    if (transactionResponse.isEmpty) {
-      return 0.0;
-    }
-
-    final transactionTypeId = transactionResponse[0]['id'] as int;
-
-    final response = await client
-        .from('transactions')
-        .select('amount')
-        .eq('transaction_type', '$transactionTypeId')
-        .gte('created_at', DateTime(year, month.index + 1, 1).toIso8601String())
-        .lt('created_at', DateTime(year, month.index + 2, 1).toIso8601String());
-
-    double expense = 0.0;
-    for (final row in response) {
-      expense += (row['amount'] as num).toDouble();
-    }
-    return expense;
+    return (response as num).toDouble();
   }
 
   @override
   Future<double> getMonthIncome(Month month, int year) async {
     final client = await service.getClient();
+    final response = await client.rpc(
+      'get_month_income',
+      params: {
+        'p_month': month.index + 1,
+        'p_year': year,
+      },
+    );
 
-    final transactionResponse = await client
-        .from('transaction_type')
-        .select('id')
-        .eq('name', 'income');
-
-    if (transactionResponse.isEmpty) {
-      return 0.0;
-    }
-
-    final transactionTypeId = transactionResponse[0]['id'] as int;
-
-    final response = await client
-        .from('transactions')
-        .select('amount')
-        .eq('transaction_type', '$transactionTypeId')
-        .gte('created_at', DateTime(year, month.index + 1, 1).toIso8601String())
-        .lt('created_at', DateTime(year, month.index + 2, 1).toIso8601String());
-    double income = 0.0;
-
-    for (final row in response) {
-      income += (row['amount'] as num).toDouble();
-    }
-    return income;
+    return (response as num).toDouble();
   }
 
   @override
   Future<double> getTotalBalance() async {
     final client = await service.getClient();
     final response = await client.from('users').select('current_balance');
-    return response.firstOrNull?['current_balance'] as double? ?? 0;
+    final balance = (response.firstOrNull?['current_balance'] as num?)?.toDouble() ?? 0.0;
+    return balance;
   }
 
   @override

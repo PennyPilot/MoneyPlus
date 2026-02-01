@@ -31,7 +31,6 @@ void initDI() {
     () => UserRepositoryImpl(service: getIt<SupabaseService>()),
   );
 
-  getIt.registerFactory<LoginCubit>(() => LoginCubit());
   getIt.registerFactory<HomeCubit>(
     () => HomeCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
   );
@@ -53,5 +52,4 @@ void initDI() {
 
   getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountRepository>()));
 
-  getIt.registerFactory<HomeCubit>(() => HomeCubit());
 }
