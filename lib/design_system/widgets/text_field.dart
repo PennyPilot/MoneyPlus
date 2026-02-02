@@ -62,6 +62,10 @@ class _MTextFieldState extends State<MTextField> {
 
     final bool showBorder = _focusNode.hasFocus || _hasError;
 
+    final Color activeColor = _focusNode.hasFocus
+        ? colors.primary
+        : colors.body;
+
     final Color borderColor = _hasError
         ? colors.red
         : showBorder
@@ -74,7 +78,7 @@ class _MTextFieldState extends State<MTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          // padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
@@ -86,7 +90,11 @@ class _MTextFieldState extends State<MTextField> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (widget.leading != null) widget.leading!,
+              if (widget.leading != null)
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(activeColor, BlendMode.srcIn),
+                  child: widget.leading!,
+                ),
               if (widget.leadingIcon != null)
                 Padding(
                   padding: EdgeInsets.only(top: 14, right: 8),
@@ -106,6 +114,7 @@ class _MTextFieldState extends State<MTextField> {
                   maxLines: widget.maxLines,
                   cursorColor: borderColor,
                   cursorWidth: 1,
+                  obscuringCharacter: '*',
                   style: typography.body.medium.copyWith(color: colors.title),
                   onChanged: widget.onChanged,
                   decoration: InputDecoration(

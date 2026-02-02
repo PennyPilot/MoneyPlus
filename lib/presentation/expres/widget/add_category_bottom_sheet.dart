@@ -1,12 +1,13 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BottomSheet;
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:svg_flutter/svg.dart';
+
+import '../../../design_system/widgets/bottom_sheet.dart';
 
 class AddCategoryBottomSheet extends StatefulWidget {
   const AddCategoryBottomSheet({super.key});
@@ -68,7 +69,7 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomSheet(
+    return MBottomSheet(
       title: 'Add custom category',
       content: _content,
       actionButtons: [_addButton],
