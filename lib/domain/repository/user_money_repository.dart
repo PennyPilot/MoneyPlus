@@ -8,7 +8,8 @@ abstract class UserMoneyRepository {
 
   Future<double> getMonthExpense(Month month, int year);
 
-  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(Month month, int year);
+  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(
+      {required Month month,required int year, required int count});
 
   Future<String> getCurrency();
 

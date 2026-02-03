@@ -67,7 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
     Month month,
     int year,
   ) async {
-    return await userMoneyRepository.getTopSpendingCategoriesInMonth(month, year);
+    return await userMoneyRepository.getTopSpendingCategoriesInMonth(month: month, year: year, count: 5);
   }
 
   Future<String> getCurrency() async {
