@@ -6,7 +6,13 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$onBoardingRoute, $loginRoute, $homeRoute];
+List<RouteBase> get $appRoutes => [
+  $onBoardingRoute,
+  $loginRoute,
+  $homeRoute,
+  $forgetPasswordRoute,
+  $updatePasswordRoute,
+];
 
 RouteBase get $onBoardingRoute =>
     GoRouteData.$route(path: '/', factory: $OnBoardingRoute._fromState);
@@ -63,6 +69,58 @@ mixin $HomeRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/home');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $forgetPasswordRoute => GoRouteData.$route(
+  path: '/forget_password',
+  factory: $ForgetPasswordRoute._fromState,
+);
+
+mixin $ForgetPasswordRoute on GoRouteData {
+  static ForgetPasswordRoute _fromState(GoRouterState state) =>
+      const ForgetPasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location('/forget_password');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $updatePasswordRoute => GoRouteData.$route(
+  path: '/update_password',
+  factory: $UpdatePasswordRoute._fromState,
+);
+
+mixin $UpdatePasswordRoute on GoRouteData {
+  static UpdatePasswordRoute _fromState(GoRouterState state) =>
+      UpdatePasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location('/update_password');
 
   @override
   void go(BuildContext context) => context.go(location);

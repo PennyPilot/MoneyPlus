@@ -6,9 +6,14 @@ import '../../core/errors/result.dart';
 import '../entity/user.dart';
 
 abstract class AuthenticationRepository {
-  Future<Result<User>> signIn({required String email, required String password});
+  Future<Result<User>> signIn({
+    required String email,
+    required String password,
+  });
 
   Stream<AuthState> get onAuthStateChange;
+
+  Future<String?> get userEmail;
 
   Future<Result<bool>> resetPasswordForEmail(String email);
 

@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
@@ -8,8 +7,8 @@ import '../../core/constants/app_constants.dart';
 import '../../core/errors/error_model.dart';
 import '../../core/errors/result.dart';
 import '../../core/errors/supabase_auth_error.dart';
-import '../../domain/repository/authentication_repository.dart';
 import '../../domain/entity/user.dart';
+import '../../domain/repository/authentication_repository.dart';
 import '../service/app_secrets_provider.dart';
 import '../service/supabase_service.dart';
 
@@ -125,7 +124,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Result.error(ErrorModel(error.toString()));
     }
   }
+
   static const String _googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
   static const String _googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
   static const List<String> _googleScopes = ['email', 'profile', 'openid'];
+
+  @override
+  Future<String?> get userEmail async {
+    final supabaseClientFuture = await supabaseService.getClient();
+    return supabaseClientFuture.auth.currentUser?.email;
+  }
 }

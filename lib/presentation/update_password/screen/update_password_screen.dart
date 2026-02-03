@@ -10,29 +10,26 @@ import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/money_app.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../cubit/update_password_cubit.dart';
 import '../cubit/update_password_state.dart';
 
 class UpdatePasswordScreen extends StatelessWidget {
-  final String email;
-
-  const UpdatePasswordScreen({super.key, required this.email});
+  const UpdatePasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => UpdatePasswordCubit(getIt<AuthenticationRepository>()),
-      child: _UpdatePasswordView(email: email),
+      child: const _UpdatePasswordView(),
     );
   }
 }
 
 class _UpdatePasswordView extends StatefulWidget {
-  final String email;
-
-  const _UpdatePasswordView({required this.email});
+  const _UpdatePasswordView();
 
   @override
   State<_UpdatePasswordView> createState() => _UpdatePasswordViewState();
@@ -45,6 +42,12 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
   bool _isConfirmPasswordObscured = true;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<UpdatePasswordCubit>().init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = context.colors;
@@ -54,16 +57,13 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
       listener: (context, state) {
         if (state.status == UpdatePasswordStatus.success) {
           MSnackBar.success(
-            message: l10n.updatePasswordSuccessMessage, title: ''
+            message: l10n.updatePasswordSuccessMessage, title: l10n.updatePasswordSuccessMessage
           ).showSnackBar(context: context);
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const MoneyApp()),
-            (route) => false,
-          );
+          LoginRoute().push(context);
         }
         if (state.status == UpdatePasswordStatus.error) {
           MSnackBar.error(
-            message: l10n.updatePasswordErrorMessage, title: ''
+            message: l10n.updatePasswordErrorMessage, title: l10n.updatePasswordErrorMessage
           ).showSnackBar(context: context);
         }
       },
@@ -133,7 +133,7 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      widget.email,
+                      state.email ?? '',
                       style: typography.body.small.copyWith(color: colors.body),
                       textAlign: TextAlign.center,
                     ),
