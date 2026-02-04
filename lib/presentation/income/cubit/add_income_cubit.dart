@@ -31,7 +31,7 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     );
   }
 
-  void amountChanged(String value) {
+  void onAmountChanged(String value) {
     if (value.trim().isEmpty) {
       emit(state.copyWith(clearAmount: true));
       return;
@@ -41,19 +41,19 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     emit(state.copyWith(amount: parsed, clearAmount: false));
   }
 
-  void dateChanged(DateTime newDate) {
+  void onDateChanged(DateTime newDate) {
     emit(state.copyWith(date: newDate));
   }
 
-  void noteChanged(String newNote) {
+  void onNoteChanged(String newNote) {
     emit(state.copyWith(note: newNote));
   }
 
-  void categorySelected(TransactionCategory category) {
+  void onCategorySelected(TransactionCategory category) {
     emit(state.copyWith(selectedCategory: category));
   }
 
-  Future<void> submitIncome(String categoryName) async {
+  Future<void> onSubmitIncome(String categoryName) async {
     if (!state.isFormValid) return;
 
     emit(state.copyWith(status: FormStatus.loading));

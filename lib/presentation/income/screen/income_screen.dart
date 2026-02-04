@@ -125,7 +125,7 @@ class _IncomeScreenContent extends StatelessWidget {
           ),
         ),
         onChanged: (value) {
-          context.read<AddIncomeCubit>().amountChanged(value);
+          context.read<AddIncomeCubit>().onAmountChanged(value);
         },
       ),
     );
@@ -139,7 +139,7 @@ class _IncomeScreenContent extends StatelessWidget {
         hint: l10n.date,
         onError: () {},
         onDateChange: (date) {
-          context.read<AddIncomeCubit>().dateChanged(date);
+          context.read<AddIncomeCubit>().onDateChanged(date);
         },
       ),
     );
@@ -183,7 +183,7 @@ class _IncomeScreenContent extends StatelessWidget {
                   label: category.name,
                   selected: selected,
                   onTap: () {
-                    context.read<AddIncomeCubit>().categorySelected(category);
+                    context.read<AddIncomeCubit>().onCategorySelected(category);
                   },
                 );
               }),
@@ -204,7 +204,7 @@ class _IncomeScreenContent extends StatelessWidget {
         minLines: 4,
         maxLines: 6,
         onChanged: (value) {
-          context.read<AddIncomeCubit>().noteChanged(value);
+          context.read<AddIncomeCubit>().onNoteChanged(value);
         },
       ),
     );
@@ -220,7 +220,7 @@ class _IncomeScreenContent extends StatelessWidget {
         text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
         onPressed: () {
           if (state.isFormValid && state.status != FormStatus.loading) {
-            context.read<AddIncomeCubit>().submitIncome(l10n.salary);
+            context.read<AddIncomeCubit>().onSubmitIncome(l10n.salary);
           }
         },
         isEnabled: state.isFormValid && state.status != FormStatus.loading,
