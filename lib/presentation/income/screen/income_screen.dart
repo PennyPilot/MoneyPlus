@@ -8,6 +8,7 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
+import '../../../design_system/widgets/chip.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../../../design_system/widgets/text_field_date_Picker.dart';
@@ -48,103 +49,181 @@ class _IncomeScreenContent extends StatelessWidget {
       body: BlocConsumer<AddIncomeCubit, AddIncomeState>(
         listener: (context, state) {
           final l10n = AppLocalizations.of(context)!;
-          
+
           if (state.status == FormStatus.success) {
             MSnackBar.success(
               message: l10n.incomeAddedSuccessfully,
+              title: '',
             ).showSnackBar(context: context);
-            
+
             Navigator.pop(context);
           } else if (state.status == FormStatus.failure) {
             MSnackBar.error(
               message: state.errorMessage ?? l10n.failedToAddIncome,
+              title: '',
             ).showSnackBar(context: context);
           }
         },
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+          return SafeArea(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MTextField(
-                  hint: l10n.amount,
-                  value: '',
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    context.read<AddIncomeCubit>().amountChanged(value);
-                  },
-                  leading: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: SvgPicture.asset(
-                      AppAssets.icMoneyAmount,
-                      width: 24,
-                      height: 24,
-                    ),
-                  ),
-                  trailing: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: colors.surface,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    child: Text(
-                      l10n.moneyAmount(
-                        state.amount?.toStringAsFixed(0) ?? '0',
-                        'IQD',
-                      ),
-                      style: TextStyle(
-                        color: colors.body,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    children: [
+                      _buildAmountSection(context, state),
+                      _buildDateSection(context),
+                      _buildCategorySection(context, state),
+                      _buildNoteSection(context, state),
+                    ],
                   ),
                 ),
-                
-                const SizedBox(height: 12),
-                
-                TextFieldDatePicker(
-                  hint: l10n.date,
-                  onDateChange: (date) {
-                    context.read<AddIncomeCubit>().dateChanged(date);
-                  },
-                  onError: () {},
-                ),
-                
-                const SizedBox(height: 12),
-                
-                MTextField(
-                  hint: l10n.note,
-                  value: '',
-                  maxLines: 5,
-                  onChanged: (value) {
-                    context.read<AddIncomeCubit>().noteChanged(value);
-                  },
-                ),
-                
-                const Spacer(),
-                
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 19),
-                  child: DefaultButton(
-                    text: state.status == FormStatus.loading 
-                        ? l10n.saving
-                        : l10n.add,
-                    onPressed: () {
-                      context.read<AddIncomeCubit>().submitIncome(l10n.salary);
-                    },
-                    isEnabled: state.isFormValid && 
-                               state.status != FormStatus.loading,
-                  ),
-                ),
+                _buildSaveButton(context, state),
               ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildAmountSection(BuildContext context, AddIncomeState state) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: MTextField(
+        hint: l10n.amount,
+        value: state.amount != null ? state.amount!.toStringAsFixed(0) : '',
+        keyboardType: TextInputType.number,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 14, right: 8),
+          child: SvgPicture.asset(
+            AppAssets.icAmountGray,
+            width: 24,
+            height: 24,
+          ),
+        ),
+        trailing: Container(
+          margin: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: colors.surface,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'IQD',
+                style: typography.label.small.copyWith(color: colors.body),
+              ),
+            ],
+          ),
+        ),
+        onChanged: (value) {
+          context.read<AddIncomeCubit>().amountChanged(value);
+        },
+      ),
+    );
+  }
+
+  Widget _buildDateSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: TextFieldDatePicker(
+        hint: l10n.date,
+        onError: () {},
+        onDateChange: (date) {
+          context.read<AddIncomeCubit>().dateChanged(date);
+        },
+      ),
+    );
+  }
+
+  Widget _buildCategorySection(BuildContext context, AddIncomeState state) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
+
+    if (state.isLoadingCategories && state.categories.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.only(top: 16),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (state.categories.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Text(
+            l10n.categories,
+            style: typography.title.small.copyWith(color: colors.title),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 12,
+            children: [
+              ...state.categories.map((category) {
+                final selected = state.selectedCategory?.id == category.id;
+                return MChip(
+                  label: category.name,
+                  selected: selected,
+                  onTap: () {
+                    context.read<AddIncomeCubit>().categorySelected(category);
+                  },
+                );
+              }),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNoteSection(BuildContext context, AddIncomeState state) {
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: MTextField(
+        hint: l10n.note,
+        value: state.note,
+        minLines: 4,
+        maxLines: 6,
+        onChanged: (value) {
+          context.read<AddIncomeCubit>().noteChanged(value);
+        },
+      ),
+    );
+  }
+
+  Widget _buildSaveButton(BuildContext context, AddIncomeState state) {
+    final colors = context.colors;
+    final l10n = AppLocalizations.of(context)!;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
+      child: DefaultButton(
+        text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
+        onPressed: () {
+          if (state.isFormValid && state.status != FormStatus.loading) {
+            context.read<AddIncomeCubit>().submitIncome(l10n.salary);
+          }
+        },
+        isEnabled: state.isFormValid && state.status != FormStatus.loading,
       ),
     );
   }
