@@ -54,7 +54,7 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
   }
 
   Future<void> onSubmitIncome(String categoryName) async {
-    if (!state.isFormValid) return;
+    if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
 

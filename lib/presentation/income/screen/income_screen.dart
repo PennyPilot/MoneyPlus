@@ -118,7 +118,7 @@ class _IncomeScreenContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'IQD',
+                l10n.currencyCode,
                 style: typography.label.small.copyWith(color: colors.body),
               ),
             ],
@@ -219,11 +219,9 @@ class _IncomeScreenContent extends StatelessWidget {
       child: DefaultButton(
         text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
         onPressed: () {
-          if (state.isFormValid && state.status != FormStatus.loading) {
-            context.read<AddIncomeCubit>().onSubmitIncome(l10n.salary);
-          }
+          context.read<AddIncomeCubit>().onSubmitIncome(l10n.salary);
         },
-        isEnabled: state.isFormValid && state.status != FormStatus.loading,
+        isEnabled: state.canSubmitForm,
       ),
     );
   }

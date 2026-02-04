@@ -13,7 +13,7 @@ class AddIncomeState extends Equatable {
   final TransactionCategory? selectedCategory;
   final bool isLoadingCategories;
 
-  bool get isFormValid => amount != null && amount! > 0;
+  bool get canSubmitForm => amount != null && amount! > 0 && status != FormStatus.loading;
 
   const AddIncomeState({
     this.amount,
