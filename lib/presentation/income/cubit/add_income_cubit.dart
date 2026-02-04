@@ -7,51 +7,79 @@ import 'package:moneyplus/presentation/income/cubit/add_income_state.dart';
 
 class AddIncomeCubit extends Cubit<AddIncomeState> {
   final TransactionRepository _repository;
-  
-  AddIncomeCubit({
-    required TransactionRepository repository,
-  })  : _repository = repository,
-        super(AddIncomeState.initial());
-  
-  void amountChanged(String value) {
-    final parsed = double.tryParse(value);
-    emit(state.copyWith(amount: parsed));
+
+  AddIncomeCubit({required TransactionRepository repository})
+    : _repository = repository,
+      super(AddIncomeState.initial()) {
+    _loadCategories();
   }
-  
+
+  Future<void> _loadCategories() async {
+    emit(state.copyWith(isLoadingCategories: true));
+    final categories = <TransactionCategory>[
+      TransactionCategory(id: 1, name: 'Salary'),
+      TransactionCategory(id: 2, name: 'Freelance'),
+      TransactionCategory(id: 3, name: 'Treasure'),
+    ];
+
+    emit(
+      state.copyWith(
+        categories: categories,
+        selectedCategory: categories.first,
+        isLoadingCategories: false,
+      ),
+    );
+  }
+
+  void amountChanged(String value) {
+    if (value.trim().isEmpty) {
+      emit(state.copyWith(clearAmount: true));
+      return;
+    }
+
+    final parsed = double.tryParse(value);
+    emit(state.copyWith(amount: parsed, clearAmount: false));
+  }
+
   void dateChanged(DateTime newDate) {
     emit(state.copyWith(date: newDate));
   }
-  
+
   void noteChanged(String newNote) {
     emit(state.copyWith(note: newNote));
   }
-  
+
+  void categorySelected(TransactionCategory category) {
+    emit(state.copyWith(selectedCategory: category));
+  }
+
   Future<void> submitIncome(String categoryName) async {
     if (!state.isFormValid) return;
-    
+
     emit(state.copyWith(status: FormStatus.loading));
-    
+
     try {
-      final defaultCategory = TransactionCategory(id: 1, name: categoryName);
-      
+      final category =
+          state.selectedCategory ??
+          TransactionCategory(id: 1, name: categoryName);
+
       final success = await _repository.addTransaction(
         amount: state.amount!,
         type: TransactionType.income,
         date: state.date,
-        category: defaultCategory,
+        category: category,
         note: state.note,
       );
-      
+
       if (success) {
         emit(state.copyWith(status: FormStatus.success));
       } else {
         emit(state.copyWith(status: FormStatus.failure));
       }
     } catch (e) {
-      emit(state.copyWith(
-        status: FormStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(status: FormStatus.failure, errorMessage: e.toString()),
+      );
     }
   }
 }
