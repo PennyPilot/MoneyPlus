@@ -4,6 +4,8 @@ import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/chip.dart';
+import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/presentation/transactions/widget/transaction_row.dart';
 
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});
@@ -37,7 +39,30 @@ class TransactionsScreen extends StatelessWidget {
               ),
             ),
           ),
-          //SizedBox(height: 16,),
+          SliverPadding(
+            padding: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  TransactionRow(
+                    transactionType: TransactionType.income,
+                    category: 'Shopping',
+                    currency: 'IQD',
+                    amount: 250000,
+                    date: DateTime(2024, 12, 1),
+                  ),
+                  SizedBox(height: 12,),
+                  TransactionRow(
+                    transactionType: TransactionType.expense,
+                    category: 'Shopping',
+                    currency: 'IQD',
+                    amount: 250000,
+                    date: DateTime(2024, 12, 1),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
