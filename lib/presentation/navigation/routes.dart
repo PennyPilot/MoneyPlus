@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
+import 'package:moneyplus/presentation/statistics/screen/statistics_screen.dart';
 
 import '../../di/injection.dart';
 import '../login/cubit/login_cubit.dart';
+import '../statistics/cubit/statistics_cubit.dart';
 
 part 'routes.g.dart';
 
@@ -23,7 +25,7 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("onBoarding screen"),
-            ElevatedButton(onPressed: (){ LoginRoute().push(context);}, child: Text("Go to Login"))
+            ElevatedButton(onPressed: (){ StatisticsRoute().push(context);}, child: Text("Go to Login"))
           ],
         ),
       ),
@@ -53,5 +55,19 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return HomeScreen();
+  }
+}
+
+@TypedGoRoute<StatisticsRoute>(path: '/statistics')
+@immutable
+class StatisticsRoute extends GoRouteData with $StatisticsRoute{
+  const StatisticsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      create: (context) => getIt<StatisticsCubit>()..getCategoriesBreakdown(DateTime.now()),
+      child: const StatisticsScreen(),
+    );
   }
 }

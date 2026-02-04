@@ -8,11 +8,8 @@ import '../service/supabase_service.dart';
 
 class StatisticsRepositoryImpl implements StatisticsRepository {
   final SupabaseService supabaseService;
-  final AppSecretsProvider appSecrets;
-
   StatisticsRepositoryImpl({
     required this.supabaseService,
-    required this.appSecrets,
   });
 
   @override
@@ -22,8 +19,8 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     try {
       final client = await supabaseService.getClient();
       final data = await client.rpc(
-        'get_categories_breakdown',
-        params: {'date': date.toIso8601String()},
+        'get_expenses_categories_breakdown',
+        params: {'in_year': 2026, 'in_month': 2},
       );
       return Result.success(
         CategoriesBreakdown.fromJson(data),
