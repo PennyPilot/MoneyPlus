@@ -89,7 +89,7 @@
   "auth_error_server_error": "Internal server error. Please try again later",
   "auth_error_not_implemented": "This feature is not available on the server",
   "auth_error_default": "An unexpected error occurred. Please try again later",
-  "no_internet_connection": "No internet connection"
+  "no_internet_connection": "No internet connection",
   "@stepOf": {
     "placeholders": {
       "current": {
