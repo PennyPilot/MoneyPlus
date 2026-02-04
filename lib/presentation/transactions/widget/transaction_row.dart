@@ -7,7 +7,7 @@ class TransactionRow extends StatelessWidget {
   final TransactionType transactionType;
   final String category;
   final String currency;
-  final int amount;
+  final double amount;
   final DateTime date;
 
   const TransactionRow({

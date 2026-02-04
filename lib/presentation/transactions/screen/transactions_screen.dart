@@ -4,8 +4,11 @@ import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/chip.dart';
+import 'package:moneyplus/domain/entity/transaction.dart';
+import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_row.dart';
+import 'package:moneyplus/presentation/transactions/widget/transactions_list.dart';
 
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});
@@ -39,29 +42,41 @@ class TransactionsScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  TransactionRow(
-                    transactionType: TransactionType.income,
-                    category: 'Shopping',
-                    currency: 'IQD',
-                    amount: 250000,
-                    date: DateTime(2024, 12, 1),
-                  ),
-                  SizedBox(height: 12,),
-                  TransactionRow(
-                    transactionType: TransactionType.expense,
-                    category: 'Shopping',
-                    currency: 'IQD',
-                    amount: 250000,
-                    date: DateTime(2024, 12, 1),
-                  ),
-                ],
+          TransactionsList(
+            transactions: [
+              Transaction(
+                id: 1,
+                amount: 50000,
+                currency: "IQD",
+                type: TransactionType.expense,
+                date: DateTime(2024, 12, 2),
+                category: TransactionCategory(id: 1, name: "shopping"),
               ),
-            ),
+              Transaction(
+                id: 4,
+                amount: 5040,
+                currency: "IQD",
+                type: TransactionType.income,
+                date: DateTime(2024, 12, 2),
+                category: TransactionCategory(id: 1, name: "shopping"),
+              ),
+              Transaction(
+                id: 2,
+                amount: 230000,
+                currency: "IQD",
+                type: TransactionType.income,
+                date: DateTime(2024, 12, 2),
+                category: TransactionCategory(id: 1, name: "shopping"),
+              ),
+              Transaction(
+                id: 3,
+                amount: 530000,
+                currency: "IQD",
+                type: TransactionType.expense,
+                date: DateTime(2024, 12, 2),
+                category: TransactionCategory(id: 1, name: "shopping"),
+              ),
+            ],
           ),
         ],
       ),
