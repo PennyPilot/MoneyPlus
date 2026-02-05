@@ -48,6 +48,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           final cubit = context.read<CreateAccountCubit>();
           return Scaffold(
             appBar: CustomAppBar(
+              backgroundColor: colors.surfaceLow,
               title: localizations.createAccount,
               trailing: AppLogo(assetPath: AppAssets.appBrand),
               leading: AppBarCircleButton(
