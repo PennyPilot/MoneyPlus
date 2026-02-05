@@ -1,13 +1,11 @@
-import 'dart:ffi';
-
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 
 class TopSpendingCategory {
   final TransactionCategory category;
   final int numberOfTransactions;
-  final Double total;
+  final double total;
   final String currency;
-  final Float percentage;
+  final double percentage;
 
   TopSpendingCategory({
     required this.category,

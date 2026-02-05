@@ -46,10 +46,14 @@ class AppAssets {
   static const String google = "$_icons/ic_google.svg";
   static const String icSquareLock = '$_icons/ic_square_lock.svg';
   static const String icUser = '$_icons/ic_user_square.svg';
+  static const icMoneyAmount = '$_icons/ic_money_amount.svg';
+
   static const String imgForgetPasswordLock = "$_icons/img_forget_password_lock.png";
   static const String icEmail = "$_icons/ic_email.svg";
   static const String icAppBrand = "$_icons/ic_app_brand.svg";
   static const String background = "$_images/background.png";
   static const String logo = "$_images/logo.png";
   static const String icLoading = "$_icons/ic_loading.svg";
+  static const String icAmountPrimary = '$_icons/ic_amount_primary.svg';
+  static const String icAmountGray = '$_icons/ic_amount_gray.svg';
 }
