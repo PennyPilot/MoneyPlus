@@ -70,5 +70,17 @@
   "no_internet_connection": "لا يوجد اتصال بالانترنت",
   "spendingTrend": "اتجاه الإنفاق",
   "noDataAvailable": "لا توجد بيانات متاحة",
-  "no_spending_categories": "لا يوجد معاملات متاحة"
+  "no_spending_categories": "لا يوجد معاملات متاحة",
+  "month_january": "يناير",
+  "month_february": "فبراير",
+  "month_march": "مارس",
+  "month_april": "أبريل",
+  "month_may": "مايو",
+  "month_june": "يونيو",
+  "month_july": "يوليو",
+  "month_august": "أغسطس",
+  "month_september": "سبتمبر",
+  "month_october": "أكتوبر",
+  "month_november": "نوفمبر",
+  "month_december": "ديسمبر"
 }

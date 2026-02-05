@@ -83,5 +83,17 @@
   "auth_error_not_implemented": "This feature is not available on the server",
   "auth_error_default": "An unexpected error occurred. Please try again later",
   "no_internet_connection": "No internet connection",
-  "no_spending_categories": "No spending categories available"
+  "no_spending_categories": "No spending categories available",
+  "month_january": "January",
+  "month_february": "February",
+  "month_march": "March",
+  "month_april": "April",
+  "month_may": "May",
+  "month_june": "June",
+  "month_july": "July",
+  "month_august": "August",
+  "month_september": "September",
+  "month_october": "October",
+  "month_november": "November",
+  "month_december": "December"
 }
