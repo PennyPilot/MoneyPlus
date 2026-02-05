@@ -47,6 +47,7 @@ class AppAssets {
   static const String lock = "$_icons/ic_lock.svg";
   static const String email = "$_icons/ic_email.svg";
   static const String google = "$_icons/ic_google.svg";
+  static const icMoneyAmount = '$_icons/ic_money_amount.svg';
   static const String imgForgetPasswordLock = "$_icons/img_forget_password_lock.png";
   static const String icEmail = "$_icons/ic_email.svg";
   static const String icAppBrand = "$_icons/ic_app_brand.svg";
