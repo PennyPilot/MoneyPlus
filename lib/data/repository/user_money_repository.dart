@@ -1,6 +1,5 @@
 import 'package:moneyplus/data/service/supabase_service.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
-import 'package:moneyplus/domain/repository/model/month_enum.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 
@@ -10,12 +9,13 @@ class UserRepositoryImpl implements UserMoneyRepository {
   UserRepositoryImpl({required this.service});
 
   @override
-  Future<double> getMonthExpense(Month month, int year) async {
+  Future<double> getMonthExpense(int month, int year) async {
+    _validateMonth(month);
     final client = await service.getClient();
     final response = await client.rpc(
       'get_month_expense',
       params: {
-        'p_month': month.index + 1,
+        'p_month': month,
         'p_year': year,
       },
     );
@@ -24,12 +24,13 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<double> getMonthIncome(Month month, int year) async {
+  Future<double> getMonthIncome(int month, int year) async {
+    _validateMonth(month);
     final client = await service.getClient();
     final response = await client.rpc(
       'get_month_income',
       params: {
-        'p_month': month.index + 1,
+        'p_month': month,
         'p_year': year,
       },
     );
@@ -47,11 +48,11 @@ class UserRepositoryImpl implements UserMoneyRepository {
 
   @override
   Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth({
-    required Month month,
+    required int month,
     required int year,
     required int count,
   }) async {
-
+    _validateMonth(month);
     final response = await _getTopSpendingResponse(
       month: month,
       year: year,
@@ -64,7 +65,7 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   Future<dynamic> _getTopSpendingResponse({
-    required Month month,
+    required int month,
     required int year,
     required int count,
   }) async {
@@ -72,7 +73,7 @@ class UserRepositoryImpl implements UserMoneyRepository {
 
     final response = await client.rpc(
       'get_top_spending_categories',
-      params: {'p_month': month.index + 1, 'p_year': year, 'p_limit': count},
+      params: {'p_month': month, 'p_year': year, 'p_limit': count},
     );
     return response;
   }
@@ -103,9 +104,10 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<double> getSavingSpendingPercentage(Month month, int year) async {
-    final isJanuary = month.index == 0;
-    final previousMonth = Month.values[isJanuary ? 11 : month.index - 1];
+  Future<double> getSavingSpendingPercentage(int month, int year) async {
+    _validateMonth(month);
+    final isJanuary = month == 1;
+    final previousMonth = isJanuary ? 12 : month;
     final previousYear = isJanuary ? year - 1 : year;
 
     final [
@@ -128,4 +130,11 @@ class UserRepositoryImpl implements UserMoneyRepository {
     }
     return ((currentMonthBalance - previousMonthBalance) / previousMonthBalance) * 100;
   }
+
+  void _validateMonth(int month){
+    if(month < 1 || month > 12){
+      throw Exception('Month value: "$month" is not valid, Month must be between 1 and 12');
+    }
+  }
+
 }

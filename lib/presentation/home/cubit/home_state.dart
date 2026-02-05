@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
-import '../../../domain/repository/model/month_enum.dart';
 
 @immutable
 sealed class HomeState {
@@ -12,7 +11,7 @@ class HomeLoading extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  final Month selectedMonth;
+  final int selectedMonth;
   final int selectedYear;
   final double currentBalance;
   final double currentSavingSpendingPercentage;
@@ -33,7 +32,7 @@ class HomeLoaded extends HomeState {
   });
 
   HomeLoaded copyWith({
-    Month? selectedMonth,
+    int? selectedMonth,
     int? selectedYear,
     double? currentBalance,
     double? currentSavingSpendingPercentage,

@@ -2,14 +2,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
-import '../../../domain/repository/model/month_enum.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final UserMoneyRepository userMoneyRepository;
 
+  final _topSpendingCount = 5;
+
   HomeCubit({required this.userMoneyRepository}) : super(HomeLoading());
 
-  void getData({required Month month, required int year}) async {
+  void getData({required int month, required int year}) async {
     try {
       final loadedContent = HomeLoaded(
         currentBalance: await getTotalBalance(),
@@ -28,7 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  void setSelectedDate(Month month, int year) async {
+  void setSelectedDate(int month, int year) async {
     if ((state as HomeLoaded).selectedMonth == month &&
         (state as HomeLoaded).selectedYear == year) {
       return;
@@ -51,23 +52,23 @@ class HomeCubit extends Cubit<HomeState> {
     return await userMoneyRepository.getTotalBalance();
   }
 
-  Future<double> getSavingSpendingPercentage(Month month, int year) async {
+  Future<double> getSavingSpendingPercentage(int month, int year) async {
     return await userMoneyRepository.getSavingSpendingPercentage(month, year);
   }
 
-  Future<double> getTotalMonthIncome(Month month, int year) async {
+  Future<double> getTotalMonthIncome(int month, int year) async {
     return await userMoneyRepository.getMonthIncome(month, year);
   }
 
-  Future<double> getTotalMonthExpense(Month month, int year) async {
+  Future<double> getTotalMonthExpense(int month, int year) async {
     return await userMoneyRepository.getMonthExpense(month, year);
   }
 
   Future<List<TopSpendingCategory>> getTopSpendingCategories(
-    Month month,
+    int month,
     int year,
   ) async {
-    return await userMoneyRepository.getTopSpendingCategoriesInMonth(month: month, year: year, count: 5);
+    return await userMoneyRepository.getTopSpendingCategoriesInMonth(month: month, year: year, count: _topSpendingCount);
   }
 
   Future<String> getCurrency() async {
