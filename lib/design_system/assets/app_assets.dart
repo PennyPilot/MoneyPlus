@@ -60,5 +60,5 @@ class AppAssets {
   static const String transactionCoinStack = '$_images/transaction-coin-stack.png';
   static const String transactionDetailsBackground = '$_images/transaction-details-background.png';
   static const String icFrenchFries = '$_icons/ic-french-fries.svg';
-  static const String icShare = '$_icons/ic-share-05.svg';
+  static const String icShare = '$_icons/ic_share.svg';
 }
