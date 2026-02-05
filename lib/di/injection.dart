@@ -60,7 +60,6 @@ void initDI() {
 
   getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountRepository>()));
 
-  getIt.registerFactory<HomeCubit>(() => HomeCubit());
   getIt.registerFactory<AddIncomeCubit>(
     () => AddIncomeCubit(repository: getIt<TransactionRepository>()),
   );
