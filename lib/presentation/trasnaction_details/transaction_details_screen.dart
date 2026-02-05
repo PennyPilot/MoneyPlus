@@ -13,16 +13,9 @@ import '../../domain/entity/transaction.dart';
 import '../../domain/entity/transaction_category.dart';
 import '../../domain/entity/transaction_type.dart';
 
-class TransactionDetailsScreen extends StatefulWidget {
+class TransactionDetailsScreen extends StatelessWidget {
   const TransactionDetailsScreen({super.key});
 
-  @override
-  State<StatefulWidget> createState() {
-    return _TransactionDetailsState();
-  }
-}
-
-class _TransactionDetailsState extends State<TransactionDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -43,11 +36,10 @@ class _TransactionDetailsState extends State<TransactionDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: _bottomBar(),
+      bottomNavigationBar: _bottomBar(context),
     );
   }
 }
-
 
 Widget _circleIcon(String iconPath, BuildContext context){
     return GestureDetector(
@@ -61,12 +53,13 @@ Widget _circleIcon(String iconPath, BuildContext context){
           shape: BoxShape.circle,
           color: MoneyColors.light.surface,),
         alignment: Alignment.center,
-        child: SvgPicture.asset(iconPath, width: 20, height: 20),
+        child: SvgPicture.asset(iconPath, width: 20, height: 20, matchTextDirection: true),
       ),
     );
 }
 
-Widget _bottomBar(){
+Widget _bottomBar(BuildContext context){
+  final localizations = context.localizations;
   return Container(
     width: double.infinity,
     color: MoneyColors.light.surface,
@@ -80,8 +73,8 @@ Widget _bottomBar(){
           mainAxisSize: MainAxisSize.min,
           spacing: 12,
           children: [
-            DefaultButton(text: "Edit"),
-            DefaultErrorButton(text: "Delete")
+            DefaultButton(text: localizations.edit),
+            DefaultErrorButton(text: localizations.delete)
           ],
         ),
       ),
