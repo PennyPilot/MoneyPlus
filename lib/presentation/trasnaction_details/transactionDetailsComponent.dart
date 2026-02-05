@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
@@ -17,9 +18,12 @@ class TransactionDetailsComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final localizations = context.localizations;
     final isIncome = (transaction.type == TransactionType.income);
     final transactionColor = isIncome ? colors.green : colors.red;
     final transactionSign = isIncome ? '+' : '-';
+    final locale = Localizations.localeOf(context).toString();
+    final formattedDate = DateFormat.yMMMMd(locale).format(transaction.date);
 
     return SizedBox(
       height: 420,
@@ -111,9 +115,8 @@ class TransactionDetailsComponent extends StatelessWidget {
               spacing: 14,
               children: [
                 _infoRow(
-                  firstValue: "Date",
-                  secondValue:
-                      "${transaction.date.day} ${_getMonthName(transaction.date.month)} ${transaction.date.year}",
+                  firstValue: localizations.date,
+                  secondValue: formattedDate,
                 ),
                 Image.asset(
                   AppAssets.lineSeparator,
@@ -122,7 +125,7 @@ class TransactionDetailsComponent extends StatelessWidget {
                   height: 1,
                 ),
                 _infoRow(
-                  firstValue: "Category",
+                  firstValue: localizations.category,
                   secondValue: transaction.category.name,
                   iconPath: AppAssets.icFrenchFries,
                 ),
@@ -132,7 +135,7 @@ class TransactionDetailsComponent extends StatelessWidget {
                   fit: BoxFit.fill,
                   height: 1,
                 ),
-                _infoRow(firstValue: "Note", secondValue: transaction.note),
+                _infoRow(firstValue: localizations.note, secondValue: transaction.note),
               ],
             ),
           ),
