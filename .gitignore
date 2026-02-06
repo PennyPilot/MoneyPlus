@@ -59,3 +59,7 @@ ios/Podfile
 
 # ===========================
 /lib/presentation/navigation/routes.g.dart
+/lib/core/l10n/app_localizations.dart
+/lib/core/l10n/app_localizations_ar.dart
+/lib/core/l10n/app_localizations_en.dart
+/lib/utils/CMakeLists.txt
