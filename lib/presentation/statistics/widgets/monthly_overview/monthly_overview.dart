@@ -38,9 +38,7 @@ class MonthlyOverview extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: colors.surfaceLow,
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,9 +47,7 @@ class MonthlyOverview extends StatelessWidget {
               // Header
               Text(
                 l10n.monthly_overview,
-                style: typography.label.medium.copyWith(
-                  color: colors.title,
-                ),
+                style: typography.label.medium.copyWith(color: colors.title),
               ),
               const SizedBox(height: 12),
 
@@ -71,7 +67,8 @@ class MonthlyOverview extends StatelessWidget {
                       isIncome: true,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 24),
+
                   Expanded(
                     child: SummaryItem(
                       icon: SvgPicture.asset(
@@ -87,15 +84,15 @@ class MonthlyOverview extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-
+              const SizedBox(height: 24),
               // Progress Bars
               ProgressBarSection(
                 income: income,
                 expenses: expenses,
                 maxValue: maxValue,
               ),
-              const SizedBox(height: 6),
+
+              const SizedBox(height: 12),
 
               // Scale Labels
               ScaleLabels(maxValue: maxValue),
@@ -104,11 +101,7 @@ class MonthlyOverview extends StatelessWidget {
         ),
 
         // Savings Banner - Outside the main container, at the bottom
-        if (savings > 0)
-          SavingsBanner(
-            savings: savings,
-            currency: currency,
-          ),
+        if (savings > 0) SavingsBanner(savings: savings, currency: currency),
       ],
     );
   }
