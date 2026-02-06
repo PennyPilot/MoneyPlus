@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../design_system/assets/app_assets.dart';
 import 'progress_bar_section.dart';
@@ -63,8 +62,8 @@ class MonthlyOverview extends StatelessWidget {
                     child: SummaryItem(
                       icon: SvgPicture.asset(
                         AppAssets.icWalletAdd,
-                        width: 28,
-                        height: 28,
+                        width: 16,
+                        height: 16,
                       ),
                       label: l10n.income,
                       value: income,
@@ -77,8 +76,8 @@ class MonthlyOverview extends StatelessWidget {
                     child: SummaryItem(
                       icon: SvgPicture.asset(
                         AppAssets.icMoneyRemove,
-                        width: 28,
-                        height: 28,
+                        width: 16,
+                        height: 16,
                       ),
                       label: l10n.expense,
                       value: expenses,

@@ -37,16 +37,15 @@ class SummaryItem extends StatelessWidget {
 
     return Row(
       children: [
-        // Icon Container - 48x48 with 12px radius
         Container(
-          width: 48,
-          height: 48,
+          width: 28,
+          height: 28,
           decoration: BoxDecoration(
             color: isIncome ? colors.secondaryVariant : colors.primaryVariant,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
           alignment: Alignment.center,
-          child: SizedBox(width: 28, height: 28, child: icon),
+          child: icon,
         ),
         const SizedBox(width: 8),
 
@@ -61,8 +60,8 @@ class SummaryItem extends StatelessWidget {
                 children: [
                   // Gradient Circle Indicator
                   Container(
-                    width: 8,
-                    height: 8,
+                    width: 6,
+                    height: 6,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
@@ -82,7 +81,6 @@ class SummaryItem extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 2),
 
               // Amount Row
               RichText(
