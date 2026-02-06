@@ -39,12 +39,8 @@ class MonthlyOverview extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: colors.surfaceLow,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(12),
-              topRight: const Radius.circular(12),
-              // If savings > 0, bottom corners are 0, else 12
-              bottomLeft: Radius.circular(savings > 0 ? 0 : 12),
-              bottomRight: Radius.circular(savings > 0 ? 0 : 12),
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
             ),
           ),
           child: Column(
