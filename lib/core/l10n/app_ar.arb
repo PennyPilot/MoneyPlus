@@ -71,5 +71,7 @@
   "currencyCode": "دينار",
 
   "spendingTrend": "اتجاه الإنفاق",
-  "noDataAvailable": "لا توجد بيانات متاحة"
+  "noDataAvailable": "لا توجد بيانات متاحة",
+  "how_much_money": "ما مقدار المال المتوفر لديك حاليًا؟"
+
 }
