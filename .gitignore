@@ -1,4 +1,6 @@
+# ==============================
 # Miscellaneous
+# ==============================
 *.class
 *.log
 *.pyc
@@ -15,39 +17,45 @@ migrate_working_dir/
 *.secret
 *.properties
 *.lock
-# IntelliJ related
+
+# ==============================
+# IDE
+# ==============================
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Uncomment if you DON'T want VS Code settings in git
+# .vscode/
 
-# Flutter/Dart/Pub related
+# ==============================
+# Flutter / Dart / Pub
+# ==============================
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
-/coverage/
+build/
+coverage/
+
+# ⚠️ If this is a PACKAGE keep this ignored
+# ⚠️ If this is an APP you may want to track it
 pubspec.lock
 
-# Symbolication related
-app.*.symbols
+# Generated files
+*.g.dart
+*.freezed.dart
+*.gen.dart
 
-# Obfuscation related
-app.*.map.json
+# ==============================
+# iOS
+# ==============================
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
+ios/Podfile
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
-# Flutter generated localization files
-**/l10n/app_localizations.dart
-**/l10n/app_localizations_*.dart
+# ===========================
+/lib/presentation/navigation/routes.g.dart

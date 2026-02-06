@@ -11,11 +11,16 @@ class StatisticsScreen extends StatelessWidget {
       backgroundColor: Colors.grey.shade100,
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: MonthlyOverview(
-          income: 1500000,
-          expenses: 850000,
-          currency: 'IQD',
-          maxValue: 2000000,
+        child: Column(
+          children: [
+            SizedBox(height: 60),
+            MonthlyOverview(
+              income: 1500000,
+              expenses: 850000,
+              currency: 'IQD',
+              maxValue: 2000000,
+            )
+          ],
         ),
       ),
     );

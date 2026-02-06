@@ -23,14 +23,10 @@ class SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: Row(
         children: [
           icon,
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,8 +34,8 @@ class SummaryCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      width: 8,
-                      height: 8,
+                      width: 6,
+                      height: 6,
                       decoration: BoxDecoration(
                         color: iconBackgroundColor,
                         shape: BoxShape.circle,

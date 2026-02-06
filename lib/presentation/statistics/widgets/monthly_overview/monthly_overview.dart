@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
+import '../../../../core/l10n/app_localizations.dart';
 import '../../../../design_system/assets/app_assets.dart';
 import 'progress_bar_section.dart';
 import 'savings_banner.dart';
@@ -26,32 +28,23 @@ class MonthlyOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: context.colors.surfaceLow,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           // Header
-          const Text(
-            'Monthly Overview',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
+          Text(
+            AppLocalizations.of(context)!.monthly_overview,
+            style: context.typography.label.medium.copyWith(
+              color: context.colors.title,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           // Income & Expenses Cards
           Row(
