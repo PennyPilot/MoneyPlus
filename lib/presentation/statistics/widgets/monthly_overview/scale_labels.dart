@@ -22,7 +22,7 @@ class ScaleLabels extends StatelessWidget {
         return Text(
           label,
           style: typography.label.xSmall?.copyWith(
-            color: colors.hint,
+            color: colors.body,
           ),
         );
       }).toList(),
