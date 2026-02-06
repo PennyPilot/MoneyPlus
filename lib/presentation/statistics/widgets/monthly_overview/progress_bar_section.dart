@@ -17,78 +17,93 @@ class ProgressBarSection extends StatelessWidget {
     return Column(
       children: [
         // Income Bar
-        _AnimatedProgressBar(
+        _GradientProgressBar(
           value: income,
           maxValue: maxValue,
-          color: const Color(0xFF00BFA5),
-          icon: Icons.account_balance_wallet,
+          gradientColors: const [Color(0xFF0496AD), Color(0xFF097C8E)],
+          shadowColor: const Color(0xFF0496AD),
         ),
         const SizedBox(height: 8),
         // Expenses Bar
-        _AnimatedProgressBar(
+        _GradientProgressBar(
           value: expenses,
           maxValue: maxValue,
-          color: const Color(0xFFE91E63),
-          icon: Icons.receipt_long,
+          gradientColors: const [Color(0xFFDC143C), Color(0xFFA01A35)],
+          shadowColor: const Color(0xFFDC143C),
         ),
       ],
     );
   }
 }
 
-class _AnimatedProgressBar extends StatelessWidget {
+class _GradientProgressBar extends StatelessWidget {
   final double value;
   final double maxValue;
-  final Color color;
-  final IconData icon;
+  final List<Color> gradientColors;
+  final Color shadowColor;
 
-  const _AnimatedProgressBar({
+  const _GradientProgressBar({
     required this.value,
     required this.maxValue,
-    required this.color,
-    required this.icon,
+    required this.gradientColors,
+    required this.shadowColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final percentage = (value / maxValue).clamp(0.0, 1.0);
 
-    return Stack(
-      children: [
-        // Background
-        Container(
-          height: 32,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        // Progress
-        FractionallySizedBox(
-          widthFactor: percentage,
-          child: Container(
-            height: 32,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [color, color.withOpacity(0.8)]),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(6),
+    return SizedBox(
+      height: 20,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final totalWidth = constraints.maxWidth;
+          final progressWidth = totalWidth * percentage;
+
+          return Stack(
+            children: [
+              // Background Track (Group 72) - Border only, no fill
+              Container(
+                height: 20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: const Color(0x1A1F1F1F), // #1F1F1F 10%
+                    width: 1,
                   ),
-                  child: Icon(icon, color: Colors.white, size: 16),
                 ),
               ),
-            ),
-          ),
-        ),
-      ],
+
+              // Progress Bar (Rectangle 144)
+              if (progressWidth > 0)
+                Container(
+                  width: progressWidth.clamp(20.0, totalWidth),
+                  height: 20,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: gradientColors,
+                    ),
+                    border: Border.all(
+                      color: const Color(0x1A1F1F1F), // #1F1F1F 10%
+                      width: 0.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: shadowColor.withOpacity(0.12), // 12% opacity
+                        offset: const Offset(0, 4),
+                        blurRadius: 8,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
