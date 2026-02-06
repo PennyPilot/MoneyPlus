@@ -27,75 +27,94 @@ class MonthlyOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: context.colors.surfaceLow,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Header
-          Text(
-            AppLocalizations.of(context)!.monthly_overview,
-            style: context.typography.label.medium.copyWith(
-              color: context.colors.title,
+    final colors = context.colors;
+    final typography = context.typography;
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Main Container
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: colors.surfaceLow,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(12),
+              topRight: const Radius.circular(12),
+              // If savings > 0, bottom corners are 0, else 12
+              bottomLeft: Radius.circular(savings > 0 ? 0 : 12),
+              bottomRight: Radius.circular(savings > 0 ? 0 : 12),
             ),
           ),
-          const SizedBox(height: 12),
-
-          // Income & Expenses Cards
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: SummaryItem(
-                  icon: SvgPicture.asset(
-                    AppAssets.icWalletAdd,
-                    width: 24,
-                    height: 24,
-                  ),
-                  label: 'Income',
-                  value: income,
-                  currency: currency,
-                  isIncome: true,
+              // Header
+              Text(
+                l10n.monthly_overview,
+                style: typography.label.medium.copyWith(
+                  color: colors.title,
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: SummaryItem(
-                  icon: SvgPicture.asset(
-                    AppAssets.icMoneyRemove,
-                    width: 24,
-                    height: 24,
+              const SizedBox(height: 12),
+
+              // Income & Expenses Items
+              Row(
+                children: [
+                  Expanded(
+                    child: SummaryItem(
+                      icon: SvgPicture.asset(
+                        AppAssets.icWalletAdd,
+                        width: 28,
+                        height: 28,
+                      ),
+                      label: l10n.income,
+                      value: income,
+                      currency: currency,
+                      isIncome: true,
+                    ),
                   ),
-                  label: 'Expenses',
-                  value: expenses,
-                  currency: currency,
-                  isIncome: false,
-                ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SummaryItem(
+                      icon: SvgPicture.asset(
+                        AppAssets.icMoneyRemove,
+                        width: 28,
+                        height: 28,
+                      ),
+                      label: l10n.expense,
+                      value: expenses,
+                      currency: currency,
+                      isIncome: false,
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 16),
+
+              // Progress Bars
+              ProgressBarSection(
+                income: income,
+                expenses: expenses,
+                maxValue: maxValue,
+              ),
+              const SizedBox(height: 6),
+
+              // Scale Labels
+              ScaleLabels(maxValue: maxValue),
             ],
           ),
-          const SizedBox(height: 20),
+        ),
 
-          // Progress Bars
-          ProgressBarSection(
-            income: income,
-            expenses: expenses,
-            maxValue: maxValue,
+        // Savings Banner - Outside the main container, at the bottom
+        if (savings > 0)
+          SavingsBanner(
+            savings: savings,
+            currency: currency,
           ),
-          const SizedBox(height: 8),
-
-          // Scale
-          ScaleLabels(maxValue: maxValue),
-          const SizedBox(height: 16),
-
-          // Savings Banner
-          if (savings > 0) SavingsBanner(savings: savings, currency: currency),
-        ],
-      ),
+      ],
     );
   }
 }

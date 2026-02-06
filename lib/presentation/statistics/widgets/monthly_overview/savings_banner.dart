@@ -1,40 +1,61 @@
 import 'package:flutter/material.dart';
-
-import '../../utils.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 class SavingsBanner extends StatelessWidget {
   final double savings;
   final String currency;
 
-  const SavingsBanner({super.key,
+  const SavingsBanner({
+    super.key,
     required this.savings,
     required this.currency,
   });
 
+  String _formatNumber(double value) {
+    final intValue = value.toInt();
+    return intValue.toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]},',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      height: 22,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8F5F2),
-        borderRadius: BorderRadius.circular(24),
+        color: colors.secondaryVariant, // #EAF3F4
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.check_circle,
-            color: Color(0xFF00BFA5),
-            size: 18,
+          // Icon - You can replace with your specific icon
+          SvgPicture.asset(
+            AppAssets.icWalletAdd, // Replace with your savings icon if different
+            width: 14,
+            height: 14,
+            colorFilter: ColorFilter.mode(
+              colors.secondary,
+              BlendMode.srcIn,
+            ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
+          // Text - Label/XSmall, Secondary color
           Text(
-            'You saved ${formatNumber(savings)} $currency this month',
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF00897B),
+            'You saved ${_formatNumber(savings)} $currency this month',
+            style: typography.label.xSmall?.copyWith(
+              color: colors.secondary,
             ),
           ),
         ],
