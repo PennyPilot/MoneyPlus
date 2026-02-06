@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 class ProgressBarSection extends StatelessWidget {
   final double income;
@@ -62,19 +63,18 @@ class _GradientProgressBar extends StatelessWidget {
 
           return Stack(
             children: [
-              // Background Track (Group 72) - Border only, no fill
               Container(
                 height: 20,
                 decoration: BoxDecoration(
+                  color: context.colors.stroke.withAlpha(10),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
-                    color: const Color(0x1A1F1F1F), // #1F1F1F 10%
+                    color: context.colors.stroke.withAlpha(10),
                     width: 1,
                   ),
                 ),
               ),
 
-              // Progress Bar (Rectangle 144)
               if (progressWidth > 0)
                 Container(
                   width: progressWidth.clamp(20.0, totalWidth),
@@ -87,12 +87,12 @@ class _GradientProgressBar extends StatelessWidget {
                       colors: gradientColors,
                     ),
                     border: Border.all(
-                      color: const Color(0x1A1F1F1F), // #1F1F1F 10%
+                      color: context.colors.stroke.withAlpha(10),
                       width: 0.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: shadowColor.withOpacity(0.12), // 12% opacity
+                        color: shadowColor.withAlpha(12),
                         offset: const Offset(0, 4),
                         blurRadius: 8,
                         spreadRadius: 0,
