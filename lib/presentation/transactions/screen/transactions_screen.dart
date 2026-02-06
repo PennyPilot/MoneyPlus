@@ -7,6 +7,7 @@ import 'package:moneyplus/design_system/widgets/chip.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/presentation/transactions/widget/empty_transactions.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_row.dart';
 import 'package:moneyplus/presentation/transactions/widget/transactions_list.dart';
 
@@ -42,42 +43,45 @@ class TransactionsScreen extends StatelessWidget {
               ),
             ),
           ),
-          TransactionsList(
-            transactions: [
-              Transaction(
-                id: 1,
-                amount: 50000,
-                currency: "IQD",
-                type: TransactionType.expense,
-                date: DateTime(2024, 12, 2),
-                category: TransactionCategory(id: 1, name: "shopping"),
-              ),
-              Transaction(
-                id: 4,
-                amount: 5040,
-                currency: "IQD",
-                type: TransactionType.income,
-                date: DateTime(2024, 12, 2),
-                category: TransactionCategory(id: 1, name: "shopping"),
-              ),
-              Transaction(
-                id: 2,
-                amount: 230000,
-                currency: "IQD",
-                type: TransactionType.income,
-                date: DateTime(2024, 12, 2),
-                category: TransactionCategory(id: 1, name: "shopping"),
-              ),
-              Transaction(
-                id: 3,
-                amount: 530000,
-                currency: "IQD",
-                type: TransactionType.expense,
-                date: DateTime(2024, 12, 2),
-                category: TransactionCategory(id: 1, name: "shopping"),
-              ),
-            ],
-          ),
+          SliverToBoxAdapter(
+            child: EmptyTransactions(),
+          )
+          // TransactionsList(
+          //   transactions: [
+          //     Transaction(
+          //       id: 1,
+          //       amount: 50000,
+          //       currency: "IQD",
+          //       type: TransactionType.expense,
+          //       date: DateTime(2024, 12, 2),
+          //       category: TransactionCategory(id: 1, name: "shopping"),
+          //     ),
+          //     Transaction(
+          //       id: 4,
+          //       amount: 5040,
+          //       currency: "IQD",
+          //       type: TransactionType.income,
+          //       date: DateTime(2024, 12, 2),
+          //       category: TransactionCategory(id: 1, name: "shopping"),
+          //     ),
+          //     Transaction(
+          //       id: 2,
+          //       amount: 230000,
+          //       currency: "IQD",
+          //       type: TransactionType.income,
+          //       date: DateTime(2024, 12, 2),
+          //       category: TransactionCategory(id: 1, name: "shopping"),
+          //     ),
+          //     Transaction(
+          //       id: 3,
+          //       amount: 530000,
+          //       currency: "IQD",
+          //       type: TransactionType.expense,
+          //       date: DateTime(2024, 12, 2),
+          //       category: TransactionCategory(id: 1, name: "shopping"),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

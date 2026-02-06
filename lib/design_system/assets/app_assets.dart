@@ -54,4 +54,8 @@ class AppAssets {
   static const String icLoading = "$_icons/ic_loading.svg";
   static const String icAmountPrimary = '$_icons/ic_amount_primary.svg';
   static const String icAmountGray = '$_icons/ic_amount_gray.svg';
+
+  static const String icEmptyTransactionImage = '$_images/empty_transaction_image.png';
+  static const String icEmptyTransactionPattern = '$_icons/empty_transaction_pattern.svg';
+
 }
