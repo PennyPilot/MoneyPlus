@@ -7,7 +7,7 @@ import '../../../../design_system/assets/app_assets.dart';
 import 'progress_bar_section.dart';
 import 'savings_banner.dart';
 import 'scale_labels.dart';
-import 'summary_card.dart';
+import 'summary_item.dart';
 
 class MonthlyOverview extends StatelessWidget {
   final double income;
@@ -50,32 +50,30 @@ class MonthlyOverview extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: SummaryCard(
+                child: SummaryItem(
                   icon: SvgPicture.asset(
                     AppAssets.icWalletAdd,
                     width: 24,
                     height: 24,
                   ),
-                  iconBackgroundColor: const Color(0xFF00BFA5),
                   label: 'Income',
                   value: income,
                   currency: currency,
-                  isPositive: true,
+                  isIncome: true,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: SummaryCard(
+                child: SummaryItem(
                   icon: SvgPicture.asset(
                     AppAssets.icMoneyRemove,
                     width: 24,
                     height: 24,
                   ),
-                  iconBackgroundColor: const Color(0xFFE91E63),
                   label: 'Expenses',
                   value: expenses,
                   currency: currency,
-                  isPositive: false,
+                  isIncome: false,
                 ),
               ),
             ],
