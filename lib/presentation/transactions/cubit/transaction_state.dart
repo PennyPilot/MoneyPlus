@@ -11,12 +11,16 @@ class TransactionState {
   final ErrorModel? error;
   final List<Transaction> transactions;
   final TransactionTabs selectedTab;
+  final Month selectedMonth;
+  final int selectedYear;
 
   const TransactionState({
     required this.status,
     this.error,
     this.transactions = const [],
-    this.selectedTab = TransactionTabs.all
+    this.selectedTab = TransactionTabs.all,
+    this.selectedYear = 2026,
+    this.selectedMonth = Month.january
   });
 
   factory TransactionState.initial() =>
@@ -26,13 +30,36 @@ class TransactionState {
     TransactionStatus? status,
     ErrorModel? error,
     List<Transaction>? transactions,
-    TransactionTabs? selectedTab
+    TransactionTabs? selectedTab,
+    int? selectedYear,
+    Month? selectedMonth
   }) {
     return TransactionState(
       status: status ?? this.status,
       error: error,
       transactions: transactions ?? this.transactions,
-      selectedTab: selectedTab ?? this.selectedTab
+      selectedTab: selectedTab ?? this.selectedTab,
+      selectedYear: selectedYear ?? this.selectedYear,
+      selectedMonth: selectedMonth ?? this.selectedMonth
     );
   }
+}
+
+enum Month {
+  january('January'),
+  february('February'),
+  march('March'),
+  april('April'),
+  may('May'),
+  june('June'),
+  july('July'),
+  august('August'),
+  september('September'),
+  october('October'),
+  november('November'),
+  december('December');
+
+  final String label;
+
+  const Month(this.label);
 }

@@ -37,4 +37,8 @@ class TransactionCubit extends Cubit<TransactionState> {
       state.copyWith(status: TransactionStatus.success, transactions: result),
     );
   }
+
+  void setSelectedDate(Month month, int year){
+    emit(state.copyWith(selectedMonth: month, selectedYear: year));
+  }
 }
