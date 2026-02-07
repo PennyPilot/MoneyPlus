@@ -80,6 +80,7 @@ class TransactionRepositoryStub implements TransactionRepository {
 
   @override
   Future<List<Transaction>> getAllTransactions() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     return [
       Transaction(
         id: 1,
@@ -120,6 +121,7 @@ class TransactionRepositoryStub implements TransactionRepository {
   Future<List<Transaction>> getAllTransactionsByType(
     TransactionType type,
   ) async {
+    await Future.delayed(const Duration(milliseconds: 500));
     if (type == TransactionType.income) {
       return [
         Transaction(
