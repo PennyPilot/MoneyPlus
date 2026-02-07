@@ -35,16 +35,18 @@ class EmptyTransactions extends StatelessWidget {
           ],
         ),
         Text(
-          "No transaction records",
+          localizations.no_transaction_record_title,
           style: typography.title.small.copyWith(color: colors.title),
         ),
         SizedBox(height: 4),
         Text(
-          "Add your first one to get started",
+          localizations.no_transaction_record_content,
           style: typography.body.small.copyWith(color: colors.body),
         ),
         SizedBox(height: 24),
-        IntrinsicWidth(child: DefaultButton(text: 'Add transaction')),
+        IntrinsicWidth(
+          child: DefaultButton(text: localizations.add_transaction),
+        ),
       ],
     );
   }

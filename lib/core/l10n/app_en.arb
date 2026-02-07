@@ -90,6 +90,17 @@
   "auth_error_not_implemented": "This feature is not available on the server",
   "auth_error_default": "An unexpected error occurred. Please try again later",
   "no_internet_connection": "No internet connection",
+
+  "no_transaction_record_title": "No transaction records",
+  "no_transaction_record_content": "Add your first one to get started",
+  "add_transaction": "Add transaction",
+  "all": "All",
+  "incomes": "Incomes",
+  "expenses": "Expenses",
+  "transaction": "Transaction",
+  "transaction_error_title": "transactions error",
+  "transaction_error_content": "failed to load transaction",
+
   "currencyCode": "IQD",
   "@stepOf": {
     "placeholders": {

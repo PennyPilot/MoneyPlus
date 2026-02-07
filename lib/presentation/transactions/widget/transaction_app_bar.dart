@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 
+import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/assets/app_assets.dart';
 import '../cubit/transaction_state.dart';
 
@@ -22,8 +23,10 @@ class TransactionAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final localizations = AppLocalizations.of(context)!;
+
     return CustomAppBar(
-      title: "Transaction",
+      title: localizations.transaction,
       backgroundColor: colors.surfaceLow,
       trailing: GestureDetector(
         onTap: () {

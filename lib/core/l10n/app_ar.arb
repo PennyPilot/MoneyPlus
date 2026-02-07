@@ -71,5 +71,15 @@
   "currencyCode": "دينار",
 
   "spendingTrend": "اتجاه الإنفاق",
-  "noDataAvailable": "لا توجد بيانات متاحة"
+  "noDataAvailable": "لا توجد بيانات متاحة",
+
+  "no_transaction_record_title": "لا توجد سجلات معاملات",
+  "no_transaction_record_content": "أضف أول معاملة للبدء",
+  "add_transaction": "إضافة معاملة",
+  "all": "الكل",
+  "incomes": "الإيرادات",
+  "expenses": "المصروفات",
+  "transaction": "المعاملات",
+  "transaction_error_title": "خطأ في المعاملات",
+  "transaction_error_content": "فشل في تحميل المعاملات"
 }

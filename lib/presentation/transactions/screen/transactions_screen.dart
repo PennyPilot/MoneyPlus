@@ -29,8 +29,8 @@ class TransactionsScreen extends StatelessWidget {
           listener: (context, state) {
             if (state.status == TransactionStatus.failure) {
               MSnackBar.error(
-                message: 'failed to load transaction',
-                title: 'data error',
+                message: localizations.transaction_error_content,
+                title: localizations.transaction_error_title,
               ).showSnackBar(context: context);
             }
           },

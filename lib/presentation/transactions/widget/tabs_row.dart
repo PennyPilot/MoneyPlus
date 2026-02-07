@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:moneyplus/design_system/widgets/chip.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
 
+import '../../../core/l10n/app_localizations.dart';
+
 class TabsRow extends StatelessWidget {
   final TransactionTabs selectedTab;
   final Function(TransactionTabs) onTabSelected;
@@ -14,10 +16,12 @@ class TabsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Row(
       children: [
         MChip(
-          label: "All",
+          label: localizations.all,
           selected: selectedTab == TransactionTabs.all,
           onTap: () {
             onTabSelected(TransactionTabs.all);
@@ -25,7 +29,7 @@ class TabsRow extends StatelessWidget {
         ),
         SizedBox(width: 12),
         MChip(
-          label: "Incomes",
+          label: localizations.incomes,
           selected: selectedTab == TransactionTabs.incomes,
           onTap: () {
             onTabSelected(TransactionTabs.incomes);
@@ -33,7 +37,7 @@ class TabsRow extends StatelessWidget {
         ),
         SizedBox(width: 12),
         MChip(
-          label: "Expenses",
+          label: localizations.expenses,
           selected: selectedTab == TransactionTabs.expenses,
           onTap: () {
             onTabSelected(TransactionTabs.expenses);
