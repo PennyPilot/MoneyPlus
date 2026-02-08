@@ -16,12 +16,19 @@
   "spendingTrend": "Spending Trend",
   "noDataAvailable": "No data available",
   "date": "Date",
-  "setUpYourAccount": "Let’s set up your account",
+  "amount": "Amount",
+  "addIncome": "Add income",
+  "note": "Note",
+  "add": "Add",
+  "saving": "Saving...",
+  "incomeAddedSuccessfully": "Income added successfully!",
+  "failedToAddIncome": "Failed to add income",
+  "salary": "Salary",
+  "setUpYourAccount": "Let's set up your account",
   "setSalary": "Set Salary",
   "currency": "Currency",
   "salaryDay": "Salary day",
   "fromEachMonth": "from each month",
-  "salary": "Salary",
   "accountSetup": "Account setup",
   "search": "Search...",
   "select": "Select",
@@ -82,5 +89,23 @@
   "auth_error_server_error": "Internal server error. Please try again later",
   "auth_error_not_implemented": "This feature is not available on the server",
   "auth_error_default": "An unexpected error occurred. Please try again later",
-  "no_internet_connection": "No internet connection"
+  "no_internet_connection": "No internet connection",
+  "currencyCode": "IQD",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stepOfTotal": "Step {current} of {total}",
+  "@stepOfTotal": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  }
 }
