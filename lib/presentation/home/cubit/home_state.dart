@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../models/CategoryExpense.dart';
-import 'home_cubit.dart';
+import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 
 @immutable
 sealed class HomeState {
@@ -8,20 +7,18 @@ sealed class HomeState {
 }
 
 class HomeLoading extends HomeState {
-  final bool isLoading;
-
-  const HomeLoading({required this.isLoading});
+  const HomeLoading();
 }
 
 class HomeLoaded extends HomeState {
-  final Month selectedMonth;
+  final int selectedMonth;
   final int selectedYear;
   final double currentBalance;
   final double currentSavingSpendingPercentage;
   final double totalMonthIncome;
   final double totalMonthExpense;
   final String currency;
-  final List<CategoryExpense> topSpendingCategories;
+  final List<TopSpendingCategory> topSpendingCategories;
 
   const HomeLoaded({
     required this.currentBalance,
@@ -35,14 +32,14 @@ class HomeLoaded extends HomeState {
   });
 
   HomeLoaded copyWith({
-    Month? selectedMonth,
+    int? selectedMonth,
     int? selectedYear,
     double? currentBalance,
     double? currentSavingSpendingPercentage,
     double? totalMonthIncome,
     double? totalMonthExpense,
     String? currency,
-    List<CategoryExpense>? topSpendingCategories,
+    List<TopSpendingCategory>? topSpendingCategories,
   }) {
     return HomeLoaded(
       selectedMonth: selectedMonth ?? this.selectedMonth,
