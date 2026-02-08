@@ -7,7 +7,7 @@ import '../../design_system/utils/helpers.dart';
 import '../../design_system/widgets/custom_date_picker.dart';
 
 class DropDownDateDialog extends StatelessWidget {
-  final Function(int month, int year) onDatePick;
+  final Function(DateTime) onDatePick;
   final int year;
   final int month;
 
@@ -30,7 +30,7 @@ class DropDownDateDialog extends StatelessWidget {
           initialYear: year,
         );
         if (picked != null) {
-          onDatePick(month, year);
+          onDatePick(picked);
         }
       },
       child: Container(

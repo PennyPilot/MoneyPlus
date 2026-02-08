@@ -13,7 +13,6 @@ import 'package:moneyplus/presentation/home/widget/current_balance.dart';
 
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
-import '../../../design_system/widgets/custom_date_picker.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
 
@@ -112,17 +111,7 @@ Widget _loadedContent({
               child: _topSection(
                 showAppBarOnly: showAppBarOnly,
                 state: state,
-                onClickDateChip: () async {
-                  final picked = await showMonthYearDialog(
-                    context,
-                    initialMonth: state.selectedMonth,
-                    initialYear: state.selectedYear,
-                  );
-
-                  if (picked != null) {
-                    setSelectedDate(picked);
-                  }
-                },
+                onDatePick: setSelectedDate,
                 context: context
               ),
             ),
@@ -228,7 +217,7 @@ Widget _loadedContent({
 Widget _topSection({
   required bool showAppBarOnly,
   required HomeLoaded state,
-  required Function onClickDateChip,
+  required Function(DateTime) onDatePick,
   required BuildContext context
 }) {
   final colors = MoneyColors.light;
@@ -245,7 +234,7 @@ Widget _topSection({
           child: homeAppBar(
             month: state.selectedMonth,
             year: state.selectedYear,
-            onClickDateChip: onClickDateChip,
+            onDatePick: onDatePick,
             context: context
           ),
         ),
@@ -323,7 +312,7 @@ Widget _topSection({
               child: homeAppBar(
                 month: state.selectedMonth,
                 year: state.selectedYear,
-                onClickDateChip: onClickDateChip,
+                onDatePick: onDatePick,
                 context: context
               ),
             ),

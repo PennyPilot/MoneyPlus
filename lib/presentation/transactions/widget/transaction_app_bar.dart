@@ -24,7 +24,6 @@ class TransactionAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
 
     return CustomAppBar(
@@ -33,10 +32,12 @@ class TransactionAppBar extends StatelessWidget {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DropDownDateDialog(onDatePick: onDatePick, year: year, month: month),
+          DropDownDateDialog(onDatePick: (date) {
+            onDatePick(date.month, date.year);
+          }, year: year, month: month),
           SizedBox(width: 8,),
           GestureDetector(
-            onTap: () { },
+            onTap: () {},
             child: Container(
               height: 40,
               width: 40,
@@ -45,7 +46,8 @@ class TransactionAppBar extends StatelessWidget {
                 color: colors.surface,
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: SvgPicture.asset(AppAssets.icFilter, height: 20, width: 20,),
+              child: SvgPicture.asset(
+                AppAssets.icFilter, height: 20, width: 20,),
             ),
           ),
         ],
