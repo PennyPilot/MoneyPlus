@@ -5,13 +5,13 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/assets/app_assets.dart';
-import '../cubit/transaction_state.dart';
+import '../../../design_system/utils/helpers.dart';
 
 class TransactionAppBar extends StatelessWidget {
   final Function onClickDateChip;
   final Function onFilterClicked;
   final int year;
-  final Month month;
+  final int month;
 
   const TransactionAppBar({
     super.key,
@@ -47,7 +47,7 @@ class TransactionAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${month.label}, $year",
+                    "${getMonthNameFromNumber(month,context)}, $year",
                     style: typography.label.small.copyWith(color: colors.title),
                   ),
                   SvgPicture.asset(AppAssets.arrowDownV2),

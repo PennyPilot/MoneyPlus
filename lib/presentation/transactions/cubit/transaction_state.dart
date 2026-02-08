@@ -3,6 +3,7 @@ import 'package:moneyplus/core/errors/error_model.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 
 enum TransactionStatus { initial, loading, success, failure }
+
 enum TransactionTabs { all, incomes, expenses }
 
 @immutable
@@ -12,7 +13,7 @@ class TransactionState {
   final List<Transaction> filteredTransactions;
   final List<Transaction> allTransactions;
   final TransactionTabs selectedTab;
-  final Month selectedMonth;
+  final int selectedMonth;
   final int selectedYear;
 
   const TransactionState({
@@ -22,7 +23,7 @@ class TransactionState {
     this.allTransactions = const [],
     this.selectedTab = TransactionTabs.all,
     this.selectedYear = 2026,
-    this.selectedMonth = Month.january
+    this.selectedMonth = 1,
   });
 
   factory TransactionState.initial() =>
@@ -35,7 +36,7 @@ class TransactionState {
     List<Transaction>? allTransactions,
     TransactionTabs? selectedTab,
     int? selectedYear,
-    Month? selectedMonth
+    int? selectedMonth,
   }) {
     return TransactionState(
       status: status ?? this.status,
@@ -44,26 +45,7 @@ class TransactionState {
       allTransactions: allTransactions ?? this.allTransactions,
       selectedTab: selectedTab ?? this.selectedTab,
       selectedYear: selectedYear ?? this.selectedYear,
-      selectedMonth: selectedMonth ?? this.selectedMonth
+      selectedMonth: selectedMonth ?? this.selectedMonth,
     );
   }
-}
-
-enum Month {
-  january('January'),
-  february('February'),
-  march('March'),
-  april('April'),
-  may('May'),
-  june('June'),
-  july('July'),
-  august('August'),
-  september('September'),
-  october('October'),
-  november('November'),
-  december('December');
-
-  final String label;
-
-  const Month(this.label);
 }

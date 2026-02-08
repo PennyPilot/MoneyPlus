@@ -18,13 +18,9 @@ class TransactionCubit extends Cubit<TransactionState> {
     emit(
       state.copyWith(
         allTransactions: result,
-        filteredTransactions: _filterTransaction(
-          Month.values[now.month - 1],
-          now.year,
-          result,
-        ),
+        filteredTransactions: _filterTransaction(now.month, now.year, result),
         selectedYear: now.year,
-        selectedMonth: Month.values[now.month - 1],
+        selectedMonth: now.month,
         status: TransactionStatus.success,
       ),
     );
@@ -50,7 +46,7 @@ class TransactionCubit extends Cubit<TransactionState> {
     );
   }
 
-  void setSelectedDate(Month month, int year) async {
+  void setSelectedDate(int month, int year) async {
     if (state.selectedMonth == month && state.selectedYear == year) return;
 
     emit(
@@ -64,7 +60,11 @@ class TransactionCubit extends Cubit<TransactionState> {
     emit(
       state.copyWith(
         status: TransactionStatus.success,
-        filteredTransactions: _filterTransaction(month, year, state.allTransactions),
+        filteredTransactions: _filterTransaction(
+          month,
+          year,
+          state.allTransactions,
+        ),
       ),
     );
   }
@@ -81,13 +81,12 @@ class TransactionCubit extends Cubit<TransactionState> {
   }
 
   List<Transaction> _filterTransaction(
-    Month month,
+    int month,
     int year,
     List<Transaction> transactions,
   ) {
     return transactions.where((transaction) {
-      return transaction.date.year == year &&
-          transaction.date.month == month.index + 1;
+      return transaction.date.year == year && transaction.date.month == month;
     }).toList();
   }
 }

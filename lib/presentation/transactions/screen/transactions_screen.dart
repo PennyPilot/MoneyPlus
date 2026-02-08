@@ -44,12 +44,12 @@ class TransactionsScreen extends StatelessWidget {
                     onClickDateChip: () async {
                       final picked = await showMonthYearDialog(
                         context,
-                        initialMonth: state.selectedMonth.index + 1,
+                        initialMonth: state.selectedMonth,
                         initialYear: state.selectedYear,
                       );
                       if (picked != null) {
                         context.read<TransactionCubit>().setSelectedDate(
-                          Month.values[picked.month - 1],
+                          picked.month,
                           picked.year,
                         );
                       }
