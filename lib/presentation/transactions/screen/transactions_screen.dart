@@ -54,6 +54,7 @@ class TransactionsScreen extends StatelessWidget {
                         );
                       }
                     },
+                    onFilterClicked: (){},
                   ),
                 ),
                 SliverPadding(
@@ -70,7 +71,7 @@ class TransactionsScreen extends StatelessWidget {
                 state.status == TransactionStatus.loading
                     ? SliverFillRemaining(child: LoadingView())
                     : state.filteredTransactions.isEmpty
-                    ? SliverToBoxAdapter(child: EmptyTransactions())
+                    ? SliverFillRemaining(child: EmptyTransactions())
                     : TransactionsList(transactions: state.filteredTransactions),
               ],
             );

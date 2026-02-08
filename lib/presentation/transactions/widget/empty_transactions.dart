@@ -15,6 +15,7 @@ class EmptyTransactions extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Stack(
           alignment: Alignment.topCenter,
