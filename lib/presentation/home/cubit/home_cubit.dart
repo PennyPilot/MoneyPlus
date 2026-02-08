@@ -1,112 +1,77 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
+import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
-import '../models/CategoryExpense.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeLoading(isLoading: true));
+  final UserMoneyRepository userMoneyRepository;
 
-  void getData({required Month month, required int year}) async {
-    try{
+  final _topSpendingCount = 5;
+
+  HomeCubit({required this.userMoneyRepository}) : super(HomeLoading());
+
+  void getData({required int month, required int year}) async {
+    try {
       final loadedContent = HomeLoaded(
         currentBalance: await getTotalBalance(),
-        currentSavingSpendingPercentage: await getSavingSpendingPercentage(),
+        currentSavingSpendingPercentage: await getSavingSpendingPercentage(month, year),
         totalMonthIncome: await getTotalMonthIncome(month, year),
         totalMonthExpense: await getTotalMonthExpense(month, year),
-        topSpendingCategories: await getTopSpendingCategories(),
+        topSpendingCategories: await getTopSpendingCategories(month, year),
         currency: await getCurrency(),
         selectedMonth: month,
         selectedYear: year,
       );
       emit(loadedContent);
-    }catch(e){
+    } catch (e) {
+      print("error in home cubit: $e");
       emit(HomeError(errorMessage: "Failed to get Data"));
     }
-
   }
 
-  void setSelectedDate(Month month, int year){
-    print('setSelectedDate in cubit is: $month');
-    if(state is HomeLoaded){
-      final s = state as HomeLoaded;
-      emit(s.copyWith(selectedMonth: month, selectedYear: year));
+  void setSelectedDate(int month, int year) async {
+    if ((state as HomeLoaded).selectedMonth == month &&
+        (state as HomeLoaded).selectedYear == year) {
+      return;
     }
+    final loadedState = state as HomeLoaded;
+    emit(HomeLoading());
+    var expense = await getTotalMonthExpense(month, year);
+    var income = await getTotalMonthIncome(month, year);
+    emit(
+      loadedState.copyWith(
+        totalMonthIncome: income,
+        totalMonthExpense: expense,
+        selectedMonth: month,
+        selectedYear: year,
+      ),
+    );
   }
 
   Future<double> getTotalBalance() async {
-    // TODO: Fetch from repository
-    return 500_000;
+    return await userMoneyRepository.getTotalBalance();
   }
 
-  Future<double> getSavingSpendingPercentage() async {
-    // TODO: Fetch from repository
-    return 30;
+  Future<double> getSavingSpendingPercentage(int month, int year) async {
+    return await userMoneyRepository.getSavingSpendingPercentage(month, year);
   }
 
-  Future<double> getTotalMonthIncome(Month month, int year) async {
-    // TODO: Fetch from repository
-    return 80_000;
+  Future<double> getTotalMonthIncome(int month, int year) async {
+    return await userMoneyRepository.getMonthIncome(month, year);
   }
 
-  Future<double> getTotalMonthExpense(Month month, int year) async {
-    // TODO: Fetch from repository
-    return 50_000;
+  Future<double> getTotalMonthExpense(int month, int year) async {
+    return await userMoneyRepository.getMonthExpense(month, year);
   }
 
-  Future<List<CategoryExpense>> getTopSpendingCategories() async {
-    // TODO: Fetch from repository
-    return getFakeTopSpendingCategories();
+  Future<List<TopSpendingCategory>> getTopSpendingCategories(
+    int month,
+    int year,
+  ) async {
+    return await userMoneyRepository.getTopSpendingCategoriesInMonth(month: month, year: year, count: _topSpendingCount);
   }
 
   Future<String> getCurrency() async {
-    // TODO: Fetch from repository
-    return 'EGY';
+    return await userMoneyRepository.getCurrency();
   }
-}
-
-List<CategoryExpense> getFakeTopSpendingCategories() {
-  return [
-    CategoryExpense(
-      categoryName: "Food",
-      amount: 10000,
-      transactionCount: 15,
-      percentage: 33.3,
-    ),
-    CategoryExpense(
-      categoryName: "Transport",
-      amount: 5000,
-      transactionCount: 8,
-      percentage: 16.7,
-    ),
-    CategoryExpense(
-      categoryName: "Entertainment",
-      amount: 8000,
-      transactionCount: 12,
-      percentage: 26.7,
-    ),
-    CategoryExpense(
-      categoryName: "Shopping",
-      amount: 7000,
-      transactionCount: 10,
-      percentage: 23.3,
-    ),
-  ];
-}
-
-enum Month {
-  january('January'),
-  february('February'),
-  march('March'),
-  april('April'),
-  may('May'),
-  june('June'),
-  july('July'),
-  august('August'),
-  september('September'),
-  october('October'),
-  november('November'),
-  december('December');
-
-  final String label;
-
-  const Month(this.label);
 }

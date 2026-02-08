@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
@@ -9,12 +10,12 @@ import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 import 'package:moneyplus/presentation/home/widget/current_balance.dart';
+
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
 import '../../../design_system/widgets/custom_date_picker.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final currentDate = DateTime.now();
     return BlocProvider(
       create: (context) =>
-          getIt<HomeCubit>()..getData(month: Month.values[currentDate.month - 1], year: currentDate.year),
+          getIt<HomeCubit>()..getData(month: currentDate.month, year: currentDate.year),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           var content = switch (state) {
@@ -71,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               showAppBarOnly: showAppBarOnly,
               setSelectedDate: (date) {
                 context.read<HomeCubit>().setSelectedDate(
-                  Month.values[date.month - 1],
+                  date.month,
                   date.year,
                 );
               },
@@ -97,6 +98,7 @@ Widget _loadedContent({
   final colors = context.colors;
   final topSpendingCategories = state.topSpendingCategories;
   final typography = context.typography;
+  final localizations = AppLocalizations.of(context)!;
   return Scaffold(
     body: Container(
       color: MoneyColors.light.surface,
@@ -113,7 +115,7 @@ Widget _loadedContent({
                 onClickDateChip: () async {
                   final picked = await showMonthYearDialog(
                     context,
-                    initialMonth: state.selectedMonth.index + 1,
+                    initialMonth: state.selectedMonth,
                     initialYear: state.selectedYear,
                   );
 
@@ -121,6 +123,7 @@ Widget _loadedContent({
                     setSelectedDate(picked);
                   }
                 },
+                context: context
               ),
             ),
           ),
@@ -173,6 +176,20 @@ Widget _loadedContent({
                       ),
                     ),
 
+                    if (topSpendingCategories.isEmpty)
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            localizations.no_spending_categories,
+                            style: typography.body.medium.copyWith(
+                              color: colors.primary,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         childCount: topSpendingCategories.length,
@@ -185,11 +202,11 @@ Widget _loadedContent({
                             ),
                             child: TopSpendingCard(
                               expenseCategory:
-                                  topSpendingCategories[index].categoryName,
+                                  topSpendingCategories[index].category.name,
                               amount:
-                                  "${formatWithCommas(topSpendingCategories[index].amount)} ${state.currency}",
+                                  "${formatWithCommas(topSpendingCategories[index].total)} ${topSpendingCategories[index].currency}",
                               transactionCount:
-                                  topSpendingCategories[index].transactionCount,
+                                  topSpendingCategories[index].numberOfTransactions,
                               percentage:
                                   topSpendingCategories[index].percentage,
                             ),
@@ -212,6 +229,7 @@ Widget _topSection({
   required bool showAppBarOnly,
   required HomeLoaded state,
   required Function onClickDateChip,
+  required BuildContext context
 }) {
   final colors = MoneyColors.light;
   if (showAppBarOnly) {
@@ -228,6 +246,7 @@ Widget _topSection({
             month: state.selectedMonth,
             year: state.selectedYear,
             onClickDateChip: onClickDateChip,
+            context: context
           ),
         ),
       ),
@@ -305,6 +324,7 @@ Widget _topSection({
                 month: state.selectedMonth,
                 year: state.selectedYear,
                 onClickDateChip: onClickDateChip,
+                context: context
               ),
             ),
           ),

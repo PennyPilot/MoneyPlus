@@ -5,7 +5,6 @@ import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
-
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/snack_bar.dart';
@@ -114,14 +113,7 @@ class LoginScreen extends StatelessWidget {
         title: localizations.success,
       ).showSnackBar(context: context);
 
-      // We should remove this navigator when handle the Navigator class
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              const Scaffold(body: Center(child: Text('Welcome'))),
-        ),
-      );
+      HomeRoute().push(context);
     }
   }
 }
@@ -139,12 +131,16 @@ class _LoginHeader extends StatelessWidget {
       children: [
         Text(
           localizations.login_welcome_title,
-          style: typography.headline.medium.copyWith(color: colors.title),
+          style: typography.headline.medium.copyWith(
+            color: colors.title,
+          ),
         ),
         const SizedBox(height: 4),
         Text(
           localizations.login_welcome_subtitle,
-          style: typography.body.small.copyWith(color: colors.body),
+          style: typography.body.small.copyWith(
+            color: colors.body,
+          ),
         ),
       ],
     );
