@@ -17,7 +17,8 @@ class TransactionCubit extends Cubit<TransactionState> {
     final now = DateTime.now();
     emit(
       state.copyWith(
-        transactions: _filterTransaction(
+        allTransactions: result,
+        filteredTransactions: _filterTransaction(
           Month.values[now.month - 1],
           now.year,
           result,
@@ -39,7 +40,8 @@ class TransactionCubit extends Cubit<TransactionState> {
     emit(
       state.copyWith(
         status: TransactionStatus.success,
-        transactions: _filterTransaction(
+        allTransactions: result,
+        filteredTransactions: _filterTransaction(
           state.selectedMonth,
           state.selectedYear,
           result,
@@ -59,12 +61,10 @@ class TransactionCubit extends Cubit<TransactionState> {
       ),
     );
 
-    final result = await _getTransactionsByTab(state.selectedTab);
-
     emit(
       state.copyWith(
         status: TransactionStatus.success,
-        transactions: _filterTransaction(month, year, result),
+        filteredTransactions: _filterTransaction(month, year, state.allTransactions),
       ),
     );
   }
