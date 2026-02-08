@@ -12,8 +12,6 @@ import 'package:moneyplus/presentation/transactions/widget/tabs_row.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_app_bar.dart';
 import 'package:moneyplus/presentation/transactions/widget/transactions_list.dart';
 
-import '../../../design_system/widgets/custom_date_picker.dart';
-
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});
 
@@ -41,19 +39,7 @@ class TransactionsScreen extends StatelessWidget {
                   child: TransactionAppBar(
                     year: state.selectedYear,
                     month: state.selectedMonth,
-                    onClickDateChip: () async {
-                      final picked = await showMonthYearDialog(
-                        context,
-                        initialMonth: state.selectedMonth,
-                        initialYear: state.selectedYear,
-                      );
-                      if (picked != null) {
-                        context.read<TransactionCubit>().setSelectedDate(
-                          picked.month,
-                          picked.year,
-                        );
-                      }
-                    },
+                    onDatePick: context.read<TransactionCubit>().setSelectedDate,
                     onFilterClicked: (){},
                   ),
                 ),

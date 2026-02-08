@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
+import 'package:moneyplus/utils/extenstions/drop_down_date_dialog.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/assets/app_assets.dart';
-import '../../../design_system/utils/helpers.dart';
 
 class TransactionAppBar extends StatelessWidget {
-  final Function onClickDateChip;
+  final Function(int month, int year) onDatePick;
   final Function onFilterClicked;
   final int year;
   final int month;
 
   const TransactionAppBar({
     super.key,
-    required this.onClickDateChip,
+    required this.onDatePick,
     required this.onFilterClicked,
     required this.year,
     required this.month,
@@ -33,28 +33,7 @@ class TransactionAppBar extends StatelessWidget {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: () {
-              onClickDateChip();
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: colors.surface,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "${getMonthNameFromNumber(month,context)}, $year",
-                    style: typography.label.small.copyWith(color: colors.title),
-                  ),
-                  SvgPicture.asset(AppAssets.arrowDownV2),
-                ],
-              ),
-            ),
-          ),
+          DropDownDateDialog(onDatePick: onDatePick, year: year, month: month),
           SizedBox(width: 8,),
           GestureDetector(
             onTap: () { },
