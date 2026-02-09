@@ -21,7 +21,7 @@ abstract class TransactionRepository {
     String? note,
   });
 
-  Future<bool> deleteTransaction(int id);
+  Future<void> deleteTransaction(String id);
 
   Future<List<Transaction>> getTransactions({
     TransactionType? type,
@@ -29,7 +29,7 @@ abstract class TransactionRepository {
     DateTime? date,
   });
 
-  Future<Transaction> getTransactionDetails(int id);
+  Future<Transaction> getTransactionDetails(String id);
 
   Future<double> getTotalAmount({TransactionType? type});
 
