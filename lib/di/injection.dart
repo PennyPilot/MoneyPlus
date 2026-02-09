@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
+import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 
 import '../data/repository/account_repository.dart';
 import '../data/repository/authentication_repository.dart';
@@ -56,7 +57,7 @@ void initDI() {
   );
 
   getIt.registerLazySingleton<TransactionRepository>(
-    () => TransactionRepositoryStub(),
+    () => TransactionRepositoryStub(getIt<SupabaseService>()),
   );
 
   getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountRepository>()));
@@ -68,5 +69,9 @@ void initDI() {
   getIt.registerFactory<TransactionCubit>(
     () =>
         TransactionCubit(transactionRepository: getIt<TransactionRepository>()),
+  );
+
+  getIt.registerFactory<TransactionDetailsCubit>(
+      () => TransactionDetailsCubit(transactionRepository: getIt<TransactionRepository>())
   );
 }
