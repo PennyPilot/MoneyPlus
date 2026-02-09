@@ -7,6 +7,7 @@ import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
 import '../../di/injection.dart';
 import '../login/cubit/login_cubit.dart';
+import '../trasnaction_details/transaction_details_screen.dart';
 
 part 'routes.g.dart';
 
@@ -53,5 +54,17 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return HomeScreen();
+  }
+}
+
+@TypedGoRoute<TransactionDetailsRoute>(path: '/transaction_details')
+@immutable
+class TransactionDetailsRoute extends GoRouteData with $TransactionDetailsRoute {
+  final String transactionId;
+  TransactionDetailsRoute(this.transactionId);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return TransactionDetailsScreen(transactionId: transactionId);
   }
 }
