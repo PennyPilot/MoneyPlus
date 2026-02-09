@@ -108,5 +108,6 @@
       "total": {}
     }
   },
+  "current_balance":"Current balance",
   "how_much_money": "How much money do you have right now?"
 }

@@ -72,6 +72,7 @@
 
   "spendingTrend": "اتجاه الإنفاق",
   "noDataAvailable": "لا توجد بيانات متاحة",
+  "current_balance":"الرصيد الحالي",
   "how_much_money": "ما مقدار المال المتوفر لديك حاليًا؟"
 
 }
