@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
+import 'package:moneyplus/presentation/account_setup/screen/account_setup_screen.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 
 import 'core/l10n/app_localizations.dart';
@@ -17,7 +18,7 @@ class MoneyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Money++',
       localizationsDelegates: const [
@@ -31,7 +32,8 @@ class MoneyApp extends StatelessWidget {
         Locale('ar'),
       ],
       theme: MoneyTheme.lightTheme,
-      routerConfig: _router,
+      // routerConfig: _router,
+      home: AccountSetupScreen(),
     );
   }
 }
