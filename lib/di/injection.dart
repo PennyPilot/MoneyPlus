@@ -69,9 +69,6 @@ void initDI() {
     () =>
         TransactionCubit(transactionRepository: getIt<TransactionRepository>()),
   );
-  getIt.registerFactory<AuthenticationValidator>(
-    () => AuthenticationValidator(),
-  );
   getIt.registerFactory<CreateAccountCubit>(
     () => CreateAccountCubit(
       getIt<AuthenticationValidator>(),
