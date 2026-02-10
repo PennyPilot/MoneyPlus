@@ -42,5 +42,4 @@ class MainScreen extends StatelessWidget {
         return const TransactionsScreen(); //change to account
     }
   }
-  
 }
