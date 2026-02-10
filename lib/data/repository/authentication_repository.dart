@@ -40,7 +40,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on AuthException catch (error) {
       return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
-      return Result.error(ErrorModel(error.toString()));
+      if (kDebugMode) {
+        print('Caught error during register: $error');
+      }
+      rethrow;
     }
   }
 
@@ -95,7 +98,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> resetPasswordForEmail(String email) async {
     final client = await supabaseService.getClient();
-    final response = await client.auth.resetPasswordForEmail(
+    client.auth.resetPasswordForEmail(
       email,
       redirectTo: AppConstants.resetPasswordRedirect,
     );
