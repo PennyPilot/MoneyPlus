@@ -14,19 +14,22 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainCubit, MainState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: context.colors.surface,
-          body: _getScreenForTab(state.selectedTab),
-          bottomNavigationBar: NavBar(
-            selectedTab: state.selectedTab,
-            onTabSelected: (tab) {
-              context.read<MainCubit>().onTabSelected(tab);
-            },
-          ),
-        );
-      },
+    return BlocProvider(
+      create: (context) => MainCubit(),
+      child: BlocBuilder<MainCubit, MainState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: context.colors.surface,
+            body: _getScreenForTab(state.selectedTab),
+            bottomNavigationBar: NavBar(
+              selectedTab: state.selectedTab,
+              onTabSelected: (tab) {
+                context.read<MainCubit>().onTabSelected(tab);
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 

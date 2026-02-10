@@ -6,7 +6,6 @@ import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
 import '../../di/injection.dart';
 import '../login/cubit/login_cubit.dart';
-import '../main_container/cubit/main_cubit.dart';
 import '../main_container/screen/main_screen.dart';
 
 part 'routes.g.dart';
@@ -53,9 +52,6 @@ class MainRoute extends GoRouteData with $MainRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return BlocProvider(
-      create: (context) => MainCubit(),
-      child: const MainScreen(),
-    );
+    return const MainScreen();
   }
 }
