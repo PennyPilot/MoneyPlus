@@ -98,7 +98,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> resetPasswordForEmail(String email) async {
     final client = await supabaseService.getClient();
-    client.auth.resetPasswordForEmail(
+    await client.auth.resetPasswordForEmail(
       email,
       redirectTo: AppConstants.resetPasswordRedirect,
     );
