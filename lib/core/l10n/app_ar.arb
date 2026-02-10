@@ -93,5 +93,14 @@
   "month_september": "سبتمبر",
   "month_october": "أكتوبر",
   "month_november": "نوفمبر",
-  "month_december": "ديسمبر"
+  "month_december": "ديسمبر",
+  "no_transaction_record_title": "لا توجد سجلات معاملات",
+  "no_transaction_record_content": "أضف أول معاملة للبدء",
+  "add_transaction": "إضافة معاملة",
+  "all": "الكل",
+  "incomes": "الإيرادات",
+  "expenses": "المصروفات",
+  "transaction": "المعاملات",
+  "transaction_error_title": "خطأ في المعاملات",
+  "transaction_error_content": "فشل في تحميل المعاملات"
 }

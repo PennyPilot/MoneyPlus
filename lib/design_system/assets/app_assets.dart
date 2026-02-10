@@ -62,4 +62,7 @@ class AppAssets {
   static const String transactionDetailsBackground = '$_images/transaction-details-background.png';
   static const String icFrenchFries = '$_icons/ic-french-fries.svg';
   static const String icShare = '$_icons/ic_share.svg';
+  static const String icEmptyTransactionImage = '$_images/empty_transaction_image.png';
+  static const String icEmptyTransactionPattern = '$_icons/empty_transaction_pattern.svg';
+  static const String icFilter = "$_icons/ic_filter.svg";
 }
