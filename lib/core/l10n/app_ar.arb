@@ -102,5 +102,10 @@
   "expenses": "المصروفات",
   "transaction": "المعاملات",
   "transaction_error_title": "خطأ في المعاملات",
-  "transaction_error_content": "فشل في تحميل المعاملات"
+  "transaction_error_content": "فشل في تحميل المعاملات",
+  "manage_categories" : "ادارةالتصنيفات",
+  "add_new_category": "اضافة تصنيف جديد",
+  "add_custom_category" : "اضافة تصنيف مخصص",
+  "category_name" : "اسم التصنيف",
+  "add" : "اضافة"
 }

@@ -41,12 +41,14 @@ class _DefaultButtonState extends State<DefaultButton> {
         offset: const Offset(0, 4),
         blurRadius: 12,
         spreadRadius: 0,
+        blurStyle: BlurStyle.inner,
       ),
       outerShadow: BoxShadow(
         color: const Color(0x29DC143C),
         offset: const Offset(0, 4),
         blurRadius: 8,
         spreadRadius: 0,
+        blurStyle: BlurStyle.outer,
       ),
     );
   }
