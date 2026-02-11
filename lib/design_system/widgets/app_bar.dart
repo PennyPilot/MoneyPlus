@@ -8,6 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Widget? trailing;
   final double? leadingWidth;
+  final Color? backgroundColor;
 
   const CustomAppBar({
     super.key,
@@ -15,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.trailing,
     this.leadingWidth,
+    this.backgroundColor,
   });
 
   @override
@@ -24,6 +26,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final contentColor = colors.title;
 
     return AppBar(
+      backgroundColor: backgroundColor,
+      surfaceTintColor: Colors.transparent,
       titleSpacing: 8,
       leadingWidth: leadingWidth,
       automaticallyImplyLeading: false,
