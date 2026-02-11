@@ -25,11 +25,12 @@
       final colors = context.colors;
       final contentColor = colors.title;
 
-      return AppBar(
-        backgroundColor: backgroundColor,
-        titleSpacing: 8,
-        leadingWidth: leadingWidth,
-        automaticallyImplyLeading: false,
+    return AppBar(
+      backgroundColor: backgroundColor,
+      surfaceTintColor: Colors.transparent,
+      titleSpacing: 8,
+      leadingWidth: leadingWidth,
+      automaticallyImplyLeading: false,
 
         title: title != null
             ? Text(title!, style: typo.title.small.copyWith(color: contentColor))

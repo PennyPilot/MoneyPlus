@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import '../../di/injection.dart';
 import '../login/cubit/login_cubit.dart';
 import '../statistics/statistics_screen.dart';
+import '../main_container/screen/main_screen.dart';
+
 part 'routes.g.dart';
 
 @TypedGoRoute<OnBoardingRoute>(path: '/')
@@ -21,7 +22,7 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("onBoarding screen"),
-            ElevatedButton(onPressed: (){ StatisticsRoute().push(context);}, child: Text("Go to Login"))
+            ElevatedButton(onPressed: (){ LoginRoute().push(context);}, child: Text("Go to Login"))
           ],
         ),
       ),
@@ -43,14 +44,14 @@ class LoginRoute extends GoRouteData with $LoginRoute {
   }
 }
 
-@TypedGoRoute<HomeRoute>(path: '/home')
+@TypedGoRoute<MainRoute>(path: '/main')
 @immutable
-class HomeRoute extends GoRouteData with $HomeRoute {
-  const HomeRoute();
+class MainRoute extends GoRouteData with $MainRoute {
+  const MainRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomeScreen();
+    return const MainScreen();
   }
 }
 

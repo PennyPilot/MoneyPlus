@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../presentation/home/cubit/home_cubit.dart';
+import 'package:moneyplus/design_system/utils/helpers.dart';
 import '../theme/money_extension_context.dart';
 
 Future<DateTime?> showMonthYearDialog(
@@ -32,7 +31,7 @@ Future<DateTime?> showMonthYearDialog(
                         .map(
                           (m) => DropdownMenuItem(
                         value: m,
-                        child: Text(Month.values[m - 1].name),
+                        child: Text(getMonthNameFromNumber(m,context)),
                       ),
                     )
                         .toList(),
