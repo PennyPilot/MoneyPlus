@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
-import '../../di/injection.dart';
+import '../../core/di/injection.dart';
 import '../login/cubit/login_cubit.dart';
+import '../statistics/cubit/statistics_cubit.dart';
 import '../statistics/statistics_screen.dart';
 part 'routes.g.dart';
 
@@ -56,11 +57,14 @@ class HomeRoute extends GoRouteData with $HomeRoute {
 
 @TypedGoRoute<StatisticsRoute>(path: '/statistics')
 @immutable
-class StatisticsRoute extends GoRouteData with $StatisticsRoute  {
+class StatisticsRoute extends GoRouteData with $StatisticsRoute {
   const StatisticsRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return StatisticsScreen();
+    return BlocProvider(
+      create: (_) => getIt<StatisticsCubit>(),
+      child: const StatisticsScreen(),
+    );
   }
 }

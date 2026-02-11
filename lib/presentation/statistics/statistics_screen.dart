@@ -1,27 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/core/l10n/app_localizations.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
+import 'package:moneyplus/design_system/widgets/app_error_view.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+import 'cubit/statistics_cubit.dart';
+import 'cubit/statistics_state.dart';
+import 'widgets/monthly_overview/monthly_overview_section.dart';
 
-import 'widgets/monthly_overview/monthly_overview.dart';
-
-class StatisticsScreen extends StatelessWidget {
+class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
+
+  @override
+  State<StatisticsScreen> createState() => _StatisticsScreenState();
+}
+
+class _StatisticsScreenState extends State<StatisticsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<StatisticsCubit>().loadStatistics();
+  }
+
+  void _onAddTransaction() {
+    // Navigate to add transaction
+  }
+
+  void _onRetry() {
+    context.read<StatisticsCubit>().loadStatistics();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            SizedBox(height: 60),
-            MonthlyOverview(
-              income: 1500000,
-              expenses: 850000,
-              currency: 'IQD',
-              maxValue: 2000000,
-            )
-          ],
+      backgroundColor: context.colors.surface,
+      body: SafeArea(
+        child: BlocBuilder<StatisticsCubit, StatisticsState>(
+          builder: (context, state) {
+            return switch (state) {
+              StatisticsIdle() => const SizedBox.shrink(),
+              StatisticsLoading() => const AppLoadingIndicator(),
+              StatisticsSuccess() => _buildSuccess(context, state),
+              StatisticsFailure(:final message) => AppErrorView(
+                message: message,
+                onRetry: _onRetry,
+              ),
+            };
+          },
         ),
+      ),
+    );
+  }
+
+  Widget _buildSuccess(BuildContext context, StatisticsSuccess state) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (state.hasNoData) {
+      return AppEmptyView(
+        title: l10n.no_statistics_title,
+        subtitle: l10n.no_statistics_subtitle,
+        buttonText: l10n.add_transaction,
+        onButtonPressed: _onAddTransaction,
+      );
+    }
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          if (state.monthlyOverview != null)
+            MonthlyOverviewSection(overview: state.monthlyOverview!),
+          // Add other sections here
+        ],
       ),
     );
   }

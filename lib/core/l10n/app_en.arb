@@ -108,5 +108,25 @@
       "total": {}
     }
   },
-  "monthly_overview" : "Monthly Overview"
+    "statistics": "Statistics",
+    "monthly_overview": "Monthly Overview",
+    "savings_message": "You saved {amount} {currency} this month",
+    "@savings_message": {
+      "placeholders": {
+        "amount": {},
+        "currency": {}
+      }
+    },
+    "highest_spending_message": "Your highest spending was on {date}",
+    "@highest_spending_message": {
+      "placeholders": {
+        "date": {}
+      }
+    },
+       "no_statistics_title": "Not enough data yet",
+       "no_statistics_subtitle": "Add more transactions to see insights",
+       "add_transaction": "Add transaction",
+       "no_monthly_overview": "No income or expenses recorded for this period",
+       "error_loading_statistics": "Failed to load statistics",
+       "retry": "Retry"
 }
