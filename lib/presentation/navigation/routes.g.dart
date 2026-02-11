@@ -6,12 +6,7 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [
-  $onBoardingRoute,
-  $loginRoute,
-  $homeRoute,
-  $statisticsRoute,
-];
+List<RouteBase> get $appRoutes => [$onBoardingRoute, $loginRoute, $mainRoute];
 
 RouteBase get $onBoardingRoute =>
     GoRouteData.$route(path: '/', factory: $OnBoardingRoute._fromState);
@@ -60,40 +55,14 @@ mixin $LoginRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeRoute =>
-    GoRouteData.$route(path: '/home', factory: $HomeRoute._fromState);
+RouteBase get $mainRoute =>
+    GoRouteData.$route(path: '/main', factory: $MainRoute._fromState);
 
-mixin $HomeRoute on GoRouteData {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
-
-  @override
-  String get location => GoRouteData.$location('/home');
+mixin $MainRoute on GoRouteData {
+  static MainRoute _fromState(GoRouterState state) => const MainRoute();
 
   @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $statisticsRoute => GoRouteData.$route(
-  path: '/statistics',
-  factory: $StatisticsRoute._fromState,
-);
-
-mixin $StatisticsRoute on GoRouteData {
-  static StatisticsRoute _fromState(GoRouterState state) =>
-      const StatisticsRoute();
-
-  @override
-  String get location => GoRouteData.$location('/statistics');
+  String get location => GoRouteData.$location('/main');
 
   @override
   void go(BuildContext context) => context.go(location);
