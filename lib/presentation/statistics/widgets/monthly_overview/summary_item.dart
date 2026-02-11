@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/core/utils/number_formatter.dart';
+import 'package:moneyplus/design_system/constants/design_constants.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 class SummaryItem extends StatelessWidget {
@@ -17,51 +19,37 @@ class SummaryItem extends StatelessWidget {
     required this.isIncome,
   });
 
-  String _formatNumber(double value) {
-    final intValue = value.toInt();
-    return intValue.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-
-    // Linear gradient colors for the circle indicator
-    final List<Color> gradientColors = isIncome
-        ? [const Color(0xFF0496AD), const Color(0xFF097C8E)]
-        : [const Color(0xFFDC143C), const Color(0xFFA01A35)];
+    final gradientColors = isIncome
+        ? GradientColors.incomeGradient
+        : GradientColors.expenseGradient;
 
     return Row(
       children: [
         Container(
-          width: 28,
-          height: 28,
+          width: DesignConstants.summaryIconContainerSize,
+          height: DesignConstants.summaryIconContainerSize,
           decoration: BoxDecoration(
-            color: isIncome ? colors.secondaryVariant : colors.primaryVariant,
-            borderRadius: BorderRadius.circular(8),
+            color: isIncome
+                ? context.colors.secondaryVariant
+                : context.colors.primaryVariant,
+            borderRadius: BorderRadius.circular(DesignConstants.radiusSmall),
           ),
           alignment: Alignment.center,
           child: icon,
         ),
-        const SizedBox(width: 8),
-
-        // Text Content
+        const SizedBox(width: DesignConstants.spacingSmall),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Label Row with gradient circle indicator
               Row(
                 children: [
-                  // Gradient Circle Indicator
                   Container(
-                    width: 6,
-                    height: 6,
+                    width: DesignConstants.indicatorCircleSize,
+                    height: DesignConstants.indicatorCircleSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
@@ -71,33 +59,32 @@ class SummaryItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  // Label - Secondary/Primary color, Label/XSmall
+                  const SizedBox(width: DesignConstants.spacingXSmall),
                   Text(
                     label,
-                    style: typography.label.xSmall?.copyWith(
-                      color: isIncome ? colors.secondary : colors.primary,
+                    style: context.typography.label.xSmall?.copyWith(
+                      color: isIncome
+                          ? context.colors.secondary
+                          : context.colors.primary,
                     ),
                   ),
                 ],
               ),
-
-              // Amount Row
               RichText(
                 text: TextSpan(
                   children: [
-                    // Sign (+/-) with specific color
                     TextSpan(
                       text: isIncome ? '+' : '-',
-                      style: typography.label.medium.copyWith(
-                        color: isIncome ? colors.green : colors.primary,
+                      style: context.typography.label.medium.copyWith(
+                        color: isIncome
+                            ? context.colors.green
+                            : context.colors.primary,
                       ),
                     ),
-                    // Amount - Label/Medium with Title color
                     TextSpan(
-                      text: '${_formatNumber(value)} $currency',
-                      style: typography.label.medium.copyWith(
-                        color: colors.title,
+                      text: NumberFormatter.formatWithCurrency(value, currency),
+                      style: context.typography.label.medium.copyWith(
+                        color: context.colors.title,
                       ),
                     ),
                   ],

@@ -7,10 +7,9 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/money_app.dart';
-
+import '../../../core/di/injection.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../cubit/update_password_cubit.dart';
 import '../cubit/update_password_state.dart';
