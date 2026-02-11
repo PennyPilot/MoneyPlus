@@ -42,4 +42,8 @@ abstract class TransactionRepository {
   Future<bool> addExpenseCategory(String name);
 
   Future<bool> editExpenseCategory({required int id, required String name});
+
+  Future<List<Transaction>> getAllTransactions();
+
+  Future<List<Transaction>> getAllTransactionsByType(TransactionType type,);
 }
