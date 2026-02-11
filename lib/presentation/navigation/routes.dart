@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moneyplus/presentation/expense/screen/expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
 import '../../di/injection.dart';
+import '../income/screen/income_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../main_container/screen/main_screen.dart';
 
@@ -53,5 +54,27 @@ class MainRoute extends GoRouteData with $MainRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const MainScreen();
+  }
+}
+
+@TypedGoRoute<AddIncomeRoute>(path: '/add-income')
+@immutable
+class AddIncomeRoute extends GoRouteData with $AddIncomeRoute {
+  const AddIncomeRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const IncomeScreen();
+  }
+}
+
+@TypedGoRoute<AddExpenseRoute>(path: '/add-expense')
+@immutable
+class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
+  const AddExpenseRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ExpenseScreen();
   }
 }
