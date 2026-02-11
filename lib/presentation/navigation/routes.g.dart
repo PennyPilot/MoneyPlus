@@ -6,6 +6,7 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
+ feature/integrate-login-forget-password
 List<RouteBase> get $appRoutes => [
   $onBoardingRoute,
   $loginRoute,
@@ -61,14 +62,14 @@ mixin $LoginRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeRoute =>
-    GoRouteData.$route(path: '/home', factory: $HomeRoute._fromState);
+RouteBase get $mainRoute =>
+    GoRouteData.$route(path: '/main', factory: $MainRoute._fromState);
 
-mixin $HomeRoute on GoRouteData {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+mixin $MainRoute on GoRouteData {
+  static MainRoute _fromState(GoRouterState state) => const MainRoute();
 
   @override
-  String get location => GoRouteData.$location('/home');
+  String get location => GoRouteData.$location('/main');
 
   @override
   void go(BuildContext context) => context.go(location);
