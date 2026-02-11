@@ -71,7 +71,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         children: [
           if (state.monthlyOverview != null)
             MonthlyOverviewSection(overview: state.monthlyOverview!),
-          // Add other sections here
+            // TODO: Add other sections here
         ],
       ),
     );
