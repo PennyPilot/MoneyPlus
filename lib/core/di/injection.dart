@@ -5,17 +5,20 @@ import '../../data/repository/account_repository.dart';
 import '../../data/repository/authentication_repository.dart';
 import '../../data/repository/statistics_repository_impl.dart';
 import '../../data/repository/transaction_repository_stub.dart';
+import '../../data/repository/user_money_repository.dart';
 import '../../data/service/app_secrets_provider.dart';
 import '../../data/service/supabase_service.dart';
 import '../../domain/repository/account_repository.dart';
 import '../../domain/repository/authentication_repository.dart';
 import '../../domain/repository/statistics_repository.dart';
+import '../../domain/repository/user_money_repository.dart';
 import '../../domain/validator/authentication_validator.dart';
 import '../../domain/repository/transaction_repository.dart';
 import '../../presentation/home/cubit/home_cubit.dart';
 import '../../presentation/income/cubit/add_income_cubit.dart';
 import '../../presentation/login/cubit/login_cubit.dart';
 import '../../presentation/statistics/cubit/statistics_cubit.dart';
+import '../../presentation/transactions/cubit/transaction_cubit.dart';
 
 final getIt = GetIt.instance;
 

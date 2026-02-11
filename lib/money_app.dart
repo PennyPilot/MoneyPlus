@@ -7,8 +7,8 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'core/l10n/app_localizations.dart';
 
 final _router = GoRouter(
-  routes: $appRoutes,
-  initialLocation: '/statistics'
+    routes: $appRoutes,
+    initialLocation: '/statistics'
 );
 
 
