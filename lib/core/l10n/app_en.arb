@@ -1,7 +1,9 @@
 {
   "income": "Income",
   "expense": "Expense",
-  "makeAnExpense": "Make an expense",
+  "addAnExpense": "Make an expense",
+  "expenseAddedSuccessfully": "Expense added successfully!",
+  "failedToAddExpense": "Failed to add expense",
   "amount": "Amount",
   "categories": "Categories",
   "category": "Category",
