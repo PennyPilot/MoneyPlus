@@ -1,4 +1,3 @@
-
 import 'package:moneyplus/domain/entity/currency.dart';
 
 class AccountSetupState {
@@ -8,6 +7,8 @@ class AccountSetupState {
   final String query;
   final bool isButtonEnabled;
   final List<Currency> currencies;
+  final List<String> categories;
+  final List<String> suggestions;
   final bool isLoading;
   final String errorMessage;
 
@@ -18,6 +19,19 @@ class AccountSetupState {
     this.query = "",
     this.isButtonEnabled = false,
     this.currencies = const [],
+    this.categories = const [],
+    this.suggestions = const [
+      'Food',
+      'Transport',
+      'Shopping',
+      'Health',
+      'Education',
+      'Gift',
+      'Cafe',
+      'Work',
+      'Home',
+      'Travel'
+    ],
     this.isLoading = true,
     this.errorMessage = "",
   });
@@ -29,6 +43,8 @@ class AccountSetupState {
     String? query,
     bool? isButtonEnabled,
     List<Currency>? currencies,
+    List<String>? categories,
+    List<String>? suggestions,
     String? errorMessage,
     bool? isLoading,
   }) {
@@ -37,10 +53,12 @@ class AccountSetupState {
       salary: salary ?? this.salary,
       salaryDay: salaryDay ?? this.salaryDay,
       query: query ?? this.query,
-      isButtonEnabled: isButtonEnabled?? this.isButtonEnabled,
-      currencies: currencies?? this.currencies,
-      errorMessage: errorMessage?? this.errorMessage,
-      isLoading: isLoading?? this.isLoading,
+      isButtonEnabled: isButtonEnabled ?? this.isButtonEnabled,
+      currencies: currencies ?? this.currencies,
+      categories: categories ?? this.categories,
+      suggestions: suggestions ?? this.suggestions,
+      errorMessage: errorMessage ?? this.errorMessage,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

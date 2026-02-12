@@ -8,13 +8,21 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
   AccountSetupCubit(this._accountSetupRepository) : super(AccountSetupState());
 
   Future<void> fetchCurrencies() async {
-    try{
+    try {
       final currencies = await _accountSetupRepository.getCurrencies();
-      emit(state.copyWith(currencies : currencies,isLoading: false));
-    }catch(e){
+      emit(state.copyWith(currencies: currencies, isLoading: false));
+    } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
   }
 
-
+  void toggleCategory(String category) {
+    final List<String> updatedCategories = List.from(state.categories);
+    if (updatedCategories.contains(category)) {
+      updatedCategories.remove(category);
+    } else {
+      updatedCategories.add(category);
+    }
+    emit(state.copyWith(categories: updatedCategories));
+  }
 }
