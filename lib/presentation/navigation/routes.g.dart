@@ -9,7 +9,7 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [
   $onBoardingRoute,
   $loginRoute,
-  $homeRoute,
+  $mainRoute,
   $forgetPasswordRoute,
   $updatePasswordRoute,
 ];
