@@ -9,21 +9,44 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/selected_category_item.dart';
 
-class Page2 extends StatefulWidget {
+class Page3 extends StatefulWidget {
   final AccountSetupState state;
-  const Page2({super.key, required this.state});
+  const Page3({super.key, required this.state});
 
   @override
-  State<Page2> createState() => _Page2State();
+  State<Page3> createState() => _Page3State();
 }
 
-class _Page2State extends State<Page2> {
+class _Page3State extends State<Page3> {
   final TextEditingController categoryController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    categoryController.addListener(() {
+      setState(() {
+        _searchQuery = categoryController.text.toLowerCase();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    categoryController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<AccountSetupCubit>();
+
+    final filteredSuggestions = widget.state.suggestions
+        .where((suggestion) =>
+            suggestion.toLowerCase().contains(_searchQuery) &&
+            !widget.state.categories.contains(suggestion))
+        .toList();
 
     return SingleChildScrollView(
       child: Column(
@@ -45,30 +68,29 @@ class _Page2State extends State<Page2> {
             },
           ),
           const SizedBox(height: 16),
-
-          Text(
-            'Suggestions:',
-            style: context.typography.label.medium.copyWith(
-              color: context.colors.title,
+          if (filteredSuggestions.isNotEmpty) ...[
+            Text(
+              'Suggestions:',
+              style: context.typography.label.medium.copyWith(
+                color: context.colors.title,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: widget.state.suggestions.map((suggestion) {
-              final isSelected = widget.state.categories.contains(suggestion);
-              if (isSelected) {
-                return const SizedBox.shrink();
-              }
-              return MChip(
-                label: suggestion,
-                selected: false,
-                onTap: () => cubit.toggleCategory(suggestion),
-              );
-            }).toList(),
-          ),
-
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: filteredSuggestions.map((suggestion) {
+                return MChip(
+                  label: suggestion,
+                  selected: false,
+                  onTap: () {
+                    cubit.toggleCategory(suggestion);
+                    categoryController.clear();
+                  },
+                );
+              }).toList(),
+            ),
+          ],
           if (widget.state.categories.isNotEmpty) ...[
             const SizedBox(height: 24),
             Text(
@@ -92,7 +114,6 @@ class _Page2State extends State<Page2> {
               },
             ),
           ],
-
           const SizedBox(height: 24),
         ],
       ),

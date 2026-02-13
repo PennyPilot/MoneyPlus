@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
-import 'package:moneyplus/presentation/account_setup/screen/page2.dart';
+import 'package:moneyplus/presentation/account_setup/screen/page3.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
@@ -45,7 +45,12 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
       create: (context) => cubit..fetchCurrencies(),
       child: BlocBuilder<AccountSetupCubit, AccountSetupState>(
         builder: (context, state) {
-          final isLastStep = (currentIndex == 1 && state.categories.isNotEmpty) || currentIndex == 2;
+          bool isEnabled = true;
+          if (currentIndex == 2) {
+            isEnabled = state.categories.isNotEmpty;
+          }
+
+          final isLastStep = currentIndex == 2;
 
           return Scaffold(
             backgroundColor: context.colors.surface,
@@ -88,14 +93,14 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                         },
                         children: [
                           SingleChildScrollView(child: Page1(state: state)),
-                          SingleChildScrollView(child: Page1(state: state)),
-                          SingleChildScrollView(child: Page2(state: state)),
+                          //todo page2
+                          SingleChildScrollView(child: Page3(state: state)),
                         ],
                       ),
                     ),
                     DefaultButton(
                       text: isLastStep ? l10n.finishSetup : l10n.next,
-                      isEnabled: true,
+                      isEnabled: isEnabled,
                       onPressed: () {
                         if (!isLastStep) {
                           pageController.nextPage(

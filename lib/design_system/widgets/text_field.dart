@@ -4,7 +4,8 @@ import '../theme/money_extension_context.dart';
 
 class MTextField extends StatefulWidget {
   final String hint;
-  final String value;
+  final String? value;
+  final TextEditingController? controller;
   final ValueChanged<String> onChanged;
   final IconData? leadingIcon;
   final Widget? leading;
@@ -18,7 +19,8 @@ class MTextField extends StatefulWidget {
   const MTextField({
     super.key,
     required this.hint,
-    required this.value,
+    this.value,
+    this.controller,
     required this.onChanged,
     this.leadingIcon,
     this.leading,
@@ -36,19 +38,32 @@ class MTextField extends StatefulWidget {
 
 class _MTextFieldState extends State<MTextField> {
   late FocusNode _focusNode;
-  late TextEditingController _controller;
+  TextEditingController? _internalController;
+
+  TextEditingController get _effectiveController =>
+      widget.controller ?? (_internalController ??= TextEditingController(text: widget.value));
 
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode()..addListener(() => setState(() {}));
-    _controller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void didUpdateWidget(covariant MTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller == null && oldWidget.controller != null) {
+      _internalController = TextEditingController(text: _effectiveController.text);
+    } else if (widget.controller != null && oldWidget.controller == null) {
+      _internalController?.dispose();
+      _internalController = null;
+    }
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
-    _controller.dispose();
+    _internalController?.dispose();
     super.dispose();
   }
 
@@ -78,7 +93,6 @@ class _MTextFieldState extends State<MTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
@@ -97,7 +111,7 @@ class _MTextFieldState extends State<MTextField> {
                 ),
               if (widget.leadingIcon != null)
                 Padding(
-                  padding: EdgeInsets.only(top: 14, right: 8),
+                  padding: const EdgeInsets.only(top: 14, right: 8),
                   child: Icon(
                     widget.leadingIcon,
                     color: showBorder ? borderColor : colors.body,
@@ -106,7 +120,7 @@ class _MTextFieldState extends State<MTextField> {
                 ),
               Expanded(
                 child: TextField(
-                  controller: _controller,
+                  controller: _effectiveController,
                   focusNode: _focusNode,
                   keyboardType: widget.keyboardType,
                   obscureText: widget.obscureText,
@@ -118,6 +132,7 @@ class _MTextFieldState extends State<MTextField> {
                   style: typography.body.medium.copyWith(color: colors.title),
                   onChanged: widget.onChanged,
                   decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     hintText: _focusNode.hasFocus ? null : widget.hint,
                     hintStyle: typography.label.medium.copyWith(
                       color: colors.body,
