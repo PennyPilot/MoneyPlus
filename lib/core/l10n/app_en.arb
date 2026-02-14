@@ -139,5 +139,7 @@
   "add_new_category": "Add new category",
   "add_custom_category" : "Add custom category",
   "category_name" : "Category name",
+  "transaction_delete_success" : "Transaction deleted successfully",
+  "transaction_delete_fail" : "Failed to delete transaction",
   "add" : "Add"
 }

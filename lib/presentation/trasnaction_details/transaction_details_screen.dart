@@ -83,12 +83,12 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
         cubit.deleteTransaction().then((success) {
           if (success) {
             MSnackBar.success(
-              message: "Transaction deleted successfully",
+              message: context.localizations.transaction_delete_success,
               title: "Success",
             ).showSnackBar(context: context);
           } else {
             MSnackBar.error(
-              message: "Failed to delete transaction",
+              message: context.localizations.transaction_delete_fail,
               title: "Error",
             ).showSnackBar(context: context);
           }
