@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           var content = switch (state) {
             HomeLoading() => Scaffold(
+              backgroundColor: MoneyColors.light.surface,
               body: Center(
                 child: CircularProgressIndicator(
                   color: MoneyColors.light.primary,
