@@ -14,26 +14,33 @@ class TransactionDetailsCubit extends Cubit<TransactionDetailsState> {
     : super(TransactionDetailsLoading());
 
   void getTransactionDetails(String id) async {
-    safeCall(
-      function: () {
-        return transactionRepository.getTransactionDetails(id);
-      },
+    final result = await transactionRepository.getTransactionDetails(id);
+    result.when(
       onSuccess: (details) {
-        emit(TransactionDetailsLoaded(transactionDetails: details,transactionId: id));
+        emit(
+          TransactionDetailsLoaded(
+            transactionDetails: details,
+            transactionId: id,
+          ),
+        );
       },
       onError: (e) {
-        emit(TransactionDetailsError(errorMsg: "Error, cannot get Translation details"));
-        print("error in TransactionDetailsCubit: $e");
+        emit(
+          TransactionDetailsError(
+            errorMsg: "Error, cannot get Translation details",
+          ),
+        );
       },
     );
-
   }
 
   Future<bool> deleteTransaction() async {
-    try{
-      await transactionRepository.deleteTransaction((state as TransactionDetailsLoaded).transactionId.toString());
+    try {
+      await transactionRepository.deleteTransaction(
+        (state as TransactionDetailsLoaded).transactionId.toString(),
+      );
       return true;
-    }catch(e){
+    } catch (e) {
       return false;
     }
   }

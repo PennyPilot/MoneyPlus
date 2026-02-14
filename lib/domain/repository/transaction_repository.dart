@@ -3,6 +3,8 @@ import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 
+import '../../core/errors/result.dart';
+
 abstract class TransactionRepository {
   Future<bool> addTransaction({
     required double amount,
@@ -29,7 +31,7 @@ abstract class TransactionRepository {
     DateTime? date,
   });
 
-  Future<Transaction> getTransactionDetails(String id);
+  Future<Result<Transaction>>  getTransactionDetails(String id);
 
   Future<double> getTotalAmount({TransactionType? type});
 
