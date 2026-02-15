@@ -16,7 +16,7 @@ class AccountSetupState {
   final List<Currency> currencies;
   final bool isLoading;
   final String errorMessage;
-  final AccountStep accountStep;
+  final AccountSetupStep accountStep;
   final String currentBalance;
   final bool navigateToHome;
 
@@ -29,7 +29,7 @@ class AccountSetupState {
     this.currencies = const [],
     this.isLoading = true,
     this.errorMessage = "",
-    this.accountStep = AccountStep.step1,
+    this.accountStep = AccountSetupStep.step1,
     this.currentBalance = "",
     this.navigateToHome = false,
   });
@@ -43,7 +43,7 @@ class AccountSetupState {
     List<Currency>? currencies,
     String? errorMessage,
     bool? isLoading,
-    AccountStep? accountStep,
+    AccountSetupStep? accountStep,
     String? currentBalance,
     bool? navigateToHome,
   }) {

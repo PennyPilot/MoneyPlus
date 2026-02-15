@@ -49,24 +49,24 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
   void _updateButtonEnabledState() {
 
     bool isButtonEnable = switch (state.accountStep) {
-      AccountStep.step1 => _accountSetUpStep1ValidationInput(),
-      AccountStep.step2 => _accountSetUpStep2ValidationInput(),
-      AccountStep.step3 => false,
+      AccountSetupStep.step1 => _accountSetUpStep1ValidationInput(),
+      AccountSetupStep.step2 => _accountSetUpStep2ValidationInput(),
+      AccountSetupStep.step3 => false,
     };
     emit(state.copyWith(isButtonEnabled: isButtonEnable));
   }
 
   void onNextStep() {
     switch (state.accountStep) {
-      case AccountStep.step1:
-        emit(state.copyWith(accountStep: AccountStep.step2));
+      case AccountSetupStep.step1:
+        emit(state.copyWith(accountStep: AccountSetupStep.step2));
         _updateButtonEnabledState();
         break;
-      case AccountStep.step2:
-        emit(state.copyWith(accountStep: AccountStep.step3));
+      case AccountSetupStep.step2:
+        emit(state.copyWith(accountStep: AccountSetupStep.step3));
         _updateButtonEnabledState();
         break;
-        case AccountStep.step3:
+        case AccountSetupStep.step3:
           // submit account setup date
         emit(state.copyWith(navigateToHome: true));
         break;

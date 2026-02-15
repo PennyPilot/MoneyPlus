@@ -113,7 +113,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                         ),
                       ),
                       DefaultButton(
-                        text: state.accountStep == AccountStep.step3
+                        text: state.accountStep == AccountSetupStep.step3
                             ? l10n.finishSetup
                             : l10n.next,
                         isEnabled: state.isButtonEnabled,
