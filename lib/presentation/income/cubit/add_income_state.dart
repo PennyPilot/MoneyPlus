@@ -1,11 +1,14 @@
 import 'package:equatable/equatable.dart';
-import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
+
+import '../../../domain/entity/currency.dart';
+import '../../../domain/entity/transaction_category.dart';
 
 class AddIncomeState extends Equatable {
   final double? amount;
   final DateTime date;
   final String note;
+  final Currency? currency;
   final FormStatus status;
   final String? errorMessage;
 
@@ -19,6 +22,7 @@ class AddIncomeState extends Equatable {
     this.amount,
     required this.date,
     this.note = '',
+    this.currency,
     required this.status,
     this.errorMessage,
     this.categories = const [],
@@ -34,6 +38,7 @@ class AddIncomeState extends Equatable {
     double? amount,
     DateTime? date,
     String? note,
+    Currency? currency,
     FormStatus? status,
     String? errorMessage,
     List<TransactionCategory>? categories,
@@ -45,6 +50,7 @@ class AddIncomeState extends Equatable {
       amount: clearAmount ? null : (amount ?? this.amount),
       date: date ?? this.date,
       note: note ?? this.note,
+      currency: currency ?? this.currency,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       categories: categories ?? this.categories,
@@ -58,6 +64,7 @@ class AddIncomeState extends Equatable {
     amount,
     date,
     note,
+    currency,
     status,
     errorMessage,
     categories,

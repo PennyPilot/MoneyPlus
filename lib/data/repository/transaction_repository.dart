@@ -7,24 +7,35 @@ import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 
+import '../../domain/entity/currency.dart';
+
 
 class TransactionRepositoryImpl implements TransactionRepository {
   final SupabaseService service;
 
   TransactionRepositoryImpl({required this.service});
+
   @override
   Future<Result<void>> addTransaction({
     required double amount,
     required TransactionType type,
     required DateTime date,
     required TransactionCategory category,
+    required Currency currency,
     String note = "",
   }) async {
     try {
       final client = await service.getClient();
       await client.rpc(
-          'add_transaction',
-          params: {'amount': amount, 'transaction_type': type.index + 1 }
+        'add_transaction',
+        params: {
+          'amount': amount,
+          'transaction_type_id': type.value,
+          'date': date.toIso8601String(),
+          'category_id': category.id,
+          'note': note,
+          'currency_id': currency.id,
+        },
       );
       return Result.success(null);
     } catch (e) {
@@ -137,11 +148,11 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<List<TransactionCategory>> getTransactionCategories(
     TransactionType? type,
   ) async {
-    try{
+    try {
       final client = await service.getClient();
       final response = await client.from('categories').select();
       return response.map((e) => TransactionCategory.fromJson(e)).toList();
-    }catch(e){
+    } catch (e) {
       throw Exception('Failed to fetch categories');
     }
   }

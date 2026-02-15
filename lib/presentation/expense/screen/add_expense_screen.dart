@@ -6,8 +6,8 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
-import 'package:moneyplus/presentation/expense/cubit/expense_cubit.dart';
-import 'package:moneyplus/presentation/expense/cubit/expense_state.dart';
+import 'package:moneyplus/presentation/expense/cubit/add_expense_cubit.dart';
+import 'package:moneyplus/presentation/expense/cubit/add_expense_state.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
@@ -16,8 +16,8 @@ import '../../../design_system/widgets/snack_bar.dart';
 import '../../../di/injection.dart';
 import '../../../domain/model/form_status.dart';
 
-class ExpenseScreen extends StatelessWidget {
-  const ExpenseScreen({super.key});
+class AddExpenseScreen extends StatelessWidget {
+  const AddExpenseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,7 @@ class _ExpenseScreenContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                l10n.currencyCode,
+                state.currency?.abbreviation ?? "",
                 style: typography.label.small.copyWith(color: colors.body),
               ),
             ],

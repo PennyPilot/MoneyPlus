@@ -5,7 +5,7 @@ import 'package:moneyplus/domain/model/form_status.dart';
 
 import '../../../domain/repository/transaction_repository.dart';
 import '../../../domain/repository/user_money_repository.dart';
-import 'expense_state.dart';
+import 'add_expense_state.dart';
 
 class AddExpenseCubit extends Cubit<AddExpenseState> {
   final TransactionRepository _transactionRepository;
@@ -17,8 +17,8 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
   }) : _transactionRepository = transactionRepository,
        _userMoneyRepository = userMoneyRepository,
        super(AddExpenseState.initial()) {
-    _loadCategories();
     _loadCurrency();
+    _loadCategories();
   }
 
   Future<void> _loadCategories() async {
@@ -40,7 +40,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     emit(state.copyWith(status: FormStatus.loading));
     final currency = await _userMoneyRepository.getCurrency();
 
-    emit(state.copyWith(currency: currency));
+    emit(state.copyWith(currency: currency, status: FormStatus.initial));
   }
 
   void onAmountChanged(String value) {
@@ -69,21 +69,36 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
-
+    try {
       final result = await _transactionRepository.addTransaction(
         amount: state.amount!,
         type: TransactionType.expense,
         date: state.date,
         category: state.selectedCategory!,
+        currency: state.currency!,
         note: state.note,
       );
 
       result.when(
         onSuccess: (user) {
-          emit(state.copyWith(status: FormStatus.success));        },
+          emit(state.copyWith(status: FormStatus.success));
+        },
         onError: (error) {
-          emit(state.copyWith(status: FormStatus.failure, errorMessage: "Failed to add expense: ${error.message}"));
+          emit(
+            state.copyWith(
+              status: FormStatus.failure,
+              errorMessage: "Failed to add expense: ${error.message}",
+            ),
+          );
         },
       );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "An unexpected error occurred: $e",
+        ),
+      );
+    }
   }
 }

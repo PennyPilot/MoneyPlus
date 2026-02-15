@@ -15,10 +15,10 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     required TransactionRepository transactionRepository,
     required UserMoneyRepository userMoneyRepository,
   }) : _transactionRepository = transactionRepository,
-        _userMoneyRepository = userMoneyRepository,
-        super(AddIncomeState.initial()) {
+       _userMoneyRepository = userMoneyRepository,
+       super(AddIncomeState.initial()) {
+    _loadCurrency();
     _loadCategories();
-    // _loadCurrency();
   }
 
   Future<void> _loadCategories() async {
@@ -36,12 +36,12 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     );
   }
 
-  // Future<void> _loadCurrency() async {
-  //   emit(state.copyWith(status: FormStatus.loading));
-  //   final currency = await _userMoneyRepository.getCurrency();
-  //
-  //   emit(state.copyWith(currency: currency));
-  // }
+  Future<void> _loadCurrency() async {
+    emit(state.copyWith(status: FormStatus.loading));
+    final currency = await _userMoneyRepository.getCurrency();
+
+    emit(state.copyWith(currency: currency, status: FormStatus.initial));
+  }
 
   void onAmountChanged(String value) {
     if (value.trim().isEmpty) {
@@ -65,35 +65,40 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     emit(state.copyWith(selectedCategory: category));
   }
 
-  Future<void> onSubmitIncome(String categoryName) async {
+  Future<void> onSubmitIncome() async {
     if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
+    try {
+      final result = await _transactionRepository.addTransaction(
+        amount: state.amount!,
+        type: TransactionType.income,
+        date: state.date,
+        category: state.selectedCategory!,
+        currency: state.currency!,
+        note: state.note,
+      );
 
-    final category =
-        state.selectedCategory ??
-        TransactionCategory(id: 1, name: categoryName);
-
-    final result = await _transactionRepository.addTransaction(
-      amount: state.amount!,
-      type: TransactionType.income,
-      date: state.date,
-      category: category,
-      note: state.note,
-    );
-
-    result.when(
-      onSuccess: (user) {
-        emit(state.copyWith(status: FormStatus.success));
-      },
-      onError: (error) {
-        emit(
-          state.copyWith(
-            status: FormStatus.failure,
-            errorMessage: "Failed to add income: ${error.message}",
-          ),
-        );
-      },
-    );
+      result.when(
+        onSuccess: (user) {
+          emit(state.copyWith(status: FormStatus.success));
+        },
+        onError: (error) {
+          emit(
+            state.copyWith(
+              status: FormStatus.failure,
+              errorMessage: "Failed to add income: ${error.message}",
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "An unexpected error occurred: $e",
+        ),
+      );
+    }
   }
 }

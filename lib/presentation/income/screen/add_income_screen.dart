@@ -16,8 +16,8 @@ import '../../../di/injection.dart';
 import '../cubit/add_income_cubit.dart';
 import '../cubit/add_income_state.dart';
 
-class IncomeScreen extends StatelessWidget {
-  const IncomeScreen({super.key});
+class AddIncomeScreen extends StatelessWidget {
+  const AddIncomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,7 @@ class _IncomeScreenContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                l10n.currencyCode,
+                state.currency?.abbreviation ?? "",
                 style: typography.label.small.copyWith(color: colors.body),
               ),
             ],
@@ -218,7 +218,7 @@ class _IncomeScreenContent extends StatelessWidget {
       child: DefaultButton(
         text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
         onPressed: () {
-          context.read<AddIncomeCubit>().onSubmitIncome(l10n.salary);
+          context.read<AddIncomeCubit>().onSubmitIncome();
         },
         isEnabled: state.canSubmitForm,
       ),

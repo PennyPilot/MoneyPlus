@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moneyplus/presentation/expense/screen/expense_screen.dart';
-import 'package:moneyplus/presentation/home/screen/home_screen.dart';
+import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
 import '../../di/injection.dart';
-import '../income/screen/income_screen.dart';
+import '../income/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
 import '../main_container/screen/main_screen.dart';
@@ -78,7 +77,7 @@ class AddIncomeRoute extends GoRouteData with $AddIncomeRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const IncomeScreen();
+    return const AddIncomeScreen();
   }
 }
 
@@ -89,6 +88,6 @@ class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ExpenseScreen();
+    return const AddExpenseScreen();
   }
 }
