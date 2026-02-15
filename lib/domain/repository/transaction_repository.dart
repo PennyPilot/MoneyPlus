@@ -1,29 +1,29 @@
-import 'dart:ffi';
-
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 
+import '../../core/errors/result.dart';
+
 abstract class TransactionRepository {
-  Future<Bool> addTransaction({
-    required Double amount,
+  Future<bool> addTransaction({
+    required double amount,
     required TransactionType type,
     required DateTime date,
     required TransactionCategory category,
     String note = "",
   });
 
-  Future<Bool> editTransaction({
+  Future<bool> editTransaction({
     required int id,
-    Double? amount,
+    double? amount,
     TransactionType? type,
     DateTime? date,
     TransactionCategory? category,
     String? note,
   });
 
-  Future<Bool> deleteTransaction(int id);
+  Future<void> deleteTransaction(String id);
 
   Future<List<Transaction>> getTransactions({
     TransactionType? type,
@@ -31,9 +31,9 @@ abstract class TransactionRepository {
     DateTime? date,
   });
 
-  Future<Transaction> getTransactionDetails(int id);
+  Future<Result<Transaction>>  getTransactionDetails(String id);
 
-  Future<Double> getTotalAmount({TransactionType? type});
+  Future<double> getTotalAmount({TransactionType? type});
 
   Future<List<TransactionCategory>> getTransactionCategories(
     TransactionType? type,
@@ -41,7 +41,11 @@ abstract class TransactionRepository {
 
   Future<List<TopSpendingCategory>> getTopSpendingCategories();
 
-  Future<Bool> addExpenseCategory(String name);
+  Future<bool> addExpenseCategory(String name);
 
-  Future<Bool> editExpenseCategory({required int id, required String name});
+  Future<bool> editExpenseCategory({required int id, required String name});
+
+  Future<List<Transaction>> getAllTransactions();
+
+  Future<List<Transaction>> getAllTransactionsByType(TransactionType type,);
 }

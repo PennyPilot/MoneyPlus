@@ -46,7 +46,7 @@ class NavBar extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              onTabSelected(selectedTab);
+              onTabSelected(tab);
             },
             child: SizedBox(
               width: 82,
