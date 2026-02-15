@@ -82,7 +82,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
         value: _amount,
         keyboardType: TextInputType.number,
         leading: Padding(
-          padding: const EdgeInsets.only(top: 14, right: 8),
+          padding: const EdgeInsetsGeometry.directional(end: 8),
           child: SvgPicture.asset(
             AppAssets.icAmountGray,
             width: 24,

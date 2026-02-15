@@ -6,7 +6,12 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$onBoardingRoute, $loginRoute, $homeRoute];
+List<RouteBase> get $appRoutes => [
+  $onBoardingRoute,
+  $loginRoute,
+  $mainRoute,
+  $transactionDetailsRoute,
+];
 
 RouteBase get $onBoardingRoute =>
     GoRouteData.$route(path: '/', factory: $OnBoardingRoute._fromState);
@@ -55,14 +60,45 @@ mixin $LoginRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeRoute =>
-    GoRouteData.$route(path: '/home', factory: $HomeRoute._fromState);
+RouteBase get $mainRoute =>
+    GoRouteData.$route(path: '/main', factory: $MainRoute._fromState);
 
-mixin $HomeRoute on GoRouteData {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+mixin $MainRoute on GoRouteData {
+  static MainRoute _fromState(GoRouterState state) => const MainRoute();
 
   @override
-  String get location => GoRouteData.$location('/home');
+  String get location => GoRouteData.$location('/main');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $transactionDetailsRoute => GoRouteData.$route(
+  path: '/transaction_details',
+  factory: $TransactionDetailsRoute._fromState,
+);
+
+mixin $TransactionDetailsRoute on GoRouteData {
+  static TransactionDetailsRoute _fromState(GoRouterState state) =>
+      TransactionDetailsRoute(state.uri.queryParameters['transaction-id']!);
+
+  TransactionDetailsRoute get _self => this as TransactionDetailsRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/transaction_details',
+    queryParams: {'transaction-id': _self.transactionId},
+  );
 
   @override
   void go(BuildContext context) => context.go(location);

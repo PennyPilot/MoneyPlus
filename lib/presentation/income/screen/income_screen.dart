@@ -100,7 +100,7 @@ class _IncomeScreenContent extends StatelessWidget {
         value: state.amount != null ? state.amount!.toStringAsFixed(0) : '',
         keyboardType: TextInputType.number,
         leading: Padding(
-          padding: const EdgeInsets.only(top: 14, right: 8),
+          padding: const EdgeInsetsGeometry.directional(end: 8),
           child: SvgPicture.asset(
             AppAssets.icAmountGray,
             width: 24,
@@ -211,7 +211,6 @@ class _IncomeScreenContent extends StatelessWidget {
   }
 
   Widget _buildSaveButton(BuildContext context, AddIncomeState state) {
-    final colors = context.colors;
     final l10n = AppLocalizations.of(context)!;
 
     return Padding(
