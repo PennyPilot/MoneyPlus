@@ -73,7 +73,6 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 16),
               SvgPicture.asset(AppAssets.icCalender, width: 24, height: 24),
               SizedBox(width: 8),
               Expanded(
@@ -132,7 +131,6 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                 width: 24,
                 height: 24,
               ),
-              SizedBox(width: 16),
             ],
           ),
         ),
