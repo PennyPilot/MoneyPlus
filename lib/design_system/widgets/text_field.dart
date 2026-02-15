@@ -6,7 +6,6 @@ class MTextField extends StatefulWidget {
   final String hint;
   final String value;
   final ValueChanged<String> onChanged;
-  final IconData? leadingIcon;
   final Widget? leading;
   final Widget? trailing;
   final String? errorText;
@@ -20,7 +19,6 @@ class MTextField extends StatefulWidget {
     required this.hint,
     required this.value,
     required this.onChanged,
-    this.leadingIcon,
     this.leading,
     this.trailing,
     this.errorText,
@@ -78,7 +76,7 @@ class _MTextFieldState extends State<MTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
@@ -95,15 +93,7 @@ class _MTextFieldState extends State<MTextField> {
                   colorFilter: ColorFilter.mode(activeColor, BlendMode.srcIn),
                   child: widget.leading!,
                 ),
-              if (widget.leadingIcon != null)
-                Padding(
-                  padding: EdgeInsets.only(top: 14, right: 8),
-                  child: Icon(
-                    widget.leadingIcon,
-                    color: showBorder ? borderColor : colors.body,
-                    size: 24,
-                  ),
-                ),
+
               Expanded(
                 child: TextField(
                   controller: _controller,
