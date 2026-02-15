@@ -1,11 +1,12 @@
+import 'package:moneyplus/core/errors/error_model.dart';
 import 'package:moneyplus/core/errors/result.dart';
+import 'package:moneyplus/data/service/supabase_service.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 
-import '../service/supabase_service.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
   final SupabaseService service;
@@ -44,8 +45,16 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<bool> deleteTransaction(int id) async {
-    throw UnimplementedError('deleteTransaction not implemented');
+  Future<void> deleteTransaction(String id) async {
+    final client = await service.getClient();
+
+    final response = await client.rpc(
+      RpcString.deleteTransaction,
+      params: {'p_id': id},
+    );
+    if (response == null || response['id'] == null) {
+      throw Exception("cannot delete transaction with id: $id ");
+    }
   }
 
   @override
@@ -58,8 +67,65 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Transaction> getTransactionDetails(int id) async {
-    throw UnimplementedError('getTransactionDetails not implemented');
+  Future<Result<Transaction>> getTransactionDetails(String id) async {
+    final client = await service.getClient();
+    final response = await client.rpc(
+      RpcString.getTransactionDetails,
+      params: {'p_id': id},
+    );
+    final data = response as Map<String, dynamic>;
+    if (data.isEmpty) {
+      return Result.error(ErrorModel("no transaction with that id: $id"));
+    }
+    final transactionType = ((data['transaction_type_id'] as int) == 1)
+        ? TransactionType.income
+        : TransactionType.expense;
+    return Result.success(
+      Transaction(
+        id: 0,
+        amount: (data['amount'] as num).toDouble(),
+        currency: await _getCurrencyAbbreviation(data['currency_id'] as int),
+        type: transactionType,
+        date: DateTime.parse(data['created_at']).toLocal(),
+        category: TransactionCategory(
+          id: data['category_id'] as int,
+          name: await _getCategoryName((data['category_id'] as int).toString()),
+        ),
+        note: data['note'] as String,
+      ),
+    );
+  }
+
+  Future<String> _getCurrencyAbbreviation(int currencyId) async {
+    final client = await service.getClient();
+
+    final response = await client
+        .from('currencies')
+        .select('abbreviation')
+        .eq('id', currencyId)
+        .maybeSingle();
+
+    if (response == null) {
+      throw Exception("No currency found with id: $currencyId");
+    }
+
+    return response['abbreviation'] as String;
+  }
+
+  Future<String> _getCategoryName(String categoryId) async {
+    final client = await service.getClient();
+
+    final response = await client
+        .from('categories')
+        .select('name')
+        .eq('id', categoryId)
+        .maybeSingle();
+
+    if (response == null) {
+      throw Exception("No category found with id: $categoryId");
+    }
+
+    return response['name'] as String;
   }
 
   @override
@@ -79,7 +145,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
       throw Exception('Failed to fetch categories');
     }
   }
-
 
   @override
   Future<List<TopSpendingCategory>> getTopSpendingCategories() async {
@@ -183,4 +248,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
       ];
     }
   }
+}
+
+class RpcString {
+  static String deleteTransaction = 'delete_transaction';
+  static String getTransactionDetails = 'get_transaction_details';
 }
