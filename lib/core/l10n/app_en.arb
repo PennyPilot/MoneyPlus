@@ -129,15 +129,9 @@
   "add_new_category": "Add new category",
   "add_custom_category": "Add custom category",
   "category_name": "Category name",
-  "stepOfTotal": "Step {current} of {total}",
-  "@stepOfTotal": {
-    "placeholders": {
-      "current": {},
-      "total": {}
-    }
-  },
+  "transaction_delete_success" : "Transaction deleted successfully",
+  "transaction_delete_fail" : "Failed to delete transaction",
   "statistics": "Statistics",
-  "monthly_overview": "Monthly Overview",
   "savings_message": "You saved {amount} {currency} this month",
   "@savings_message": {
     "placeholders": {
@@ -153,7 +147,6 @@
   },
   "no_statistics_title": "Not enough data yet",
   "no_statistics_subtitle": "Add more transactions to see insights",
-  "add_transaction": "Add transaction",
   "no_monthly_overview": "No income or expenses recorded for this period",
   "error_loading_statistics": "Failed to load statistics",
   "retry": "Retry"
