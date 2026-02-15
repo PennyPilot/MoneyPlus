@@ -1,7 +1,7 @@
 
 import 'package:moneyplus/domain/entity/currency.dart';
 
-enum AccountStep {
+enum AccountSetupStep {
   step1,
   step2,
   step3,
