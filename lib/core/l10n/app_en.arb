@@ -142,5 +142,5 @@
   "category_name" : "Category name",
   "transaction_delete_success" : "Transaction deleted successfully",
   "transaction_delete_fail" : "Failed to delete transaction",
-  "add" : "Add",
+  "add" : "Add"
 }
