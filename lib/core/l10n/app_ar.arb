@@ -119,7 +119,9 @@
   "transaction_error_content": "فشل في تحميل المعاملات",
   "manage_categories": "ادارةالتصنيفات",
   "add_new_category": "اضافة تصنيف جديد",
-  "add_custom_category": "اضافة تصنيف مخصص",
-  "category_name": "اسم التصنيف",
-  "add": "اضافة"
+  "add_custom_category" : "اضافة تصنيف مخصص",
+  "category_name" : "اسم التصنيف",
+  "transaction_delete_success" : "نم مسح المعاملة بنجاح",
+  "transaction_delete_fail" : "نم مسح المعاملة بنجاح",
+  "add" : "اضافة"
 }
