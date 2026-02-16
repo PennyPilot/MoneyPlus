@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
@@ -6,6 +7,7 @@ import 'package:moneyplus/design_system/widgets/text_field.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
+import '../cubit/account_setup_cubit.dart';
 import '../cubit/account_setup_state.dart';
 import 'currency_list.dart';
 
@@ -65,9 +67,9 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
           ),
           child: MTextField(
             hint: l10n.search,
-            value: searchController.text,
+            value: widget.state.query,
             onChanged: (value) {
-              searchController.text = value;
+              context.read<AccountSetupCubit>().onCurrencyChanged(value);
             },
             leading: Padding(
               padding: const EdgeInsetsDirectional.only(

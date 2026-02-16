@@ -39,14 +39,13 @@
   "select": "Select",
   "next": "Next",
   "finishSetup": "Finish setup",
-  "stepOf": "Step {current} of {total}",
   "stepOfTotal": "Step {current} of {total}",
-  "@stepOfTotal": {
-    "placeholders": {
-      "current": {},
-      "total": {}
-    }
-  },
+      "@stepOfTotal": {
+        "placeholders": {
+          "current": {},
+          "total": {}
+        }
+      },
   "forgetPasswordAppBarTitle": "Forget Password",
   "forgetPasswordTitle": "Forget your password",
   "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
@@ -60,9 +59,9 @@
   "updatePasswordSuccessMessage": "Password updated successfully",
   "updatePasswordErrorMessage": "Error updating password",
   "error": "Error",
-  "success": "Success",
-  "loading": "Loading",
-  "login_successfully": "Login Successfully",
+  "success" : "Success",
+  "loading" : "Loading",
+  "login_successfully" : "Login Successfully",
   "login_welcome_title": "Welcome again!",
   "login_welcome_subtitle": "Enter your credentials to access your account",
   "login_email_hint": "Email",
@@ -103,16 +102,8 @@
   "transaction_error_title": "transactions error",
   "transaction_error_content": "failed to load transaction",
   "currencyCode": "IQD",
-  "@stepOf": {
-    "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
+  "current_balance":"Current balance",
+  "how_much_money": "How much money do you have right now?",
   "monthly_overview": "Monthly Overview",
   "no_spending_categories": "No spending categories available",
   "month_january": "January",
@@ -151,5 +142,6 @@
   "no_statistics_subtitle": "Add more transactions to see insights",
   "no_monthly_overview": "No income or expenses recorded for this period",
   "error_loading_statistics": "Failed to load statistics",
-  "retry": "Retry"
+  "retry": "Retry",
+  "add" : "Add"
 }

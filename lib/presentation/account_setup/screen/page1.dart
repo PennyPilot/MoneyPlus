@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
@@ -6,10 +7,12 @@ import 'package:moneyplus/presentation/account_setup/cubit/account_setup_state.d
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+import '../cubit/account_setup_cubit.dart';
 import 'currency_bottom_sheet.dart';
 
 class Page1 extends StatefulWidget {
   final AccountSetupState state;
+
   const Page1({super.key, required this.state});
 
   @override
@@ -17,10 +20,6 @@ class Page1 extends StatefulWidget {
 }
 
 class _Page1State extends State<Page1> {
-
-  final TextEditingController currencyController = TextEditingController();
-  final TextEditingController salaryController = TextEditingController();
-  final TextEditingController dayController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,55 +36,83 @@ class _Page1State extends State<Page1> {
         ),
         SizedBox(height: 24),
         MTextField(
+          key: ValueKey(widget.state.currency),
           hint: l10n.currency,
           leading: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
+            padding: const EdgeInsetsDirectional.only(
+              top: 14,
+              bottom: 14,
+              end: 8,
+            ),
             child: SvgPicture.asset(AppAssets.iconMoney),
           ),
           trailing: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
+            padding: const EdgeInsetsDirectional.only(
+              top: 14,
+              bottom: 14,
+              end: 8,
+            ),
             child: GestureDetector(
               onTap: () {
-               _openCurrencyBottomSheet(widget.state);
+                _openCurrencyBottomSheet(widget.state);
               },
-              child: SvgPicture.asset(AppAssets.icArrowDownRound, height: 20,width: 20,),
+              child: SvgPicture.asset(
+                AppAssets.icArrowDownRound,
+                height: 20,
+                width: 20,
+              ),
             ),
           ),
           keyboardType: TextInputType.number,
-          value: currencyController.text,
+          value: widget.state.currency,
           onChanged: (value) {
-            currencyController.text = value;
+            context.read<AccountSetupCubit>().onCurrencyChanged(value);
           },
         ),
         SizedBox(height: 12),
         MTextField(
           hint: l10n.salary,
           leading: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
+            padding: const EdgeInsetsDirectional.only(
+              top: 14,
+              bottom: 14,
+              end: 8,
+            ),
             child: SvgPicture.asset(AppAssets.iconMoney),
           ),
           keyboardType: TextInputType.number,
-          value: salaryController.text,
+          value: widget.state.salary,
           onChanged: (value) {
-            salaryController.text = value;
+            context.read<AccountSetupCubit>().onSalaryChanged(value);
           },
         ),
         SizedBox(height: 12),
         MTextField(
           hint: l10n.salaryDay,
           leading: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
+            padding: const EdgeInsetsDirectional.only(
+              top: 14,
+              bottom: 14,
+              end: 8,
+            ),
             child: SvgPicture.asset(AppAssets.iconCalender),
           ),
           trailing: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 14,bottom: 14,end: 8),
+            padding: const EdgeInsetsDirectional.only(
+              top: 14,
+              bottom: 14,
+              end: 8,
+            ),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
                 color: context.colors.surface,
               ),
               child: Padding(
-                padding: const EdgeInsetsDirectional.symmetric(vertical: 4,horizontal: 8),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
                 child: Text(
                   l10n.fromEachMonth,
                   style: context.typography.label.small.copyWith(
@@ -96,15 +123,16 @@ class _Page1State extends State<Page1> {
             ),
           ),
           keyboardType: TextInputType.number,
-          value: dayController.text ,
+          value: widget.state.salaryDay,
           onChanged: (value) {
-            dayController.text = value;
+            context.read<AccountSetupCubit>().onSalaryDayChanged(value);
           },
         ),
-        SizedBox(height: 16,)
+        SizedBox(height: 16),
       ],
     );
   }
+
   Future<void> _openCurrencyBottomSheet(AccountSetupState state) async {
     final result = await showModalBottomSheet<String>(
       context: context,
@@ -118,12 +146,7 @@ class _Page1State extends State<Page1> {
     );
 
     if (result != null) {
-      setState(() {
-        currencyController.text = result;
-      });
+        context.read<AccountSetupCubit>().onCurrencyChanged(result);
     }
   }
-
 }
-
-

@@ -6,6 +6,7 @@ import '../../data/repository/account_repository.dart';
 import '../../data/repository/authentication_repository.dart';
 import '../../data/repository/fake_statistics_repository.dart';
 import '../../data/repository/transaction_repository.dart';
+import '../../data/repository/statistics_repository_impl.dart';
 import '../../data/repository/user_money_repository.dart';
 import '../../data/service/app_secrets_provider.dart';
 import '../../data/service/supabase_service.dart';
@@ -64,6 +65,10 @@ void initDI() {
   getIt.registerLazySingleton<AccountSetupCubit>(
     () => AccountSetupCubit(getIt<AccountRepository>()),
   );
+  
+  getIt.registerLazySingleton<AccountSetupCubit>(
+    () => AccountSetupCubit(getIt<AccountRepository>()),
+  );
 
   getIt.registerFactory<AddExpenseCubit>(
     () => AddExpenseCubit(
@@ -71,7 +76,7 @@ void initDI() {
       userMoneyRepository: getIt<UserMoneyRepository>(),
     ),
   );
-
+    
   getIt.registerFactory<AddIncomeCubit>(
     () => AddIncomeCubit(
       transactionRepository: getIt<TransactionRepository>(),
@@ -84,25 +89,17 @@ void initDI() {
         TransactionCubit(transactionRepository: getIt<TransactionRepository>()),
   );
 
-  // Statistics
-  // TODO: Remove this when done testing UI
   getIt.registerLazySingleton<StatisticsRepository>(
-    () => FakeStatisticsRepository(),
+    () => StatisticsRepositoryImpl(supabaseService: getIt<SupabaseService>()),
   );
 
-  // getIt.registerLazySingleton<StatisticsRepository>(
-  //       () => StatisticsRepositoryImpl(
-  //     supabaseService: getIt<SupabaseService>(),
-  //   ),
-  // );
-
   getIt.registerFactory<StatisticsCubit>(
-        () => StatisticsCubit(
-      repository: getIt<StatisticsRepository>(),
-    ),
+    () => StatisticsCubit(repository: getIt<StatisticsRepository>()),
   );
 
   getIt.registerFactory<TransactionDetailsCubit>(
-      () => TransactionDetailsCubit(transactionRepository: getIt<TransactionRepository>())
+    () => TransactionDetailsCubit(
+      transactionRepository: getIt<TransactionRepository>(),
+    ),
   );
 }

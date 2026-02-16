@@ -10,7 +10,7 @@ class StatisticsCubit extends Cubit<StatisticsState> {
       super(const StatisticsIdle());
 
   Future<void> loadStatistics({DateTime? month}) async {
-    final selectedMonth = month ?? DateTime.now();
+    final selectedMonth = month ?? DateTime(2026, 2, 1);
 
     emit(const StatisticsLoading());
 
