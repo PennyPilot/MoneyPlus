@@ -140,6 +140,6 @@
   "no_statistics_subtitle": "Add more transactions to see insights",
   "no_monthly_overview": "No income or expenses recorded for this period",
   "error_loading_statistics": "Failed to load statistics",
-  "retry": "Retry"
+  "retry": "Retry",
   "add" : "Add",
 }
