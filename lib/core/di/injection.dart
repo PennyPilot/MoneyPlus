@@ -5,6 +5,7 @@ import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart
 import '../../data/repository/account_repository.dart';
 import '../../data/repository/authentication_repository.dart';
 import '../../data/repository/fake_statistics_repository.dart';
+import '../../data/repository/statistics_repository_impl.dart';
 import '../../data/repository/transaction_repository_stub.dart';
 import '../../data/repository/user_money_repository.dart';
 import '../../data/service/app_secrets_provider.dart';
@@ -27,7 +28,6 @@ void initDI() {
   getIt.registerLazySingleton<SupabaseService>(
     () => SupabaseService(appSecretsProvider: getIt<AppSecretsProvider>()),
   );
-
 
   getIt.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImpl(
@@ -54,15 +54,16 @@ void initDI() {
   );
 
   getIt.registerLazySingleton<AccountRepository>(
-    () => AccountRepositoryImpl(supabaseService: getIt<SupabaseService>()
-    )
+    () => AccountRepositoryImpl(supabaseService: getIt<SupabaseService>()),
   );
 
   getIt.registerLazySingleton<TransactionRepository>(
     () => TransactionRepositoryStub(getIt<SupabaseService>()),
   );
 
-  getIt.registerLazySingleton<AccountSetupCubit>(() => AccountSetupCubit(getIt<AccountRepository>()));
+  getIt.registerLazySingleton<AccountSetupCubit>(
+    () => AccountSetupCubit(getIt<AccountRepository>()),
+  );
 
   getIt.registerFactory<AddIncomeCubit>(
     () => AddIncomeCubit(repository: getIt<TransactionRepository>()),
@@ -73,25 +74,17 @@ void initDI() {
         TransactionCubit(transactionRepository: getIt<TransactionRepository>()),
   );
 
-  // Statistics
-  // TODO: Remove this when done testing UI
   getIt.registerLazySingleton<StatisticsRepository>(
-    () => FakeStatisticsRepository(),
+    () => StatisticsRepositoryImpl(supabaseService: getIt<SupabaseService>()),
   );
 
-  // getIt.registerLazySingleton<StatisticsRepository>(
-  //       () => StatisticsRepositoryImpl(
-  //     supabaseService: getIt<SupabaseService>(),
-  //   ),
-  // );
-
   getIt.registerFactory<StatisticsCubit>(
-        () => StatisticsCubit(
-      repository: getIt<StatisticsRepository>(),
-    ),
+    () => StatisticsCubit(repository: getIt<StatisticsRepository>()),
   );
 
   getIt.registerFactory<TransactionDetailsCubit>(
-      () => TransactionDetailsCubit(transactionRepository: getIt<TransactionRepository>())
+    () => TransactionDetailsCubit(
+      transactionRepository: getIt<TransactionRepository>(),
+    ),
   );
 }
