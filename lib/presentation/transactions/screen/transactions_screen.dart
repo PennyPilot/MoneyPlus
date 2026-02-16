@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
 import 'package:moneyplus/presentation/transactions/widget/empty_transactions.dart';
@@ -11,6 +10,7 @@ import 'package:moneyplus/presentation/transactions/widget/loading_view.dart';
 import 'package:moneyplus/presentation/transactions/widget/tabs_row.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_app_bar.dart';
 import 'package:moneyplus/presentation/transactions/widget/transactions_list.dart';
+import '../../../core/di/injection.dart';
 
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});

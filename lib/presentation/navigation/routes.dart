@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 
-import '../../di/injection.dart';
+import '../../core/di/injection.dart';
 import '../income/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
+import '../statistics/cubit/statistics_cubit.dart';
+import '../statistics/statistics_screen.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
 import '../main_container/screen/main_screen.dart';
 
@@ -55,6 +57,20 @@ class MainRoute extends GoRouteData with $MainRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const MainScreen();
+  }
+}
+
+@TypedGoRoute<StatisticsRoute>(path: '/statistics')
+@immutable
+class StatisticsRoute extends GoRouteData with $StatisticsRoute {
+  const StatisticsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      create: (_) => getIt<StatisticsCubit>(),
+      child: const StatisticsScreen(),
+    );
   }
 }
 
