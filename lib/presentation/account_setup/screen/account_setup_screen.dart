@@ -6,10 +6,10 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page2.dart';
 
+import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
-import '../../../di/injection.dart';
 import '../cubit/account_setup_cubit.dart';
 import '../cubit/account_setup_state.dart';
 

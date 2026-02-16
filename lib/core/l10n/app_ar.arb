@@ -125,5 +125,5 @@
   "category_name" : "اسم التصنيف",
   "transaction_delete_success" : "نم مسح المعاملة بنجاح",
   "transaction_delete_fail" : "نم مسح المعاملة بنجاح",
-  "add" : "اضافة",
+  "add" : "اضافة"
 }
