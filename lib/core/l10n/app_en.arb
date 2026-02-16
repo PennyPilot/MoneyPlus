@@ -100,7 +100,6 @@
   "transaction_error_title": "transactions error",
   "transaction_error_content": "failed to load transaction",
   "currencyCode": "IQD",
-  "stepOfTotal": "Step {current} of {total}",
   "current_balance":"Current balance",
   "how_much_money": "How much money do you have right now?",
   "monthly_overview": "Monthly Overview",
