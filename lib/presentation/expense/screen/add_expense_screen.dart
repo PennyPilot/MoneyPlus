@@ -13,7 +13,7 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/chip.dart';
 import '../../../design_system/widgets/snack_bar.dart';
-import '../../../di/injection.dart';
+import '../../../core/di/injection.dart';
 import '../../../domain/model/form_status.dart';
 
 class AddExpenseScreen extends StatelessWidget {

@@ -16,7 +16,7 @@ import '../../domain/repository/user_money_repository.dart';
 import '../../domain/validator/authentication_validator.dart';
 import '../../presentation/home/cubit/home_cubit.dart';
 import '../../presentation/income/cubit/add_income_cubit.dart';
-import '../presentation/expense/cubit/add_expense_cubit.dart';
+import '../../presentation/expense/cubit/add_expense_cubit.dart';
 import '../../presentation/login/cubit/login_cubit.dart';
 import '../../presentation/statistics/cubit/statistics_cubit.dart';
 import '../../presentation/trasnaction_details/trasnaction_details_cubit.dart';
