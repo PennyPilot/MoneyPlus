@@ -33,7 +33,7 @@ class _LoginFormState extends State<LoginForm> {
         MTextField(
           hint: localizations.login_email_hint,
           leading: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+            padding: const EdgeInsetsGeometry.directional(end: 8),
             child: SvgPicture.asset(AppAssets.icEmail),
           ),
           onChanged: widget.onEmailChanged,
@@ -46,7 +46,7 @@ class _LoginFormState extends State<LoginForm> {
           maxLines: 1,
           obscureText: !_isPasswordVisible,
           leading: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+            padding: const EdgeInsetsGeometry.directional(end: 8),
             child: SvgPicture.asset(AppAssets.lock),
           ),
           trailing: GestureDetector(
@@ -56,7 +56,7 @@ class _LoginFormState extends State<LoginForm> {
               });
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 14),
               child: SvgPicture.asset(
                 _isPasswordVisible ? AppAssets.eyeOpen : AppAssets.eyeClose,
               ),

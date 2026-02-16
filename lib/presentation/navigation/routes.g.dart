@@ -6,7 +6,14 @@ part of 'routes.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$onBoardingRoute, $loginRoute, $mainRoute,$createAccountRoute];
+List<RouteBase> get $appRoutes => [
+  $onBoardingRoute,
+  $loginRoute,
+  $mainRoute,
+  $transactionDetailsRoute,
+  $statisticsRoute,
+  $createAccountRoute
+];
 
 RouteBase get $onBoardingRoute =>
     GoRouteData.$route(path: '/', factory: $OnBoardingRoute._fromState);
@@ -63,6 +70,63 @@ mixin $MainRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/main');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $transactionDetailsRoute => GoRouteData.$route(
+  path: '/transaction_details',
+  factory: $TransactionDetailsRoute._fromState,
+);
+
+mixin $TransactionDetailsRoute on GoRouteData {
+  static TransactionDetailsRoute _fromState(GoRouterState state) =>
+      TransactionDetailsRoute(state.uri.queryParameters['transaction-id']!);
+
+  TransactionDetailsRoute get _self => this as TransactionDetailsRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/transaction_details',
+    queryParams: {'transaction-id': _self.transactionId},
+  );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $statisticsRoute => GoRouteData.$route(
+  path: '/statistics',
+  factory: $StatisticsRoute._fromState,
+);
+
+mixin $StatisticsRoute on GoRouteData {
+  static StatisticsRoute _fromState(GoRouterState state) =>
+      const StatisticsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/statistics');
 
   @override
   void go(BuildContext context) => context.go(location);
