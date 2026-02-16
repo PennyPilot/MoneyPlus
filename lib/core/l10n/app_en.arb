@@ -37,8 +37,7 @@
   "select": "Select",
   "next": "Next",
   "finishSetup": "Finish setup",
-  "stepOf": "Step {current} of {total}",
-    "stepOfTotal": "Step {current} of {total}",
+  "stepOfTotal": "Step {current} of {total}",
       "@stepOfTotal": {
         "placeholders": {
           "current": {},
