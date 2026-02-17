@@ -7,11 +7,11 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/domain/validator/authentication_validator.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 
+import '../../../core/di/injection.dart';
 import '../../../design_system/theme/money_colors.dart';
 import '../../../design_system/theme/money_typography.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';

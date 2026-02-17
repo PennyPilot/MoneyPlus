@@ -8,8 +8,9 @@ import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/di/injection.dart';
 import 'core/l10n/app_localizations.dart';
-import 'di/injection.dart';
+
 
 class AuthRedirectNotifier extends ChangeNotifier {
   final AuthenticationRepository _authRepository;
@@ -34,7 +35,7 @@ class AuthRedirectNotifier extends ChangeNotifier {
 final _authRedirectNotifier = AuthRedirectNotifier(getIt<AuthenticationRepository>());
 final _router = GoRouter(
   routes: $appRoutes,
-  initialLocation: '/login'
+  initialLocation: '/login',
   refreshListenable: _authRedirectNotifier,
   redirect: (context, state) {
     if (_authRedirectNotifier._isPasswordRecovery) {
