@@ -5,11 +5,11 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/forget_password/cubit/forget_password_cubit.dart';
 import 'package:svg_flutter/svg.dart';
 
+import '../../../core/di/injection.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../cubit/forget_password_state.dart';

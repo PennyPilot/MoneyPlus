@@ -32,9 +32,9 @@ class AuthRedirectNotifier extends ChangeNotifier {
   }
 }
 final _authRedirectNotifier = AuthRedirectNotifier(getIt<AuthenticationRepository>());
-
 final _router = GoRouter(
   routes: $appRoutes,
+  initialLocation: '/login'
   refreshListenable: _authRedirectNotifier,
   redirect: (context, state) {
     if (_authRedirectNotifier._isPasswordRecovery) {
