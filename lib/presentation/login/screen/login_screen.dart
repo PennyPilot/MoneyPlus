@@ -211,7 +211,9 @@ class _SocialMediaButtons extends StatelessWidget {
     return Column(
       children: [
         MoneyButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<LoginCubit>().signInWithGoogle();
+          },
           backgroundColor: colors.surfaceLow,
           disabledBackgroundColor: Colors.red,
           borderWidth: 0.5,

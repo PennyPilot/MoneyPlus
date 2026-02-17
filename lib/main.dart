@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/money_app.dart';
+import 'core/di/injection.dart';
 
 void main()  {
   WidgetsFlutterBinding.ensureInitialized();

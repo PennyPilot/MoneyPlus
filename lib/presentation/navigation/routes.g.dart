@@ -11,6 +11,9 @@ List<RouteBase> get $appRoutes => [
   $loginRoute,
   $mainRoute,
   $transactionDetailsRoute,
+  $statisticsRoute,
+  $forgetPasswordRoute,
+  $updatePasswordRoute,
 ];
 
 RouteBase get $onBoardingRoute =>
@@ -99,6 +102,84 @@ mixin $TransactionDetailsRoute on GoRouteData {
     '/transaction_details',
     queryParams: {'transaction-id': _self.transactionId},
   );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $statisticsRoute => GoRouteData.$route(
+  path: '/statistics',
+  factory: $StatisticsRoute._fromState,
+);
+
+mixin $StatisticsRoute on GoRouteData {
+  static StatisticsRoute _fromState(GoRouterState state) =>
+      const StatisticsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/statistics');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $forgetPasswordRoute => GoRouteData.$route(
+  path: '/forget_password',
+  factory: $ForgetPasswordRoute._fromState,
+);
+
+mixin $ForgetPasswordRoute on GoRouteData {
+  static ForgetPasswordRoute _fromState(GoRouterState state) =>
+      const ForgetPasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location('/forget_password');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $updatePasswordRoute => GoRouteData.$route(
+  path: '/update_password',
+  factory: $UpdatePasswordRoute._fromState,
+);
+
+mixin $UpdatePasswordRoute on GoRouteData {
+  static UpdatePasswordRoute _fromState(GoRouterState state) =>
+      UpdatePasswordRoute();
+
+  @override
+  String get location => GoRouteData.$location('/update_password');
 
   @override
   void go(BuildContext context) => context.go(location);

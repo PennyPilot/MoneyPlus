@@ -7,96 +7,84 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
-import 'package:moneyplus/money_app.dart';
+import 'package:moneyplus/domain/validator/authentication_validator.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 
+import '../../../core/di/injection.dart';
+import '../../../design_system/theme/money_colors.dart';
+import '../../../design_system/theme/money_typography.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../cubit/update_password_cubit.dart';
 import '../cubit/update_password_state.dart';
 
 class UpdatePasswordScreen extends StatelessWidget {
-  final String email;
-
-  const UpdatePasswordScreen({super.key, required this.email});
+  const UpdatePasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => UpdatePasswordCubit(getIt<AuthenticationRepository>()),
-      child: _UpdatePasswordView(email: email),
+      create: (_) => UpdatePasswordCubit(
+          authenticationRepository: getIt<AuthenticationRepository>(),
+          validator: getIt<AuthenticationValidator>()),
+      child: const _UpdatePasswordView(),
     );
   }
 }
 
 class _UpdatePasswordView extends StatefulWidget {
-  final String email;
-
-  const _UpdatePasswordView({required this.email});
+  const _UpdatePasswordView();
 
   @override
   State<_UpdatePasswordView> createState() => _UpdatePasswordViewState();
 }
 
 class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
-  String _newPassword = '';
-  String _confirmPassword = '';
   bool _isNewPasswordObscured = true;
   bool _isConfirmPasswordObscured = true;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<UpdatePasswordCubit>().init();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
     final colors = context.colors;
     final typography = context.typography;
+    final cubit = context.read<UpdatePasswordCubit>();
 
     return BlocConsumer<UpdatePasswordCubit, UpdatePasswordState>(
       listener: (context, state) {
         if (state.status == UpdatePasswordStatus.success) {
           MSnackBar.success(
-            message: l10n.updatePasswordSuccessMessage, title: ''
-          ).showSnackBar(context: context);
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const MoneyApp()),
-            (route) => false,
-          );
+                  message: localizations.updatePasswordSuccessMessage,
+                  title: localizations.updatePasswordSuccessMessage)
+              .showSnackBar(context: context);
+          const LoginRoute().go(context);
         }
         if (state.status == UpdatePasswordStatus.error) {
           MSnackBar.error(
-            message: l10n.updatePasswordErrorMessage, title: ''
-          ).showSnackBar(context: context);
+                  message: localizations.updatePasswordErrorMessage,
+                  title: localizations.updatePasswordErrorMessage)
+              .showSnackBar(context: context);
         }
       },
       builder: (context, state) {
         final isLoading = state.status == UpdatePasswordStatus.loading;
-        final isButtonEnabled =
-            _newPassword.isNotEmpty &&
-            _confirmPassword.isNotEmpty &&
-            _newPassword == _confirmPassword &&
-            !isLoading;
 
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             backgroundColor: colors.surface,
             appBar: CustomAppBar(
-              title: l10n.updatePasswordAppBarTitle,
+              title: localizations.updatePasswordAppBarTitle,
               leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
               trailing: AppLogo(assetPath: AppAssets.icAppLogo),
             ),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(16),
-              child: DefaultButton(
-                text: l10n.updatePasswordButton,
-                isLoading: isLoading,
-                isEnabled: isButtonEnabled,
-                onPressed: () {
-                  context.read<UpdatePasswordCubit>().updatePassword(
-                        _newPassword,
-                      );
-                },
-              ),
-            ),
+            bottomNavigationBar: _buildBottomButton(localizations, cubit, isLoading, state),
             body: Padding(
               padding: const EdgeInsetsDirectional.only(
                 start: 16,
@@ -107,85 +95,9 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            offset: const Offset(0, 4),
-                            blurRadius: 60,
-                            color: const Color(0x33dc143c),
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: Image.asset(
-                        AppAssets.imgForgetPasswordLock,
-                        height: 112,
-                        width: 82,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.updatePasswordTitle,
-                      style: typography.headline.medium.copyWith(
-                        color: colors.title,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      widget.email,
-                      style: typography.body.small.copyWith(color: colors.body),
-                      textAlign: TextAlign.center,
-                    ),
+                    _buildHeader(typography, colors, localizations, state),
                     const SizedBox(height: 12),
-                    MTextField(
-                      hint: l10n.updatePasswordPasswordHint,
-                      value: _newPassword,
-                      obscureText: _isNewPasswordObscured,
-                      maxLines: 1,
-                      trailing: IconButton(
-                        icon: Icon(
-                          _isNewPasswordObscured
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isNewPasswordObscured = !_isNewPasswordObscured;
-                          });
-                        },
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _newPassword = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    MTextField(
-                      hint: l10n.updatePasswordConfirmHint,
-                      value: _confirmPassword,
-                      obscureText: _isConfirmPasswordObscured,
-                      maxLines: 1,
-                      trailing: IconButton(
-                        icon: Icon(
-                          _isConfirmPasswordObscured
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isConfirmPasswordObscured =
-                                !_isConfirmPasswordObscured;
-                          });
-                        },
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _confirmPassword = value;
-                        });
-                      },
-                    ),
+                    _buildForm(localizations, cubit, state),
                   ],
                 ),
               ),
@@ -193,6 +105,113 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildHeader(
+    MoneyTypography typography,
+    MoneyColors colors,
+    AppLocalizations localizations,
+    UpdatePasswordState state,
+  ) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(0, 4),
+                blurRadius: 60,
+                color: const Color(0x33dc143c),
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Image.asset(
+            AppAssets.imgForgetPasswordLock,
+            height: 112,
+            width: 82,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          localizations.updatePasswordTitle,
+          style: typography.headline.medium.copyWith(
+            color: colors.title,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          state.email ?? '',
+          style: typography.body.small.copyWith(color: colors.body),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildForm(
+    AppLocalizations localizations,
+    UpdatePasswordCubit cubit,
+    UpdatePasswordState state,
+  ) {
+    return Column(
+      children: [
+        MTextField(
+          hint: localizations.updatePasswordPasswordHint,
+          value: state.password,
+          obscureText: _isNewPasswordObscured,
+          maxLines: 1,
+          trailing: IconButton(
+            icon: Icon(
+              _isNewPasswordObscured ? Icons.visibility_off : Icons.visibility,
+            ),
+            onPressed: () {
+              setState(() {
+                _isNewPasswordObscured = !_isNewPasswordObscured;
+              });
+            },
+          ),
+          onChanged: cubit.onPasswordChanged,
+        ),
+        const SizedBox(height: 16),
+        MTextField(
+          hint: localizations.updatePasswordConfirmHint,
+          value: state.confirmPassword,
+          obscureText: _isConfirmPasswordObscured,
+          maxLines: 1,
+          trailing: IconButton(
+            icon: Icon(
+              _isConfirmPasswordObscured
+                  ? Icons.visibility_off
+                  : Icons.visibility,
+            ),
+            onPressed: () {
+              setState(() {
+                _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
+              });
+            },
+          ),
+          onChanged: cubit.onConfirmPasswordChanged,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomButton(
+    AppLocalizations localizations,
+    UpdatePasswordCubit cubit,
+    bool isLoading,
+    UpdatePasswordState state,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: DefaultButton(
+        text: localizations.updatePasswordButton,
+        isLoading: isLoading,
+        isEnabled: state.isEnabled,
+        onPressed: cubit.updatePassword,
+      ),
     );
   }
 }

@@ -7,15 +7,11 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
-import 'package:moneyplus/di/injection.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 import 'package:svg_flutter/svg.dart';
-
+import '../../core/di/injection.dart';
 import '../../design_system/widgets/buttons/error/default_error_button.dart';
-import '../../domain/entity/transaction.dart';
-import '../../domain/entity/transaction_category.dart';
-import '../../domain/entity/transaction_type.dart';
 
 class TransactionDetailsScreen extends StatelessWidget {
   final String transactionId;
