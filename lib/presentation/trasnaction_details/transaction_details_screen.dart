@@ -8,6 +8,7 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
+import 'package:moneyplus/presentation/trasnaction_details/pdf_service/share_pdf.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 import 'package:svg_flutter/svg.dart';
 import '../../core/di/injection.dart';
@@ -55,9 +56,21 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
   return Scaffold(
     appBar: CustomAppBar(
       backgroundColor: colors.surfaceLow,
-      leading: _circleIcon(AppAssets.icArrowLeft, context),
+      leading: _circleIcon(
+        iconPath: AppAssets.icArrowLeft,
+        context: context,
+        onClick: () {
+          GoRouter.of(context).pop();
+        },
+      ),
       title: "Transaction details",
-      trailing: _circleIcon(AppAssets.icShare, context),
+      trailing: _circleIcon(
+        iconPath: AppAssets.icShare,
+        context: context,
+        onClick: () async {
+          await createAndSharePdf(state.transactionDetails);
+        },
+      ),
     ),
     body: Container(
       height: double.infinity,
@@ -94,10 +107,14 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
   );
 }
 
-Widget _circleIcon(String iconPath, BuildContext context) {
+Widget _circleIcon({
+  required String iconPath,
+  required BuildContext context,
+  Function? onClick,
+}) {
   return GestureDetector(
     onTap: () {
-      GoRouter.of(context).pop();
+      onClick?.call();
     },
     child: Container(
       width: 40,
