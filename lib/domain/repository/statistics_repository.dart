@@ -1,13 +1,10 @@
-import 'dart:ffi';
+import '../entity/monthly_overview.dart';
 
 import 'package:moneyplus/domain/entity/categories_breakdown.dart';
-import 'package:moneyplus/domain/entity/transaction.dart';
-import 'package:moneyplus/domain/entity/transaction_category.dart';
-import 'package:moneyplus/domain/entity/transaction_type.dart';
-import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 
 import '../../core/errors/result.dart';
 
 abstract class StatisticsRepository {
+  Future<MonthlyOverview?> getMonthlyOverview({required DateTime month});
   Future<Result<CategoriesBreakdown>> getCategoriesBreakDown(DateTime date);
 }

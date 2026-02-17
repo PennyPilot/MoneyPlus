@@ -37,8 +37,7 @@
   "select": "Select",
   "next": "Next",
   "finishSetup": "Finish setup",
-  "stepOf": "Step {current} of {total}",
-    "stepOfTotal": "Step {current} of {total}",
+  "stepOfTotal": "Step {current} of {total}",
       "@stepOfTotal": {
         "placeholders": {
           "current": {},
@@ -50,7 +49,6 @@
   "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
   "forgetPasswordEmailHint": "Email",
   "forgetPasswordButton": "Send Reset Link",
-
   "updatePasswordAppBarTitle": "Update Password",
   "updatePasswordTitle": "Enter a new password for",
   "updatePasswordPasswordHint": "New Password",
@@ -58,7 +56,6 @@
   "updatePasswordButton": "Update Password",
   "updatePasswordSuccessMessage": "Password updated successfully",
   "updatePasswordErrorMessage": "Error updating password",
-
   "error": "Error",
   "success" : "Success",
   "loading" : "Loading",
@@ -93,7 +90,6 @@
   "auth_error_not_implemented": "This feature is not available on the server",
   "auth_error_default": "An unexpected error occurred. Please try again later",
   "no_internet_connection": "No internet connection",
-
   "no_transaction_record_title": "No transaction records",
   "no_transaction_record_content": "Add your first one to get started",
   "add_transaction": "Add transaction",
@@ -103,25 +99,10 @@
   "transaction": "Transaction",
   "transaction_error_title": "transactions error",
   "transaction_error_content": "failed to load transaction",
-
   "currencyCode": "IQD",
-  "@stepOf": {
-    "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "stepOfTotal": "Step {current} of {total}",
-  "@stepOfTotal": {
-    "placeholders": {
-      "current": {},
-      "total": {}
-    }
-  },
+  "current_balance":"Current balance",
+  "how_much_money": "How much money do you have right now?",
+  "monthly_overview": "Monthly Overview",
   "no_spending_categories": "No spending categories available",
   "month_january": "January",
   "month_february": "February",
@@ -134,5 +115,31 @@
   "month_september": "September",
   "month_october": "October",
   "month_november": "November",
-  "month_december": "December"
+  "month_december": "December",
+  "manage_categories": "Manage categories",
+  "add_new_category": "Add new category",
+  "add_custom_category": "Add custom category",
+  "category_name": "Category name",
+  "transaction_delete_success" : "Transaction deleted successfully",
+  "transaction_delete_fail" : "Failed to delete transaction",
+  "statistics": "Statistics",
+  "savings_message": "You saved {amount} {currency} this month",
+  "@savings_message": {
+    "placeholders": {
+      "amount": {},
+      "currency": {}
+    }
+  },
+  "highest_spending_message": "Your highest spending was on {date}",
+  "@highest_spending_message": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "no_statistics_title": "Not enough data yet",
+  "no_statistics_subtitle": "Add more transactions to see insights",
+  "no_monthly_overview": "No income or expenses recorded for this period",
+  "error_loading_statistics": "Failed to load statistics",
+  "retry": "Retry",
+  "add" : "Add"
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
-
+import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
@@ -12,7 +12,6 @@ import '../../../design_system/widgets/chip.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../../../design_system/widgets/text_field_date_Picker.dart';
-import '../../../di/injection.dart';
 import '../cubit/add_income_cubit.dart';
 import '../cubit/add_income_state.dart';
 
@@ -100,7 +99,7 @@ class _IncomeScreenContent extends StatelessWidget {
         value: state.amount != null ? state.amount!.toStringAsFixed(0) : '',
         keyboardType: TextInputType.number,
         leading: Padding(
-          padding: const EdgeInsets.only(top: 14, right: 8),
+          padding: const EdgeInsetsGeometry.directional(end: 8),
           child: SvgPicture.asset(
             AppAssets.icAmountGray,
             width: 24,
@@ -211,7 +210,6 @@ class _IncomeScreenContent extends StatelessWidget {
   }
 
   Widget _buildSaveButton(BuildContext context, AddIncomeState state) {
-    final colors = context.colors;
     final l10n = AppLocalizations.of(context)!;
 
     return Padding(

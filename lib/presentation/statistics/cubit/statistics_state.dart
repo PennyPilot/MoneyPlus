@@ -1,32 +1,31 @@
-import 'package:flutter/cupertino.dart';
-import '../../../core/errors/error_model.dart';
-import '../../../domain/entity/categories_breakdown.dart';
+import '../../../domain/entity/monthly_overview.dart';
 
-enum StatisticsStatus { initial, loading, success, failure }
+sealed class StatisticsState {
+  const StatisticsState();
+}
 
-@immutable
-class StatisticsState {
-  final StatisticsStatus status;
-  final ErrorModel? error;
-  final CategoriesBreakdown? categoriesBreakdown;
+class StatisticsIdle extends StatisticsState {
+  const StatisticsIdle();
+}
 
-  const StatisticsState({
-    required this.status,
-    this.error,
-    this.categoriesBreakdown,
+class StatisticsLoading extends StatisticsState {
+  const StatisticsLoading();
+}
+
+class StatisticsSuccess extends StatisticsState {
+  final MonthlyOverview? monthlyOverview;
+  final DateTime selectedMonth;
+
+  const StatisticsSuccess({
+    required this.monthlyOverview,
+    required this.selectedMonth,
   });
 
-  factory StatisticsState.initial() => const StatisticsState(status: StatisticsStatus.initial);
+  bool get hasNoData => monthlyOverview == null;
+}
 
-  StatisticsState copyWith({
-    StatisticsStatus? status,
-    ErrorModel? error,
-    CategoriesBreakdown? categoriesBreakdown,
-  }) {
-    return StatisticsState(
-      status: status ?? this.status,
-      error: error ?? this.error,
-      categoriesBreakdown: categoriesBreakdown ?? this.categoriesBreakdown,
-    );
-  }
+class StatisticsFailure extends StatisticsState {
+  final String message;
+
+  const StatisticsFailure(this.message);
 }

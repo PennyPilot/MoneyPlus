@@ -1,4 +1,6 @@
+import '../../../domain/entity/transaction.dart';
 import '../../../domain/entity/transaction_category.dart';
+import '../../../domain/entity/transaction_type.dart';
 import '../../../domain/repository/model/top_spending_category.dart';
 
 List<TopSpendingCategory> getFakeTopSpendingCategories() {
@@ -26,3 +28,29 @@ List<TopSpendingCategory> getFakeTopSpendingCategories() {
     ),
   ];
 }
+
+final fakeTransactionExpense = Transaction(
+  id: 1,
+  amount: 128.50,
+  currency: "USD",
+  type: TransactionType.expense,
+  date: DateTime.now(),
+  category: TransactionCategory(
+    id: 101,
+    name: "Food & Drinks",
+  ),
+  note: "Lunch at café",
+);
+
+final fakeTransactionIncome = Transaction(
+  id: 2,
+  amount: 500.00,
+  currency: "USD",
+  type: TransactionType.income,
+  date: DateTime.now(),
+  category: TransactionCategory(
+    id: 201,
+    name: "Salary",
+  ),
+  note: "Monthly paycheck",
+);
