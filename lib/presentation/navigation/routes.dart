@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/home/screen/home_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import '../../core/di/injection.dart';
+import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
+
+import '../../core/di/injection.dart';
+import '../forget_password/screen/forget_password_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../statistics/cubit/statistics_cubit.dart';
 import '../statistics/statistics_screen.dart';
@@ -80,5 +84,25 @@ class TransactionDetailsRoute extends GoRouteData with $TransactionDetailsRoute 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return TransactionDetailsScreen(transactionId: transactionId);
+  }
+}
+
+@TypedGoRoute<ForgetPasswordRoute>(path: '/forget_password')
+@immutable
+class ForgetPasswordRoute extends GoRouteData with $ForgetPasswordRoute {
+  const ForgetPasswordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ForgetPasswordScreen();
+  }
+}
+
+@TypedGoRoute<UpdatePasswordRoute>(path: '/update_password')
+@immutable
+class UpdatePasswordRoute extends GoRouteData with $UpdatePasswordRoute {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return UpdatePasswordScreen();
   }
 }

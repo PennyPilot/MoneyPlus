@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+import '../../navigation/routes.dart';
 
 class ForgetPasswordButton extends StatelessWidget {
   const ForgetPasswordButton({super.key});
@@ -19,7 +20,9 @@ class ForgetPasswordButton extends StatelessWidget {
           padding: EdgeInsets.zero,
           visualDensity: VisualDensity.compact,
         ),
-        onPressed: () {},
+        onPressed: () {
+          ForgetPasswordRoute().push(context);
+        },
         child: Text(
           localizations.login_forget_password,
           style: typography.label.medium.copyWith(color: colors.primary),
