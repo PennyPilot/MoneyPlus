@@ -6,7 +6,7 @@ import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import '../../core/di/injection.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 
-import '../../di/injection.dart';
+import '../../core/di/injection.dart';
 import '../forget_password/screen/forget_password_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../statistics/cubit/statistics_cubit.dart';
