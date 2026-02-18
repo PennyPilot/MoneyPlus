@@ -88,7 +88,7 @@ class TransactionDetailsComponent extends StatelessWidget {
             child: Align(
               alignment: Alignment.topCenter,
               child: Text(
-                "${isIncome ? "Income" : "Expense"} details",
+                isIncome ? localizations.income_details : localizations.expense_details,
                 style: typography.title.small.copyWith(color: colors.title),
               ),
             ),
