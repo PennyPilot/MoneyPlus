@@ -72,3 +72,5 @@ flutter:
           weight: 500
         - asset: assets/fonts/Rubik-SemiBold.ttf
           weight: 600
+        - asset: assets/fonts/Cairo-Regular.ttf
+          weight: 400

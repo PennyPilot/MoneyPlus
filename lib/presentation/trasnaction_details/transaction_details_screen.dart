@@ -53,6 +53,7 @@ Widget _errorContent(String errorMsg) {
 Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
   final colors = context.colors;
   final cubit = context.read<TransactionDetailsCubit>();
+  final localizations = context.localizations;
   return Scaffold(
     appBar: CustomAppBar(
       backgroundColor: colors.surfaceLow,
@@ -63,12 +64,12 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
           GoRouter.of(context).pop();
         },
       ),
-      title: "Transaction details",
+      title: localizations.transaction_details,
       trailing: _circleIcon(
         iconPath: AppAssets.icShare,
         context: context,
-        onClick: () async {
-          await createAndSharePdf(state.transactionDetails);
+        onClick: ()  {
+          cubit.onClickShareButton(context);
         },
       ),
     ),
