@@ -36,6 +36,10 @@ dependencies:
 
   # --- Utils & Internationalization ---
   intl: any
+  firebase_core: ^4.4.0
+  firebase_crashlytics: ^5.0.7
+  firebase_remote_config: ^6.1.4
+  firebase_analytics: ^12.1.1
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +49,8 @@ dev_dependencies:
   go_router_builder: ^4.0.1
   build_runner: ^2.6.0
   build_verify: any
+  integration_test:
+    sdk: flutter
 
 flutter:
   generate: true
