@@ -1,0 +1,57 @@
+import 'package:get_it/get_it.dart';
+import 'package:moneyplus/domain/repository/account_repository.dart';
+import 'package:moneyplus/domain/repository/authentication_repository.dart';
+import 'package:moneyplus/domain/repository/statistics_repository.dart';
+import 'package:moneyplus/domain/repository/transaction_repository.dart';
+import 'package:moneyplus/domain/repository/user_money_repository.dart';
+import 'package:moneyplus/domain/validator/authentication_validator.dart';
+import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.dart';
+import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
+import 'package:moneyplus/presentation/income/cubit/add_income_cubit.dart';
+import 'package:moneyplus/presentation/login/cubit/login_cubit.dart';
+import 'package:moneyplus/presentation/statistics/cubit/statistics_cubit.dart';
+import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
+import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
+
+import 'injection.dart';
+
+
+void initCubitDI() {
+  getIt.registerLazySingleton<AuthenticationValidator>(
+    () => AuthenticationValidator(),
+  );
+
+  getIt.registerFactory<HomeCubit>(
+    () => HomeCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
+  );
+
+  getIt.registerFactory<LoginCubit>(
+    () => LoginCubit(
+      authRepository: getIt<AuthenticationRepository>(),
+      validator: getIt<AuthenticationValidator>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<AccountSetupCubit>(
+    () => AccountSetupCubit(getIt<AccountRepository>()),
+  );
+
+  getIt.registerFactory<AddIncomeCubit>(
+    () => AddIncomeCubit(repository: getIt<TransactionRepository>()),
+  );
+
+  getIt.registerFactory<TransactionCubit>(
+    () =>
+        TransactionCubit(transactionRepository: getIt<TransactionRepository>()),
+  );
+
+  getIt.registerFactory<StatisticsCubit>(
+    () => StatisticsCubit(repository: getIt<StatisticsRepository>()),
+  );
+
+  getIt.registerFactory<TransactionDetailsCubit>(
+    () => TransactionDetailsCubit(
+      transactionRepository: getIt<TransactionRepository>(),
+    ),
+  );
+}

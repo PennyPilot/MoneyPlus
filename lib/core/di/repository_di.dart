@@ -1,0 +1,36 @@
+import 'package:get_it/get_it.dart';
+
+import '../../data/repository/account_repository.dart';
+import '../../data/repository/authentication_repository.dart';
+import '../../data/repository/statistics_repository_impl.dart';
+import '../../data/repository/transaction_repository_stub.dart';
+import '../../data/repository/user_money_repository.dart';
+import '../../data/service/supabase_service.dart';
+import '../../domain/repository/account_repository.dart';
+import '../../domain/repository/authentication_repository.dart';
+import '../../domain/repository/statistics_repository.dart';
+import '../../domain/repository/transaction_repository.dart';
+import '../../domain/repository/user_money_repository.dart';
+
+import 'injection.dart';
+
+void initRepositoryDI() {
+  getIt.registerLazySingleton<AuthenticationRepository>(
+    () => AuthenticationRepositoryImpl(
+      supabaseService: getIt<SupabaseService>(),
+      appSecrets: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<UserMoneyRepository>(
+    () => UserRepositoryImpl(service: getIt<SupabaseService>()),
+  );
+  getIt.registerLazySingleton<AccountRepository>(
+    () => AccountRepositoryImpl(supabaseService: getIt<SupabaseService>()),
+  );
+  getIt.registerLazySingleton<TransactionRepository>(
+    () => TransactionRepositoryStub(getIt<SupabaseService>()),
+  );
+  getIt.registerLazySingleton<StatisticsRepository>(
+    () => StatisticsRepositoryImpl(supabaseService: getIt<SupabaseService>()),
+  );
+}
