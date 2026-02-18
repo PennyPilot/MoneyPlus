@@ -5,7 +5,7 @@ import '../../data/repository/authentication_repository.dart';
 import '../../data/repository/statistics_repository_impl.dart';
 import '../../data/repository/transaction_repository_stub.dart';
 import '../../data/repository/user_money_repository.dart';
-import '../../data/service/supabase_service.dart';
+import '../service/supabase_service.dart';
 import '../../domain/repository/account_repository.dart';
 import '../../domain/repository/authentication_repository.dart';
 import '../../domain/repository/statistics_repository.dart';

@@ -1,4 +1,4 @@
-import 'package:moneyplus/data/service/supabase_service.dart';
+import 'package:moneyplus/core/service/supabase_service.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
