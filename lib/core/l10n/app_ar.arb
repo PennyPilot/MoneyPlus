@@ -1,7 +1,9 @@
 {
   "income": "الدخل",
   "expense": "المصروف",
-  "makeAnExpense": "تسجيل مصروف",
+  "addAnExpense": "تسجيل مصروف",
+  "expenseAddedSuccessfully": "تم اضافة المصروف!",
+  "failedToAddExpense":"فشل في اضافة المصروف",
   "amount": "المبلغ",
   "categories": "التصنيفات",
   "category": "التصنيف",

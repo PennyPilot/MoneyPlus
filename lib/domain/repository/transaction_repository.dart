@@ -4,13 +4,15 @@ import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 
 import '../../core/errors/result.dart';
+import '../entity/currency.dart';
 
 abstract class TransactionRepository {
-  Future<bool> addTransaction({
+  Future<Result<void>> addTransaction({
     required double amount,
     required TransactionType type,
     required DateTime date,
     required TransactionCategory category,
+    required Currency currency,
     String note = "",
   });
 
