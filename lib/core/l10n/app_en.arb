@@ -148,5 +148,8 @@
   "salarySettings": "Salary settings",
   "frequentlyAskedQuestion": "Frequently asked question",
   "helpAndSupport": "Help & Support",
-  "appVersion": "App version"
+  "appVersion": "App version",
+  "transaction_details": "Transaction details",
+  "income_details": "Income details",
+  "expense_details": "Expense details"
 }
