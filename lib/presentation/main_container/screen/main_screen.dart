@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/presentation/main_container/cubit/main_state.dart';
+import 'package:moneyplus/presentation/statistics/statistics_screen.dart';
 import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
 import '../../../design_system/widgets/nav_bar.dart';
@@ -40,7 +41,7 @@ class MainScreen extends StatelessWidget {
       case NavBarTab.transaction:
         return const TransactionsScreen();
       case NavBarTab.statistics:
-        return const TransactionsScreen(); //change to statistics
+        return const StatisticsScreen();
       case NavBarTab.account:
         return const TransactionsScreen(); //change to account
     }

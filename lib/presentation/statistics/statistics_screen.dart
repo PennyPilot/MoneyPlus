@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/core/di/injection.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
+
 import 'cubit/statistics_cubit.dart';
 import 'cubit/statistics_state.dart';
 import 'widgets/monthly_overview/monthly_overview_section.dart';
 
-class StatisticsScreen extends StatefulWidget {
+class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
 
   @override
-  State<StatisticsScreen> createState() => _StatisticsScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<StatisticsCubit>()..loadStatistics(),
+      child: const StatisticsView(),
+    );
+  }
 }
 
-class _StatisticsScreenState extends State<StatisticsScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<StatisticsCubit>().loadStatistics();
-  }
+class StatisticsView extends StatefulWidget {
+  const StatisticsView({super.key});
 
+  @override
+  State<StatisticsView> createState() => _StatisticsViewState();
+}
+
+class _StatisticsViewState extends State<StatisticsView> {
   void _onAddTransaction() {
     // Navigate to add transaction
   }
@@ -43,9 +52,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               StatisticsLoading() => const AppLoadingIndicator(),
               StatisticsSuccess() => _buildSuccess(context, state),
               StatisticsFailure(:final message) => AppErrorView(
-                message: message,
-                onRetry: _onRetry,
-              ),
+                  message: message,
+                  onRetry: _onRetry,
+                ),
             };
           },
         ),
@@ -71,7 +80,10 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         children: [
           if (state.monthlyOverview != null)
             MonthlyOverviewSection(overview: state.monthlyOverview!),
-            // TODO: Add other sections here
+          if (state.categoriesBreakdown != null)
+            CategoryBreakdownWidget(
+              categoriesBreakdown: state.categoriesBreakdown!,
+            ),
         ],
       ),
     );

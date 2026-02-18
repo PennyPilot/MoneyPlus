@@ -4,7 +4,6 @@ import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.d
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import '../../data/repository/account_repository.dart';
 import '../../data/repository/authentication_repository.dart';
-import '../../data/repository/fake_statistics_repository.dart';
 import '../../data/repository/statistics_repository_impl.dart';
 import '../../data/repository/transaction_repository_stub.dart';
 import '../../data/repository/user_money_repository.dart';
