@@ -7,7 +7,6 @@ import 'package:moneyplus/design_system/widgets/app_logo.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/forget_password/cubit/forget_password_cubit.dart';
-import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 import 'package:svg_flutter/svg.dart';
 
 import '../../../core/di/injection.dart';
@@ -21,21 +20,15 @@ class ForgetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ForgetPasswordCubit(getIt<AuthenticationRepository>()),
+      create: (_) =>
+          ForgetPasswordCubit(getIt<AuthenticationRepository>(), getIt()),
       child: const _ForgetPasswordView(),
     );
   }
 }
 
-class _ForgetPasswordView extends StatefulWidget {
+class _ForgetPasswordView extends StatelessWidget {
   const _ForgetPasswordView();
-
-  @override
-  State<_ForgetPasswordView> createState() => _ForgetPasswordViewState();
-}
-
-class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
-  String _email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +37,7 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
     final l10n = AppLocalizations.of(context)!;
 
     return BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
-      listener: (context, state) {
-        if (state.status == ForgetPasswordStatus.passwordRecovery) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => UpdatePasswordScreen(email: _email),
-            ),
-          );
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -67,12 +52,10 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
               padding: const EdgeInsets.all(16),
               child: DefaultButton(
                 text: l10n.forgetPasswordButton,
-                isEnabled: _email.isNotEmpty,
+                isEnabled: state.isEmailValid,
                 isLoading: state.status == ForgetPasswordStatus.loading,
                 onPressed: () {
-                  context.read<ForgetPasswordCubit>().onClickForgetPassword(
-                        _email,
-                      );
+                  context.read<ForgetPasswordCubit>().onClickForgetPassword();
                 },
               ),
             ),
@@ -125,11 +108,11 @@ class _ForgetPasswordViewState extends State<_ForgetPasswordView> {
                         height: 24,
                         AppAssets.icEmail,
                       ),
-                      value: _email,
+                      value: state.email,
                       onChanged: (String value) {
-                        setState(() {
-                          _email = value;
-                        });
+                        context.read<ForgetPasswordCubit>().onEmailChanged(
+                          value,
+                        );
                       },
                     ),
                   ],

@@ -3,15 +3,21 @@ import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 import '../../core/errors/result.dart';
-import '../../domain/entity/user.dart';
+import '../entity/user.dart';
 
 abstract class AuthenticationRepository {
-  void signInWithGoogle();
-  Future<void> resetPasswordForEmail(String email);
+  Future<Result<User>> signIn({
+    required String email,
+    required String password,
+  });
 
   Stream<AuthState> get onAuthStateChange;
 
-  Future<void> updatePassword(String password);
+  Future<String?> get userEmail;
 
-  Future<Result<User>> signIn({required String email, required String password});
+  Future<Result<bool>> resetPasswordForEmail(String email);
+
+  Future<Result<bool>> signInWithGoogle();
+
+  Future<Result<bool>> updatePassword(String password);
 }
