@@ -121,8 +121,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
-  static const String _googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
-  static const String _googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
   static const List<String> _googleScopes = ['email', 'profile', 'openid'];
 
   @override
