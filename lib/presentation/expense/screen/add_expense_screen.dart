@@ -34,12 +34,12 @@ class _ExpenseScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: CustomAppBar(
-        title: l10n.addAnExpense,
+        title: localization.addAnExpense,
         backgroundColor: colors.surfaceLow,
         leading: AppBarCircleButton(
           assetPath: AppAssets.icArrowLeft,
@@ -48,18 +48,18 @@ class _ExpenseScreenContent extends StatelessWidget {
       ),
       body: BlocConsumer<AddExpenseCubit, AddExpenseState>(
         listener: (context, state) {
-          final l10n = AppLocalizations.of(context)!;
+          final localization = AppLocalizations.of(context)!;
 
           if (state.status == FormStatus.success) {
             MSnackBar.success(
-              message: l10n.expenseAddedSuccessfully,
+              message: localization.expenseAddedSuccessfully,
               title: '',
             ).showSnackBar(context: context);
 
             Navigator.pop(context);
           } else if (state.status == FormStatus.failure) {
             MSnackBar.error(
-              message: state.errorMessage ?? l10n.failedToAddExpense,
+              message: state.errorMessage ?? localization.failedToAddExpense,
               title: '',
             ).showSnackBar(context: context);
           }
@@ -91,16 +91,16 @@ class _ExpenseScreenContent extends StatelessWidget {
   Widget _buildAmountSection(BuildContext context, AddExpenseState state) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: MTextField(
-        hint: l10n.amount,
+        hint: localization.amount,
         value: state.amount != null ? state.amount!.toStringAsFixed(0) : '',
         keyboardType: TextInputType.number,
         leading: Padding(
-          padding: const EdgeInsetsGeometry.directional(end: 8),
+          padding: const EdgeInsetsDirectional.only(end: 8),
           child: SvgPicture.asset(
             AppAssets.icAmountGray,
             width: 24,
@@ -132,11 +132,11 @@ class _ExpenseScreenContent extends StatelessWidget {
   }
 
   Widget _buildDateSection(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: TextFieldDatePicker(
-        hint: l10n.date,
+        hint: localization.date,
         onError: () {},
         onDateChange: (date) {
           context.read<AddExpenseCubit>().onDateChanged(date);
@@ -148,7 +148,7 @@ class _ExpenseScreenContent extends StatelessWidget {
   Widget _buildCategorySection(BuildContext context, AddExpenseState state) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     if (state.isLoadingCategories && state.categories.isEmpty) {
       return const Padding(
@@ -167,7 +167,7 @@ class _ExpenseScreenContent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 16),
           child: Text(
-            l10n.categories,
+            localization.categories,
             style: typography.title.small.copyWith(color: colors.title),
           ),
         ),
@@ -197,11 +197,11 @@ class _ExpenseScreenContent extends StatelessWidget {
   }
 
   Widget _buildNoteSection(BuildContext context, AddExpenseState state) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: MTextField(
-        hint: l10n.note,
+        hint: localization.note,
         value: state.note,
         minLines: 4,
         maxLines: 6,
@@ -213,12 +213,12 @@ class _ExpenseScreenContent extends StatelessWidget {
   }
 
   Widget _buildSaveButton(BuildContext context, AddExpenseState state) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
       child: DefaultButton(
-        text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
+        text: state.status == FormStatus.loading ? localization.saving : localization.add,
         onPressed: () {
           context.read<AddExpenseCubit>().onSubmitExpense();
         },

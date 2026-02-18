@@ -33,12 +33,12 @@ class _IncomeScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: CustomAppBar(
-        title: l10n.addIncome,
+        title: localization.addIncome,
         backgroundColor: colors.surfaceLow,
         leading: AppBarCircleButton(
           assetPath: AppAssets.icArrowLeft,
@@ -47,18 +47,18 @@ class _IncomeScreenContent extends StatelessWidget {
       ),
       body: BlocConsumer<AddIncomeCubit, AddIncomeState>(
         listener: (context, state) {
-          final l10n = AppLocalizations.of(context)!;
+          final localization = AppLocalizations.of(context)!;
 
           if (state.status == FormStatus.success) {
             MSnackBar.success(
-              message: l10n.incomeAddedSuccessfully,
+              message: localization.incomeAddedSuccessfully,
               title: '',
             ).showSnackBar(context: context);
 
             Navigator.pop(context);
           } else if (state.status == FormStatus.failure) {
             MSnackBar.error(
-              message: state.errorMessage ?? l10n.failedToAddIncome,
+              message: state.errorMessage ?? localization.failedToAddIncome,
               title: '',
             ).showSnackBar(context: context);
           }
@@ -90,16 +90,16 @@ class _IncomeScreenContent extends StatelessWidget {
   Widget _buildAmountSection(BuildContext context, AddIncomeState state) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: MTextField(
-        hint: l10n.amount,
+        hint: localization.amount,
         value: state.amount != null ? state.amount!.toStringAsFixed(0) : '',
         keyboardType: TextInputType.number,
         leading: Padding(
-          padding: const EdgeInsetsGeometry.directional(end: 8),
+          padding: const EdgeInsetsDirectional.only(end: 8),
           child: SvgPicture.asset(
             AppAssets.icAmountGray,
             width: 24,
@@ -131,11 +131,11 @@ class _IncomeScreenContent extends StatelessWidget {
   }
 
   Widget _buildDateSection(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: TextFieldDatePicker(
-        hint: l10n.date,
+        hint: localization.date,
         onError: () {},
         onDateChange: (date) {
           context.read<AddIncomeCubit>().onDateChanged(date);
@@ -147,7 +147,7 @@ class _IncomeScreenContent extends StatelessWidget {
   Widget _buildCategorySection(BuildContext context, AddIncomeState state) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     if (state.isLoadingCategories && state.categories.isEmpty) {
       return const Padding(
@@ -166,7 +166,7 @@ class _IncomeScreenContent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 16),
           child: Text(
-            l10n.categories,
+            localization.categories,
             style: typography.title.small.copyWith(color: colors.title),
           ),
         ),
@@ -194,11 +194,11 @@ class _IncomeScreenContent extends StatelessWidget {
   }
 
   Widget _buildNoteSection(BuildContext context, AddIncomeState state) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: MTextField(
-        hint: l10n.note,
+        hint: localization.note,
         value: state.note,
         minLines: 4,
         maxLines: 6,
@@ -210,12 +210,12 @@ class _IncomeScreenContent extends StatelessWidget {
   }
 
   Widget _buildSaveButton(BuildContext context, AddIncomeState state) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
       child: DefaultButton(
-        text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
+        text: state.status == FormStatus.loading ? localization.saving : localization.add,
         onPressed: () {
           context.read<AddIncomeCubit>().onSubmitIncome();
         },

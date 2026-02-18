@@ -22,25 +22,43 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
   }
 
   Future<void> _loadCategories() async {
-    emit(state.copyWith(isLoadingCategories: true));
-    final categories = await _transactionRepository.getTransactionCategories(
-      TransactionType.expense,
-    );
+    try {
+      emit(state.copyWith(isLoadingCategories: true));
+      final categories = await _transactionRepository.getTransactionCategories(
+        TransactionType.expense,
+      );
 
-    emit(
-      state.copyWith(
-        categories: categories,
-        selectedCategory: categories.first,
-        isLoadingCategories: false,
-      ),
-    );
+      emit(
+        state.copyWith(
+          categories: categories,
+          selectedCategory: categories.first,
+          isLoadingCategories: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "Failed to load categories",
+        ),
+      );
+    }
   }
 
   Future<void> _loadCurrency() async {
-    emit(state.copyWith(status: FormStatus.loading));
-    final currency = await _userMoneyRepository.getCurrency();
+    try {
+      emit(state.copyWith(status: FormStatus.loading));
+      final currency = await _userMoneyRepository.getCurrency();
 
-    emit(state.copyWith(currency: currency, status: FormStatus.initial));
+      emit(state.copyWith(currency: currency, status: FormStatus.initial));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "Failed to load currency",
+        ),
+      );
+    }
   }
 
   void onAmountChanged(String value) {
