@@ -9,7 +9,7 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
   final AuthenticationRepository _authenticationRepository;
 
   CreateAccountCubit(this._validator, this._authenticationRepository)
-    : super(CreateAccountState());
+      : super(CreateAccountState());
 
   void emailChanged(String value) {
     emit(state.copyWith(email: value));
@@ -50,12 +50,15 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
       onSuccess: (user) {
         emit(state.copyWith(isLoading: false));
       },
-      onError: (error){
-        emit(state.copyWith(isLoading: false));
-        emit(state.copyWith(errorMessage: error.message));
-        emit(state.copyWith(errorMessage: null));
+      onError: (error) {
+        showSnackBar(error.message);
       },
     );
+  }
+
+  void showSnackBar(String message) {
+    emit(state.copyWith(isLoading: false, errorMessage: message));
+    emit(state.copyWith(errorMessage: null));
   }
 
   void togglePasswordVisibility() {
