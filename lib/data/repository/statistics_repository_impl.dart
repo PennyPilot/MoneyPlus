@@ -120,7 +120,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
       final client = await _supabaseService.getClient();
       final data = await client.rpc(
         'get_expenses_categories_breakdown',
-        params: {'in_year': 2026, 'in_month': 2},
+        params: {'in_year': date.year, 'in_month': date.month},
       );
       return Result.success(CategoriesBreakdown.fromJson(data));
     } catch (e) {
