@@ -42,13 +42,17 @@ dependencies:
   pdf: ^3.11.3
 
   # --- Utils & Internationalization ---
+
   intl: any
   firebase_core: ^4.4.0
   firebase_crashlytics: ^5.0.7
   firebase_remote_config: ^6.1.4
   firebase_analytics: ^12.1.1
   firebase_performance: ^0.11.1+4
+  flutter_secure_storage: ^10.0.0
 
+  # --- Security ---
+  freerasp: ^7.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,6 +69,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - secrets.env
 
   uses-material-design: true
 

@@ -11,4 +11,6 @@ class AppConstants {
 
   static const String googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
   static const String googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
+  static const String hashedSignature = "TALSEC_SIGNING_CERT_HASH";
+  static const String watcherMail = "TALSEC_WATCHER_MAIL";
 }
