@@ -48,7 +48,7 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
     );
     result.when(
       onSuccess: (user) {
-        emit(state.copyWith(isLoading: false));
+        emit(state.copyWith(isLoading: false,isRegisterSuccess: true));
       },
       onError: (error) {
         showSnackBar(error.message);

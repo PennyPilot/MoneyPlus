@@ -7,6 +7,7 @@ class CreateAccountState {
   final bool isLoading;
   final bool isEnabled;
   final bool isPasswordVisible;
+  final bool isRegisterSuccess;
   final String? errorMessage;
 
   const CreateAccountState({
@@ -15,6 +16,7 @@ class CreateAccountState {
     this.password = "",
     this.isLoading = false,
     this.isEnabled = false,
+    this.isRegisterSuccess = false,
     this.isPasswordVisible = false,
     this.errorMessage,
   });
@@ -28,6 +30,7 @@ class CreateAccountState {
     bool? showPasswordRequirements,
     bool? isPasswordVisible,
     String? errorMessage,
+    bool? isRegisterSuccess,
   }) {
     return CreateAccountState(
       email: email ?? this.email,
@@ -37,6 +40,7 @@ class CreateAccountState {
       isEnabled: isEnabled ?? this.isEnabled,
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
       errorMessage: errorMessage ?? this.errorMessage,
+      isRegisterSuccess: isRegisterSuccess ?? this.isRegisterSuccess,
     );
   }
 

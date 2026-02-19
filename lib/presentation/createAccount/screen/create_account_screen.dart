@@ -43,6 +43,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               title: localizations.error,
             ).showSnackBar(context: context);
           }
+          if (state.isRegisterSuccess) {
+            // TODO navigate to account setup
+          }
         },
         builder: (context, state) {
           final cubit = context.read<CreateAccountCubit>();
