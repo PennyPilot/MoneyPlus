@@ -1,7 +1,9 @@
 {
   "income": "Income",
   "expense": "Expense",
-  "makeAnExpense": "Make an expense",
+  "addAnExpense": "Make an expense",
+  "expenseAddedSuccessfully": "Expense added successfully!",
+  "failedToAddExpense": "Failed to add expense",
   "amount": "Amount",
   "categories": "Categories",
   "category": "Category",
@@ -141,5 +143,8 @@
   "no_monthly_overview": "No income or expenses recorded for this period",
   "error_loading_statistics": "Failed to load statistics",
   "retry": "Retry",
-  "add" : "Add"
+  "add" : "Add",
+  "transaction_details": "Transaction details",
+  "income_details": "Income details",
+  "expense_details": "Expense details"
 }

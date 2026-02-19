@@ -8,6 +8,7 @@ import 'package:moneyplus/presentation/transactions/screen/transactions_screen.d
 
 import '../../../design_system/widgets/nav_bar.dart';
 import '../../home/screen/home_screen.dart';
+import '../../statistics/statistics_screen.dart';
 import '../cubit/main_cubit.dart';
 
 class MainScreen extends StatelessWidget {
