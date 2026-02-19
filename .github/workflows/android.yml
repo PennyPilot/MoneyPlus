@@ -62,7 +62,7 @@ jobs:
         env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: flutterfire configure --project=$FIREBASE_PROJECT_ID -y --platforms=android --out=lib/firebase_options.dart --token=$FIREBASE_TOKEN
+        run: flutterfire configure --project=$FIREBASE_PROJECT_ID -y --platforms=android --out=lib/firebase_options.dart --token=$FIREBASE_TOKEN --android-package-name=com.pennypilot.moneyplus
         
       - name: Configure Gradle memory
         run: |
