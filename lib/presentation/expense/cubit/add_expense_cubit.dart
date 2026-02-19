@@ -2,21 +2,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
-import 'package:moneyplus/domain/repository/transaction_repository.dart';
-import 'package:moneyplus/presentation/income/cubit/add_income_state.dart';
 
+import '../../../domain/repository/transaction_repository.dart';
 import '../../../domain/repository/user_money_repository.dart';
+import 'add_expense_state.dart';
 
-class AddIncomeCubit extends Cubit<AddIncomeState> {
+class AddExpenseCubit extends Cubit<AddExpenseState> {
   final TransactionRepository _transactionRepository;
   final UserMoneyRepository _userMoneyRepository;
 
-  AddIncomeCubit({
+  AddExpenseCubit({
     required TransactionRepository transactionRepository,
     required UserMoneyRepository userMoneyRepository,
   }) : _transactionRepository = transactionRepository,
        _userMoneyRepository = userMoneyRepository,
-       super(AddIncomeState.initial()) {
+       super(AddExpenseState.initial()) {
     _loadCurrency();
     _loadCategories();
   }
@@ -83,14 +83,14 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     emit(state.copyWith(selectedCategory: category));
   }
 
-  Future<void> onSubmitIncome() async {
+  Future<void> onSubmitExpense() async {
     if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
       final result = await _transactionRepository.addTransaction(
         amount: state.amount!,
-        type: TransactionType.income,
+        type: TransactionType.expense,
         date: state.date,
         category: state.selectedCategory!,
         currency: state.currency!,
@@ -105,7 +105,7 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
           emit(
             state.copyWith(
               status: FormStatus.failure,
-              errorMessage: "Failed to add income: ${error.message}",
+              errorMessage: "Failed to add expense: ${error.message}",
             ),
           );
         },

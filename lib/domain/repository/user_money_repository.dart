@@ -1,3 +1,5 @@
+import 'package:moneyplus/domain/entity/currency.dart';
+
 import 'model/top_spending_category.dart';
 
 abstract class UserMoneyRepository {
@@ -10,7 +12,7 @@ abstract class UserMoneyRepository {
   Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(
       {required int month,required int year, required int count});
 
-  Future<String> getCurrency();
+  Future<Currency> getCurrency();
 
   Future<double> getSavingSpendingPercentage(int month, int year);
 }

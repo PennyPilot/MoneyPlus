@@ -14,7 +14,10 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final loadedContent = HomeLoaded(
         currentBalance: await getTotalBalance(),
-        currentSavingSpendingPercentage: await getSavingSpendingPercentage(month, year),
+        currentSavingSpendingPercentage: await getSavingSpendingPercentage(
+          month,
+          year,
+        ),
         totalMonthIncome: await getTotalMonthIncome(month, year),
         totalMonthExpense: await getTotalMonthExpense(month, year),
         topSpendingCategories: await getTopSpendingCategories(month, year),
@@ -68,10 +71,16 @@ class HomeCubit extends Cubit<HomeState> {
     int month,
     int year,
   ) async {
-    return await userMoneyRepository.getTopSpendingCategoriesInMonth(month: month, year: year, count: _topSpendingCount);
+    return await userMoneyRepository.getTopSpendingCategoriesInMonth(
+      month: month,
+      year: year,
+      count: _topSpendingCount,
+    );
   }
 
   Future<String> getCurrency() async {
-    return await userMoneyRepository.getCurrency();
+    return await userMoneyRepository.getCurrency().then(
+      (value) => value.abbreviation,
+    );
   }
 }

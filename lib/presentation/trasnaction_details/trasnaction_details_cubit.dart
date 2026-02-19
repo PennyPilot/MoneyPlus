@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
+import 'package:moneyplus/presentation/trasnaction_details/pdf_service/share_pdf.dart';
 
 import '../utils/safe_call.dart';
 
@@ -43,5 +45,10 @@ class TransactionDetailsCubit extends Cubit<TransactionDetailsState> {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<void> onClickShareButton(BuildContext context) async {
+    final transaction = (state as TransactionDetailsLoaded).transactionDetails;
+    await createAndSharePdf(transaction,context);
   }
 }
