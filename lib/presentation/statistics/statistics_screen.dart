@@ -5,6 +5,8 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+
+import '../../core/di/injection.dart';
 import 'cubit/statistics_cubit.dart';
 import 'cubit/statistics_state.dart';
 import 'widgets/monthly_overview/monthly_overview_section.dart';
@@ -20,7 +22,6 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<StatisticsCubit>().loadStatistics();
   }
 
   void _onAddTransaction() {
@@ -33,22 +34,25 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colors.surface,
-      body: SafeArea(
-        child: BlocBuilder<StatisticsCubit, StatisticsState>(
-          builder: (context, state) {
-            return switch (state) {
-              StatisticsIdle() => const SizedBox.shrink(),
-              StatisticsLoading() => const AppLoadingIndicator(),
-              StatisticsSuccess() => _buildSuccess(context, state),
-              StatisticsFailure(:final message) => AppErrorView(
-                message: message,
-                onRetry: _onRetry,
-              ),
-            };
-          },
-        ),
+    return BlocProvider(
+      create: (_) => getIt<StatisticsCubit>()..loadStatistics(),
+      child: BlocBuilder<StatisticsCubit, StatisticsState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: context.colors.surface,
+            body: SafeArea(
+              child: switch (state) {
+                StatisticsIdle() => const SizedBox.shrink(),
+                StatisticsLoading() => const AppLoadingIndicator(),
+                StatisticsSuccess() => _buildSuccess(context, state),
+                StatisticsFailure(:final message) => AppErrorView(
+                  message: message,
+                  onRetry: _onRetry,
+                ),
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -71,7 +75,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         children: [
           if (state.monthlyOverview != null)
             MonthlyOverviewSection(overview: state.monthlyOverview!),
-            // TODO: Add other sections here
+          // TODO: Add other sections here
         ],
       ),
     );

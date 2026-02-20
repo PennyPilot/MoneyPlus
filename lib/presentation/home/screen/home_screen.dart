@@ -9,6 +9,7 @@ import 'package:moneyplus/design_system/widgets/top_spending_card.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 import 'package:moneyplus/presentation/home/widget/current_balance.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 import '../../../core/di/injection.dart';
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
@@ -292,7 +293,9 @@ Widget _topSection({
                   child: VarientButton(
                     text: "Add",
                     iconPath: AppAssets.addMoney,
-                    onPressed: () {},
+                    onPressed: () {
+                      AddIncomeRoute().push(context);
+                    },
                   ),
                 ),
                 SizedBox(width: 4),
@@ -300,7 +303,9 @@ Widget _topSection({
                   child: SMSecondaryButton(
                     text: "Spend",
                     iconPath: AppAssets.spendMoney,
-                    onPressed: () {},
+                    onPressed: () {
+                      AddExpenseRoute().push(context);
+                    },
                   ),
                 ),
               ],

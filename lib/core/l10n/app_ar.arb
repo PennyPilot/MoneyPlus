@@ -1,7 +1,9 @@
 {
   "income": "الدخل",
   "expense": "المصروف",
-  "makeAnExpense": "تسجيل مصروف",
+  "addAnExpense": "تسجيل مصروف",
+  "expenseAddedSuccessfully": "تم اضافة المصروف!",
+  "failedToAddExpense":"فشل في اضافة المصروف",
   "amount": "المبلغ",
   "categories": "التصنيفات",
   "category": "التصنيف",
@@ -125,5 +127,9 @@
   "category_name" : "اسم التصنيف",
   "transaction_delete_success" : "نم مسح المعاملة بنجاح",
   "transaction_delete_fail" : "نم مسح المعاملة بنجاح",
-  "add" : "اضافة"
+  "add" : "اضافة",
+  "transaction_details": "تفاصيل المعاملة",
+  "transaction_details": "Transaction details",
+  "income_details": "تفاصيل الدخل",
+  "expense_details": "تفاصيل المصروف"
 }

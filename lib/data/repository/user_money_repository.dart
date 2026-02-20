@@ -1,4 +1,5 @@
 import 'package:moneyplus/data/service/supabase_service.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
@@ -97,10 +98,10 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<String> getCurrency() async {
-    final client = await service.getClient();
-    final response = await client.from('users').select('salary_currency');
-    return response.firstOrNull?['salary_currency'] as String? ?? 'N/A';
+  Future<Currency> getCurrency() async {
+      final client = await service.getClient();
+      final response = await client.rpc('get_default_currency');
+      return Currency.fromJson(response);
   }
 
   @override
