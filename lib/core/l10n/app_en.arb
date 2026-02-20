@@ -145,5 +145,6 @@
   "income_details": "Income details",
   "expense_details": "Expense details",
   "categoriesBreakdown": "Categories Breakdown",
+  "no_monthly_breakdown": "No expenses to analyze yet",
   "totalSpend": "Total Spend"
 }

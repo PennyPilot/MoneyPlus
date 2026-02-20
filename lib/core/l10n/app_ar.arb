@@ -130,5 +130,6 @@
   "income_details": "تفاصيل الدخل",
   "expense_details": "تفاصيل المصروف",
   "categoriesBreakdown": "تفاصيل الفئات",
+  "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
   "totalSpend": "إجمالي الإنفاق"
 }

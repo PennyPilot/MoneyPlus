@@ -34,8 +34,7 @@ class SectionEmptyView extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Image.asset(
-            // todo : AppAssets.imgStatisticsEmpty,
-            AppAssets.logo,
+            AppAssets.imgNoAnalysis,
             width: 80,
             height: 80,
           ),

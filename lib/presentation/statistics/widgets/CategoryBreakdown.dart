@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneyplus/domain/entity/categories_breakdown.dart';
+import 'package:moneyplus/presentation/statistics/widgets/section_empty_view.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+
+const List<Color> _colorPaletteBase = [
+  Color(0xffE04967),
+  Color(0xffff7792),
+  Color(0xffffa7b9),
+  Color(0xffffcfd8),
+];
 
 class CategoryBreakdownWidget extends StatelessWidget {
   final CategoriesBreakdown categoriesBreakdown;
@@ -17,14 +25,13 @@ class CategoryBreakdownWidget extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     final numberFormat = NumberFormat.decimalPattern();
 
-    final List<Color> colorPalette = [
-      colors.primary,
-      Color(0xffE04967),
-      Color(0xffff7792),
-      Color(0xffffa7b9),
-      Color(0xffffcfd8),
-    ];
-
+    final colorPalette = [colors.primary, ..._colorPaletteBase];
+    if (categoriesBreakdown.categories.isEmpty) {
+      return SectionEmptyView(
+        title: localizations.categoriesBreakdown,
+        message: localizations.no_monthly_breakdown,
+      );
+    }
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(

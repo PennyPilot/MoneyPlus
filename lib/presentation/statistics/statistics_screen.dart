@@ -90,9 +90,7 @@ class _StatisticsViewState extends State<StatisticsView> {
               month: state.selectedMonth.month,
             ),
           ),
-          if (!state.monthlyOverview.isEmpty)
             MonthlyOverviewSection(overview: state.monthlyOverview),
-          if (state.categoriesBreakdown.categories.isNotEmpty)
             CategoryBreakdownWidget(
               categoriesBreakdown: state.categoriesBreakdown,
             ),
