@@ -1,13 +1,11 @@
 import 'package:moneyplus/core/errors/error_model.dart';
 import 'package:moneyplus/core/errors/result.dart';
-import 'package:moneyplus/data/repository/utils/fake_data.dart';
 import 'package:moneyplus/data/service/supabase_service.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TransactionRepositoryStub implements TransactionRepository {
   final SupabaseService service;
@@ -56,8 +54,38 @@ class TransactionRepositoryStub implements TransactionRepository {
     TransactionType? type,
     TransactionCategory? category,
     DateTime? date,
+    List<int>? categoriesId,
+    required int page,
   }) async {
-    throw UnimplementedError('getTransactions not implemented');
+    final client = await service.getClient();
+    final response = await client.rpc(
+      RpcString.getTransactions,
+      params: {
+        'p_timestamp': (date ?? DateTime.now()).toIso8601String(),
+        'p_category_ids': categoriesId,
+        'p_transaction_type_id': type == TransactionType.income
+            ? 1
+            : type == TransactionType.expense
+            ? 2
+            : null,
+        'p_page': page,
+      },
+    );
+    return (response as List)
+        .map(
+          (e) => Transaction(
+            id: e['id'] ?? 0,
+            amount: (e['amount'] as num).toDouble(),
+            currency: e['currency'] ?? '',
+            type: e['transaction_type'] == 'income'
+                ? TransactionType.income
+                : TransactionType.expense,
+            date: DateTime.parse(e['date']),
+            category: TransactionCategory(id: 1, name: e['category']),
+            note: e['note'] ?? '',
+          ),
+        )
+        .toList();
   }
 
   @override
@@ -241,4 +269,5 @@ class TransactionRepositoryStub implements TransactionRepository {
 class RpcString {
   static String deleteTransaction = 'delete_transaction';
   static String getTransactionDetails = 'get_transaction_details';
+  static String getTransactions = 'get_transactions';
 }
