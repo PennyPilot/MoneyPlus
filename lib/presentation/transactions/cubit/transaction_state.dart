@@ -10,8 +10,7 @@ enum TransactionTabs { all, incomes, expenses }
 class TransactionState {
   final TransactionStatus status;
   final ErrorModel? error;
-  final List<Transaction> filteredTransactions;
-  final List<Transaction> allTransactions;
+  final List<Transaction> transactions;
   final TransactionTabs selectedTab;
   final int selectedMonth;
   final int selectedYear;
@@ -19,8 +18,7 @@ class TransactionState {
   const TransactionState({
     required this.status,
     this.error,
-    this.filteredTransactions = const [],
-    this.allTransactions = const [],
+    this.transactions = const [],
     this.selectedTab = TransactionTabs.all,
     this.selectedYear = 2026,
     this.selectedMonth = 1,
@@ -32,8 +30,7 @@ class TransactionState {
   TransactionState copyWith({
     TransactionStatus? status,
     ErrorModel? error,
-    List<Transaction>? filteredTransactions,
-    List<Transaction>? allTransactions,
+    List<Transaction>? transactions,
     TransactionTabs? selectedTab,
     int? selectedYear,
     int? selectedMonth,
@@ -41,8 +38,7 @@ class TransactionState {
     return TransactionState(
       status: status ?? this.status,
       error: error,
-      filteredTransactions: filteredTransactions ?? this.filteredTransactions,
-      allTransactions: allTransactions ?? this.allTransactions,
+      transactions: transactions ?? this.transactions,
       selectedTab: selectedTab ?? this.selectedTab,
       selectedYear: selectedYear ?? this.selectedYear,
       selectedMonth: selectedMonth ?? this.selectedMonth,

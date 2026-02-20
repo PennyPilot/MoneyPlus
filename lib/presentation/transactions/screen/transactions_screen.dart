@@ -56,9 +56,9 @@ class TransactionsScreen extends StatelessWidget {
                 ),
                 state.status == TransactionStatus.loading
                     ? SliverFillRemaining(child: LoadingView())
-                    : state.filteredTransactions.isEmpty
+                    : state.transactions.isEmpty
                     ? SliverFillRemaining(child: EmptyTransactions())
-                    : TransactionsList(transactions: state.filteredTransactions),
+                    : TransactionsList(transactions: state.transactions),
               ],
             );
           },
