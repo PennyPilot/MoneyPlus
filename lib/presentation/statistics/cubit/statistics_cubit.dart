@@ -17,11 +17,10 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     final monthlyOverviewResult = await _repository.getMonthlyOverview(
       month: selectedMonth,
     );
-
     monthlyOverviewResult.when(
       onSuccess: (monthlyOverview) async {
         final categoriesBreakdownResult =
-            await _repository.getCategoriesBreakDown(selectedMonth);
+            await _repository.getCategoriesBreakDown(date:selectedMonth);
 
         categoriesBreakdownResult.when(
           onSuccess: (categoriesBreakdown) {

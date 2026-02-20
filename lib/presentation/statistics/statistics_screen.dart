@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/di/injection.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
 
+import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
 import 'cubit/statistics_state.dart';
 import 'widgets/monthly_overview/monthly_overview_section.dart';
@@ -52,9 +54,9 @@ class _StatisticsViewState extends State<StatisticsView> {
               StatisticsLoading() => const AppLoadingIndicator(),
               StatisticsSuccess() => _buildSuccess(context, state),
               StatisticsFailure(:final message) => AppErrorView(
-                  message: message,
-                  onRetry: _onRetry,
-                ),
+                message: message,
+                onRetry: _onRetry,
+              ),
             };
           },
         ),
@@ -78,11 +80,21 @@ class _StatisticsViewState extends State<StatisticsView> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          if (state.monthlyOverview != null)
-            MonthlyOverviewSection(overview: state.monthlyOverview!),
-          if (state.categoriesBreakdown != null)
+          CustomAppBar(
+            title: "Statistics",
+            trailing: DropDownDateDialog(
+              onDatePick: (date) => {
+                context.read<StatisticsCubit>().changeMonth(date),
+              },
+              year: state.selectedMonth.year,
+              month: state.selectedMonth.month,
+            ),
+          ),
+          if (!state.monthlyOverview.isEmpty)
+            MonthlyOverviewSection(overview: state.monthlyOverview),
+          if (state.categoriesBreakdown.categories.isNotEmpty)
             CategoryBreakdownWidget(
-              categoriesBreakdown: state.categoriesBreakdown!,
+              categoriesBreakdown: state.categoriesBreakdown,
             ),
         ],
       ),

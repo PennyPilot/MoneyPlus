@@ -15,9 +15,9 @@ class StatisticsLoading extends StatisticsState {
 }
 
 class StatisticsSuccess extends StatisticsState {
-  final MonthlyOverview? monthlyOverview;
+  final MonthlyOverview monthlyOverview;
   final DateTime selectedMonth;
-  final CategoriesBreakdown? categoriesBreakdown;
+  final CategoriesBreakdown categoriesBreakdown;
 
   const StatisticsSuccess({
     required this.monthlyOverview,
@@ -25,7 +25,7 @@ class StatisticsSuccess extends StatisticsState {
     required this.categoriesBreakdown,
   });
 
-  bool get hasNoData => monthlyOverview == null && categoriesBreakdown == null;
+  bool get hasNoData => monthlyOverview.isEmpty && categoriesBreakdown.categories.isEmpty;
 }
 
 class StatisticsFailure extends StatisticsState {

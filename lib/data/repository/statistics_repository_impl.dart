@@ -12,7 +12,9 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     : _supabaseService = supabaseService;
 
   @override
-  Future<Result<MonthlyOverview>> getMonthlyOverview({required DateTime month}) async {
+  Future<Result<MonthlyOverview>> getMonthlyOverview({
+    required DateTime month,
+  }) async {
     try {
       final client = await _supabaseService.getClient();
       final userId = client.auth.currentUser?.id;
@@ -30,7 +32,9 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
         return Result.success(_createEmptyOverview());
       }
 
-      return Result.success(_mapResponseToOverview(response as Map<String, dynamic>));
+      return Result.success(
+        _mapResponseToOverview(response as Map<String, dynamic>),
+      );
     } catch (e) {
       print('Error fetching monthly overview: $e');
       return Result.error(ErrorModel(e.toString()));
@@ -113,15 +117,20 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   }
 
   @override
-  Future<Result<CategoriesBreakdown>> getCategoriesBreakDown(
-    DateTime date,
-  ) async {
+  Future<Result<CategoriesBreakdown>> getCategoriesBreakDown({
+    required DateTime date,
+  }) async {
     try {
       final client = await _supabaseService.getClient();
       final data = await client.rpc(
         'get_expenses_categories_breakdown',
         params: {'in_year': date.year, 'in_month': date.month},
       );
+      if (data == null) {
+        return Result.success(
+          CategoriesBreakdown(categories: [], totalSpend: 0.0),
+        );
+      }
       return Result.success(CategoriesBreakdown.fromJson(data));
     } catch (e) {
       return Result.error(ErrorModel(e.toString()));

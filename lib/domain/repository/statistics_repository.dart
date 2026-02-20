@@ -6,5 +6,5 @@ import '../../core/errors/result.dart';
 
 abstract class StatisticsRepository {
   Future<Result<MonthlyOverview>> getMonthlyOverview({required DateTime month});
-  Future<Result<CategoriesBreakdown>> getCategoriesBreakDown(DateTime date);
+  Future<Result<CategoriesBreakdown>> getCategoriesBreakDown({required DateTime date});
 }
