@@ -74,4 +74,5 @@ class AppAssets {
   static const String icSun = "$_icons/ic_sun.svg";
   static const String icTranslation = "$_icons/ic_translation.svg";
   static const String icCurrency = "$_icons/ic_currency.svg";
+  static const String glowBackground = "$_images/money_background.png";
 }

@@ -22,7 +22,7 @@ class AccountScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: CustomAppBar(title: l10n.account),
+      appBar: CustomAppBar(title: l10n.account,backgroundColor: colors.surfaceLow),
       body: BlocProvider(
         create: (_) => getIt<AccountCubit>()..loadUserInfo(),
         child: BlocConsumer<AccountCubit, AccountState>(
@@ -36,71 +36,91 @@ class AccountScreen extends StatelessWidget {
   }
 
   Widget _buildBody(
-      BuildContext context,
-      AccountState state,
-      AppLocalizations l10n,
-      dynamic colors,
-      dynamic typography,
-      ) {
+    BuildContext context,
+    AccountState state,
+    AppLocalizations l10n,
+    dynamic colors,
+    dynamic typography,
+  ) {
     if (state is AccountLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     final user = state is AccountLoaded ? state.user : null;
 
-    return SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(color: colors.surface),
-        padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            personalInfoCard(
-              image: '',
-              name: user?.name ?? '',
-              email: user?.email ?? '',
-            ),
-            const SizedBox(height: 24),
-            accountSection(
-              title: l10n.manageCategories,
-              iconPath: AppAssets.icSettings,
-            ),
-            accountSection(
-              title: l10n.appLanguage,
-              iconPath: AppAssets.icTranslation,
-            ),
-            accountSection(title: l10n.appTheme, iconPath: AppAssets.icSun),
-            accountSection(
-              title: l10n.currency,
-              iconPath: AppAssets.icCurrency,
-            ),
-            accountSection(
-              title: l10n.salarySettings,
-              iconPath: AppAssets.iconMoney,
-            ),
-            accountSection(
-              title: l10n.frequentlyAskedQuestion,
-              iconPath: AppAssets.icHelp,
-            ),
-            accountSection(
-              title: l10n.helpAndSupport,
-              iconPath: AppAssets.icCustomerSupport,
-              showDivider: false,
-            ),
-            const SizedBox(height: 24),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  "${l10n.appVersion} 1.0",
-                  style: typography.label.small.copyWith(color: colors.body),
-                ),
+    return Stack(
+      children: [
+        Positioned(
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
+              height: 150,
+
+              child: Image.asset(
+                AppAssets.glowBackground,
+                fit: BoxFit.contain,
               ),
             ),
-          ],
+          ),
         ),
-      ),
+
+        SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                personalInfoCard(
+                  image: '',
+                  name: user?.name ?? '',
+                  email: user?.email ?? '',
+                ),
+                const SizedBox(height: 24),
+                accountSection(
+                  title: l10n.manageCategories,
+                  iconPath: AppAssets.icSettings,
+                ),
+                accountSection(
+                  title: l10n.appLanguage,
+                  iconPath: AppAssets.icTranslation,
+                ),
+                accountSection(title: l10n.appTheme, iconPath: AppAssets.icSun),
+                accountSection(
+                  title: l10n.currency,
+                  iconPath: AppAssets.icCurrency,
+                ),
+                accountSection(
+                  title: l10n.salarySettings,
+                  iconPath: AppAssets.iconMoney,
+                ),
+                accountSection(
+                  title: l10n.frequentlyAskedQuestion,
+                  iconPath: AppAssets.icHelp,
+                ),
+                accountSection(
+                  title: l10n.helpAndSupport,
+                  iconPath: AppAssets.icCustomerSupport,
+                  showDivider: false,
+                ),
+                const SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      "${l10n.appVersion} 1.0",
+                      style: typography.label.small.copyWith(
+                        color: colors.body,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
