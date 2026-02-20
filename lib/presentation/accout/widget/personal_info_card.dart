@@ -57,15 +57,23 @@ Widget personalInfoCard({
   );
 }
 
-Widget updateUserAvatar(String? imageUrl, String firstName) {
+Widget updateUserAvatar(String? imageUrl, String fullName) {
   if (imageUrl != null && imageUrl.isNotEmpty) {
     return Image.asset(imageUrl, height: 52, width: 52);
   } else {
-    String initials = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
+    String initials = '';
+    if (fullName.isNotEmpty) {
+      final nameParts = fullName.trim().split(' ');
+      if (nameParts.length >= 2) {
+        initials = (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+      } else {
+        initials = fullName[0].toUpperCase();
+      }
+    }
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: MoneyColors.light.green,
+        color: MoneyColors.light.surface,
         borderRadius: BorderRadius.circular(12),
       ),
       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 11),
