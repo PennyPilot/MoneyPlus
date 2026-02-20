@@ -13,13 +13,17 @@ class TransactionCubit extends Cubit<TransactionState> {
     emit(state.copyWith(status: TransactionStatus.loading));
 
     final now = DateTime.now();
-    final result = await transactionRepository.getTransactions(page: 1, date: now);
+    final result = await transactionRepository.getTransactions(
+      page: 1,
+      date: now,
+    );
     emit(
       state.copyWith(
         transactions: result,
         selectedYear: now.year,
         selectedMonth: now.month,
         status: TransactionStatus.success,
+        hasMore: result.length == 20,
       ),
     );
   }
@@ -27,7 +31,14 @@ class TransactionCubit extends Cubit<TransactionState> {
   void onTabSelected(TransactionTabs tab) async {
     if (state.selectedTab == tab) return;
 
-    emit(state.copyWith(status: TransactionStatus.loading, selectedTab: tab));
+    emit(
+      state.copyWith(
+        status: TransactionStatus.loading,
+        selectedTab: tab,
+        currentPage: 1,
+        hasMore: true,
+      ),
+    );
 
     final result = await transactionRepository.getTransactions(
       page: 1,
@@ -36,13 +47,15 @@ class TransactionCubit extends Cubit<TransactionState> {
           : tab == TransactionTabs.incomes
           ? TransactionType.income
           : null,
-        date: DateTime(state.selectedYear, state.selectedMonth)
+      date: DateTime(state.selectedYear, state.selectedMonth),
     );
 
     emit(
       state.copyWith(
         status: TransactionStatus.success,
         transactions: result,
+        currentPage: 1,
+        hasMore: result.length == 20,
       ),
     );
   }
@@ -55,6 +68,8 @@ class TransactionCubit extends Cubit<TransactionState> {
         selectedMonth: month,
         selectedYear: year,
         status: TransactionStatus.loading,
+        currentPage: 1,
+        hasMore: true,
       ),
     );
 
@@ -65,13 +80,42 @@ class TransactionCubit extends Cubit<TransactionState> {
           : state.selectedTab == TransactionTabs.incomes
           ? TransactionType.income
           : null,
-      date: DateTime(year, month)
+      date: DateTime(year, month),
     );
 
     emit(
       state.copyWith(
         status: TransactionStatus.success,
         transactions: result,
+        currentPage: 1,
+        hasMore: result.length == 20,
+      ),
+    );
+  }
+
+  void loadMore() async {
+    if (!state.hasMore || state.isLoadingMore) return;
+
+    emit(state.copyWith(isLoadingMore: true));
+
+    final nextPage = state.currentPage + 1;
+
+    final result = await transactionRepository.getTransactions(
+      page: nextPage,
+      type: state.selectedTab == TransactionTabs.expenses
+          ? TransactionType.expense
+          : state.selectedTab == TransactionTabs.incomes
+          ? TransactionType.income
+          : null,
+      date: DateTime(state.selectedYear, state.selectedMonth),
+    );
+
+    emit(
+      state.copyWith(
+        transactions: [...state.transactions, ...result],
+        currentPage: nextPage,
+        hasMore: result.length == 20,
+        isLoadingMore: false,
       ),
     );
   }
