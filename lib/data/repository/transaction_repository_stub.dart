@@ -61,7 +61,7 @@ class TransactionRepositoryStub implements TransactionRepository {
     final response = await client.rpc(
       RpcString.getTransactions,
       params: {
-        'p_timestamp': (date ?? DateTime.now()).toIso8601String(),
+        'p_timestamp': date?.toIso8601String(),
         'p_category_ids': categoriesId,
         'p_transaction_type_id': type == TransactionType.income
             ? 1
@@ -178,91 +178,6 @@ class TransactionRepositoryStub implements TransactionRepository {
     required String name,
   }) async {
     throw UnimplementedError('editExpenseCategory not implemented');
-  }
-
-  @override
-  Future<List<Transaction>> getAllTransactions() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return [
-      Transaction(
-        id: 1,
-        amount: 50000,
-        currency: "IQD",
-        type: TransactionType.expense,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-      Transaction(
-        id: 4,
-        amount: 5040,
-        currency: "IQD",
-        type: TransactionType.income,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-      Transaction(
-        id: 2,
-        amount: 230000,
-        currency: "IQD",
-        type: TransactionType.income,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-      Transaction(
-        id: 3,
-        amount: 530000,
-        currency: "IQD",
-        type: TransactionType.expense,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-    ];
-  }
-
-  @override
-  Future<List<Transaction>> getAllTransactionsByType(
-    TransactionType type,
-  ) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (type == TransactionType.income) {
-      return [
-        Transaction(
-          id: 4,
-          amount: 5040,
-          currency: "IQD",
-          type: TransactionType.income,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-        Transaction(
-          id: 2,
-          amount: 230000,
-          currency: "IQD",
-          type: TransactionType.income,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-      ];
-    } else {
-      return [
-        Transaction(
-          id: 1,
-          amount: 50000,
-          currency: "IQD",
-          type: TransactionType.expense,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-        Transaction(
-          id: 3,
-          amount: 530000,
-          currency: "IQD",
-          type: TransactionType.expense,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-      ];
-    }
   }
 }
 
