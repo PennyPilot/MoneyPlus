@@ -15,6 +15,7 @@ import '../../domain/repository/authentication_repository.dart';
 import '../../domain/repository/statistics_repository.dart';
 import '../../domain/repository/user_money_repository.dart';
 import '../../domain/validator/authentication_validator.dart';
+import '../../presentation/accout/cubit/account_cubit.dart';
 import '../../presentation/home/cubit/home_cubit.dart';
 import '../../presentation/income/cubit/add_income_cubit.dart';
 import '../../presentation/login/cubit/login_cubit.dart';
@@ -87,4 +88,8 @@ void initDI() {
       transactionRepository: getIt<TransactionRepository>(),
     ),
   );
+  getIt.registerFactory<AccountCubit>(
+        () => AccountCubit(getIt<AccountRepository>()),
+  );
+
 }
