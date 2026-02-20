@@ -21,10 +21,7 @@
   "spendingTrend": "Spending Trend",
   "noDataAvailable": "No data available",
   "date": "Date",
-  "amount": "Amount",
   "addIncome": "Add income",
-  "note": "Note",
-  "add": "Add",
   "saving": "Saving...",
   "incomeAddedSuccessfully": "Income added successfully!",
   "failedToAddIncome": "Failed to add income",
@@ -146,5 +143,7 @@
   "add" : "Add",
   "transaction_details": "Transaction details",
   "income_details": "Income details",
-  "expense_details": "Expense details"
+  "expense_details": "Expense details",
+  "categoriesBreakdown": "Categories Breakdown",
+  "totalSpend": "Total Spend"
 }

@@ -98,7 +98,6 @@
   "noDataAvailable": "لا توجد بيانات متاحة",
   "current_balance":"الرصيد الحالي",
   "how_much_money": "ما مقدار المال المتوفر لديك حاليًا؟",
-  "noDataAvailable": "لا توجد بيانات متاحة",
   "no_spending_categories": "لا يوجد معاملات متاحة",
   "month_january": "يناير",
   "month_february": "فبراير",
@@ -114,7 +113,6 @@
   "month_december": "ديسمبر",
   "no_transaction_record_title": "لا توجد سجلات معاملات",
   "no_transaction_record_content": "أضف أول معاملة للبدء",
-  "add_transaction": "إضافة معاملة",
   "all": "الكل",
   "incomes": "الإيرادات",
   "expenses": "المصروفات",
@@ -129,7 +127,8 @@
   "transaction_delete_fail" : "نم مسح المعاملة بنجاح",
   "add" : "اضافة",
   "transaction_details": "تفاصيل المعاملة",
-  "transaction_details": "Transaction details",
   "income_details": "تفاصيل الدخل",
-  "expense_details": "تفاصيل المصروف"
+  "expense_details": "تفاصيل المصروف",
+  "categoriesBreakdown": "تفاصيل الفئات",
+  "totalSpend": "إجمالي الإنفاق"
 }

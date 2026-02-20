@@ -36,13 +36,13 @@ class CategoryBreakdownWidget extends StatelessWidget {
         spacing: 12,
         children: [
           Text(
-            "Categories Breakdown",
+            localizations.categoriesBreakdown,
             style: typography.label.medium.copyWith(color: colors.title),
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Row(
-              children: categoriesBreakdown.categories.asMap().entries.map((
+              children: categoriesBreakdown.categories.asMap().entries.map(( 
                 entry,
               ) {
                 final index = entry.key;
@@ -73,7 +73,7 @@ class CategoryBreakdownWidget extends StatelessWidget {
                 style: typography.label.medium.copyWith(color: colors.title),
               ),
               Text(
-                "Total Spend",
+                localizations.totalSpend,
                 style: typography.label.xSmall!.copyWith(color: colors.body),
               ),
             ],
@@ -85,7 +85,7 @@ class CategoryBreakdownWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               final category = categoriesBreakdown.categories[index];
               final color = colorPalette[index % colorPalette.length];
-              return _buildCategoryItem(context, category, color, numberFormat);
+              return _buildCategoryItem(context, category, color, numberFormat, localizations);
             },
             separatorBuilder: (BuildContext context, int index) {
               return Divider(color: colors.stroke, thickness: .5);
@@ -101,6 +101,7 @@ class CategoryBreakdownWidget extends StatelessWidget {
     BreakDownCategory category,
     Color color,
     NumberFormat numberFormat,
+    AppLocalizations localizations,
   ) {
     final colors = context.colors;
     final typography = context.typography;
@@ -123,7 +124,10 @@ class CategoryBreakdownWidget extends StatelessWidget {
             style: typography.label.xSmall!.copyWith(color: colors.body),
           ),
         ),
-        Text("${numberFormat.format(category.spend)} EGP"
+        Text(localizations.moneyAmount(
+          numberFormat.format(category.spend),
+          localizations.currencyCode,
+        )
         ,style: typography.label.small.copyWith(color: colors.title),
         ),
       ],

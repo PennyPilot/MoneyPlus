@@ -81,7 +81,7 @@ class _StatisticsViewState extends State<StatisticsView> {
       child: Column(
         children: [
           CustomAppBar(
-            title: "Statistics",
+            title: l10n.statistics,
             trailing: DropDownDateDialog(
               onDatePick: (date) => {
                 context.read<StatisticsCubit>().changeMonth(date),
