@@ -109,7 +109,8 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                           children: [
                             SingleChildScrollView(child: Page1(state: state,)),
                             SingleChildScrollView(child: Page2(currency: state.currency, currentBalanceState: state.currentBalance)),
-                            // page3()
+                            SingleChildScrollView(child: AccountSetupStepThree(state: state)),
+
                           ],
                         ),
                       ),
