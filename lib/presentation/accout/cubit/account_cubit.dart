@@ -9,14 +9,13 @@ class AccountCubit extends Cubit<AccountState> {
   AccountCubit(this._accountRepository)
       : super(const AccountLoading(isLoading: true));
 
-  Future<void> loadUserInfo() async {
-    try {
-      emit(const AccountLoading(isLoading: true));
-      final user = await _accountRepository.getCurrentUser();
-      emit(AccountLoaded(user: user,));
-    } catch (e) {
-      emit(AccountError(errorMessage: e.toString()));
-    }
-  }
+  void loadUserInfo() {
+    emit(const AccountLoading(isLoading: true));
 
+    _accountRepository.getCurrentUser().then((user) {
+      emit(AccountLoaded(user: user));
+    }).catchError((error) {
+      emit(AccountError(errorMessage: error.toString()));
+    });
+  }
 }
