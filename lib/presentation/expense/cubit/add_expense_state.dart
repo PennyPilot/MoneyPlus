@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
-import 'package:moneyplus/domain/model/form_status.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
 
-import '../../../domain/entity/currency.dart';
 import '../../../domain/entity/transaction_category.dart';
+import '../../../domain/model/form_status.dart';
 
-class AddIncomeState extends Equatable {
+class AddExpenseState extends Equatable {
   final double? amount;
   final DateTime date;
   final String note;
@@ -16,9 +16,10 @@ class AddIncomeState extends Equatable {
   final TransactionCategory? selectedCategory;
   final bool isLoadingCategories;
 
-  bool get canSubmitForm => amount != null && amount! > 0 && status != FormStatus.loading;
+  bool get canSubmitForm =>
+      amount != null && amount! > 0 && status != FormStatus.loading;
 
-  const AddIncomeState({
+  const AddExpenseState({
     this.amount,
     required this.date,
     this.note = '',
@@ -30,11 +31,11 @@ class AddIncomeState extends Equatable {
     this.isLoadingCategories = false,
   });
 
-  factory AddIncomeState.initial() {
-    return AddIncomeState(date: DateTime.now(), status: FormStatus.initial);
+  factory AddExpenseState.initial() {
+    return AddExpenseState(date: DateTime.now(), status: FormStatus.initial);
   }
 
-  AddIncomeState copyWith({
+  AddExpenseState copyWith({
     double? amount,
     DateTime? date,
     String? note,
@@ -46,7 +47,7 @@ class AddIncomeState extends Equatable {
     bool? isLoadingCategories,
     bool clearAmount = false,
   }) {
-    return AddIncomeState(
+    return AddExpenseState(
       amount: clearAmount ? null : (amount ?? this.amount),
       date: date ?? this.date,
       note: note ?? this.note,

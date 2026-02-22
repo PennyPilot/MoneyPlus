@@ -7,6 +7,7 @@ import 'package:moneyplus/presentation/transactions/screen/transactions_screen.d
 
 import '../../../design_system/widgets/nav_bar.dart';
 import '../../home/screen/home_screen.dart';
+import '../../statistics/statistics_screen.dart';
 import '../cubit/main_cubit.dart';
 
 class MainScreen extends StatelessWidget {
@@ -40,7 +41,7 @@ class MainScreen extends StatelessWidget {
       case NavBarTab.transaction:
         return const TransactionsScreen();
       case NavBarTab.statistics:
-        return const TransactionsScreen(); //change to statistics
+        return const StatisticsScreen();
       case NavBarTab.account:
         return const AccountScreen();
     }

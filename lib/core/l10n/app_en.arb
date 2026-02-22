@@ -1,7 +1,9 @@
 {
   "income": "Income",
   "expense": "Expense",
-  "makeAnExpense": "Make an expense",
+  "addAnExpense": "Make an expense",
+  "expenseAddedSuccessfully": "Expense added successfully!",
+  "failedToAddExpense": "Failed to add expense",
   "amount": "Amount",
   "categories": "Categories",
   "category": "Category",
@@ -38,12 +40,20 @@
   "next": "Next",
   "finishSetup": "Finish setup",
   "stepOfTotal": "Step {current} of {total}",
-      "@stepOfTotal": {
-        "placeholders": {
-          "current": {},
-          "total": {}
-        }
-      },
+  "@stepOfTotal": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "createAccount": "Create Account",
+  "createNewAccount": "Create new account",
+  "startTakingControl": "Start taking control of your money",
+  "email": "Email",
+  "name": "Name",
+  "password": "Password",
+  "passwordLimit": "*Use at least 8 characters, Contain at least one capital letter and one symbol.",
+  "create": "Create",
   "forgetPasswordAppBarTitle": "Forget Password",
   "forgetPasswordTitle": "Forget your password",
   "forgetPasswordSubtitle": "Enter your email and we’ll send you a reset link",
