@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
-import 'package:moneyplus/presentation/account_setup/screen/page3.dart';
+import 'package:moneyplus/presentation/account_setup/screen/account_setup_step_three.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
@@ -94,7 +94,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                         children: [
                           SingleChildScrollView(child: Page1(state: state)),
                           //todo page2
-                          SingleChildScrollView(child: Page3(state: state)),
+                          SingleChildScrollView(child: AccountSetupStepThree(state: state)),
                         ],
                       ),
                     ),

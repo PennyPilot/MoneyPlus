@@ -9,15 +9,15 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/selected_category_item.dart';
 
-class Page3 extends StatefulWidget {
+class AccountSetupStepThree extends StatefulWidget {
   final AccountSetupState state;
-  const Page3({super.key, required this.state});
+  const AccountSetupStepThree({super.key, required this.state});
 
   @override
-  State<Page3> createState() => _Page3State();
+  State<AccountSetupStepThree> createState() => _AccountSetupStepThreeState();
 }
 
-class _Page3State extends State<Page3> {
+class _AccountSetupStepThreeState extends State<AccountSetupStepThree> {
   final TextEditingController categoryController = TextEditingController();
   String _searchQuery = '';
 
@@ -53,14 +53,14 @@ class _Page3State extends State<Page3> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Where do you usually spend your money?',
+            l10n.whereDoYouUsuallySpendYourMoney,
             style: context.typography.label.small.copyWith(
               color: context.colors.body,
             ),
           ),
           const SizedBox(height: 24),
           MTextField(
-            hint: 'Category name',
+            hint: l10n.category_name,
             keyboardType: TextInputType.text,
             value: categoryController.text,
             onChanged: (value) {
@@ -70,7 +70,7 @@ class _Page3State extends State<Page3> {
           const SizedBox(height: 16),
           if (filteredSuggestions.isNotEmpty) ...[
             Text(
-              'Suggestions:',
+              l10n.suggestions,
               style: context.typography.label.medium.copyWith(
                 color: context.colors.title,
               ),
@@ -94,7 +94,7 @@ class _Page3State extends State<Page3> {
           if (widget.state.categories.isNotEmpty) ...[
             const SizedBox(height: 24),
             Text(
-              'Selected Categories:',
+              l10n.selectedCategories,
               style: context.typography.label.medium.copyWith(
                 color: context.colors.title,
               ),
