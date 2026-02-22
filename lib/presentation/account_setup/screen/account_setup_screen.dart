@@ -4,12 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
+import 'package:moneyplus/presentation/account_setup/screen/page2.dart';
 import 'package:moneyplus/presentation/account_setup/screen/account_setup_step_three.dart';
 
+import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
-import '../../../di/injection.dart';
 import '../cubit/account_setup_cubit.dart';
 import '../cubit/account_setup_state.dart';
 
@@ -43,81 +44,91 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
     return BlocProvider(
       create: (context) => cubit..fetchCurrencies(),
-      child: BlocBuilder<AccountSetupCubit, AccountSetupState>(
-        builder: (context, state) {
-          bool isEnabled = true;
-          if (currentIndex == 2) {
-            isEnabled = state.categories.isNotEmpty;
+      child: BlocListener<AccountSetupCubit, AccountSetupState>(
+        listener: (context, state) {
+          if (state.accountStep.index != currentIndex) {
+            pageController.animateToPage(
+              state.accountStep.index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+            setState(() {
+              currentIndex = state.accountStep.index;
+            });
           }
-
-          final isLastStep = currentIndex == 2;
-
-          return Scaffold(
-            backgroundColor: context.colors.surface,
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsetsDirectional.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomAppBar(
-                      leading: AppBarCircleButton(
-                          assetPath: AppAssets.icArrowLeft, onTap: () {}),
-                      title: l10n.accountSetup,
-                      trailing: SvgPicture.asset(AppAssets.appBrand,),
-                    ),
-                    const SizedBox(height: 36,),
-                    Indicator(currentIndex: currentIndex),
-                    const SizedBox(height: 16,),
-                    Text(
-                      l10n.stepOfTotal(currentIndex + 1, 3),
-                      style: context.typography.label.small.copyWith(
-                        color: context.colors.body,
+          if (state.navigateToHome) {
+            // navigate to home
+          }
+        },
+        child: BlocBuilder<AccountSetupCubit, AccountSetupState>(
+          builder: (context, state) {
+            return Scaffold(
+              backgroundColor: context.colors.surface,
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppBar(
+                        leading: AppBarCircleButton(
+                          assetPath: AppAssets.icArrowLeft,
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        title: l10n.accountSetup,
+                        trailing: SvgPicture.asset(AppAssets.appBrand),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.setUpYourAccount,
-                      style: context.typography.headline.medium.copyWith(
-                        color: context.colors.title,
+                      SizedBox(height: 36),
+                      Indicator(currentIndex: currentIndex),
+                      SizedBox(height: 16),
+                      Text(
+                        l10n.stepOfTotal(currentIndex + 1, 3),
+                        style: context.typography.label.small.copyWith(
+                          color: context.colors.body,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Expanded(
-                      child: PageView(
-                        controller: pageController,
-                        onPageChanged: (index) {
-                          setState(() {
-                            currentIndex = index;
-                          });
+                      SizedBox(height: 4),
+                      Text(
+                        l10n.setUpYourAccount,
+                        style: context.typography.headline.medium.copyWith(
+                          color: context.colors.title,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Expanded(
+                        child: PageView(
+                          controller: pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          onPageChanged: (index) {
+                            setState(() {
+                              currentIndex = index;
+                            });
+                          },
+                          children: [
+                            SingleChildScrollView(child: Page1(state: state,)),
+                            SingleChildScrollView(child: Page2(currency: state.currency, currentBalanceState: state.currentBalance)),
+                            // page3()
+                          ],
+                        ),
+                      ),
+                      DefaultButton(
+                        text: state.accountStep == AccountSetupStep.step3
+                            ? l10n.finishSetup
+                            : l10n.next,
+                        isEnabled: state.isButtonEnabled,
+                        onPressed: () {
+                          context.read<AccountSetupCubit>().onNextStep();
                         },
-                        children: [
-                          SingleChildScrollView(child: Page1(state: state)),
-                          //todo page2
-                          SingleChildScrollView(child: AccountSetupStepThree(state: state)),
-                        ],
                       ),
-                    ),
-                    DefaultButton(
-                      text: isLastStep ? l10n.finishSetup : l10n.next,
-                      isEnabled: isEnabled,
-                      onPressed: () {
-                        if (!isLastStep) {
-                          pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          // TODO: Navigate to home
-                        }
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -5,30 +5,60 @@ import 'package:moneyplus/domain/model/form_status.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/presentation/income/cubit/add_income_state.dart';
 
-class AddIncomeCubit extends Cubit<AddIncomeState> {
-  final TransactionRepository _repository;
+import '../../../domain/repository/user_money_repository.dart';
 
-  AddIncomeCubit({required TransactionRepository repository})
-    : _repository = repository,
-      super(AddIncomeState.initial()) {
+class AddIncomeCubit extends Cubit<AddIncomeState> {
+  final TransactionRepository _transactionRepository;
+  final UserMoneyRepository _userMoneyRepository;
+
+  AddIncomeCubit({
+    required TransactionRepository transactionRepository,
+    required UserMoneyRepository userMoneyRepository,
+  }) : _transactionRepository = transactionRepository,
+       _userMoneyRepository = userMoneyRepository,
+       super(AddIncomeState.initial()) {
+    _loadCurrency();
     _loadCategories();
   }
 
   Future<void> _loadCategories() async {
-    emit(state.copyWith(isLoadingCategories: true));
-    final categories = <TransactionCategory>[
-      TransactionCategory(id: 1, name: 'Salary'),
-      TransactionCategory(id: 2, name: 'Freelance'),
-      TransactionCategory(id: 3, name: 'Treasure'),
-    ];
+    try {
+      emit(state.copyWith(isLoadingCategories: true));
+      final categories = await _transactionRepository.getTransactionCategories(
+        TransactionType.expense,
+      );
 
-    emit(
-      state.copyWith(
-        categories: categories,
-        selectedCategory: categories.first,
-        isLoadingCategories: false,
-      ),
-    );
+      emit(
+        state.copyWith(
+          categories: categories,
+          selectedCategory: categories.first,
+          isLoadingCategories: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "Failed to load categories",
+        ),
+      );
+    }
+  }
+
+  Future<void> _loadCurrency() async {
+    try {
+      emit(state.copyWith(status: FormStatus.loading));
+      final currency = await _userMoneyRepository.getCurrency();
+
+      emit(state.copyWith(currency: currency, status: FormStatus.initial));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "Failed to load currency",
+        ),
+      );
+    }
   }
 
   void onAmountChanged(String value) {
@@ -53,32 +83,39 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     emit(state.copyWith(selectedCategory: category));
   }
 
-  Future<void> onSubmitIncome(String categoryName) async {
+  Future<void> onSubmitIncome() async {
     if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
-
     try {
-      final category =
-          state.selectedCategory ??
-          TransactionCategory(id: 1, name: categoryName);
-
-      final success = await _repository.addTransaction(
+      final result = await _transactionRepository.addTransaction(
         amount: state.amount!,
         type: TransactionType.income,
         date: state.date,
-        category: category,
+        category: state.selectedCategory!,
+        currency: state.currency!,
         note: state.note,
       );
 
-      if (success) {
-        emit(state.copyWith(status: FormStatus.success));
-      } else {
-        emit(state.copyWith(status: FormStatus.failure));
-      }
+      result.when(
+        onSuccess: (user) {
+          emit(state.copyWith(status: FormStatus.success));
+        },
+        onError: (error) {
+          emit(
+            state.copyWith(
+              status: FormStatus.failure,
+              errorMessage: "Failed to add income: ${error.message}",
+            ),
+          );
+        },
+      );
     } catch (e) {
       emit(
-        state.copyWith(status: FormStatus.failure, errorMessage: e.toString()),
+        state.copyWith(
+          status: FormStatus.failure,
+          errorMessage: "An unexpected error occurred: $e",
+        ),
       );
     }
   }

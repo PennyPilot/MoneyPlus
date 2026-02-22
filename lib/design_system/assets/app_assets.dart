@@ -6,7 +6,7 @@ class AppAssets {
   static const icAppLogo = '${_icons}ic_app_logo.svg';
   static const icArrowDown = '$_icons/ic_arrow_down.svg';
   static const icArrowUp = '$_icons/ic_arrow_up.svg';
-  static const icArrowRight ='$_icons/ic_arrow_right.svg';
+  static const icArrowRight = '$_icons/ic_arrow_right.svg';
   static const String iconCancel = "$_icons/ic_cancel.svg";
   static const String iconCancelCategory = "$_icons/icon_cancel_category.svg";
   static const String iconError = "$_icons/ic_error.svg";
@@ -20,7 +20,8 @@ class AppAssets {
   static const String icAccountGray = '$_icons/ic_account_gray.svg';
   static const String icStatisticsPrimary = '$_icons/ic_statistics_primary.svg';
   static const String icStatisticsGray = '$_icons/ic_statistics_gray.svg';
-  static const String icTransactionPrimary = '$_icons/ic_transaction_primary.svg';
+  static const String icTransactionPrimary =
+      '$_icons/ic_transaction_primary.svg';
   static const String icTransactionGray = '$_icons/ic_transaction_gray.svg';
   static const String icArrowDownRound = '$_icons/ic_arrow_down_round.svg';
   static const String icCalender = '$_icons/ic_calendar.svg';
@@ -46,8 +47,9 @@ class AppAssets {
   static const String eyeClose = "$_icons/ic_eye_close.svg";
   static const String eyeOpen = "$_icons/ic_eye_open.svg";
   static const String lock = "$_icons/ic_lock.svg";
-  static const String email = "$_icons/ic_email.svg";
   static const String google = "$_icons/ic_google.svg";
+  static const String icSquareLock = '$_icons/ic_square_lock.svg';
+  static const String icUser = '$_icons/ic_user_square.svg';
   static const icMoneyAmount = '$_icons/ic_money_amount.svg';
   static const String imgForgetPasswordLock = "$_icons/img_forget_password_lock.png";
   static const String icEmail = "$_icons/ic_email.svg";
@@ -57,6 +59,8 @@ class AppAssets {
   static const String icLoading = "$_icons/ic_loading.svg";
   static const String icAmountPrimary = '$_icons/ic_amount_primary.svg';
   static const String icAmountGray = '$_icons/ic_amount_gray.svg';
+  static const String icWalletAdd = '$_icons/ic_wallet_add.svg';
+  static const String icMoneyRemove = '$_icons/ic_money_remove.svg';
   static const String lineSeparator = '$_images/line-separator.png';
   static const String transactionCoinStack = '$_images/transaction-coin-stack.png';
   static const String transactionDetailsBackground = '$_images/transaction-details-background.png';

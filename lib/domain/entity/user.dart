@@ -1,7 +1,7 @@
 class User {
   final String id;
-  final String email;
   final String name;
+  final String email;
 
   const User({
     required this.id,

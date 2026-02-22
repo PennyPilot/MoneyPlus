@@ -1,65 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/domain/model/form_status.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/widgets/app_bar.dart';
+import 'package:moneyplus/design_system/widgets/text_field.dart';
+import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
+import 'package:moneyplus/presentation/expense/cubit/add_expense_cubit.dart';
+import 'package:moneyplus/presentation/expense/cubit/add_expense_state.dart';
 
 import '../../../core/l10n/app_localizations.dart';
-import '../../../design_system/theme/money_extension_context.dart';
-import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/chip.dart';
 import '../../../design_system/widgets/snack_bar.dart';
-import '../../../design_system/widgets/text_field.dart';
-import '../../../design_system/widgets/text_field_date_Picker.dart';
-import '../../../di/injection.dart';
-import '../cubit/add_income_cubit.dart';
-import '../cubit/add_income_state.dart';
+import '../../../core/di/injection.dart';
+import '../../../domain/model/form_status.dart';
 
-class IncomeScreen extends StatelessWidget {
-  const IncomeScreen({super.key});
+class AddExpenseScreen extends StatelessWidget {
+  const AddExpenseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AddIncomeCubit>(),
-      child: const _IncomeScreenContent(),
+      create: (context) => getIt<AddExpenseCubit>(),
+      child: const _ExpenseScreenContent(),
     );
   }
 }
 
-class _IncomeScreenContent extends StatelessWidget {
-  const _IncomeScreenContent();
+class _ExpenseScreenContent extends StatelessWidget {
+  const _ExpenseScreenContent();
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: CustomAppBar(
-        title: l10n.addIncome,
+        title: localization.addAnExpense,
         backgroundColor: colors.surfaceLow,
         leading: AppBarCircleButton(
           assetPath: AppAssets.icArrowLeft,
           onTap: () => Navigator.pop(context),
         ),
       ),
-      body: BlocConsumer<AddIncomeCubit, AddIncomeState>(
+      body: BlocConsumer<AddExpenseCubit, AddExpenseState>(
         listener: (context, state) {
-          final l10n = AppLocalizations.of(context)!;
+          final localization = AppLocalizations.of(context)!;
 
           if (state.status == FormStatus.success) {
             MSnackBar.success(
-              message: l10n.incomeAddedSuccessfully,
+              message: localization.expenseAddedSuccessfully,
               title: '',
             ).showSnackBar(context: context);
 
             Navigator.pop(context);
           } else if (state.status == FormStatus.failure) {
             MSnackBar.error(
-              message: state.errorMessage ?? l10n.failedToAddIncome,
+              message: state.errorMessage ?? localization.failedToAddExpense,
               title: '',
             ).showSnackBar(context: context);
           }
@@ -88,19 +88,19 @@ class _IncomeScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildAmountSection(BuildContext context, AddIncomeState state) {
+  Widget _buildAmountSection(BuildContext context, AddExpenseState state) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: MTextField(
-        hint: l10n.amount,
+        hint: localization.amount,
         value: state.amount != null ? state.amount!.toStringAsFixed(0) : '',
         keyboardType: TextInputType.number,
         leading: Padding(
-          padding: const EdgeInsetsGeometry.directional(end: 8),
+          padding: const EdgeInsetsDirectional.only(end: 8),
           child: SvgPicture.asset(
             AppAssets.icAmountGray,
             width: 24,
@@ -118,37 +118,37 @@ class _IncomeScreenContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                l10n.currencyCode,
+                state.currency?.abbreviation ?? "",
                 style: typography.label.small.copyWith(color: colors.body),
               ),
             ],
           ),
         ),
         onChanged: (value) {
-          context.read<AddIncomeCubit>().onAmountChanged(value);
+          context.read<AddExpenseCubit>().onAmountChanged(value);
         },
       ),
     );
   }
 
   Widget _buildDateSection(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: TextFieldDatePicker(
-        hint: l10n.date,
+        hint: localization.date,
         onError: () {},
         onDateChange: (date) {
-          context.read<AddIncomeCubit>().onDateChanged(date);
+          context.read<AddExpenseCubit>().onDateChanged(date);
         },
       ),
     );
   }
 
-  Widget _buildCategorySection(BuildContext context, AddIncomeState state) {
+  Widget _buildCategorySection(BuildContext context, AddExpenseState state) {
     final colors = context.colors;
     final typography = context.typography;
-    final l10n = AppLocalizations.of(context)!;
+    final localization = AppLocalizations.of(context)!;
 
     if (state.isLoadingCategories && state.categories.isEmpty) {
       return const Padding(
@@ -167,7 +167,7 @@ class _IncomeScreenContent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 16),
           child: Text(
-            l10n.categories,
+            localization.categories,
             style: typography.title.small.copyWith(color: colors.title),
           ),
         ),
@@ -183,7 +183,9 @@ class _IncomeScreenContent extends StatelessWidget {
                   label: category.name,
                   selected: selected,
                   onTap: () {
-                    context.read<AddIncomeCubit>().onCategorySelected(category);
+                    context.read<AddExpenseCubit>().onCategorySelected(
+                      category,
+                    );
                   },
                 );
               }),
@@ -194,31 +196,31 @@ class _IncomeScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildNoteSection(BuildContext context, AddIncomeState state) {
-    final l10n = AppLocalizations.of(context)!;
+  Widget _buildNoteSection(BuildContext context, AddExpenseState state) {
+    final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: MTextField(
-        hint: l10n.note,
+        hint: localization.note,
         value: state.note,
         minLines: 4,
         maxLines: 6,
         onChanged: (value) {
-          context.read<AddIncomeCubit>().onNoteChanged(value);
+          context.read<AddExpenseCubit>().onNoteChanged(value);
         },
       ),
     );
   }
 
-  Widget _buildSaveButton(BuildContext context, AddIncomeState state) {
-    final l10n = AppLocalizations.of(context)!;
+  Widget _buildSaveButton(BuildContext context, AddExpenseState state) {
+    final localization = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
       child: DefaultButton(
-        text: state.status == FormStatus.loading ? l10n.saving : l10n.add,
+        text: state.status == FormStatus.loading ? localization.saving : localization.add,
         onPressed: () {
-          context.read<AddIncomeCubit>().onSubmitIncome(l10n.salary);
+          context.read<AddExpenseCubit>().onSubmitExpense();
         },
         isEnabled: state.canSubmitForm,
       ),
