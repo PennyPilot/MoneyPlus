@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
+
+import '../../presentation/createAccount/cubit/create_account_cubit.dart';
 import '../../data/repository/account_repository.dart';
 import '../../data/repository/authentication_repository.dart';
 import '../../data/repository/transaction_repository.dart';
@@ -95,6 +97,12 @@ void initDI() {
   getIt.registerFactory<TransactionDetailsCubit>(
     () => TransactionDetailsCubit(
       transactionRepository: getIt<TransactionRepository>(),
+    ),
+  );
+  getIt.registerFactory<CreateAccountCubit>(
+    () => CreateAccountCubit(
+      getIt<AuthenticationValidator>(),
+      getIt<AuthenticationRepository>(),
     ),
   );
 }

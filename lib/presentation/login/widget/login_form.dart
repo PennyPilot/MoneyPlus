@@ -34,7 +34,7 @@ class _LoginFormState extends State<LoginForm> {
           hint: localizations.login_email_hint,
           leading: Padding(
             padding: const EdgeInsetsGeometry.directional(end: 8),
-            child: SvgPicture.asset(AppAssets.email),
+            child: SvgPicture.asset(AppAssets.icEmail),
           ),
           onChanged: widget.onEmailChanged,
           keyboardType: TextInputType.emailAddress,
