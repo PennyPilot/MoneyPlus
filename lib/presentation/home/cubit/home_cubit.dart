@@ -57,6 +57,11 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  void onRefreshHomeScreen(){
+    final currentDate = DateTime.now();
+    getData(month: currentDate.month, year: currentDate.year);
+  }
+
   Future<double> getTotalBalance() async {
     return await userMoneyRepository.getTotalBalance();
   }

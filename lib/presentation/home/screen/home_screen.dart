@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           getIt<HomeCubit>()..getData(month: currentDate.month, year: currentDate.year),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
+          final cubit = context.read<HomeCubit>();
           var content = switch (state) {
             HomeLoading() => Scaffold(
               backgroundColor: MoneyColors.light.surface,
@@ -71,13 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
               scrollController: _scrollController,
               showAppBarOnly: showAppBarOnly,
               setSelectedDate: (date) {
-                context.read<HomeCubit>().setSelectedDate(
+                cubit.setSelectedDate(
                   date.month,
                   date.year,
                 );
               },
               reloadScreen: (){
-                context.read<HomeCubit>().getData(month: currentDate.month, year: currentDate.year);
+                cubit.onRefreshHomeScreen();
               }
             ),
             HomeError() => Scaffold(
