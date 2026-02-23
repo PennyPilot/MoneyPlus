@@ -18,7 +18,8 @@ class LoadingView extends StatelessWidget {
               color: context.colors.primary,
             ),
           ),
-        )
+        ),
+        SizedBox(height: 16,),
       ],
     );
   }

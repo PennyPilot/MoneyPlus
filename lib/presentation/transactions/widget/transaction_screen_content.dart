@@ -56,36 +56,38 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
           }
         },
         builder: (context, state) {
-          return CustomScrollView(
-            controller: _controller,
-            slivers: [
-              SliverToBoxAdapter(
-                child: TransactionAppBar(
-                  year: state.selectedYear,
-                  month: state.selectedMonth,
-                  onDatePick: context.read<TransactionCubit>().setSelectedDate,
-                  onFilterClicked: () {},
-                ),
+          return Column(
+            children: [
+              TransactionAppBar(
+                year: state.selectedYear,
+                month: state.selectedMonth,
+                onDatePick: context.read<TransactionCubit>().setSelectedDate,
+                onFilterClicked: () {},
               ),
-              SliverPadding(
-                padding: const EdgeInsets.only(bottom: 16, left: 16, top: 16),
-                sliver: SliverToBoxAdapter(
-                  child: TabsRow(
-                    selectedTab: state.selectedTab,
-                    onTabSelected: context
-                        .read<TransactionCubit>()
-                        .onTabSelected,
-                  ),
-                ),
-              ),
-              state.status == TransactionStatus.loading
-                  ? SliverFillRemaining(child: LoadingView())
-                  : state.transactions.isEmpty
-                  ? SliverFillRemaining(child: EmptyTransactions())
-                  : TransactionsList(transactions: state.transactions),
 
-              if (state.isLoadingMore)
-                const SliverToBoxAdapter(child: LoadingView()),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16, left: 16, top: 16),
+                child: TabsRow(
+                  selectedTab: state.selectedTab,
+                  onTabSelected: context.read<TransactionCubit>().onTabSelected,
+                ),
+              ),
+
+              Expanded(
+                child: CustomScrollView(
+                  controller: _controller,
+                  slivers: [
+                    state.status == TransactionStatus.loading
+                        ? SliverFillRemaining(child: LoadingView())
+                        : state.transactions.isEmpty
+                        ? SliverFillRemaining(child: EmptyTransactions())
+                        : TransactionsList(transactions: state.transactions),
+
+                    if (state.isLoadingMore)
+                      const SliverToBoxAdapter(child: LoadingView()),
+                  ],
+                ),
+              ),
             ],
           );
         },
