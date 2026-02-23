@@ -92,16 +92,16 @@ class TransactionRepositoryImpl implements TransactionRepository {
     );
     return (response as List)
         .map(
-          (e) => Transaction(
-            id: e['id'] ?? 0,
-            amount: (e['amount'] as num).toDouble(),
-            currency: e['currency'] ?? '',
-            type: e['transaction_type'] == 'income'
+          (transaction) => Transaction(
+            id: transaction['id'] ?? 0,
+            amount: (transaction['amount'] as num).toDouble(),
+            currency: transaction['currency'] ?? '',
+            type: transaction['transaction_type'] == 'income'
                 ? TransactionType.income
                 : TransactionType.expense,
-            date: DateTime.parse(e['date']),
-            category: TransactionCategory(id: 1, name: e['category']),
-            note: e['note'] ?? '',
+            date: DateTime.parse(transaction['date']),
+            category: TransactionCategory(id: 1, name: transaction['category']),
+            note: transaction['note'] ?? '',
           ),
         )
         .toList();
