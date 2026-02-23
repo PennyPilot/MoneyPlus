@@ -76,6 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   date.year,
                 );
               },
+              reloadScreen: (){
+                context.read<HomeCubit>().getData(month: currentDate.month, year: currentDate.year);
+              }
             ),
             HomeError() => Scaffold(
               body: Center(child: Text(state.errorMessage)),
@@ -94,6 +97,7 @@ Widget _loadedContent({
   required ScrollController scrollController,
   required bool showAppBarOnly,
   required Function(DateTime) setSelectedDate,
+  required Function reloadScreen,
 }) {
   final colors = context.colors;
   final topSpendingCategories = state.topSpendingCategories;
@@ -113,7 +117,8 @@ Widget _loadedContent({
                 showAppBarOnly: showAppBarOnly,
                 state: state,
                 onDatePick: setSelectedDate,
-                context: context
+                context: context,
+                reloadScreen: reloadScreen
               ),
             ),
           ),
@@ -219,7 +224,8 @@ Widget _topSection({
   required bool showAppBarOnly,
   required HomeLoaded state,
   required Function(DateTime) onDatePick,
-  required BuildContext context
+  required BuildContext context,
+  required Function reloadScreen,
 }) {
   final colors = MoneyColors.light;
   if (showAppBarOnly) {
@@ -293,8 +299,9 @@ Widget _topSection({
                   child: VarientButton(
                     text: "Add",
                     iconPath: AppAssets.addMoney,
-                    onPressed: () {
-                      AddIncomeRoute().push(context);
+                    onPressed: () async {
+                      await AddIncomeRoute().push(context);
+                      reloadScreen();
                     },
                   ),
                 ),
@@ -303,8 +310,9 @@ Widget _topSection({
                   child: SMSecondaryButton(
                     text: "Spend",
                     iconPath: AppAssets.spendMoney,
-                    onPressed: () {
-                      AddExpenseRoute().push(context);
+                    onPressed: () async {
+                      await AddExpenseRoute().push(context);
+                      reloadScreen();
                     },
                   ),
                 ),
