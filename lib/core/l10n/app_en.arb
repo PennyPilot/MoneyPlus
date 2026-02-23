@@ -154,5 +154,8 @@
   "add" : "Add",
   "transaction_details": "Transaction details",
   "income_details": "Income details",
-  "expense_details": "Expense details"
+  "expense_details": "Expense details",
+  "add_transaction_sheet_subtitle": "Select transaction type you want to add it",
+  "make_expense": "Make expense",
+  "continueButton": "Continue"
 }

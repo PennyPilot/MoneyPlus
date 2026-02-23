@@ -141,5 +141,8 @@
   "transaction_details": "تفاصيل المعاملة",
   "transaction_details": "Transaction details",
   "income_details": "تفاصيل الدخل",
-  "expense_details": "تفاصيل المصروف"
+  "expense_details": "تفاصيل المصروف",
+  "add_transaction_sheet_subtitle": "اختر نوع المعاملة التي تريد إضافتها",
+  "make_expense": "تسجيل مصروف",
+  "continueButton": "متابعة"
 }
