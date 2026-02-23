@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
+import 'package:svg_flutter/svg.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
+
+import '../theme/money_extension_context.dart';
 
 class MBottomSheet extends StatelessWidget {
   final String title;
@@ -19,9 +23,9 @@ class MBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: context.colors.surface,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
@@ -42,20 +46,7 @@ class MBottomSheet extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Container(
-                  width: 28,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE5E7EB),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: MoneyColors.light.body, width: 1),
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    size: 16,
-                    color: MoneyColors.light.body,
-                  ),
-                ),
+                child: SvgPicture.asset(AppAssets.iconCancel, width: 20, height: 20),
               ),
             ],
           ),
