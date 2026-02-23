@@ -67,10 +67,6 @@ void initDI() {
   getIt.registerLazySingleton<AccountSetupCubit>(
     () => AccountSetupCubit(getIt<AccountRepository>()),
   );
-  
-  getIt.registerLazySingleton<AccountSetupCubit>(
-    () => AccountSetupCubit(getIt<AccountRepository>()),
-  );
 
   getIt.registerFactory<AddExpenseCubit>(
     () => AddExpenseCubit(
