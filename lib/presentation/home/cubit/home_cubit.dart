@@ -11,6 +11,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required this.userMoneyRepository}) : super(HomeLoading());
 
   void getData({required int month, required int year}) async {
+    emit(HomeLoading());
     try {
       final loadedContent = HomeLoaded(
         currentBalance: await getTotalBalance(),
@@ -33,18 +34,23 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void setSelectedDate(int month, int year) async {
-    if ((state as HomeLoaded).selectedMonth == month &&
-        (state as HomeLoaded).selectedYear == year) {
+    if (state is! HomeLoaded) return;
+    final loadedState = state as HomeLoaded;
+
+    if (loadedState.selectedMonth == month && loadedState.selectedYear == year) {
       return;
     }
-    final loadedState = state as HomeLoaded;
     emit(HomeLoading());
-    var expense = await getTotalMonthExpense(month, year);
-    var income = await getTotalMonthIncome(month, year);
+    final expense = await getTotalMonthExpense(month, year);
+    final income = await getTotalMonthIncome(month, year);
+    final topSpendingCategories = await getTopSpendingCategories(month, year);
+    final savingSpendingPercentage = await getSavingSpendingPercentage(month, year);
     emit(
       loadedState.copyWith(
         totalMonthIncome: income,
         totalMonthExpense: expense,
+        topSpendingCategories: topSpendingCategories,
+        currentSavingSpendingPercentage: savingSpendingPercentage,
         selectedMonth: month,
         selectedYear: year,
       ),
