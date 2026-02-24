@@ -15,6 +15,8 @@ class TransactionState {
   final TransactionTabs selectedTab;
   final int selectedMonth;
   final int selectedYear;
+  final List<String> availableCategories;
+  final Set<String> selectedCategories;
 
   const TransactionState({
     required this.status,
@@ -24,6 +26,8 @@ class TransactionState {
     this.selectedTab = TransactionTabs.all,
     this.selectedYear = 2026,
     this.selectedMonth = 1,
+    this.availableCategories = const [],
+    this.selectedCategories = const <String>{},
   });
 
   factory TransactionState.initial() =>
@@ -37,6 +41,8 @@ class TransactionState {
     TransactionTabs? selectedTab,
     int? selectedYear,
     int? selectedMonth,
+    List<String>? availableCategories,
+    Set<String>? selectedCategories,
   }) {
     return TransactionState(
       status: status ?? this.status,
@@ -46,6 +52,8 @@ class TransactionState {
       selectedTab: selectedTab ?? this.selectedTab,
       selectedYear: selectedYear ?? this.selectedYear,
       selectedMonth: selectedMonth ?? this.selectedMonth,
+      availableCategories: availableCategories ?? this.availableCategories,
+      selectedCategories: selectedCategories ?? this.selectedCategories,
     );
   }
 }

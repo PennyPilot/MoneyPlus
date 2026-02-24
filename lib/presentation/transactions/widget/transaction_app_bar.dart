@@ -9,7 +9,7 @@ import '../../../design_system/assets/app_assets.dart';
 
 class TransactionAppBar extends StatelessWidget {
   final Function(int month, int year) onDatePick;
-  final Function onFilterClicked;
+  final VoidCallback onFilterClicked;
   final int year;
   final int month;
 
@@ -37,7 +37,7 @@ class TransactionAppBar extends StatelessWidget {
           }, year: year, month: month),
           SizedBox(width: 8,),
           GestureDetector(
-            onTap: () {},
+            onTap: onFilterClicked,
             child: Container(
               height: 40,
               width: 40,
