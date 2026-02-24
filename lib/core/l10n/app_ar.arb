@@ -144,5 +144,8 @@
   "expense_details": "تفاصيل المصروف",
   "add_transaction_sheet_subtitle": "اختر نوع المعاملة التي تريد إضافتها",
   "make_expense": "تسجيل مصروف",
-  "continueButton": "متابعة"
+  "continueButton": "متابعة",
+  "categoriesFilterTitle": "تصفية الفئات",
+  "categoriesFilterClear": "مسح",
+  "categoriesFilterApply": "تطبيق"
 }
