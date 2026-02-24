@@ -81,7 +81,7 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
             children: [
               SvgPicture.asset(percentageIcon, width: 16, height: 16),
               Text(
-                "${widget.percentage}% $percentageText",
+                "${_formatPercentage(widget.percentage)}% $percentageText",
                 style: typography.label.xSmall?.copyWith(
                   color: percentageColor,
                 ),
@@ -98,4 +98,8 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
       showBalance = !showBalance;
     });
   }
+}
+
+String _formatPercentage(double value) {
+  return value.round().toString();
 }
