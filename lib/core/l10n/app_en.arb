@@ -154,8 +154,7 @@
   "expense_details": "Expense details",
   "whereDoYouUsuallySpendYourMoney": "Where do you usually spend your money?",
   "suggestions": "Suggestions:",
-  "selectedCategories": "Selected Categories:"
-  "expense_details": "Expense details",
+  "selectedCategories": "Selected Categories:",
   "add_transaction_sheet_subtitle": "Select transaction type you want to add it",
   "make_expense": "Make expense",
   "continueButton": "Continue",
