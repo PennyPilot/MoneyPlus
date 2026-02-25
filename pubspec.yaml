@@ -53,6 +53,14 @@ dev_dependencies:
   go_router_builder: ^4.0.1
   build_runner: ^2.6.0
   build_verify: any
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/launcher_icon.png"
+  adaptive_icon_foreground: "assets/images/launcher_foreground.png"
+  adaptive_icon_background: "assets/images/launcher_background.png"
 
 flutter:
   generate: true
@@ -62,7 +70,6 @@ flutter:
     - secrets.env
 
   uses-material-design: true
-
 
   fonts:
     - family: Rubik
