@@ -14,6 +14,8 @@ class AccountSetupState {
   final String query;
   final bool isButtonEnabled;
   final List<Currency> currencies;
+  final List<String> categories;
+  final List<String> suggestions;
   final bool isLoading;
   final String errorMessage;
   final AccountSetupStep accountStep;
@@ -27,6 +29,19 @@ class AccountSetupState {
     this.query = "",
     this.isButtonEnabled = false,
     this.currencies = const [],
+    this.categories = const [],
+    this.suggestions = const [
+      'Food',
+      'Transport',
+      'Shopping',
+      'Health',
+      'Education',
+      'Gift',
+      'Cafe',
+      'Work',
+      'Home',
+      'Travel'
+    ],
     this.isLoading = true,
     this.errorMessage = "",
     this.accountStep = AccountSetupStep.step1,
@@ -41,6 +56,8 @@ class AccountSetupState {
     String? query,
     bool? isButtonEnabled,
     List<Currency>? currencies,
+    List<String>? categories,
+    List<String>? suggestions,
     String? errorMessage,
     bool? isLoading,
     AccountSetupStep? accountStep,
