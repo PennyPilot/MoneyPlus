@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
 import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
@@ -9,8 +10,10 @@ import '../../core/di/injection.dart';
 import '../forget_password/screen/forget_password_screen.dart';
 import '../income/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
-import '../trasnaction_details/transaction_details_screen.dart';
 import '../main_container/screen/main_screen.dart';
+import '../statistics/cubit/statistics_cubit.dart';
+import '../statistics/statistics_screen.dart';
+import '../trasnaction_details/transaction_details_screen.dart';
 
 part 'routes.g.dart';
 
@@ -57,6 +60,33 @@ class MainRoute extends GoRouteData with $MainRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const MainScreen();
+  }
+}
+
+@TypedGoRoute<CreateAccountRoute>(path: '/createAccount')
+@immutable
+class CreateAccountRoute extends GoRouteData
+    with $CreateAccountRoute {
+  const CreateAccountRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreateAccountScreen();
+  }
+}
+
+@TypedGoRoute<StatisticsRoute>(path: '/statistics')
+@immutable
+class StatisticsRoute extends GoRouteData
+    with $StatisticsRoute {
+  const StatisticsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      create: (_) => getIt<StatisticsCubit>(),
+      child: const StatisticsScreen(),
+    );
   }
 }
 

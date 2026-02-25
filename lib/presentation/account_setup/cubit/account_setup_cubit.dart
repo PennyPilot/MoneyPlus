@@ -72,4 +72,13 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
         break;
     }
   }
+  void toggleCategory(String category) {
+    final List<String> updatedCategories = List.from(state.categories);
+    if (updatedCategories.contains(category)) {
+      updatedCategories.remove(category);
+    } else {
+      updatedCategories.add(category);
+    }
+    emit(state.copyWith(categories: updatedCategories));
+  }
 }
