@@ -49,7 +49,7 @@ class Transaction {
           ? TransactionType.income
           : TransactionType.expense,
       date: DateTime.parse(json['date']),
-      category: TransactionCategory(id: 1, name: json['category']),
+      category: TransactionCategory(id: json['category_id'], name: json['category']),
       note: json['note'] ?? '',
     );
   }
