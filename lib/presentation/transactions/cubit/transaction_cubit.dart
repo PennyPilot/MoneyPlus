@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
@@ -13,19 +14,23 @@ class TransactionCubit extends Cubit<TransactionState> {
     emit(state.copyWith(status: TransactionStatus.loading));
 
     final now = DateTime.now();
-    final result = await transactionRepository.getTransactions(
-      page: 1,
-      date: now,
-    );
-    emit(
-      state.copyWith(
-        transactions: result,
-        selectedYear: now.year,
-        selectedMonth: now.month,
-        status: TransactionStatus.success,
-        hasMore: result.length == 20,
-      ),
-    );
+    try {
+      final result = await transactionRepository.getTransactions(
+        page: 1,
+        date: now,
+      );
+      emit(
+        state.copyWith(
+          transactions: result,
+          selectedYear: now.year,
+          selectedMonth: now.month,
+          status: TransactionStatus.success,
+          hasMore: result.length == 20,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
   void onTabSelected(TransactionTabs tab) async {
@@ -40,24 +45,25 @@ class TransactionCubit extends Cubit<TransactionState> {
       ),
     );
 
-    final result = await transactionRepository.getTransactions(
-      page: 1,
-      type: tab == TransactionTabs.expenses
-          ? TransactionType.expense
-          : tab == TransactionTabs.incomes
-          ? TransactionType.income
-          : null,
-      date: DateTime(state.selectedYear, state.selectedMonth),
-    );
+    try {
+      final result = await _getTransaction(
+        page: 1,
+        tab: tab,
+        year: state.selectedYear,
+        month: state.selectedMonth,
+      );
 
-    emit(
-      state.copyWith(
-        status: TransactionStatus.success,
-        transactions: result,
-        currentPage: 1,
-        hasMore: result.length == 20,
-      ),
-    );
+      emit(
+        state.copyWith(
+          status: TransactionStatus.success,
+          transactions: result,
+          currentPage: 1,
+          hasMore: result.length == 20,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
   void setSelectedDate(int month, int year) async {
@@ -73,24 +79,25 @@ class TransactionCubit extends Cubit<TransactionState> {
       ),
     );
 
-    final result = await transactionRepository.getTransactions(
-      page: 1,
-      type: state.selectedTab == TransactionTabs.expenses
-          ? TransactionType.expense
-          : state.selectedTab == TransactionTabs.incomes
-          ? TransactionType.income
-          : null,
-      date: DateTime(year, month),
-    );
+    try {
+      final result = await _getTransaction(
+        page: 1,
+        tab: state.selectedTab,
+        year: year,
+        month: month,
+      );
 
-    emit(
-      state.copyWith(
-        status: TransactionStatus.success,
-        transactions: result,
-        currentPage: 1,
-        hasMore: result.length == 20,
-      ),
-    );
+      emit(
+        state.copyWith(
+          status: TransactionStatus.success,
+          transactions: result,
+          currentPage: 1,
+          hasMore: result.length == 20,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
   void loadMore() async {
@@ -100,23 +107,41 @@ class TransactionCubit extends Cubit<TransactionState> {
 
     final nextPage = state.currentPage + 1;
 
-    final result = await transactionRepository.getTransactions(
-      page: nextPage,
-      type: state.selectedTab == TransactionTabs.expenses
+    try {
+      final result = await _getTransaction(
+        page: nextPage,
+        tab: state.selectedTab,
+        year: state.selectedYear,
+        month: state.selectedMonth,
+      );
+
+      emit(
+        state.copyWith(
+          transactions: [...state.transactions, ...result],
+          currentPage: nextPage,
+          hasMore: result.length == 20,
+          isLoadingMore: false,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
+  }
+
+  Future<List<Transaction>> _getTransaction({
+    required int page,
+    required TransactionTabs tab,
+    required int year,
+    required int month,
+  }) async {
+    return await transactionRepository.getTransactions(
+      page: page,
+      type: tab == TransactionTabs.expenses
           ? TransactionType.expense
-          : state.selectedTab == TransactionTabs.incomes
+          : tab == TransactionTabs.incomes
           ? TransactionType.income
           : null,
-      date: DateTime(state.selectedYear, state.selectedMonth),
-    );
-
-    emit(
-      state.copyWith(
-        transactions: [...state.transactions, ...result],
-        currentPage: nextPage,
-        hasMore: result.length == 20,
-        isLoadingMore: false,
-      ),
+      date: DateTime(year, month),
     );
   }
 }
