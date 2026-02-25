@@ -9,7 +9,6 @@ import 'package:moneyplus/domain/repository/transaction_repository.dart';
 
 import '../../domain/entity/currency.dart';
 
-
 class TransactionRepositoryImpl implements TransactionRepository {
   final SupabaseService service;
 
@@ -82,28 +81,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
       params: {
         'p_timestamp': date?.toIso8601String(),
         'p_category_ids': categoriesId,
-        'p_transaction_type_id': type == TransactionType.income
-            ? 1
-            : type == TransactionType.expense
-            ? 2
-            : null,
+        'p_transaction_type_id': type?.value,
         'p_page': page,
       },
     );
     return (response as List)
-        .map(
-          (transaction) => Transaction(
-            id: transaction['id'] ?? 0,
-            amount: (transaction['amount'] as num).toDouble(),
-            currency: transaction['currency'] ?? '',
-            type: transaction['transaction_type'] == 'income'
-                ? TransactionType.income
-                : TransactionType.expense,
-            date: DateTime.parse(transaction['date']),
-            category: TransactionCategory(id: 1, name: transaction['category']),
-            note: transaction['note'] ?? '',
-          ),
-        )
+        .map((transaction) => Transaction.fromJson(transaction))
         .toList();
   }
 
