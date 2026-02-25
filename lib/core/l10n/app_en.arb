@@ -129,6 +129,7 @@
   "category_name": "Category name",
   "transaction_delete_success" : "Transaction deleted successfully",
   "transaction_delete_fail" : "Failed to delete transaction",
+  "add" : "Add",
   "statistics": "Statistics",
   "savings_message": "You saved {amount} {currency} this month",
   "@savings_message": {
