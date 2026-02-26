@@ -1,6 +1,6 @@
 import '../../core/errors/error_model.dart';
 import '../../core/errors/result.dart';
-import '../../data/service/supabase_service.dart';
+import '../../core/service/supabase_service.dart';
 import '../../domain/entity/categories_breakdown.dart';
 import '../../domain/entity/monthly_overview.dart';
 import '../../domain/repository/statistics_repository.dart';
