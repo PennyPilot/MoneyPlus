@@ -160,5 +160,8 @@
   "continueButton": "Continue",
   "categoriesFilterTitle": "Categories filter",
   "categoriesFilterClear": "Clear",
-  "categoriesFilterApply": "Apply"
+  "categoriesFilterApply": "Apply",
+  "categoriesBreakdown": "Categories Breakdown",
+  "no_monthly_breakdown": "No expenses to analyze yet",
+  "totalSpend": "Total Spend"
 }
