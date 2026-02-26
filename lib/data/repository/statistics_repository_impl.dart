@@ -1,4 +1,4 @@
-import '../../data/service/supabase_service.dart';
+import '../../core/service/supabase_service.dart';
 import '../../domain/entity/monthly_overview.dart';
 import '../../domain/repository/statistics_repository.dart';
 

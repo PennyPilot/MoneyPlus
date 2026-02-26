@@ -1,7 +1,7 @@
 import 'package:moneyplus/domain/entity/currency.dart';
 
 import '../../domain/repository/account_repository.dart';
-import '../service/supabase_service.dart';
+import '../../core/service/supabase_service.dart';
 
 class AccountRepositoryImpl extends AccountRepository {
   final SupabaseService supabaseService;
