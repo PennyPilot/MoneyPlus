@@ -3,7 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:moneyplus/money_app.dart';
 import 'core/di/injection.dart';
 
-void main()  {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
@@ -13,6 +13,7 @@ void main()  {
     }
   });
   initDI();
+ await getIt.allReady();
 
   runApp(const MoneyApp());
 }

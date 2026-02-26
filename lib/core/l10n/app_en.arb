@@ -22,6 +22,7 @@
   "noDataAvailable": "No data available",
   "date": "Date",
   "addIncome": "Add income",
+  "add": "Add",
   "saving": "Saving...",
   "incomeAddedSuccessfully": "Income added successfully!",
   "failedToAddIncome": "Failed to add income",
@@ -129,7 +130,6 @@
   "category_name": "Category name",
   "transaction_delete_success" : "Transaction deleted successfully",
   "transaction_delete_fail" : "Failed to delete transaction",
-  "add" : "Add",
   "statistics": "Statistics",
   "savings_message": "You saved {amount} {currency} this month",
   "@savings_message": {
@@ -155,6 +155,12 @@
   "whereDoYouUsuallySpendYourMoney": "Where do you usually spend your money?",
   "suggestions": "Suggestions:",
   "selectedCategories": "Selected Categories:",
+  "add_transaction_sheet_subtitle": "Select transaction type you want to add it",
+  "make_expense": "Make expense",
+  "continueButton": "Continue",
+  "categoriesFilterTitle": "Categories filter",
+  "categoriesFilterClear": "Clear",
+  "categoriesFilterApply": "Apply"
   "categoriesBreakdown": "Categories Breakdown",
   "no_monthly_breakdown": "No expenses to analyze yet",
   "totalSpend": "Total Spend"

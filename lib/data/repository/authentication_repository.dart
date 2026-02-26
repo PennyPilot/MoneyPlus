@@ -2,20 +2,20 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:moneyplus/core/security/app_secrets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 import '../../core/constants/app_constants.dart';
 import '../../core/errors/error_model.dart';
 import '../../core/errors/result.dart';
 import '../../core/errors/supabase_auth_error.dart';
+import '../../core/service/supabase_service.dart';
 import '../../domain/entity/user.dart';
 import '../../domain/repository/authentication_repository.dart';
-import '../service/app_secrets_provider.dart';
-import '../service/supabase_service.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final SupabaseService supabaseService;
-  final AppSecretsProvider appSecrets;
+  final AppSecrets appSecrets;
 
   AuthenticationRepositoryImpl({
     required this.supabaseService,
@@ -50,14 +50,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<Result<bool>> signInWithGoogle() async {
     try {
-      final env = await appSecrets.getEnvVariables();
+      final serverClientId = appSecrets.getRemoteConfigGoogeWebClientId();
+      final clientId = appSecrets.getRemoteConfigGoogeIosClientId();
       final GoogleSignIn signIn = GoogleSignIn.instance;
-      (
-        signIn.initialize(
-          serverClientId: env.env[_googleWebClientId] ?? "",
-          clientId: env.env[_googleIosClientId] ?? "",
-        ),
-      );
+      (signIn.initialize(serverClientId: serverClientId, clientId: clientId),);
 
       final googleAccount = await signIn.authenticate();
       final googleAuthorization = await googleAccount.authorizationClient
@@ -151,8 +147,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
-  static const String _googleWebClientId = "GOOGLE_WEB_CLIENT_ID";
-  static const String _googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
   static const List<String> _googleScopes = ['email', 'profile', 'openid'];
 
   @override

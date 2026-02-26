@@ -1,12 +1,12 @@
 import 'package:moneyplus/core/errors/error_model.dart';
 import 'package:moneyplus/core/errors/result.dart';
-import 'package:moneyplus/data/service/supabase_service.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 
+import '../../core/service/supabase_service.dart';
 import '../../domain/entity/currency.dart';
 
 
