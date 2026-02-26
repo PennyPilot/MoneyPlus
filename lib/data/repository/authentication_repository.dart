@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:moneyplus/core/security/app_secrets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
@@ -20,6 +21,31 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required this.supabaseService,
     required this.appSecrets,
   });
+
+  @override
+  Future<Result<void>> register(User user, String password) async {
+    try {
+      final client = await supabaseService.getClient();
+      final response = await client.auth.signUp(
+        email: user.email,
+        password: password,
+        data: {"name": user.name, "is_complete": false},
+      );
+
+      if (response.user != null) {
+        return Result.success(null);
+      } else {
+        return Result.error(ErrorModel('User data is null'));
+      }
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
+    } catch (error) {
+      if (kDebugMode) {
+        print('Caught error during register: $error');
+      }
+      rethrow;
+    }
+  }
 
   @override
   Future<Result<bool>> signInWithGoogle() async {

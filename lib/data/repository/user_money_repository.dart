@@ -109,7 +109,7 @@ class UserRepositoryImpl implements UserMoneyRepository {
   Future<double> getSavingSpendingPercentage(int month, int year) async {
     _validateMonth(month);
     final isJanuary = month == 1;
-    final previousMonth = isJanuary ? 12 : month;
+    final previousMonth = isJanuary ? 12 : month - 1;
     final previousYear = isJanuary ? year - 1 : year;
 
     final [

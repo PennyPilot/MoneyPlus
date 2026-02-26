@@ -6,7 +6,6 @@ import 'package:moneyplus/core/di/service_di.dart';
 final getIt = GetIt.instance;
 
 void initDI()  {
-  // Initialize services, repositories and cubits from other files
   initServiceDI();
   initRepositoryDI();
   initCubitDI();

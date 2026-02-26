@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
@@ -10,6 +11,17 @@ class TransactionCubit extends Cubit<TransactionState> {
   TransactionCubit({required this.transactionRepository})
     : super(TransactionState.initial());
 
+  static const List<String> _mockCategories = <String>[
+    'Food',
+    'Transport',
+    'Shopping',
+    'Bills',
+    'Health',
+    'Entertainment',
+    'Salary',
+    'Gifts',
+  ];
+
   void loadData() async {
     emit(state.copyWith(status: TransactionStatus.loading));
 
@@ -18,7 +30,13 @@ class TransactionCubit extends Cubit<TransactionState> {
     emit(
       state.copyWith(
         allTransactions: result,
-        filteredTransactions: _filterTransaction(now.month, now.year, result),
+        availableCategories: _mockCategories,
+        filteredTransactions: _filterTransaction(
+          month: now.month,
+          year: now.year,
+          transactions: result,
+          selectedCategories: state.selectedCategories,
+        ),
         selectedYear: now.year,
         selectedMonth: now.month,
         status: TransactionStatus.success,
@@ -38,9 +56,10 @@ class TransactionCubit extends Cubit<TransactionState> {
         status: TransactionStatus.success,
         allTransactions: result,
         filteredTransactions: _filterTransaction(
-          state.selectedMonth,
-          state.selectedYear,
-          result,
+          month: state.selectedMonth,
+          year: state.selectedYear,
+          transactions: result,
+          selectedCategories: state.selectedCategories,
         ),
       ),
     );
@@ -61,9 +80,26 @@ class TransactionCubit extends Cubit<TransactionState> {
       state.copyWith(
         status: TransactionStatus.success,
         filteredTransactions: _filterTransaction(
-          month,
-          year,
-          state.allTransactions,
+          month: month,
+          year: year,
+          transactions: state.allTransactions,
+          selectedCategories: state.selectedCategories,
+        ),
+      ),
+    );
+  }
+
+  void setSelectedCategories(Set<String> categories) {
+    if (setEquals(state.selectedCategories, categories)) return;
+
+    emit(
+      state.copyWith(
+        selectedCategories: Set<String>.from(categories),
+        filteredTransactions: _filterTransaction(
+          month: state.selectedMonth,
+          year: state.selectedYear,
+          transactions: state.allTransactions,
+          selectedCategories: categories,
         ),
       ),
     );
@@ -81,12 +117,20 @@ class TransactionCubit extends Cubit<TransactionState> {
   }
 
   List<Transaction> _filterTransaction(
-    int month,
-    int year,
-    List<Transaction> transactions,
+    {
+    required int month,
+    required int year,
+    required List<Transaction> transactions,
+    required Set<String> selectedCategories,
+  }
   ) {
     return transactions.where((transaction) {
-      return transaction.date.year == year && transaction.date.month == month;
+      final matchesDate =
+          transaction.date.year == year && transaction.date.month == month;
+      if (!matchesDate) return false;
+
+      if (selectedCategories.isEmpty) return true;
+      return selectedCategories.contains(transaction.category.name);
     }).toList();
   }
 }
