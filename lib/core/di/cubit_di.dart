@@ -13,6 +13,7 @@ import 'package:moneyplus/presentation/statistics/cubit/statistics_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 
+import '../../presentation/accout/cubit/account_cubit.dart';
 import '../../presentation/expense/cubit/add_expense_cubit.dart';
 import 'injection.dart';
 
@@ -69,5 +70,8 @@ void initCubitDI() {
       getIt<AuthenticationValidator>(),
       getIt<AuthenticationRepository>(),
     ),
+  );
+  getIt.registerFactory<AccountCubit>(
+        () => AccountCubit(getIt<AccountRepository>()),
   );
 }
