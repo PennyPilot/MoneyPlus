@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
 import '../utils/StringFormattingHelpers.dart';
 
@@ -27,9 +28,9 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = MoneyColors.light;
+    final colors = context.colors;
     final typography = MoneyTypography.typography;
-    var balanceIcon = showBalance ? AppAssets.openEye : AppAssets.closedEye;
+    var balanceVisibilityIcon = showBalance ? AppAssets.openEye : AppAssets.closedEye;
     var balance = showBalance ? widget.balance : getHiddenBalance(widget.balance);
     var topPadding = showBalance ? 0.0 : 4.0;
     var percentageIcon = widget.percentage > 0 ? AppAssets.tradeUp : AppAssets.tradeDown;
@@ -70,7 +71,11 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
                       width: 1,
                     ),
                   ),
-                  child: SvgPicture.asset(balanceIcon, height: 16, width: 16),
+                  child: SvgPicture.asset(
+                    balanceVisibilityIcon,
+                    height: 16,
+                    width: 16,
+                    colorFilter: ColorFilter.mode(colors.title, BlendMode.srcIn)),
                 ),
               ),
             ],
