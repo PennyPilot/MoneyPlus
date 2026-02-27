@@ -70,14 +70,14 @@ class AppAssets {
   static const String icEmptyTransactionPattern = '$_icons/empty_transaction_pattern.svg';
   static const String icFilter = "$_icons/ic_filter.svg";
   static const String imgNoAnalysis = "$_images/img_no_analysis.png";
-  static const String icAddAmount = "$_icons/ic_add_transaction_income.svg";
-  static const String icAddExpense = "$_icons/ic_add_transaction_expense.svg";
-  static const String icCoins = "$_icons/ic_coins.svg";
-  static const String icCustomerSupport = "$_icons/ic_customer_support.svg";
-  static const String icHelp = "$_icons/ic_help.svg";
-  static const String icSettings = "$_icons/ic_settings.svg";
-  static const String icSun = "$_icons/ic_sun.svg";
-  static const String icTranslation = "$_icons/ic_translation.svg";
-  static const String icCurrency = "$_icons/ic_currency.svg";
-  static const String glowBackground = "$_images/money_background.png";
+  static const String icAddAmount = '$_icons/ic_add_transaction_income.svg';
+  static const String icAddExpense = '$_icons/ic_add_transaction_expense.svg';
+  static const String icCoins = '$_icons/ic_coins.svg';
+  static const String icCustomerSupport = '$_icons/ic_customer_support.svg';
+  static const String icHelp = '$_icons/ic_help.svg';
+  static const String icSettings = '$_icons/ic_settings.svg';
+  static const String icSun = '$_icons/ic_sun.svg';
+  static const String icTranslation = '$_icons/ic_translation.svg';
+  static const String icCurrency = '$_icons/ic_currency.svg';
+  static const String glowBackground = '$_images/money_background.png';
 }
