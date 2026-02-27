@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
-import '../../../theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/theme/money_colors.dart';
 
 class DefaultButton extends StatefulWidget {
   final String text;
@@ -25,17 +25,16 @@ class DefaultButton extends StatefulWidget {
 class _DefaultButtonState extends State<DefaultButton> {
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     return MoneyButton(
       text: widget.text,
       onPressed: widget.onPressed,
       iconPath: widget.iconPath,
       isLoading: widget.isLoading,
       isEnabled: widget.isEnabled,
-      backgroundColor: colors.primary,
-      disabledBackgroundColor: colors.disabled,
-      textColor: colors.onPrimary,
-      disabledTextColor: colors.onPrimary,
+      backgroundColor: MoneyColors.light.primary,
+      disabledBackgroundColor: MoneyColors.light.disabled,
+      textColor: MoneyColors.light.onPrimary,
+      disabledTextColor: MoneyColors.light.onPrimary,
       hasShadow: true,
       innerShadow: BoxShadow(
         color: const Color(0x80FDECF0),

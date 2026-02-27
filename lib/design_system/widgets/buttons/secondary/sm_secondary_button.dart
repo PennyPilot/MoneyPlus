@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
-import '../../../theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/theme/money_colors.dart';
 
 class SMSecondaryButton extends StatefulWidget {
   final String text;
@@ -25,7 +25,6 @@ class SMSecondaryButton extends StatefulWidget {
 class _SMSecondaryButtonState extends State<SMSecondaryButton> {
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     return MoneyButton(
       text: widget.text,
       onPressed: widget.onPressed,
@@ -33,14 +32,14 @@ class _SMSecondaryButtonState extends State<SMSecondaryButton> {
       isLoading: widget.isLoading,
       isEnabled: widget.isEnabled,
       height: 36,
-      backgroundColor:colors.surfaceLow,
-      disabledBackgroundColor:colors.disabled,
-      textColor:colors.title,
-      disabledTextColor:colors.onPrimary,
+      backgroundColor: MoneyColors.light.surfaceLow,
+      disabledBackgroundColor: MoneyColors.light.disabled,
+      textColor: MoneyColors.light.title,
+      disabledTextColor: MoneyColors.light.onPrimary,
       hasShadow: false,
       cornerRadius: 100,
       fontSize: 12,
-      borderColor: colors.stroke,
+      borderColor:  MoneyColors.light.stroke,
       borderWidth: 0.5,
     );
   }
