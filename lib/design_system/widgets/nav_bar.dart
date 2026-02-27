@@ -57,6 +57,9 @@ class NavBar extends StatelessWidget {
                     isSelected ? tab.assetSelected : tab.assetUnselected,
                     width: 24,
                     height: 24,
+                    colorFilter: ColorFilter.mode(
+                        isSelected ? colors.primary :  colors.body,
+                        BlendMode.srcIn),
                   ),
                   if (isSelected) ...[
                     Text(
@@ -72,7 +75,7 @@ class NavBar extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: colors.primary.withOpacity(0.2),
+                            color: colors.primary.withValues(alpha: 0.2),
                             blurRadius: 16,
                             spreadRadius: 2,
                             offset: Offset.fromDirection(0, -4),
