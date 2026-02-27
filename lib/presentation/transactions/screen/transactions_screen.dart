@@ -6,6 +6,7 @@ import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
 import 'package:moneyplus/presentation/transactions/widget/empty_transactions.dart';
+import 'package:moneyplus/presentation/transactions/widget/categories_filter_bottom_sheet.dart';
 import 'package:moneyplus/presentation/transactions/widget/loading_view.dart';
 import 'package:moneyplus/presentation/transactions/widget/tabs_row.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_app_bar.dart';
@@ -40,7 +41,17 @@ class TransactionsScreen extends StatelessWidget {
                     year: state.selectedYear,
                     month: state.selectedMonth,
                     onDatePick: context.read<TransactionCubit>().setSelectedDate,
-                    onFilterClicked: (){},
+                    onFilterClicked: () async {
+                      final result = await showCategoriesFilterBottomSheet(
+                        context: context,
+                        categories: state.availableCategories,
+                        initialSelectedCategories: state.selectedCategories,
+                      );
+                      if (result == null) return;
+                      context
+                          .read<TransactionCubit>()
+                          .setSelectedCategories(result.toSet());
+                    },
                   ),
                 ),
                 SliverPadding(

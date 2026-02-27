@@ -52,8 +52,5 @@ class TopSpendingCard extends StatelessWidget {
 }
 
 String _formatPercentage(double value) {
-  if (value % 1 == 0) {
-    return value.toInt().toString();
-  }
-  return value.toString();
+  return value.round().toString();
 }

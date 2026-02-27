@@ -107,7 +107,6 @@
   "retry": "إعادة المحاولة",
   "current_balance":"الرصيد الحالي",
   "how_much_money": "ما مقدار المال المتوفر لديك حاليًا؟",
-  "noDataAvailable": "لا توجد بيانات متاحة",
   "no_spending_categories": "لا يوجد معاملات متاحة",
   "month_january": "يناير",
   "month_february": "فبراير",
@@ -123,7 +122,6 @@
   "month_december": "ديسمبر",
   "no_transaction_record_title": "لا توجد سجلات معاملات",
   "no_transaction_record_content": "أضف أول معاملة للبدء",
-  "add_transaction": "إضافة معاملة",
   "all": "الكل",
   "incomes": "الإيرادات",
   "expenses": "المصروفات",
@@ -137,6 +135,7 @@
   "transaction_delete_success" : "نم مسح المعاملة بنجاح",
   "transaction_delete_fail" : "نم مسح المعاملة بنجاح",
   "add" : "اضافة",
+  "transaction_details": "تفاصيل المعاملة",
   "income_details": "تفاصيل الدخل",
   "expense_details": "تفاصيل المصروف",
   "account": "حساب",
@@ -147,4 +146,14 @@
   "frequentlyAskedQuestion": "الأسئلة المتكررة",
   "helpAndSupport": "المساعدة والدعم",
   "appVersion": "اصدار التطبيق"
+  "expense_details": "تفاصيل المصروف",
+  "add_transaction_sheet_subtitle": "اختر نوع المعاملة التي تريد إضافتها",
+  "make_expense": "تسجيل مصروف",
+  "continueButton": "متابعة",
+  "categoriesFilterTitle": "تصفية الفئات",
+  "categoriesFilterClear": "مسح",
+  "categoriesFilterApply": "تطبيق",
+  "categoriesBreakdown": "تفاصيل الفئات",
+  "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
+  "totalSpend": "إجمالي الإنفاق"
 }

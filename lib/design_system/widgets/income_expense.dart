@@ -59,38 +59,43 @@ class IncomeExpense extends StatelessWidget {
               colorFilter: ColorFilter.mode(operationColor, BlendMode.srcIn),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 4, 10, 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: typography.label.xSmall?.copyWith(color: colors.body),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      isIncome ? '+' : '-',
-                      style: typography.title.medium.copyWith(
-                        color: operationColor,
-                      ),
-                    ),
-                    Text(
-                        l10n.moneyAmount(
-                          amount,
-                          currency
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 4, 10, 4),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: typography.label.xSmall?.copyWith(color: colors.body),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        isIncome ? '+' : '-',
+                        style: typography.title.medium.copyWith(
+                          color: operationColor,
                         ),
-                      style: TextStyle(
-                        color: colors.title,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Expanded(
+                        child: Text(
+                            l10n.moneyAmount(
+                              amount,
+                              currency
+                            ),
+                          style: TextStyle(
+                            color: colors.title,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

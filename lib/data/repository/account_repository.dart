@@ -3,7 +3,7 @@ import 'package:moneyplus/domain/entity/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 import '../../domain/repository/account_repository.dart';
-import '../service/supabase_service.dart';
+import '../../core/service/supabase_service.dart';
 
 class AccountRepositoryImpl extends AccountRepository {
   final SupabaseService supabaseService;

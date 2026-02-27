@@ -21,9 +21,7 @@
   "spendingTrend": "Spending Trend",
   "noDataAvailable": "No data available",
   "date": "Date",
-  "amount": "Amount",
   "addIncome": "Add income",
-  "note": "Note",
   "add": "Add",
   "saving": "Saving...",
   "incomeAddedSuccessfully": "Income added successfully!",
@@ -161,5 +159,17 @@
   "appVersion": "App version",
   "transaction_details": "Transaction details",
   "income_details": "Income details",
-  "expense_details": "Expense details"
+  "expense_details": "Expense details",
+  "whereDoYouUsuallySpendYourMoney": "Where do you usually spend your money?",
+  "suggestions": "Suggestions:",
+  "selectedCategories": "Selected Categories:",
+  "add_transaction_sheet_subtitle": "Select transaction type you want to add it",
+  "make_expense": "Make expense",
+  "continueButton": "Continue",
+  "categoriesFilterTitle": "Categories filter",
+  "categoriesFilterClear": "Clear",
+  "categoriesFilterApply": "Apply",
+  "categoriesBreakdown": "Categories Breakdown",
+  "no_monthly_breakdown": "No expenses to analyze yet",
+  "totalSpend": "Total Spend"
 }

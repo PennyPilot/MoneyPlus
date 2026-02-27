@@ -5,6 +5,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
 import 'package:moneyplus/presentation/account_setup/screen/page2.dart';
+import 'package:moneyplus/presentation/account_setup/screen/account_setup_step_three.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
@@ -108,7 +109,8 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                           children: [
                             SingleChildScrollView(child: Page1(state: state,)),
                             SingleChildScrollView(child: Page2(currency: state.currency, currentBalanceState: state.currentBalance)),
-                            // page3()
+                            SingleChildScrollView(child: AccountSetupStepThree(state: state)),
+
                           ],
                         ),
                       ),

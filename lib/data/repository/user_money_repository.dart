@@ -1,8 +1,9 @@
-import 'package:moneyplus/data/service/supabase_service.dart';
 import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
+
+import '../../core/service/supabase_service.dart';
 
 class UserRepositoryImpl implements UserMoneyRepository {
   final SupabaseService service;
@@ -108,7 +109,7 @@ class UserRepositoryImpl implements UserMoneyRepository {
   Future<double> getSavingSpendingPercentage(int month, int year) async {
     _validateMonth(month);
     final isJanuary = month == 1;
-    final previousMonth = isJanuary ? 12 : month;
+    final previousMonth = isJanuary ? 12 : month - 1;
     final previousYear = isJanuary ? year - 1 : year;
 
     final [

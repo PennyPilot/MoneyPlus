@@ -8,6 +8,7 @@ class AppAssets {
   static const icArrowUp = '$_icons/ic_arrow_up.svg';
   static const icArrowRight = '$_icons/ic_arrow_right.svg';
   static const String iconCancel = "$_icons/ic_cancel.svg";
+  static const String iconCancelCategory = "$_icons/icon_cancel_category.svg";
   static const String iconError = "$_icons/ic_error.svg";
   static const String iconSuccess = "$_icons/ic_success.svg";
   static const String icCategory = "$_icons/ic_menu-square.svg";
@@ -68,6 +69,9 @@ class AppAssets {
   static const String icEmptyTransactionImage = '$_images/empty_transaction_image.png';
   static const String icEmptyTransactionPattern = '$_icons/empty_transaction_pattern.svg';
   static const String icFilter = "$_icons/ic_filter.svg";
+  static const String imgNoAnalysis = "$_images/img_no_analysis.png";
+  static const String icAddAmount = "$_icons/ic_add_transaction_income.svg";
+  static const String icAddExpense = "$_icons/ic_add_transaction_expense.svg";
   static const String icCoins = "$_icons/ic_coins.svg";
   static const String icCustomerSupport = "$_icons/ic_customer_support.svg";
   static const String icHelp = "$_icons/ic_help.svg";

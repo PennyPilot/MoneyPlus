@@ -14,20 +14,33 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
     emit(const StatisticsLoading());
 
-    try {
-      final monthlyOverview = await _repository.getMonthlyOverview(
-        month: selectedMonth,
-      );
+    final monthlyOverviewResult = await _repository.getMonthlyOverview(
+      month: selectedMonth,
+    );
+    monthlyOverviewResult.when(
+      onSuccess: (monthlyOverview) async {
+        final categoriesBreakdownResult =
+            await _repository.getCategoriesBreakDown(date:selectedMonth);
 
-      emit(
-        StatisticsSuccess(
-          monthlyOverview: monthlyOverview,
-          selectedMonth: selectedMonth,
-        ),
-      );
-    } catch (e) {
-      emit(StatisticsFailure(e.toString()));
-    }
+        categoriesBreakdownResult.when(
+          onSuccess: (categoriesBreakdown) {
+            emit(
+              StatisticsSuccess(
+                monthlyOverview: monthlyOverview,
+                selectedMonth: selectedMonth,
+                categoriesBreakdown: categoriesBreakdown,
+              ),
+            );
+          },
+          onError: (error) {
+            emit(StatisticsFailure(error.message));
+          },
+        );
+      },
+      onError: (error) {
+        emit(StatisticsFailure(error.message));
+      },
+    );
   }
 
   void changeMonth(DateTime month) {
