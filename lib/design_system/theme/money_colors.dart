@@ -71,6 +71,30 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
     green: Color(0xFF51AC46),
     greenVariant: Color(0xFFF1F9F1),
   );
+  static const MoneyColors dark = MoneyColors(
+    primary: Color(0xFFDC143C),
+    primaryVariant: Color(0xFFFEF1F4),
+    secondary: Color(0xFF0496AD),
+    secondaryVariant: Color(0xFFEAF3F4),
+    title: Color(0xDE1F1F1F),
+    body: Color(0xA81F1F1F),
+    hint: Color(0x661F1F1F),
+    stroke: Color(0x1A1F1F1F),
+    surface: Color(0xFFF8F8F8),
+    surfaceLow: Color(0xFFFFFFFF),
+    surfaceHigh: Color(0xFFF2F2F2),
+    onPrimary: Color(0xDEFFFFFF),
+    onPrimaryBody: Color(0xA8FFFFFF),
+    onPrimaryStroke: Color(0x29FFFFFF),
+    disabled: Color(0xFFDDE1E4),
+    red: Color(0xFFE54F40),
+    redVariant: Color(0xFFFEEDEC),
+    yellow: Color(0xFFF5A623),
+    yellowVariant: Color(0xFFFEF3E1),
+    green: Color(0xFF51AC46),
+    greenVariant: Color(0xFFF1F9F1),
+  );
+
 
   @override
   ThemeExtension<MoneyColors> copyWith({
