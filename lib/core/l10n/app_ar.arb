@@ -146,7 +146,6 @@
   "frequentlyAskedQuestion": "الأسئلة المتكررة",
   "helpAndSupport": "المساعدة والدعم",
   "appVersion": "اصدار التطبيق",
-  "expense_details": "تفاصيل المصروف",
   "add_transaction_sheet_subtitle": "اختر نوع المعاملة التي تريد إضافتها",
   "make_expense": "تسجيل مصروف",
   "continueButton": "متابعة",
@@ -155,5 +154,8 @@
   "categoriesFilterApply": "تطبيق",
   "categoriesBreakdown": "تفاصيل الفئات",
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
-  "totalSpend": "إجمالي الإنفاق"
+  "totalSpend": "إجمالي الإنفاق",
+  "cancel": "إلغاء",
+  "english": "الإنجليزية",
+  "arabic": "العربية"
 }

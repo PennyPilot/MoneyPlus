@@ -171,5 +171,8 @@
   "categoriesFilterApply": "Apply",
   "categoriesBreakdown": "Categories Breakdown",
   "no_monthly_breakdown": "No expenses to analyze yet",
-  "totalSpend": "Total Spend"
+  "totalSpend": "Total Spend",
+  "cancel": "Cancel",
+  "english": "English",
+  "arabic": "Arabic"
 }

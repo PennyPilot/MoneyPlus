@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/app_prefernces_cubit.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
@@ -9,6 +10,7 @@ import '../../../design_system/widgets/app_bar.dart';
 import '../cubit/account_cubit.dart';
 import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
+import '../widget/language_selection_dialog.dart';
 import '../widget/personal_info_card.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -84,8 +86,36 @@ class AccountScreen extends StatelessWidget {
                 accountSection(
                   title: l10n.appLanguage,
                   iconPath: AppAssets.icTranslation,
+                    onTap: () async {
+                      final language = await context.read<AppPreferencesCubit>().getLanguage();
+                      if (context.mounted) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return LanguageSelectionDialog(
+                              currentLanguage: language,
+                            );
+                          },
+                        );
+                      }
+                    }
                 ),
-                accountSection(title: l10n.appTheme, iconPath: AppAssets.icSun),
+                accountSection(title: l10n.appTheme,
+                    iconPath: AppAssets.icSun,
+                onTap: () async {
+                    final language = await context.read<AppPreferencesCubit>().getLanguage();
+                    if (context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return LanguageSelectionDialog(
+                            currentLanguage: language,
+                          );
+                        },
+                      );
+                    }
+                }
+                ),
                 accountSection(
                   title: l10n.currency,
                   iconPath: AppAssets.icCurrency,
