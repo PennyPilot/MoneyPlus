@@ -139,4 +139,38 @@ class UserRepositoryImpl implements UserMoneyRepository {
     }
   }
 
+  @override
+  Future<double> getSalary() async {
+    final client = await service.getClient();
+    final response = await client.from('users').select('salary_amount');
+    final balance = (response.firstOrNull?['salary_amount'] as num?)?.toDouble() ?? 0.0;
+    return balance;
+  }
+
+  @override
+  Future<int> getSalaryDay() async {
+    final client = await service.getClient();
+    final response = await client.from('users').select('salary_day');
+    final balance = (response.firstOrNull?['salary_day'] as int?)?.toInt() ?? 0;
+    return balance;
+  }
+
+  @override
+  Future<void> updateSalary(double salary) async {
+    final client = await service.getClient();
+    await client
+        .from('users')
+        .update({'salary_amount': salary})
+        .eq('id', client.auth.currentUser!.id);
+  }
+
+  @override
+  Future<void> updateSalaryDay(int salaryDay) async {
+    final client = await service.getClient();
+    await client
+        .from('users')
+        .update({'salary_day': salaryDay})
+        .eq('id', client.auth.currentUser!.id);
+  }
+
 }

@@ -15,4 +15,12 @@ abstract class UserMoneyRepository {
   Future<Currency> getCurrency();
 
   Future<double> getSavingSpendingPercentage(int month, int year);
+
+  Future<double> getSalary();
+
+  Future<int> getSalaryDay();
+
+  Future<void> updateSalary(double salary);
+
+  Future<void> updateSalaryDay(int salaryDay);
 }
