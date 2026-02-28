@@ -113,7 +113,7 @@ class LoginScreen extends StatelessWidget {
         title: localizations.success,
       ).showSnackBar(context: context);
 
-      MainRoute().push(context);
+      MainRoute().pushReplacement(context);
     }
   }
 }
