@@ -155,5 +155,7 @@
   "categoriesFilterApply": "تطبيق",
   "categoriesBreakdown": "تفاصيل الفئات",
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
-  "totalSpend": "إجمالي الإنفاق"
+  "totalSpend": "إجمالي الإنفاق",
+  "salary_saved": "تم حفظ إعدادات الراتب بنجاح",
+  "failed_to_save_salary": "فشل في حفظ إعدادات الراتب"
 }

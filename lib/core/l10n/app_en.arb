@@ -171,5 +171,7 @@
   "categoriesFilterApply": "Apply",
   "categoriesBreakdown": "Categories Breakdown",
   "no_monthly_breakdown": "No expenses to analyze yet",
-  "totalSpend": "Total Spend"
+  "totalSpend": "Total Spend",
+  "salary_saved": "Salary settings saved successfully",
+  "failed_to_save_salary": "Failed to save salary settings"
 }
