@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-import 'package:moneyplus/design_system/theme/money_typography.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:svg_flutter/svg.dart';
@@ -88,7 +86,9 @@ class TransactionDetailsComponent extends StatelessWidget {
             child: Align(
               alignment: Alignment.topCenter,
               child: Text(
-                isIncome ? localizations.income_details : localizations.expense_details,
+                isIncome
+                    ? localizations.income_details
+                    : localizations.expense_details,
                 style: typography.title.small.copyWith(color: colors.title),
               ),
             ),
@@ -115,6 +115,7 @@ class TransactionDetailsComponent extends StatelessWidget {
               spacing: 14,
               children: [
                 _infoRow(
+                  context,
                   firstValue: localizations.date,
                   secondValue: formattedDate,
                 ),
@@ -125,6 +126,7 @@ class TransactionDetailsComponent extends StatelessWidget {
                   height: 1,
                 ),
                 _infoRow(
+                  context,
                   firstValue: localizations.category,
                   secondValue: transaction.category.name,
                   iconPath: AppAssets.icFrenchFries,
@@ -135,7 +137,11 @@ class TransactionDetailsComponent extends StatelessWidget {
                   fit: BoxFit.fill,
                   height: 1,
                 ),
-                _infoRow(firstValue: localizations.note, secondValue: transaction.note),
+                _infoRow(
+                  context,
+                  firstValue: localizations.note,
+                  secondValue: transaction.note,
+                ),
               ],
             ),
           ),
@@ -145,13 +151,14 @@ class TransactionDetailsComponent extends StatelessWidget {
   }
 }
 
-Widget _infoRow({
+Widget _infoRow(
+  BuildContext context, {
   required String firstValue,
   required String secondValue,
   String? iconPath,
 }) {
-  final colors = MoneyColors.light;
-  final typography = MoneyTypography.typography;
+  final colors = context.colors;
+  final typography = context.typography;
   final iconPadding = (iconPath == null) ? 0.0 : 4.0;
   return Row(
     children: [
@@ -165,30 +172,7 @@ Widget _infoRow({
         style: typography.label.medium.copyWith(color: colors.title),
       ),
       SizedBox(width: iconPadding),
-      SvgPicture.asset(iconPath ?? ""),
+      if (iconPath != null) SvgPicture.asset(iconPath),
     ],
   );
-}
-
-String _getMonthName(int month) {
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  if (month < 1 || month > 12) {
-    throw ArgumentError('Month must be between 1 and 12');
-  }
-
-  return monthNames[month - 1];
 }
