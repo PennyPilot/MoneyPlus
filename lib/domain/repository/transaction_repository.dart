@@ -41,13 +41,17 @@ abstract class TransactionRepository {
     DateTime? date,
   });
 
-  Future<Result<Transaction>>  getTransactionDetails(String id);
+  Future<Result<Transaction>> getTransactionDetails(String id);
 
   Future<double> getTotalAmount({TransactionType? type});
 
-  Future<List<TransactionCategory>> getTransactionCategories(
+  Future<Result<List<TransactionCategory>>> getTransactionCategories({
     TransactionType? type,
-  );
+  });
+
+  Future<Result<List<TransactionCategory>>> getDefaultTransactionCategories({
+    TransactionType? type,
+  });
 
   Future<List<TopSpendingCategory>> getTopSpendingCategories();
 
@@ -57,5 +61,5 @@ abstract class TransactionRepository {
 
   Future<List<Transaction>> getAllTransactions();
 
-  Future<List<Transaction>> getAllTransactionsByType(TransactionType type,);
+  Future<List<Transaction>> getAllTransactionsByType(TransactionType type);
 }

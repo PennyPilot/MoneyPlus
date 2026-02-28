@@ -171,15 +171,49 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<List<TransactionCategory>> getTransactionCategories(
+  Future<Result<List<TransactionCategory>>> getTransactionCategories({
     TransactionType? type,
-  ) async {
+  }) async {
     try {
+      final isIncome = type == null ? null : type == TransactionType.income;
+
       final client = await service.getClient();
-      final response = await client.from('categories').select();
-      return response.map((e) => TransactionCategory.fromJson(e)).toList();
+      final data = await client.rpc(
+        RpcString.getUserCategories,
+        params: {'p_is_income': isIncome},
+      );
+
+      final categories = (data as List<dynamic>)
+          .map((e) => TransactionCategory.fromJson(e))
+          .toList();
+      return Result.success(categories);
     } catch (e) {
-      throw Exception('Failed to fetch categories');
+      return Result.error(ErrorModel('Failed to fetch categories: $e'));
+    }
+  }
+
+  @override
+  Future<Result<List<TransactionCategory>>> getDefaultTransactionCategories({
+    TransactionType? type,
+  }) async {
+    try {
+      final isIncome = type == null ? null : type == TransactionType.income;
+
+      final client = await service.getClient();
+      final data = await client.rpc(
+        RpcString.getDefaultCategories,
+        params: {'p_is_income': isIncome},
+      );
+
+      if (data == null) {
+        return Result.success([]);
+      }
+      final categories = (data as List<dynamic>)
+          .map((e) => TransactionCategory.fromJson(e))
+          .toList();
+      return Result.success(categories);
+    } catch (e) {
+      return Result.error(ErrorModel('Failed to fetch default categories: $e'));
     }
   }
 
@@ -290,6 +324,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
 class RpcString {
   static String deleteTransaction = 'delete_transaction';
   static String getTransactionDetails = 'get_transaction_details';
+  static String getDefaultCategories = 'get_default_categories';
+  static String getUserCategories = 'get_user_categories';
 }
 
 class DefaultTransactionTypeId {
