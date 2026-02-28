@@ -1,29 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../core/constants/app_constants.dart';
-import 'app_secrets_provider.dart';
+import '../security/app_secrets.dart';
 
 class SupabaseService {
   SupabaseClient? _supabaseClient;
-  final AppSecretsProvider appSecretsProvider;
+  AppSecrets appSecrets;
 
-  SupabaseService({required this.appSecretsProvider});
+  SupabaseService({required this.appSecrets});
 
   Future<SupabaseClient> getClient() async {
     if (_supabaseClient != null) return _supabaseClient!;
 
-    final dotEnvInstance = await appSecretsProvider.getEnvVariables();
+    final url = appSecrets.getRemoteConfigSupaBaseUrl();
+    final anonKey = appSecrets.getRemoteConfigSupaBaseApiKey();
 
     final supabase = await Supabase.initialize(
-      url: dotEnvInstance.env[AppConstants.supabaseUrl] ?? "",
-      anonKey: dotEnvInstance.env[AppConstants.supabaseApiKey] ?? "",
+      url: url,
+      anonKey: anonKey,
       debug: kDebugMode,
     );
 
     _supabaseClient = supabase.client;
-
-
     return _supabaseClient!;
   }
 }

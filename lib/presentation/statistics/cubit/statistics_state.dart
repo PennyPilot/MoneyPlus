@@ -1,3 +1,5 @@
+import 'package:moneyplus/domain/entity/categories_breakdown.dart';
+
 import '../../../domain/entity/monthly_overview.dart';
 
 sealed class StatisticsState {
@@ -13,15 +15,17 @@ class StatisticsLoading extends StatisticsState {
 }
 
 class StatisticsSuccess extends StatisticsState {
-  final MonthlyOverview? monthlyOverview;
+  final MonthlyOverview monthlyOverview;
   final DateTime selectedMonth;
+  final CategoriesBreakdown categoriesBreakdown;
 
   const StatisticsSuccess({
     required this.monthlyOverview,
     required this.selectedMonth,
+    required this.categoriesBreakdown,
   });
 
-  bool get hasNoData => monthlyOverview == null;
+  bool get hasNoData => monthlyOverview.isEmpty && categoriesBreakdown.categories.isEmpty;
 }
 
 class StatisticsFailure extends StatisticsState {

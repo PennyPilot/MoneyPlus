@@ -4,6 +4,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:moneyplus/presentation/transactions/widget/add_transaction_bottom_sheet.dart';
 
 class EmptyTransactions extends StatelessWidget {
   const EmptyTransactions({super.key});
@@ -46,7 +47,10 @@ class EmptyTransactions extends StatelessWidget {
         ),
         SizedBox(height: 24),
         IntrinsicWidth(
-          child: DefaultButton(text: localizations.add_transaction, onPressed: (){},),
+          child: DefaultButton(
+            text: localizations.add_transaction,
+            onPressed: () => showAddTransactionBottomSheet(context),
+          ),
         ),
       ],
     );

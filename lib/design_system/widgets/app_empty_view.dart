@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
+import 'buttons/button/default_button.dart';
+
 class AppEmptyView extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -25,11 +27,9 @@ class AppEmptyView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              // todo : AppAssets.imgStatisticsEmpty,
-              AppAssets.logo,
-              color: Colors.red,
-              width: 120,
-              height: 120,
+              AppAssets.imgNoAnalysis,
+              width: 105,
+              height: 96,
             ),
             const SizedBox(height: 24),
             Text(
@@ -50,18 +50,9 @@ class AppEmptyView extends StatelessWidget {
             if (buttonText != null && onButtonPressed != null) ...[
               const SizedBox(height: 24),
               SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
+                child: DefaultButton(
                   onPressed: onButtonPressed,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colors.primary,
-                    foregroundColor: context.colors.onPrimary,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                  ),
-                  child: Text(buttonText!),
+                  text: buttonText!,
                 ),
               ),
             ],
