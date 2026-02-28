@@ -78,6 +78,7 @@ class MoneyAppView extends StatelessWidget {
               ? null
               : Locale(state.appLanguage.name),
           theme: MoneyTheme.lightTheme,
+          darkTheme: MoneyTheme.darkTheme,
           themeMode: _getThemeMode(state.appTheme),
           routerConfig: _router,
         );

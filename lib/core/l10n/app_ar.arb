@@ -17,7 +17,7 @@
   "setSalary": "تحديد الراتب",
   "currency": "العملة",
   "salaryDay": "يوم الراتب",
-  "fromEachMonth": "من كل شهر",
+  "from EachMonth": "من كل شهر",
   "salary": "الراتب",
   "accountSetup": "إعداد الحساب",
   "search": "...بحث",
@@ -125,7 +125,8 @@
   "all": "الكل",
   "incomes": "الإيرادات",
   "expenses": "المصروفات",
-  "transaction": "المعاملات",
+  "transaction": "المعاملة",
+  "transactions": "المعاملات",
   "transaction_error_title": "خطأ في المعاملات",
   "transaction_error_content": "فشل في تحميل المعاملات",
   "manage_categories" : "ادارةالتصنيفات",
@@ -157,5 +158,11 @@
   "totalSpend": "إجمالي الإنفاق",
   "cancel": "إلغاء",
   "english": "الإنجليزية",
-  "arabic": "العربية"
+  "arabic": "العربية",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "النظام",
+  "home": "الرئيسية",
+  "top_spending_category": "أكثر فئات الإنفاق",
+  "spend": "إنفاق"
 }

@@ -162,7 +162,7 @@ Widget _loadedContent({
                             ),
                             SizedBox(height: 24),
                             Text(
-                              "Top spending category",
+                              localizations.top_spending_category,
                               style: typography.title.small.copyWith(
                                 color: colors.title,
                               ),
@@ -230,6 +230,7 @@ Widget _topSection({
   required Function reloadScreen,
 }) {
   final colors = context.colors;
+  final localizations = AppLocalizations.of(context)!;
   if (showAppBarOnly) {
     return Container(
       color: colors.surfaceLow,
@@ -299,7 +300,7 @@ Widget _topSection({
               children: [
                 Expanded(
                   child: VarientButton(
-                    text: "Add",
+                    text: localizations.add,
                     iconPath: AppAssets.addMoney,
                     onPressed: () async {
                       await AddIncomeRoute().push(context);
@@ -310,7 +311,7 @@ Widget _topSection({
                 SizedBox(width: 4),
                 Expanded(
                   child: SMSecondaryButton(
-                    text: "Spend",
+                    text: localizations.spend,
                     iconPath: AppAssets.spendMoney,
                     onPressed: () async {
                       await AddExpenseRoute().push(context);

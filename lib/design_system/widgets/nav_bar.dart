@@ -1,23 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 enum NavBarTab {
-  home(AppAssets.icHomePrimary, AppAssets.icHomeGray, 'Home'),
+  home(
+    AppAssets.icHomePrimary,
+    AppAssets.icHomeGray,
+  ),
   transaction(
     AppAssets.icTransactionPrimary,
     AppAssets.icTransactionGray,
-    'Transaction',
   ),
-  statistics(AppAssets.icStatisticsPrimary, AppAssets.icStatisticsGray, 'Statistics'),
-  account(AppAssets.icAccountPrimary, AppAssets.icAccountGray, 'Account');
+  statistics(
+    AppAssets.icStatisticsPrimary,
+    AppAssets.icStatisticsGray,
+  ),
+  account(
+    AppAssets.icAccountPrimary,
+    AppAssets.icAccountGray,
+  );
 
   final String assetSelected;
   final String assetUnselected;
-  final String title;
 
-  const NavBarTab(this.assetSelected, this.assetUnselected, this.title);
+  const NavBarTab(this.assetSelected, this.assetUnselected);
+
+  String getTitle(AppLocalizations l10n) {
+    switch (this) {
+      case NavBarTab.home:
+        return l10n.home;
+      case NavBarTab.transaction:
+        return l10n.transaction;
+      case NavBarTab.statistics:
+        return l10n.statistics;
+      case NavBarTab.account:
+        return l10n.account;
+    }
+  }
 }
 
 class NavBar extends StatelessWidget {
@@ -34,6 +55,7 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
+    final l10n = context.localizations;
 
     return Container(
       padding: EdgeInsetsGeometry.directional(start: 16, end: 16, top: 8),
@@ -58,12 +80,12 @@ class NavBar extends StatelessWidget {
                     width: 24,
                     height: 24,
                     colorFilter: ColorFilter.mode(
-                        isSelected ? colors.primary :  colors.body,
+                        isSelected ? colors.primary : colors.body,
                         BlendMode.srcIn),
                   ),
                   if (isSelected) ...[
                     Text(
-                      tab.title,
+                      tab.getTitle(l10n),
                       style: typography.label.small.copyWith(
                         color: colors.primary,
                       ),

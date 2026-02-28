@@ -17,9 +17,10 @@ class AppPreferencesCubit extends Cubit<AppPreferencesState> {
     getLanguage();
   }
 
-  void getTheme() async {
+  Future<AppTheme> getTheme() async {
     final theme = await appThemeRepository.getAppTheme();
     emit(state.copyWith(appTheme: theme));
+    return theme;
   }
 
   void setTheme(AppTheme theme) async {
