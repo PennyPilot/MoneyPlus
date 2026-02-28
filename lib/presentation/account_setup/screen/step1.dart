@@ -8,18 +8,18 @@ import 'package:moneyplus/presentation/account_setup/cubit/account_setup_state.d
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../cubit/account_setup_cubit.dart';
-import 'currency_bottom_sheet.dart';
+import '../widget/currency_bottom_sheet.dart';
 
-class Page1 extends StatefulWidget {
+class Step1 extends StatefulWidget {
   final AccountSetupState state;
 
-  const Page1({super.key, required this.state});
+  const Step1({super.key, required this.state});
 
   @override
-  State<Page1> createState() => _Page1State();
+  State<Step1> createState() => _Step1State();
 }
 
-class _Page1State extends State<Page1> {
+class _Step1State extends State<Step1> {
 
   @override
   Widget build(BuildContext context) {
@@ -134,19 +134,27 @@ class _Page1State extends State<Page1> {
   }
 
   Future<void> _openCurrencyBottomSheet(AccountSetupState state) async {
+    final cubit = context.read<AccountSetupCubit>();
+
     final result = await showModalBottomSheet<String>(
       context: context,
+      useRootNavigator: false,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       backgroundColor: context.colors.surface,
       useSafeArea: true,
-      builder: (context) => CurrencyBottomSheet(state: state),
+      builder: (_) {
+        return BlocProvider.value(
+          value: cubit,
+          child: const CurrencyBottomSheet(),
+        );
+      },
     );
 
     if (result != null) {
-        context.read<AccountSetupCubit>().onCurrencyChanged(result);
+        cubit.onCurrencyChanged(result);
     }
   }
 }

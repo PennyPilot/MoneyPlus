@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moneyplus/presentation/account_setup/screen/account_setup_screen.dart';
 import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
 import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
@@ -72,6 +73,17 @@ class CreateAccountRoute extends GoRouteData
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return CreateAccountScreen();
+  }
+}
+
+@TypedGoRoute<AccountSetupRoute>(path: '/accountSetup')
+@immutable
+class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
+  const AccountSetupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AccountSetupScreen();
   }
 }
 
