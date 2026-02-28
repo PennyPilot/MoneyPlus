@@ -11,10 +11,25 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
   Future<void> fetchCurrencies() async {
     try {
       final currencies = await _accountSetupRepository.getCurrencies();
-      emit(state.copyWith(currencies: currencies, isLoading: false));
+      emit(state.copyWith(currencies: currencies,
+          filteredCurrencies: currencies,
+          isLoading: false));
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
+  }
+
+  void onSearchChanged(String query) {
+    final filtered = state.currencies
+        .where((currency) =>
+    currency.name.toLowerCase().contains(query.toLowerCase()) ||
+        currency.abbreviation.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    emit(state.copyWith(
+      query: query,
+      filteredCurrencies: filtered,
+    ));
   }
 
 
@@ -24,6 +39,15 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   bool _accountSetUpStep2ValidationInput() {
     return state.currentBalance.isNotEmpty;
+  }
+
+  bool _accountSetUpStep3ValidationInput() {
+    return state.categories.isNotEmpty;
+  }
+
+  void onCategoryChanged(List<String> categories) {
+    emit(state.copyWith(categories: categories));
+    _updateButtonEnabledState();
   }
 
   void onSalaryChanged(String salary){
@@ -51,7 +75,7 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     bool isButtonEnable = switch (state.accountStep) {
       AccountSetupStep.step1 => _accountSetUpStep1ValidationInput(),
       AccountSetupStep.step2 => _accountSetUpStep2ValidationInput(),
-      AccountSetupStep.step3 => false,
+      AccountSetupStep.step3 => _accountSetUpStep3ValidationInput(),
     };
     emit(state.copyWith(isButtonEnabled: isButtonEnable));
   }
@@ -67,7 +91,8 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
         _updateButtonEnabledState();
         break;
         case AccountSetupStep.step3:
-          // submit account setup date
+          _updateButtonEnabledState();
+          submitAccountSetupData();
         emit(state.copyWith(navigateToHome: true));
         break;
     }
@@ -81,4 +106,9 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     }
     emit(state.copyWith(categories: updatedCategories));
   }
+
+  void submitAccountSetupData() {
+
+  }
+
 }

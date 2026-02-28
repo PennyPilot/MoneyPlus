@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
-import 'package:moneyplus/presentation/account_setup/screen/page1.dart';
-import 'package:moneyplus/presentation/account_setup/screen/page2.dart';
-import 'package:moneyplus/presentation/account_setup/screen/account_setup_step_three.dart';
+import 'package:moneyplus/presentation/account_setup/screen/step1.dart';
+import 'package:moneyplus/presentation/account_setup/screen/step2.dart';
+import 'package:moneyplus/presentation/account_setup/screen/step3.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
+import '../../navigation/routes.dart';
 import '../cubit/account_setup_cubit.dart';
 import '../cubit/account_setup_state.dart';
 
@@ -57,7 +58,8 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
             });
           }
           if (state.navigateToHome) {
-            // navigate to home
+            MainRoute().push(context);
+            Navigator.pop(context);
           }
         },
         child: BlocBuilder<AccountSetupCubit, AccountSetupState>(
@@ -107,10 +109,11 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                             });
                           },
                           children: [
-                            SingleChildScrollView(child: Page1(state: state,)),
-                            SingleChildScrollView(child: Page2(currency: state.currency, currentBalanceState: state.currentBalance)),
-                            SingleChildScrollView(child: AccountSetupStepThree(state: state)),
-
+                            SingleChildScrollView(child: Step1(state: state)),
+                            SingleChildScrollView(child: Step2(
+                                currency: state.currency,
+                                currentBalanceState: state.currentBalance)),
+                            SingleChildScrollView(child: Step3(state: state))
                           ],
                         ),
                       ),

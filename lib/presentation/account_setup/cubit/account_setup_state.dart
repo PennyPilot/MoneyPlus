@@ -13,8 +13,8 @@ class AccountSetupState {
   final String salaryDay;
   final String query;
   final bool isButtonEnabled;
-  final List<Currency> currencies;
-  final List<String> categories;
+  final List<Currency> currencies;inal List<Currency> filteredCurrencies;
+  ffinal List<String> categories;
   final List<String> suggestions;
   final bool isLoading;
   final String errorMessage;
@@ -29,6 +29,7 @@ class AccountSetupState {
     this.query = "",
     this.isButtonEnabled = false,
     this.currencies = const [],
+    this.filteredCurrencies = const [],
     this.categories = const [],
     this.suggestions = const [
       'Food',
@@ -56,6 +57,7 @@ class AccountSetupState {
     String? query,
     bool? isButtonEnabled,
     List<Currency>? currencies,
+    List<Currency>? filteredCurrencies,
     List<String>? categories,
     List<String>? suggestions,
     String? errorMessage,
@@ -71,6 +73,7 @@ class AccountSetupState {
       query: query ?? this.query,
       isButtonEnabled: isButtonEnabled?? this.isButtonEnabled,
       currencies: currencies?? this.currencies,
+      filteredCurrencies: filteredCurrencies ?? this.filteredCurrencies,
       errorMessage: errorMessage?? this.errorMessage,
       isLoading: isLoading?? this.isLoading,
       accountStep: accountStep?? this.accountStep,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:svg_flutter/svg.dart';
 
 import '../../../core/di/injection.dart';
@@ -44,7 +45,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ).showSnackBar(context: context);
           }
           if (state.isRegisterSuccess) {
-            // TODO navigate to account setup
+            AccountSetupRoute().push(context);
           }
         },
         builder: (context, state) {
