@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
@@ -93,6 +94,9 @@ class AccountScreen extends StatelessWidget {
                 accountSection(
                   title: l10n.salarySettings,
                   iconPath: AppAssets.iconMoney,
+                  onTap: () {
+                    EditSalaryRoute().push(context);
+                  },
                 ),
                 accountSection(
                   title: l10n.frequentlyAskedQuestion,
