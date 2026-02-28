@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
-import '../../../design_system/widgets/chip.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../../../design_system/widgets/text_field_date_Picker.dart';
@@ -73,7 +73,6 @@ class _IncomeScreenContent extends StatelessWidget {
                     children: [
                       _buildAmountSection(context, state),
                       _buildDateSection(context),
-                      _buildCategorySection(context, state),
                       _buildNoteSection(context, state),
                     ],
                   ),
@@ -144,55 +143,6 @@ class _IncomeScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildCategorySection(BuildContext context, AddIncomeState state) {
-    final colors = context.colors;
-    final typography = context.typography;
-    final localization = AppLocalizations.of(context)!;
-
-    if (state.isLoadingCategories && state.categories.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.only(top: 16),
-        child: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (state.categories.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Text(
-            localization.categories,
-            style: typography.title.small.copyWith(color: colors.title),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 12,
-            children: [
-              ...state.categories.map((category) {
-                final selected = state.selectedCategory?.id == category.id;
-                return MChip(
-                  label: category.name,
-                  selected: selected,
-                  onTap: () {
-                    context.read<AddIncomeCubit>().onCategorySelected(category);
-                  },
-                );
-              }),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildNoteSection(BuildContext context, AddIncomeState state) {
     final localization = AppLocalizations.of(context)!;
     return Padding(
@@ -215,7 +165,9 @@ class _IncomeScreenContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
       child: DefaultButton(
-        text: state.status == FormStatus.loading ? localization.saving : localization.add,
+        text: state.status == FormStatus.loading
+            ? localization.saving
+            : localization.add,
         onPressed: () {
           context.read<AddIncomeCubit>().onSubmitIncome();
         },

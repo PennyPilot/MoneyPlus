@@ -9,7 +9,6 @@ import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import '../../core/service/supabase_service.dart';
 import '../../domain/entity/currency.dart';
 
-
 class TransactionRepositoryImpl implements TransactionRepository {
   final SupabaseService service;
 
@@ -33,6 +32,33 @@ class TransactionRepositoryImpl implements TransactionRepository {
           'transaction_type_id': type.value,
           'date': date.toIso8601String(),
           'category_id': category.id,
+          'note': note,
+          'currency_id': currency.id,
+        },
+      );
+      return Result.success(null);
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> addIncomeTransaction({
+    required double amount,
+    required DateTime date,
+    TransactionCategory? category,
+    required Currency currency,
+    String note = "",
+  }) async {
+    try {
+      final client = await service.getClient();
+      await client.rpc(
+        'add_transaction',
+        params: {
+          'amount': amount,
+          'transaction_type_id': TransactionType.income.value,
+          'date': date.toIso8601String(),
+          'category_id': DefaultTransactionTypeId.income,
           'note': note,
           'currency_id': currency.id,
         },
@@ -264,4 +290,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
 class RpcString {
   static String deleteTransaction = 'delete_transaction';
   static String getTransactionDetails = 'get_transaction_details';
+}
+
+class DefaultTransactionTypeId {
+  static int income = 27;
 }
