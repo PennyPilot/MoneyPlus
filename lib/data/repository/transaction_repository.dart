@@ -9,7 +9,6 @@ import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import '../../core/service/supabase_service.dart';
 import '../../domain/entity/currency.dart';
 
-
 class TransactionRepositoryImpl implements TransactionRepository {
   final SupabaseService service;
 
@@ -73,8 +72,22 @@ class TransactionRepositoryImpl implements TransactionRepository {
     TransactionType? type,
     TransactionCategory? category,
     DateTime? date,
+    List<int>? categoriesId,
+    required int page,
   }) async {
-    throw UnimplementedError('getTransactions not implemented');
+    final client = await service.getClient();
+    final response = await client.rpc(
+      RpcString.getTransactions,
+      params: {
+        'p_timestamp': date?.toIso8601String(),
+        'p_category_ids': categoriesId,
+        'p_transaction_type_id': type?.value,
+        'p_page': page,
+      },
+    );
+    return (response as List)
+        .map((transaction) => Transaction.fromJson(transaction))
+        .toList();
   }
 
   @override
@@ -174,94 +187,10 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }) async {
     throw UnimplementedError('editExpenseCategory not implemented');
   }
-
-  @override
-  Future<List<Transaction>> getAllTransactions() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return [
-      Transaction(
-        id: 1,
-        amount: 50000,
-        currency: "IQD",
-        type: TransactionType.expense,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-      Transaction(
-        id: 4,
-        amount: 5040,
-        currency: "IQD",
-        type: TransactionType.income,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-      Transaction(
-        id: 2,
-        amount: 230000,
-        currency: "IQD",
-        type: TransactionType.income,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-      Transaction(
-        id: 3,
-        amount: 530000,
-        currency: "IQD",
-        type: TransactionType.expense,
-        date: DateTime(2024, 12, 2),
-        category: TransactionCategory(id: 1, name: "shopping"),
-      ),
-    ];
-  }
-
-  @override
-  Future<List<Transaction>> getAllTransactionsByType(
-    TransactionType type,
-  ) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (type == TransactionType.income) {
-      return [
-        Transaction(
-          id: 4,
-          amount: 5040,
-          currency: "IQD",
-          type: TransactionType.income,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-        Transaction(
-          id: 2,
-          amount: 230000,
-          currency: "IQD",
-          type: TransactionType.income,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-      ];
-    } else {
-      return [
-        Transaction(
-          id: 1,
-          amount: 50000,
-          currency: "IQD",
-          type: TransactionType.expense,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-        Transaction(
-          id: 3,
-          amount: 530000,
-          currency: "IQD",
-          type: TransactionType.expense,
-          date: DateTime(2024, 12, 2),
-          category: TransactionCategory(id: 1, name: "shopping"),
-        ),
-      ];
-    }
-  }
 }
 
 class RpcString {
   static String deleteTransaction = 'delete_transaction';
   static String getTransactionDetails = 'get_transaction_details';
+  static String getTransactions = 'get_transactions';
 }
