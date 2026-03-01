@@ -173,5 +173,6 @@
   "no_monthly_breakdown": "No expenses to analyze yet",
   "totalSpend": "Total Spend",
   "salary_saved": "Salary settings saved successfully",
-  "failed_to_save_salary": "Failed to save salary settings"
+  "failed_to_save_salary": "Failed to save salary settings",
+  "failed_to_load_salary_settings": "Failed to load salary settings"
 }
