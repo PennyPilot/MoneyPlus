@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 
 class DefaultErrorButton extends StatefulWidget {
   final String text;
@@ -25,19 +25,21 @@ class DefaultErrorButton extends StatefulWidget {
 class _DefaultErrorButtonState extends State<DefaultErrorButton> {
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return MoneyButton(
       text: widget.text,
       onPressed: widget.onPressed,
       iconPath: widget.iconPath,
       isLoading: widget.isLoading,
       isEnabled: widget.isEnabled,
-      backgroundColor: MoneyColors.light.redVariant,
-      disabledBackgroundColor: MoneyColors.light.disabled,
-      textColor: MoneyColors.light.red,
-      disabledTextColor: MoneyColors.light.onPrimary,
+      backgroundColor: colors.redVariant,
+      disabledBackgroundColor: colors.disabled,
+      textColor: colors.red,
+      disabledTextColor: colors.onPrimary,
       hasShadow: false,
       fontSize: 14,
-      borderColor:  MoneyColors.light.stroke,
+      borderColor: colors.stroke,
       borderWidth: 0.5,
     );
   }

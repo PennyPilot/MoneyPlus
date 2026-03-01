@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart' hide BottomSheet;
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 import '../../../design_system/widgets/bottom_sheet.dart';
 
@@ -38,8 +38,10 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
   }
 
   Widget get _content {
+    final colors = context.colors;
+    final l10n = context.localizations;
     return MTextField(
-      hint: 'Category name',
+      hint: l10n.category_name,
       value: _controller.text,
       onChanged: (value) => _controller.text = value,
       leading: Padding(
@@ -48,15 +50,16 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
           AppAssets.icCategory,
           width: 24,
           height: 24,
-          color: MoneyColors.light.body,
+          colorFilter: ColorFilter.mode(colors.body, BlendMode.srcIn),
         ),
       ),
     );
   }
 
   Widget get _addButton {
+    final l10n = context.localizations;
     return DefaultButton(
-      text: 'Add',
+      text: l10n.add,
       onPressed: () {
         if (_isButtonEnabled) {
           String categoryName = _controller.text.trim();
@@ -69,8 +72,10 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = context.localizations;
+
     return MBottomSheet(
-      title: 'Add custom category',
+      title: localization.add_custom_category,
       content: _content,
       actionButtons: [_addButton],
     );

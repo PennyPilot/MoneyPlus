@@ -125,7 +125,8 @@
   "all": "الكل",
   "incomes": "الإيرادات",
   "expenses": "المصروفات",
-  "transaction": "المعاملات",
+  "transaction": "المعاملة",
+  "transactions": "المعاملات",
   "transaction_error_title": "خطأ في المعاملات",
   "transaction_error_content": "فشل في تحميل المعاملات",
   "manage_categories" : "ادارةالتصنيفات",
@@ -146,7 +147,6 @@
   "frequentlyAskedQuestion": "الأسئلة المتكررة",
   "helpAndSupport": "المساعدة والدعم",
   "appVersion": "اصدار التطبيق",
-  "expense_details": "تفاصيل المصروف",
   "add_transaction_sheet_subtitle": "اختر نوع المعاملة التي تريد إضافتها",
   "make_expense": "تسجيل مصروف",
   "continueButton": "متابعة",
@@ -155,5 +155,14 @@
   "categoriesFilterApply": "تطبيق",
   "categoriesBreakdown": "تفاصيل الفئات",
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
-  "totalSpend": "إجمالي الإنفاق"
+  "totalSpend": "إجمالي الإنفاق",
+  "cancel": "إلغاء",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "النظام",
+  "home": "الرئيسية",
+  "top_spending_category": "أكثر فئات الإنفاق",
+  "spend": "إنفاق"
 }

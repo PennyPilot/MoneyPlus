@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
-import 'package:moneyplus/design_system/theme/money_typography.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import '../utils/StringFormattingHelpers.dart';
 
 class CurrentBalanceCard extends StatefulWidget {
@@ -27,13 +25,15 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = MoneyColors.light;
-    final typography = MoneyTypography.typography;
-    var balanceIcon = showBalance ? AppAssets.openEye : AppAssets.closedEye;
+    final colors = context.colors;
+    final typography = context.typography;
+    final l10n = context.localizations;
+
+    var balanceVisibilityIcon = showBalance ? AppAssets.openEye : AppAssets.closedEye;
     var balance = showBalance ? widget.balance : getHiddenBalance(widget.balance);
     var topPadding = showBalance ? 0.0 : 4.0;
     var percentageIcon = widget.percentage > 0 ? AppAssets.tradeUp : AppAssets.tradeDown;
-    var percentageText = widget.percentage > 0 ? 'Saving' : 'Spending';
+    var percentageText = widget.percentage > 0 ? l10n.saving : l10n.spending;
     var percentageColor = widget.percentage > 0 ? colors.green : colors.red;
 
     return SizedBox(
@@ -42,7 +42,7 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Current Balance",
+            l10n.current_balance,
             style: typography.label.small.copyWith(
               color: colors.body,
             ),
@@ -66,16 +66,20 @@ class _CurrentBalanceCardState extends State<CurrentBalanceCard> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Color(0xFF1F1F1F).withAlpha((0.1*255).round()),
+                      color: colors.stroke,
                       width: 1,
                     ),
                   ),
-                  child: SvgPicture.asset(balanceIcon, height: 16, width: 16),
+                  child: SvgPicture.asset(
+                      balanceVisibilityIcon,
+                      height: 16,
+                      width: 16,
+                      colorFilter: ColorFilter.mode(colors.title, BlendMode.srcIn)),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Row(
             spacing: 4,
             children: [

@@ -1,44 +1,48 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 import '../../../design_system/assets/app_assets.dart';
-import '../../../design_system/theme/money_colors.dart';
-import '../../../design_system/theme/money_typography.dart';
 
-Widget personalInfoCard({
+Widget personalInfoCard(
+  BuildContext context, {
   required String? image,
   required String name,
   required String email,
 }) {
+  final colors = context.colors;
+  final typography = context.typography;
+
   return Container(
     decoration: BoxDecoration(
-      color: MoneyColors.light.surfaceLow,
+      color: colors.surfaceLow,
       borderRadius: BorderRadius.circular(16),
     ),
-    padding: EdgeInsets.all(8),
+    padding: const EdgeInsets.all(8),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        updateUserAvatar(image, name),
-        SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: MoneyTypography.typography.title.small.copyWith(
-                color: MoneyColors.light.title,
+        updateUserAvatar(context, image, name),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: typography.title.small.copyWith(
+                  color: colors.title,
+                ),
               ),
-            ),
-            Text(
-              email,
-              style: MoneyTypography.typography.label.small.copyWith(
-                color: MoneyColors.light.body,
+              Text(
+                email,
+                style: typography.label.small.copyWith(
+                  color: colors.body,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        Spacer(),
         GestureDetector(
           onTap: () {
             // Handle click
@@ -46,10 +50,15 @@ Widget personalInfoCard({
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: MoneyColors.light.stroke),
+              border: Border.all(color: colors.stroke),
             ),
-            padding: EdgeInsets.all(8),
-            child: SvgPicture.asset(AppAssets.icEdit, width: 16, height: 16),
+            padding: const EdgeInsets.all(8),
+            child: SvgPicture.asset(
+              AppAssets.icEdit,
+              width: 16,
+              height: 16,
+              colorFilter: ColorFilter.mode(colors.primary, BlendMode.srcIn),
+            ),
           ),
         ),
       ],
@@ -57,9 +66,15 @@ Widget personalInfoCard({
   );
 }
 
-Widget updateUserAvatar(String? imageUrl, String fullName) {
+Widget updateUserAvatar(BuildContext context, String? imageUrl, String fullName) {
+  final colors = context.colors;
+  final typography = context.typography;
+
   if (imageUrl != null && imageUrl.isNotEmpty) {
-    return Image.asset(imageUrl, height: 52, width: 52);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.asset(imageUrl, height: 52, width: 52, fit: BoxFit.cover),
+    );
   } else {
     String initials = '';
     if (fullName.isNotEmpty) {
@@ -71,17 +86,18 @@ Widget updateUserAvatar(String? imageUrl, String fullName) {
       }
     }
     return Container(
+      width: 52,
+      height: 52,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: MoneyColors.light.surface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(12),
       ),
-      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 11),
       alignment: Alignment.center,
       child: Text(
         initials,
-        style: MoneyTypography.typography.title.large.copyWith(
-          color: MoneyColors.light.title,
+        style: typography.title.large.copyWith(
+          color: colors.title,
         ),
       ),
     );
