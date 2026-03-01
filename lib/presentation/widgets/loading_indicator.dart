@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import '../../design_system/theme/money_colors.dart';
 
 class LoadingIndicator extends StatelessWidget {
@@ -8,7 +9,7 @@ class LoadingIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(color: MoneyColors.light.primary),
+        child: CircularProgressIndicator(color: context.colors.primary),
       ),
     );
   }
