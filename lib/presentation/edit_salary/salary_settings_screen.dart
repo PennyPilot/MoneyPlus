@@ -35,7 +35,7 @@ class SalarySettingsScreen extends StatelessWidget {
             var content = switch (state) {
               EditSalaryLoading() => LoadingIndicator(),
               EditSalaryLoaded() => _loadedContent(context, state),
-              EditSalaryError() => errorContent(state.errorMessage),
+              EditSalaryError() => errorContent(_getErrorMessage(state.failure, context)),
             };
             return content;
           },
@@ -54,9 +54,9 @@ Widget _loadedContent(BuildContext context, EditSalaryLoaded state) {
     child: Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
+        spacing:12,
         children: [
           _salaryBox(context, state, cubit),
-          SizedBox(height: 12),
           _salaryDayBox(context, state, cubit),
           Spacer(),
           _saveButton(context, state, cubit),
@@ -140,14 +140,14 @@ Widget _saveButton(
       cubit.saveChanges().then((success) {
         if (success) {
           MSnackBar.success(
-            message: context.localizations.salary_saved,
-            title: "Success",
+            message: localization.salary_saved,
+            title: localization.success,
           ).showSnackBar(context: context);
           context.pop();
         } else {
           MSnackBar.error(
-            message: context.localizations.failed_to_save_salary,
-            title: "Error",
+            message: localization.failed_to_save_salary,
+            title: localization.error,
           ).showSnackBar(context: context);
         }
       });
@@ -165,4 +165,12 @@ Widget _appBarLeading(BuildContext context) {
       child: SvgPicture.asset(AppAssets.icArrowLeft),
     ),
   );
+}
+
+String _getErrorMessage(SalarySettingsFailure failure, BuildContext context) {
+  final localization = context.localizations;
+  switch (failure) {
+    case SalarySettingsFailure.loadFailed:
+      return localization.failed_to_load_salary_settings;
+    }
 }

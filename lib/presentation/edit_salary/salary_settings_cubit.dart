@@ -20,7 +20,7 @@ class SalarySettingsCubit extends Cubit<SalarySettingsState> {
         ),
       );
     }catch(e){
-        emit(EditSalaryError("Failed to get data"));
+        emit(EditSalaryError(failure: SalarySettingsFailure.loadFailed));
     }
     _setButtonVisibility();
   }
@@ -74,4 +74,8 @@ class SalarySettingsCubit extends Cubit<SalarySettingsState> {
       emit(currentState.copyWith(isButtonEnabled: shouldBeEnabled));
     }
   }
+}
+
+enum SalarySettingsFailure {
+  loadFailed,
 }

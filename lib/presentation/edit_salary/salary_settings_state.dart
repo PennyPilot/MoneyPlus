@@ -30,7 +30,7 @@ final class EditSalaryLoaded extends SalarySettingsState {
 }
 
 final class EditSalaryError extends SalarySettingsState {
-  final String errorMessage;
+  final SalarySettingsFailure failure;
 
-  EditSalaryError(this.errorMessage);
+  EditSalaryError({required this.failure});
 }
