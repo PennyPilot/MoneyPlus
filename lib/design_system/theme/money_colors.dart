@@ -23,6 +23,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
   final Color yellowVariant;
   final Color green;
   final Color greenVariant;
+  final Color defaultButtonShadow;
 
   const MoneyColors({
     required this.primary,
@@ -46,6 +47,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
     required this.yellowVariant,
     required this.green,
     required this.greenVariant,
+    required this.defaultButtonShadow,
   });
 
   static const MoneyColors light = MoneyColors(
@@ -70,6 +72,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
     yellowVariant: Color(0xFFFEF3E1),
     green: Color(0xFF51AC46),
     greenVariant: Color(0xFFF1F9F1),
+    defaultButtonShadow: Color(0x29DC143C),
   );
   static const MoneyColors dark = MoneyColors(
     primary: Color(0xFFFF4D6D),
@@ -93,6 +96,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
     yellowVariant: Color(0xFF3D2B00),
     green: Color(0xFF81C784),
     greenVariant: Color(0xFF0F2D11),
+    defaultButtonShadow: Color(0x29DC143C),
   );
 
 
@@ -119,6 +123,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
     Color? yellowVariant,
     Color? green,
     Color? greenVariant,
+    Color? defaultButtonShadow,
   }) {
     return MoneyColors(
       primary: primary ?? this.primary,
@@ -142,6 +147,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
       yellowVariant: yellowVariant ?? this.yellowVariant,
       green: green ?? this.green,
       greenVariant: greenVariant ?? this.greenVariant,
+      defaultButtonShadow: defaultButtonShadow ?? this.defaultButtonShadow,
     );
   }
 
@@ -177,6 +183,7 @@ class MoneyColors extends ThemeExtension<MoneyColors> {
       yellowVariant: Color.lerp(yellowVariant, other.yellowVariant, t)!,
       green: Color.lerp(green, other.green, t)!,
       greenVariant: Color.lerp(greenVariant, other.greenVariant, t)!,
+      defaultButtonShadow: Color.lerp(defaultButtonShadow, other.defaultButtonShadow, t)!,
     );
   }
 }

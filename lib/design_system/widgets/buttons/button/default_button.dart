@@ -46,7 +46,7 @@ class _DefaultButtonState extends State<DefaultButton> {
         blurStyle: BlurStyle.inner,
       ),
       outerShadow: BoxShadow(
-        color: colors.primary.withValues(alpha: 0.16),
+        color: colors.defaultButtonShadow,
         offset: const Offset(0, 4),
         blurRadius: 8,
         spreadRadius: 0,
