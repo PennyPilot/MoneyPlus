@@ -72,10 +72,10 @@ class _AddCustomCategoryBottomSheetState extends State<AddCategoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.localizations;
+    final localization = context.localizations;
 
     return MBottomSheet(
-      title: l10n.add_custom_category,
+      title: localization.add_custom_category,
       content: _content,
       actionButtons: [_addButton],
     );
