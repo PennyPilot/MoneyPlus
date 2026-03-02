@@ -4,31 +4,36 @@ import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/buttons/secondary/defult_secondary_button.dart';
 import 'package:moneyplus/design_system/widgets/chip.dart';
+import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/utils/extenstions/show_bottom_sheet.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 
-Future<List<String>?> showCategoriesFilterBottomSheet({
+Future<List<int>?> showCategoriesFilterBottomSheet({
   required BuildContext context,
-  required List<String> categories,
-  Set<String>? initialSelectedCategories,
+  required List<TransactionCategory> categories,
+  required Function(List<int>) onCategoriesSelected,
+  Set<int>? initialSelectedCategories,
 }) {
-  return context.showBlurBottomSheet<List<String>>(
+  return context.showBlurBottomSheet<List<int>>(
     CategoriesFilterBottomSheet(
       categories: categories,
       initialSelectedCategories: initialSelectedCategories,
+      onCategoriesSelected: onCategoriesSelected,
     ),
   );
 }
 
 class CategoriesFilterBottomSheet extends StatefulWidget {
-  final List<String> categories;
-  final Set<String>? initialSelectedCategories;
+  final List<TransactionCategory> categories;
+  final Set<int>? initialSelectedCategories;
+  final Function(List<int>) onCategoriesSelected;
 
   const CategoriesFilterBottomSheet({
     super.key,
     required this.categories,
     this.initialSelectedCategories,
+    required this.onCategoriesSelected,
   });
 
   @override
@@ -37,20 +42,20 @@ class CategoriesFilterBottomSheet extends StatefulWidget {
 }
 
 class _CategoriesFilterBottomSheetState extends State<CategoriesFilterBottomSheet> {
-  late Set<String> _selected;
+  late Set<int> _selected;
 
   @override
   void initState() {
     super.initState();
-    _selected = Set<String>.from(widget.initialSelectedCategories ?? const {});
+    _selected = Set<int>.from(widget.initialSelectedCategories ?? const {});
   }
 
-  void _toggle(String category) {
+  void _toggle(int categoryId) {
     setState(() {
-      if (_selected.contains(category)) {
-        _selected.remove(category);
+      if (_selected.contains(categoryId)) {
+        _selected.remove(categoryId);
       } else {
-        _selected.add(category);
+        _selected.add(categoryId);
       }
     });
   }
@@ -59,13 +64,12 @@ class _CategoriesFilterBottomSheetState extends State<CategoriesFilterBottomShee
     setState(() {
       _selected.clear();
     });
+    widget.onCategoriesSelected(const []);
   }
 
   void _apply() {
-    final selectedInOrder = widget.categories
-        .where(_selected.contains)
-        .toList(growable: false);
-    Navigator.of(context).pop(selectedInOrder);
+    Navigator.of(context).pop(_selected.toList());
+    widget.onCategoriesSelected(_selected.toList());
   }
 
   @override
@@ -83,9 +87,9 @@ class _CategoriesFilterBottomSheetState extends State<CategoriesFilterBottomShee
             children: [
               for (final category in widget.categories)
                 MChip(
-                  label: category,
-                  selected: _selected.contains(category),
-                  onTap: () => _toggle(category),
+                  label: category.name,
+                  selected: _selected.contains(category.id),
+                  onTap: () => _toggle(category.id),
                 ),
             ],
           ),
