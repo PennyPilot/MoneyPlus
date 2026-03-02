@@ -81,7 +81,7 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   List<TopSpendingCategory> _getTopSpendingCategoriesFromResponseRows(
-      List<dynamic> rows,
+    List<dynamic> rows,
   ) {
     return rows.map((row) {
       final data = row as Map<String, dynamic>;
@@ -100,9 +100,9 @@ class UserRepositoryImpl implements UserMoneyRepository {
 
   @override
   Future<Currency> getCurrency() async {
-      final client = await service.getClient();
-      final response = await client.rpc('get_default_currency');
-      return Currency.fromJson(response);
+    final client = await service.getClient();
+    final response = await client.rpc('get_default_currency');
+    return Currency.fromJson(response);
   }
 
   @override
@@ -133,12 +133,6 @@ class UserRepositoryImpl implements UserMoneyRepository {
     return ((currentMonthBalance - previousMonthBalance) / previousMonthBalance) * 100;
   }
 
-  void _validateMonth(int month){
-    if(month < 1 || month > 12){
-      throw Exception('Month value: "$month" is not valid, Month must be between 1 and 12');
-    }
-  }
-
   @override
   Future<double> getSalary() async {
     final client = await service.getClient();
@@ -156,21 +150,22 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<void> updateSalary(double salary) async {
+  Future<void> updateSalarySettings({
+    required double salary,
+    required int salaryDay,
+  }) async {
     final client = await service.getClient();
+
     await client
         .from('users')
-        .update({'salary_amount': salary})
+        .update({'salary_amount': salary, 'salary_day': salaryDay})
         .eq('id', client.auth.currentUser!.id);
   }
 
-  @override
-  Future<void> updateSalaryDay(int salaryDay) async {
-    final client = await service.getClient();
-    await client
-        .from('users')
-        .update({'salary_day': salaryDay})
-        .eq('id', client.auth.currentUser!.id);
+  void _validateMonth(int month){
+    if(month < 1 || month > 12){
+      throw Exception('Month value: "$month" is not valid, Month must be between 1 and 12');
+    }
   }
 
 }
