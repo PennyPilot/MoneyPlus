@@ -33,9 +33,9 @@ class SalarySettingsScreen extends StatelessWidget {
         child: BlocBuilder<SalarySettingsCubit, SalarySettingsState>(
           builder: (context, state) {
             var content = switch (state) {
-              EditSalaryLoading() => LoadingIndicator(),
-              EditSalaryLoaded() => _loadedContent(context, state),
-              EditSalaryError() => errorContent(_getErrorMessage(state.failure, context)),
+              SalarySettingsLoading() => LoadingIndicator(),
+              SalarySettingsLoaded() => _loadedContent(context, state),
+              SalarySettingsError() => errorContent(_getErrorMessage(state.failure, context)),
             };
             return content;
           },
@@ -45,7 +45,7 @@ class SalarySettingsScreen extends StatelessWidget {
   }
 }
 
-Widget _loadedContent(BuildContext context, EditSalaryLoaded state) {
+Widget _loadedContent(BuildContext context, SalarySettingsLoaded state) {
   final colors = context.colors;
   final cubit = context.read<SalarySettingsCubit>();
 
@@ -68,7 +68,7 @@ Widget _loadedContent(BuildContext context, EditSalaryLoaded state) {
 
 Widget _salaryBox(
   BuildContext context,
-  EditSalaryLoaded state,
+  SalarySettingsLoaded state,
   SalarySettingsCubit cubit,
 ) {
   final localization = context.localizations;
@@ -88,7 +88,7 @@ Widget _salaryBox(
 
 Widget _salaryDayBox(
   BuildContext context,
-  EditSalaryLoaded state,
+  SalarySettingsLoaded state,
   SalarySettingsCubit cubit,
 ) {
   final localization = context.localizations;
@@ -129,13 +129,13 @@ Widget _salaryDayBox(
 
 Widget _saveButton(
   BuildContext context,
-  EditSalaryLoaded state,
+  SalarySettingsLoaded state,
   SalarySettingsCubit cubit,
 ) {
   final localization = context.localizations;
   return DefaultButton(
     text: localization.save,
-    isEnabled: state.isButtonEnabled,
+    isEnabled: state.isSaveButtonEnabled,
     onPressed: () {
       cubit.saveChanges().then((success) {
         if (success) {

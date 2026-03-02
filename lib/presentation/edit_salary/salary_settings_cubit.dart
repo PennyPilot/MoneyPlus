@@ -4,7 +4,7 @@ import 'package:moneyplus/domain/repository/user_money_repository.dart';
 part 'salary_settings_state.dart';
 
 class SalarySettingsCubit extends Cubit<SalarySettingsState> {
-  SalarySettingsCubit({required this.userMoneyRepository}) : super(EditSalaryLoading());
+  SalarySettingsCubit({required this.userMoneyRepository}) : super(SalarySettingsLoading());
 
   UserMoneyRepository userMoneyRepository;
 
@@ -13,29 +13,29 @@ class SalarySettingsCubit extends Cubit<SalarySettingsState> {
       final salary = await userMoneyRepository.getSalary();
       final salaryDay = await userMoneyRepository.getSalaryDay();
       emit(
-        EditSalaryLoaded(
+        SalarySettingsLoaded(
           salary: salary.toString(),
           salaryDay: salaryDay.toString(),
-          isButtonEnabled: false,
+          isSaveButtonEnabled: false,
         ),
       );
     }catch(e){
-        emit(EditSalaryError(failure: SalarySettingsFailure.loadFailed));
+        emit(SalarySettingsError(failure: SalarySettingsFailure.loadFailed));
     }
     _setButtonVisibility();
   }
 
   void updateSalary(String salary) {
-    if (state is EditSalaryLoaded) {
-      var currentState = state as EditSalaryLoaded;
+    if (state is SalarySettingsLoaded) {
+      var currentState = state as SalarySettingsLoaded;
       emit(currentState.copyWith(salary: salary));
       _setButtonVisibility();
     }
   }
 
   void updateSalaryDay(String salaryDay) {
-    if (state is EditSalaryLoaded) {
-      var currentState = state as EditSalaryLoaded;
+    if (state is SalarySettingsLoaded) {
+      var currentState = state as SalarySettingsLoaded;
       emit(currentState.copyWith(salaryDay: salaryDay));
       _setButtonVisibility();
     }
@@ -43,10 +43,12 @@ class SalarySettingsCubit extends Cubit<SalarySettingsState> {
 
   Future<bool> saveChanges() async {
     try{
-      if (state is EditSalaryLoaded) {
-        var currentState = state as EditSalaryLoaded;
-        await userMoneyRepository.updateSalary(double.parse(currentState.salary));
-        await userMoneyRepository.updateSalaryDay(int.parse(currentState.salaryDay));
+      if (state is SalarySettingsLoaded) {
+        var currentState = state as SalarySettingsLoaded;
+        await userMoneyRepository.updateSalarySettings(
+          salary: double.parse(currentState.salary),
+          salaryDay: int.parse(currentState.salaryDay),
+        );
       }
       return true;
     }catch(e){
@@ -58,7 +60,7 @@ class SalarySettingsCubit extends Cubit<SalarySettingsState> {
 
 
   void _setButtonVisibility() {
-    bool checkIfButtonShouldBeEnabled(EditSalaryLoaded state) {
+    bool checkIfButtonShouldBeEnabled(SalarySettingsLoaded state) {
       final salary = double.tryParse(state.salary);
       if (salary == null) return false;
       final salaryDay = int.tryParse(state.salaryDay);
@@ -68,8 +70,8 @@ class SalarySettingsCubit extends Cubit<SalarySettingsState> {
       return true;
     }
 
-    if (state is EditSalaryLoaded) {
-      var currentState = state as EditSalaryLoaded;
+    if (state is SalarySettingsLoaded) {
+      var currentState = state as SalarySettingsLoaded;
       final shouldBeEnabled = checkIfButtonShouldBeEnabled(currentState);
       emit(currentState.copyWith(isButtonEnabled: shouldBeEnabled));
     }

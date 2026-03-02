@@ -3,34 +3,34 @@ part of 'salary_settings_cubit.dart';
 @immutable
 sealed class SalarySettingsState {}
 
-final class EditSalaryLoading extends SalarySettingsState {}
+final class SalarySettingsLoading extends SalarySettingsState {}
 
-final class EditSalaryLoaded extends SalarySettingsState {
+final class SalarySettingsLoaded extends SalarySettingsState {
   final String salary;
   final String salaryDay;
-  final bool isButtonEnabled;
+  final bool isSaveButtonEnabled;
 
-  EditSalaryLoaded({
+  SalarySettingsLoaded({
     required this.salary,
     required this.salaryDay,
-    required this.isButtonEnabled,
+    required this.isSaveButtonEnabled,
   });
 
-  EditSalaryLoaded copyWith({
+  SalarySettingsLoaded copyWith({
     String? salary,
     String? salaryDay,
     bool? isButtonEnabled,
   }) {
-    return EditSalaryLoaded(
+    return SalarySettingsLoaded(
       salary: salary ?? this.salary,
       salaryDay: salaryDay ?? this.salaryDay,
-      isButtonEnabled: isButtonEnabled ?? this.isButtonEnabled,
+      isSaveButtonEnabled: isButtonEnabled ?? this.isSaveButtonEnabled,
     );
   }
 }
 
-final class EditSalaryError extends SalarySettingsState {
+final class SalarySettingsError extends SalarySettingsState {
   final SalarySettingsFailure failure;
 
-  EditSalaryError({required this.failure});
+  SalarySettingsError({required this.failure});
 }
