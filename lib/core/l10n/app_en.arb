@@ -23,7 +23,8 @@
   "date": "Date",
   "addIncome": "Add income",
   "add": "Add",
-  "saving": "Saving...",
+  "saving": "Saving",
+  "spending": "Spending",
   "incomeAddedSuccessfully": "Income added successfully!",
   "failedToAddIncome": "Failed to add income",
   "salary": "Salary",
@@ -105,6 +106,7 @@
   "incomes": "Incomes",
   "expenses": "Expenses",
   "transaction": "Transaction",
+  "transactions": "Transactions",
   "transaction_error_title": "transactions error",
   "transaction_error_content": "failed to load transaction",
   "currencyCode": "IQD",
@@ -174,5 +176,14 @@
   "totalSpend": "Total Spend",
   "salary_saved": "Salary settings saved successfully",
   "failed_to_save_salary": "Failed to save salary settings",
-  "failed_to_load_salary_settings": "Failed to load salary settings"
+  "failed_to_load_salary_settings": "Failed to load salary settings",
+  "cancel": "Cancel",
+  "english": "English",
+  "arabic": "Arabic",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "home": "Home",
+  "top_spending_category": "Top spending category",
+  "spend": "Spend"
 }

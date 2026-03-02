@@ -9,4 +9,10 @@ class MoneyTheme {
     fontFamily: 'Rubik',
     extensions: const [MoneyColors.light, MoneyTypography.typography],
   );
+  static final ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    useMaterial3: true,
+    fontFamily: 'Rubik',
+    extensions: const [MoneyColors.dark, MoneyTypography.typography],
+  );
 }

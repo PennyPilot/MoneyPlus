@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
-import 'package:moneyplus/presentation/trasnaction_details/pdf_service/share_pdf.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 import 'package:svg_flutter/svg.dart';
 import '../../core/di/injection.dart';
@@ -28,7 +26,7 @@ class TransactionDetailsScreen extends StatelessWidget {
       child: BlocBuilder<TransactionDetailsCubit, TransactionDetailsState>(
         builder: (context, state) {
           return switch (state) {
-            TransactionDetailsLoading() => _loadingContent(),
+            TransactionDetailsLoading() => _loadingContent(context),
             TransactionDetailsLoaded() => _loadedContent(context, state),
             TransactionDetailsError() => _errorContent(state.errorMsg),
           };
@@ -38,10 +36,10 @@ class TransactionDetailsScreen extends StatelessWidget {
   }
 }
 
-Widget _loadingContent() {
+Widget _loadingContent(BuildContext context) {
   return Scaffold(
     body: Center(
-      child: CircularProgressIndicator(color: MoneyColors.light.primary),
+      child: CircularProgressIndicator(color: context.colors.primary),
     ),
   );
 }
@@ -94,12 +92,12 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
           if (success) {
             MSnackBar.success(
               message: context.localizations.transaction_delete_success,
-              title: "Success",
+              title: context.localizations.success,
             ).showSnackBar(context: context);
           } else {
             MSnackBar.error(
               message: context.localizations.transaction_delete_fail,
-              title: "Error",
+              title: context.localizations.error,
             ).showSnackBar(context: context);
           }
         });
@@ -122,7 +120,7 @@ Widget _circleIcon({
       height: 40,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: MoneyColors.light.surface,
+        color: context.colors.surface,
       ),
       alignment: Alignment.center,
       child: SvgPicture.asset(
@@ -142,7 +140,7 @@ Widget _bottomBar({
   final localizations = context.localizations;
   return Container(
     width: double.infinity,
-    color: MoneyColors.light.surface,
+    color: context.colors.surface,
     child: SafeArea(
       top: false,
       right: false,

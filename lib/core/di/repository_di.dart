@@ -1,4 +1,8 @@
+import 'package:moneyplus/domain/repository/app_preferences_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../data/repository/account_repository.dart';
+import '../../data/repository/app_preferences_repository_impl.dart';
 import '../../data/repository/authentication_repository.dart';
 import '../../data/repository/statistics_repository_impl.dart';
 import '../../data/repository/transaction_repository.dart';
@@ -29,5 +33,8 @@ void initRepositoryDI() {
   );
   getIt.registerLazySingleton<StatisticsRepository>(
     () => StatisticsRepositoryImpl(supabaseService: getIt<SupabaseService>()),
+  );
+  getIt.registerLazySingleton<AppPreferencesRepository>(
+        () => AppPreferencesRepositoryImpl(sharedPreferences: getIt<SharedPreferences>()),
   );
 }

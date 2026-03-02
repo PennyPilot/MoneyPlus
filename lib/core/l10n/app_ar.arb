@@ -125,7 +125,8 @@
   "all": "الكل",
   "incomes": "الإيرادات",
   "expenses": "المصروفات",
-  "transaction": "المعاملات",
+  "transaction": "المعاملة",
+  "transactions": "المعاملات",
   "transaction_error_title": "خطأ في المعاملات",
   "transaction_error_content": "فشل في تحميل المعاملات",
   "manage_categories" : "ادارةالتصنيفات",
@@ -146,7 +147,6 @@
   "frequentlyAskedQuestion": "الأسئلة المتكررة",
   "helpAndSupport": "المساعدة والدعم",
   "appVersion": "اصدار التطبيق",
-  "expense_details": "تفاصيل المصروف",
   "add_transaction_sheet_subtitle": "اختر نوع المعاملة التي تريد إضافتها",
   "make_expense": "تسجيل مصروف",
   "continueButton": "متابعة",
@@ -159,4 +159,13 @@
   "salary_saved": "تم حفظ إعدادات الراتب بنجاح",
   "failed_to_save_salary": "فشل في حفظ إعدادات الراتب",
   "failed_to_load_salary_settings": "فشل في تحميل إعدادات الراتب"
+  "cancel": "إلغاء",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "النظام",
+  "home": "الرئيسية",
+  "top_spending_category": "أكثر فئات الإنفاق",
+  "spend": "إنفاق"
 }

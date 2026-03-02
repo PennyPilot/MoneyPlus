@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
+import 'package:moneyplus/app_prefernces_cubit.dart';
+import 'package:moneyplus/presentation/accout/widget/theme_selection_dialog.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/assets/app_assets.dart';
+import '../../../design_system/theme/money_colors.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+import '../../../design_system/theme/money_typography.dart';
 import '../../../design_system/widgets/app_bar.dart';
 import '../cubit/account_cubit.dart';
 import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
+import '../widget/language_selection_dialog.dart';
 import '../widget/personal_info_card.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -17,13 +22,16 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = context.localizations;
     final colors = context.colors;
     final typography = context.typography;
 
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: CustomAppBar(title: l10n.account,backgroundColor: colors.surfaceLow),
+      appBar: CustomAppBar(
+        title: l10n.account,
+        backgroundColor: colors.surfaceLow,
+      ),
       body: BlocProvider(
         create: (_) => getIt<AccountCubit>()..loadUserInfo(),
         child: BlocConsumer<AccountCubit, AccountState>(
@@ -37,12 +45,12 @@ class AccountScreen extends StatelessWidget {
   }
 
   Widget _buildBody(
-    BuildContext context,
-    AccountState state,
-    AppLocalizations l10n,
-    dynamic colors,
-    dynamic typography,
-  ) {
+      BuildContext context,
+      AccountState state,
+      AppLocalizations l10n,
+      MoneyColors colors,
+      MoneyTypography typography,
+      ) {
     if (state is AccountLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -57,7 +65,6 @@ class AccountScreen extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.75,
               height: 150,
-
               child: Image.asset(
                 AppAssets.glowBackground,
                 fit: BoxFit.contain,
@@ -65,7 +72,6 @@ class AccountScreen extends StatelessWidget {
             ),
           ),
         ),
-
         SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
@@ -73,25 +79,52 @@ class AccountScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 personalInfoCard(
+                  context,
                   image: '',
                   name: user?.name ?? '',
                   email: user?.email ?? '',
                 ),
                 const SizedBox(height: 24),
                 accountSection(
+                  context,
                   title: l10n.manageCategories,
                   iconPath: AppAssets.icSettings,
                 ),
                 accountSection(
+                  context,
                   title: l10n.appLanguage,
                   iconPath: AppAssets.icTranslation,
+                  onTap: () {
+                    final language = context.read<AppPreferencesCubit>().state.appLanguage;
+                    showDialog(
+                      context: context,
+                      builder: (context) => LanguageSelectionDialog(
+                        currentLanguage: language,
+                      ),
+                    );
+                  },
                 ),
-                accountSection(title: l10n.appTheme, iconPath: AppAssets.icSun),
                 accountSection(
+                  context,
+                  title: l10n.appTheme,
+                  iconPath: AppAssets.icSun,
+                  onTap: () {
+                    final theme = context.read<AppPreferencesCubit>().state.appTheme;
+                    showDialog(
+                      context: context,
+                      builder: (context) => ThemeSelectionDialog(
+                        currentTheme: theme,
+                      ),
+                    );
+                  },
+                ),
+                accountSection(
+                  context,
                   title: l10n.currency,
                   iconPath: AppAssets.icCurrency,
                 ),
                 accountSection(
+                  context,
                   title: l10n.salarySettings,
                   iconPath: AppAssets.iconMoney,
                   onTap: () {
@@ -99,10 +132,12 @@ class AccountScreen extends StatelessWidget {
                   },
                 ),
                 accountSection(
+                  context,
                   title: l10n.frequentlyAskedQuestion,
                   iconPath: AppAssets.icHelp,
                 ),
                 accountSection(
+                  context,
                   title: l10n.helpAndSupport,
                   iconPath: AppAssets.icCustomerSupport,
                   showDivider: false,
