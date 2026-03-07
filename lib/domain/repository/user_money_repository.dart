@@ -9,10 +9,22 @@ abstract class UserMoneyRepository {
 
   Future<double> getMonthExpense(int month, int year);
 
-  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth(
-      {required int month,required int year, required int count});
+  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth({
+    required int month,
+    required int year,
+    required int count,
+  });
 
   Future<Currency> getCurrency();
 
   Future<double> getSavingSpendingPercentage(int month, int year);
+
+  Future<double> getSalary();
+
+  Future<int> getSalaryDay();
+
+  Future<void> updateSalarySettings({
+    required double salary,
+    required int salaryDay,
+  });
 }

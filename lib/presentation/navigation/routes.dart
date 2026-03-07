@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
+import 'package:moneyplus/presentation/edit_salary/salary_settings_screen.dart';
 import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
@@ -154,5 +155,16 @@ class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const AddExpenseScreen();
+  }
+}
+
+@TypedGoRoute<EditSalaryRoute>(path: '/edit-salary')
+@immutable
+class EditSalaryRoute extends GoRouteData with $EditSalaryRoute {
+  const EditSalaryRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SalarySettingsScreen();
   }
 }
