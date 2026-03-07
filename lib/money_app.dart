@@ -18,11 +18,20 @@ class AuthRedirectNotifier extends ChangeNotifier {
   final AuthenticationRepository _authRepository;
   late final StreamSubscription<AuthState> _subscription;
   bool _isPasswordRecovery = false;
+  bool _isAuthenticated = false;
+
+  bool get isAuthenticated => _isAuthenticated;
 
   AuthRedirectNotifier(this._authRepository) {
     _subscription = _authRepository.onAuthStateChange.listen((data) {
       if (data.event == AuthChangeEvent.passwordRecovery) {
         _isPasswordRecovery = true;
+        notifyListeners();
+      } else if (data.session != null) {
+        _isAuthenticated = true;
+        notifyListeners();
+      } else {
+        _isAuthenticated = false;
         notifyListeners();
       }
     });
@@ -39,13 +48,18 @@ final _authRedirectNotifier =
     AuthRedirectNotifier(getIt<AuthenticationRepository>());
 final _router = GoRouter(
   routes: $appRoutes,
-  initialLocation: '/login',
+  initialLocation: _authRedirectNotifier.isAuthenticated ? RoutePaths.main : RoutePaths.login,
   refreshListenable: _authRedirectNotifier,
   redirect: (context, state) {
     if (_authRedirectNotifier._isPasswordRecovery) {
       _authRedirectNotifier._isPasswordRecovery = false;
-      return '/update_password';
+      return RoutePaths.forgetPassword;
     }
+
+    final loggingIn = state.matchedLocation == RoutePaths.login;
+    if (!_authRedirectNotifier.isAuthenticated && !loggingIn) return RoutePaths.login;
+    if (_authRedirectNotifier.isAuthenticated && loggingIn) return RoutePaths.main;
+
     return null;
   },
 );
