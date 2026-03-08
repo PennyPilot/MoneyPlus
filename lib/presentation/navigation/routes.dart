@@ -14,6 +14,7 @@ import '../main_container/screen/main_screen.dart';
 import '../statistics/cubit/statistics_cubit.dart';
 import '../statistics/statistics_screen.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
+import '../categories/screen/manage_categories_screen.dart';
 
 part 'routes.g.dart';
 
@@ -30,7 +31,12 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("onBoarding screen"),
-            ElevatedButton(onPressed: (){ LoginRoute().push(context);}, child: Text("Go to Login"))
+            ElevatedButton(
+              onPressed: () {
+                LoginRoute().push(context);
+              },
+              child: Text("Go to Login"),
+            ),
           ],
         ),
       ),
@@ -65,8 +71,7 @@ class MainRoute extends GoRouteData with $MainRoute {
 
 @TypedGoRoute<CreateAccountRoute>(path: '/createAccount')
 @immutable
-class CreateAccountRoute extends GoRouteData
-    with $CreateAccountRoute {
+class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
   const CreateAccountRoute();
 
   @override
@@ -77,8 +82,7 @@ class CreateAccountRoute extends GoRouteData
 
 @TypedGoRoute<StatisticsRoute>(path: '/statistics')
 @immutable
-class StatisticsRoute extends GoRouteData
-    with $StatisticsRoute {
+class StatisticsRoute extends GoRouteData with $StatisticsRoute {
   const StatisticsRoute();
 
   @override
@@ -92,7 +96,8 @@ class StatisticsRoute extends GoRouteData
 
 @TypedGoRoute<TransactionDetailsRoute>(path: '/transaction_details')
 @immutable
-class TransactionDetailsRoute extends GoRouteData with $TransactionDetailsRoute {
+class TransactionDetailsRoute extends GoRouteData
+    with $TransactionDetailsRoute {
   final String transactionId;
   TransactionDetailsRoute(this.transactionId);
 
@@ -141,5 +146,16 @@ class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const AddExpenseScreen();
+  }
+}
+
+@TypedGoRoute<ManageCategoriesRoute>(path: '/manage-categories')
+@immutable
+class ManageCategoriesRoute extends GoRouteData with $ManageCategoriesRoute {
+  const ManageCategoriesRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ManageCategoriesScreen();
   }
 }

@@ -171,5 +171,6 @@
   "categoriesFilterApply": "Apply",
   "categoriesBreakdown": "Categories Breakdown",
   "no_monthly_breakdown": "No expenses to analyze yet",
-  "totalSpend": "Total Spend"
+  "totalSpend": "Total Spend",
+  "category_already_exists": "Category already exists"
 }

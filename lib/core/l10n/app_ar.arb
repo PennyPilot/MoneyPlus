@@ -155,5 +155,6 @@
   "categoriesFilterApply": "تطبيق",
   "categoriesBreakdown": "تفاصيل الفئات",
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
-  "totalSpend": "إجمالي الإنفاق"
+  "totalSpend": "إجمالي الإنفاق",
+  "category_already_exists": "هذا التصنيف موجود بالفعل"
 }

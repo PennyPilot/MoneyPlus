@@ -10,6 +10,7 @@ import '../cubit/account_cubit.dart';
 import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
 import '../widget/personal_info_card.dart';
+import '../../navigation/routes.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -22,7 +23,10 @@ class AccountScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: CustomAppBar(title: l10n.account,backgroundColor: colors.surfaceLow),
+      appBar: CustomAppBar(
+        title: l10n.account,
+        backgroundColor: colors.surfaceLow,
+      ),
       body: BlocProvider(
         create: (_) => getIt<AccountCubit>()..loadUserInfo(),
         child: BlocConsumer<AccountCubit, AccountState>(
@@ -57,10 +61,7 @@ class AccountScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.75,
               height: 150,
 
-              child: Image.asset(
-                AppAssets.glowBackground,
-                fit: BoxFit.contain,
-              ),
+              child: Image.asset(AppAssets.glowBackground, fit: BoxFit.contain),
             ),
           ),
         ),
@@ -80,6 +81,7 @@ class AccountScreen extends StatelessWidget {
                 accountSection(
                   title: l10n.manageCategories,
                   iconPath: AppAssets.icSettings,
+                  onTap: () => const ManageCategoriesRoute().push(context),
                 ),
                 accountSection(
                   title: l10n.appLanguage,

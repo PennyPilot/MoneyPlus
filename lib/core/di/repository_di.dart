@@ -8,6 +8,8 @@ import '../../domain/repository/authentication_repository.dart';
 import '../../domain/repository/statistics_repository.dart';
 import '../../domain/repository/transaction_repository.dart';
 import '../../domain/repository/user_money_repository.dart';
+import '../../domain/repository/category_repository.dart';
+import '../../data/repository/category_repository_impl.dart';
 import '../service/supabase_service.dart';
 import 'injection.dart';
 
@@ -29,5 +31,8 @@ void initRepositoryDI() {
   );
   getIt.registerLazySingleton<StatisticsRepository>(
     () => StatisticsRepositoryImpl(supabaseService: getIt<SupabaseService>()),
+  );
+  getIt.registerLazySingleton<CategoryRepository>(
+    () => CategoryRepositoryImpl(supabaseService: getIt<SupabaseService>()),
   );
 }
