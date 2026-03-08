@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
-import '../../../design_system/theme/money_colors.dart';
-import '../../../design_system/theme/money_typography.dart';
-
-Widget accountSection({
+Widget accountSection(
+  BuildContext context, {
   required String title,
   required String iconPath,
   bool showDivider = true,
   VoidCallback? onTap,
 }) {
+  final colors = context.colors;
+  final typography = context.typography;
+
   return InkWell(
-    onTap: () {
-      if (onTap != null) {
-        onTap();
-      }
-    },
+    onTap: onTap,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,24 +23,29 @@ Widget accountSection({
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: MoneyColors.light.surfaceHigh,
+                color: colors.surfaceHigh,
                 borderRadius: BorderRadius.circular(12),
               ),
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 11),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 11),
               alignment: Alignment.center,
-              child: SvgPicture.asset(iconPath, width: 24, height: 24),
+              child: SvgPicture.asset(
+                iconPath,
+                width: 24,
+                height: 24,
+                colorFilter: ColorFilter.mode(colors.primary, BlendMode.srcIn),
+              ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               title,
-              style: MoneyTypography.typography.label.large.copyWith(
-                color: MoneyColors.light.title,
+              style: typography.label.large.copyWith(
+                color: colors.title,
               ),
             ),
           ],
         ),
         if (showDivider)
-          Divider(color: MoneyColors.light.stroke, thickness: 0.5),
+          Divider(color: colors.stroke, thickness: 0.5),
       ],
     ),
   );

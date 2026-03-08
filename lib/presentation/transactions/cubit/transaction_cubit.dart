@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
@@ -11,58 +10,98 @@ class TransactionCubit extends Cubit<TransactionState> {
   TransactionCubit({required this.transactionRepository})
     : super(TransactionState.initial());
 
-  static const List<String> _mockCategories = <String>[
-    'Food',
-    'Transport',
-    'Shopping',
-    'Bills',
-    'Health',
-    'Entertainment',
-    'Salary',
-    'Gifts',
-  ];
-
   void loadData() async {
     emit(state.copyWith(status: TransactionStatus.loading));
 
-    final result = await transactionRepository.getAllTransactions();
     final now = DateTime.now();
+    try {
+      final categories = await transactionRepository.getTransactionCategories(null);
+
+      final result = await transactionRepository.getTransactions(
+        page: 1,
+        date: now,
+      );
+
+      emit(
+        state.copyWith(
+          transactions: result,
+          selectedYear: now.year,
+          selectedMonth: now.month,
+          status: TransactionStatus.success,
+          hasMore: result.length == 20,
+          transactionCategories: categories,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
+  }
+
+  void onCategoriesSelected(List<int> categories) async {
+    if (categories == state.selectedCategories) return;
     emit(
       state.copyWith(
-        allTransactions: result,
-        availableCategories: _mockCategories,
-        filteredTransactions: _filterTransaction(
-          month: now.month,
-          year: now.year,
-          transactions: result,
-          selectedCategories: state.selectedCategories,
-        ),
-        selectedYear: now.year,
-        selectedMonth: now.month,
-        status: TransactionStatus.success,
+        selectedCategories: categories,
+        status: TransactionStatus.loading,
+        currentPage: 1,
+        hasMore: true,
       ),
     );
+
+    try {
+      final result = await _getTransaction(
+        page: 1,
+        tab: state.selectedTab,
+        year: state.selectedYear,
+        month: state.selectedMonth,
+        selectedCategories: categories,
+      );
+
+      emit(
+        state.copyWith(
+          status: TransactionStatus.success,
+          transactions: result,
+          currentPage: 1,
+          hasMore: result.length == 20,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
   void onTabSelected(TransactionTabs tab) async {
     if (state.selectedTab == tab) return;
 
-    emit(state.copyWith(status: TransactionStatus.loading, selectedTab: tab));
-
-    final result = await _getTransactionsByTab(tab);
-
     emit(
       state.copyWith(
-        status: TransactionStatus.success,
-        allTransactions: result,
-        filteredTransactions: _filterTransaction(
-          month: state.selectedMonth,
-          year: state.selectedYear,
-          transactions: result,
-          selectedCategories: state.selectedCategories,
-        ),
+        status: TransactionStatus.loading,
+        selectedTab: tab,
+        currentPage: 1,
+        hasMore: true,
       ),
     );
+
+    try {
+      final result = await _getTransaction(
+        page: 1,
+        tab: tab,
+        year: state.selectedYear,
+        month: state.selectedMonth,
+        selectedCategories: state.selectedCategories,
+      );
+
+      emit(
+        state.copyWith(
+          status: TransactionStatus.success,
+          transactions: result,
+          currentPage: 1,
+          hasMore: result.length == 20,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
   void setSelectedDate(int month, int year) async {
@@ -73,64 +112,78 @@ class TransactionCubit extends Cubit<TransactionState> {
         selectedMonth: month,
         selectedYear: year,
         status: TransactionStatus.loading,
+        currentPage: 1,
+        hasMore: true,
       ),
     );
 
-    emit(
-      state.copyWith(
-        status: TransactionStatus.success,
-        filteredTransactions: _filterTransaction(
-          month: month,
-          year: year,
-          transactions: state.allTransactions,
-          selectedCategories: state.selectedCategories,
+    try {
+      final result = await _getTransaction(
+        page: 1,
+        tab: state.selectedTab,
+        year: year,
+        month: month,
+        selectedCategories: state.selectedCategories,
+      );
+
+      emit(
+        state.copyWith(
+          status: TransactionStatus.success,
+          transactions: result,
+          currentPage: 1,
+          hasMore: result.length == 20,
         ),
-      ),
-    );
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
-  void setSelectedCategories(Set<String> categories) {
-    if (setEquals(state.selectedCategories, categories)) return;
+  void loadMore() async {
+    if (!state.hasMore || state.isLoadingMore) return;
 
-    emit(
-      state.copyWith(
-        selectedCategories: Set<String>.from(categories),
-        filteredTransactions: _filterTransaction(
-          month: state.selectedMonth,
-          year: state.selectedYear,
-          transactions: state.allTransactions,
-          selectedCategories: categories,
+    emit(state.copyWith(isLoadingMore: true));
+
+    final nextPage = state.currentPage + 1;
+
+    try {
+      final result = await _getTransaction(
+        page: nextPage,
+        tab: state.selectedTab,
+        year: state.selectedYear,
+        month: state.selectedMonth,
+        selectedCategories: state.selectedCategories,
+      );
+
+      emit(
+        state.copyWith(
+          transactions: [...state.transactions, ...result],
+          currentPage: nextPage,
+          hasMore: result.length == 20,
+          isLoadingMore: false,
         ),
-      ),
-    );
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
   }
 
-  Future<List<Transaction>> _getTransactionsByTab(TransactionTabs tab) async {
-    return await switch (tab) {
-      TransactionTabs.all => transactionRepository.getAllTransactions(),
-      TransactionTabs.incomes => transactionRepository.getAllTransactionsByType(
-        TransactionType.income,
-      ),
-      TransactionTabs.expenses =>
-        transactionRepository.getAllTransactionsByType(TransactionType.expense),
-    };
-  }
-
-  List<Transaction> _filterTransaction(
-    {
-    required int month,
+  Future<List<Transaction>> _getTransaction({
+    required int page,
+    required TransactionTabs tab,
     required int year,
-    required List<Transaction> transactions,
-    required Set<String> selectedCategories,
-  }
-  ) {
-    return transactions.where((transaction) {
-      final matchesDate =
-          transaction.date.year == year && transaction.date.month == month;
-      if (!matchesDate) return false;
-
-      if (selectedCategories.isEmpty) return true;
-      return selectedCategories.contains(transaction.category.name);
-    }).toList();
+    required int month,
+    required List<int> selectedCategories,
+  }) async {
+    return await transactionRepository.getTransactions(
+      page: page,
+      type: tab == TransactionTabs.expenses
+          ? TransactionType.expense
+          : tab == TransactionTabs.incomes
+          ? TransactionType.income
+          : null,
+      date: DateTime(year, month),
+      categoriesId: selectedCategories,
+    );
   }
 }

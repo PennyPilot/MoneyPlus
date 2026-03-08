@@ -36,7 +36,21 @@ class Transaction {
       type: type ?? this.type,
       date: date ?? this.date,
       category: category ?? this.category,
-      note: note ?? this.note
+      note: note ?? this.note,
+    );
+  }
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      id: json['id'] ?? 0,
+      amount: (json['amount'] as num).toDouble(),
+      currency: json['currency'] ?? '',
+      type: json['transaction_type'] == 'income'
+          ? TransactionType.income
+          : TransactionType.expense,
+      date: DateTime.parse(json['date']),
+      category: TransactionCategory(id: json['category_id'], name: json['category']),
+      note: json['note'] ?? '',
     );
   }
 }

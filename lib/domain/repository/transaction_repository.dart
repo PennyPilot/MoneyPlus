@@ -39,6 +39,8 @@ abstract class TransactionRepository {
     TransactionType? type,
     TransactionCategory? category,
     DateTime? date,
+    List<int> categoriesId = const[],
+    required int page,
   });
 
   Future<Result<Transaction>> getTransactionDetails(String id);
