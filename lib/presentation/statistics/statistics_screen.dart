@@ -44,22 +44,32 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<StatisticsCubit>().state;
+    final l10n = context.localizations;
+
     return Scaffold(
       backgroundColor: context.colors.surface,
+      appBar: CustomAppBar(
+        title: l10n.statistics,
+        trailing: switch (state) {
+          StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
+              onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
+              year: selectedMonth.year,
+              month: selectedMonth.month,
+            ),
+          _ => null,
+        },
+      ),
       body: SafeArea(
-        child: BlocBuilder<StatisticsCubit, StatisticsState>(
-          builder: (context, state) {
-            return switch (state) {
-              StatisticsIdle() => const SizedBox.shrink(),
-              StatisticsLoading() => const AppLoadingIndicator(),
-              StatisticsSuccess() => _buildSuccess(context, state),
-              StatisticsFailure(:final message) => AppErrorView(
-                message: message,
-                onRetry: _onRetry,
-              ),
-            };
-          },
-        ),
+        child: switch (state) {
+          StatisticsIdle() => const SizedBox.shrink(),
+          StatisticsLoading() => const AppLoadingIndicator(),
+          StatisticsSuccess() => _buildSuccess(context, state),
+          StatisticsFailure(:final message) => AppErrorView(
+              message: message,
+              onRetry: _onRetry,
+            ),
+        },
       ),
     );
   }
@@ -77,24 +87,17 @@ class _StatisticsViewState extends State<StatisticsView> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          CustomAppBar(
-            title: l10n.statistics,
-            trailing: DropDownDateDialog(
-              onDatePick: (date) => {
-                context.read<StatisticsCubit>().changeMonth(date),
-              },
-              year: state.selectedMonth.year,
-              month: state.selectedMonth.month,
-            ),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
             MonthlyOverviewSection(overview: state.monthlyOverview),
+            const SizedBox(height: 16),
             CategoryBreakdownWidget(
               categoriesBreakdown: state.categoriesBreakdown,
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
