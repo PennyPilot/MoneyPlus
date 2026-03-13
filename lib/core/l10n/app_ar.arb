@@ -164,5 +164,6 @@
   "system": "النظام",
   "home": "الرئيسية",
   "top_spending_category": "أكثر فئات الإنفاق",
-  "spend": "إنفاق"
+  "spend": "إنفاق",
+  "selectMonthYear": "اختر الشهر والسنة"
 }
