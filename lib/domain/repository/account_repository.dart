@@ -6,4 +6,5 @@ abstract class AccountRepository {
   
   Future<User> getCurrentUser();
 
+  Future<void> logout();
 }

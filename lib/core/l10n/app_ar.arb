@@ -167,5 +167,9 @@
   "system": "النظام",
   "home": "الرئيسية",
   "top_spending_category": "أكثر فئات الإنفاق",
-  "spend": "إنفاق"
+  "spend": "إنفاق",
+  "logout": "تسجيل الخروج",
+  "logout_confirmation": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+  "logout_confirm": "خروج",
+  "logout_cancel": "إلغاء"
 }
