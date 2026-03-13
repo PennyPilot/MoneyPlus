@@ -8,7 +8,9 @@ import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
+import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
+import '../transactions/widget/add_transaction_bottom_sheet.dart';
 import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
 import 'cubit/statistics_state.dart';
@@ -35,7 +37,7 @@ class StatisticsView extends StatefulWidget {
 
 class _StatisticsViewState extends State<StatisticsView> {
   void _onAddTransaction() {
-    // Navigate to add transaction
+    showAddTransactionBottomSheet(context);
   }
 
   void _onRetry() {
