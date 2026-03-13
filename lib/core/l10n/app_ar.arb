@@ -168,5 +168,13 @@
   "home": "الرئيسية",
   "top_spending_category": "أكثر فئات الإنفاق",
   "spend": "إنفاق",
-  "selectMonthYear": "اختر الشهر والسنة"
+  "selectMonthYear": "اختر الشهر والسنة",
+  "addIncome": "إضافة دخل",
+  "saving": "ادخار",
+  "spending": "إنفاق",
+  "incomeAddedSuccessfully": "تم إضافة الدخل بنجاح!",
+  "failedToAddIncome": "فشل في إضافة الدخل",
+  "whereDoYouUsuallySpendYourMoney": "أين تنفق أموالك عادة؟",
+  "suggestions": "اقتراحات",
+  "selectedCategories": "التصنيفات المختارة"
 }
