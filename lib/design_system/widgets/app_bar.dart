@@ -76,6 +76,7 @@
           ),
           alignment: Alignment.center,
           child: SvgPicture.asset(assetPath,
+             matchTextDirection: true,
              colorFilter: ColorFilter.mode(context.colors.title,BlendMode.srcIn),
               width: 20, height: 20),
         ),
