@@ -71,11 +71,13 @@
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: context.colors.surfaceHigh,
+            color: context.colors.surface,
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
-          child: SvgPicture.asset(assetPath, width: 20, height: 20),
+          child: SvgPicture.asset(assetPath,
+             colorFilter: ColorFilter.mode(context.colors.title,BlendMode.srcIn),
+              width: 20, height: 20),
         ),
       );
     }
@@ -103,7 +105,9 @@
             spacing: 4,
             children: [
               Text(date, style: typo.label.small.copyWith(color: contentColor)),
-              SvgPicture.asset(AppAssets.icNormalArrowDown, width: 20, height: 20),
+              SvgPicture.asset(AppAssets.icNormalArrowDown,
+                  colorFilter: ColorFilter.mode(contentColor,BlendMode.srcIn),
+                  width: 20, height: 20),
             ],
           ),
         ),
