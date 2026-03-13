@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
+import 'package:moneyplus/presentation/edit_salary/salary_settings_screen.dart';
 import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
@@ -17,7 +18,20 @@ import '../trasnaction_details/transaction_details_screen.dart';
 
 part 'routes.g.dart';
 
-@TypedGoRoute<OnBoardingRoute>(path: '/')
+abstract class RoutePaths {
+  static const String onBoarding = '/';
+  static const String login = '/login';
+  static const String main = '/main';
+  static const String createAccount = '/createAccount';
+  static const String statistics = '/statistics';
+  static const String transactionDetails = '/transaction_details';
+  static const String forgetPassword = '/forget_password';
+  static const String updatePassword = '/update_password';
+  static const String addIncome = '/add-income';
+  static const String addExpense = '/add-expense';
+}
+
+@TypedGoRoute<OnBoardingRoute>(path: RoutePaths.onBoarding)
 @immutable
 class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
   const OnBoardingRoute();
@@ -38,7 +52,7 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
   }
 }
 
-@TypedGoRoute<LoginRoute>(path: '/login')
+@TypedGoRoute<LoginRoute>(path: RoutePaths.login)
 @immutable
 class LoginRoute extends GoRouteData with $LoginRoute {
   const LoginRoute();
@@ -52,7 +66,7 @@ class LoginRoute extends GoRouteData with $LoginRoute {
   }
 }
 
-@TypedGoRoute<MainRoute>(path: '/main')
+@TypedGoRoute<MainRoute>(path: RoutePaths.main)
 @immutable
 class MainRoute extends GoRouteData with $MainRoute {
   const MainRoute();
@@ -63,7 +77,7 @@ class MainRoute extends GoRouteData with $MainRoute {
   }
 }
 
-@TypedGoRoute<CreateAccountRoute>(path: '/createAccount')
+@TypedGoRoute<CreateAccountRoute>(path: RoutePaths.createAccount)
 @immutable
 class CreateAccountRoute extends GoRouteData
     with $CreateAccountRoute {
@@ -75,7 +89,7 @@ class CreateAccountRoute extends GoRouteData
   }
 }
 
-@TypedGoRoute<StatisticsRoute>(path: '/statistics')
+@TypedGoRoute<StatisticsRoute>(path: RoutePaths.statistics)
 @immutable
 class StatisticsRoute extends GoRouteData
     with $StatisticsRoute {
@@ -90,7 +104,7 @@ class StatisticsRoute extends GoRouteData
   }
 }
 
-@TypedGoRoute<TransactionDetailsRoute>(path: '/transaction_details')
+@TypedGoRoute<TransactionDetailsRoute>(path: RoutePaths.transactionDetails)
 @immutable
 class TransactionDetailsRoute extends GoRouteData with $TransactionDetailsRoute {
   final String transactionId;
@@ -102,7 +116,7 @@ class TransactionDetailsRoute extends GoRouteData with $TransactionDetailsRoute 
   }
 }
 
-@TypedGoRoute<ForgetPasswordRoute>(path: '/forget_password')
+@TypedGoRoute<ForgetPasswordRoute>(path: RoutePaths.forgetPassword)
 @immutable
 class ForgetPasswordRoute extends GoRouteData with $ForgetPasswordRoute {
   const ForgetPasswordRoute();
@@ -113,7 +127,7 @@ class ForgetPasswordRoute extends GoRouteData with $ForgetPasswordRoute {
   }
 }
 
-@TypedGoRoute<UpdatePasswordRoute>(path: '/update_password')
+@TypedGoRoute<UpdatePasswordRoute>(path: RoutePaths.updatePassword)
 @immutable
 class UpdatePasswordRoute extends GoRouteData with $UpdatePasswordRoute {
   @override
@@ -122,7 +136,7 @@ class UpdatePasswordRoute extends GoRouteData with $UpdatePasswordRoute {
   }
 }
 
-@TypedGoRoute<AddIncomeRoute>(path: '/add-income')
+@TypedGoRoute<AddIncomeRoute>(path: RoutePaths.addIncome)
 @immutable
 class AddIncomeRoute extends GoRouteData with $AddIncomeRoute {
   const AddIncomeRoute();
@@ -133,7 +147,7 @@ class AddIncomeRoute extends GoRouteData with $AddIncomeRoute {
   }
 }
 
-@TypedGoRoute<AddExpenseRoute>(path: '/add-expense')
+@TypedGoRoute<AddExpenseRoute>(path: RoutePaths.addExpense)
 @immutable
 class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
   const AddExpenseRoute();
@@ -141,5 +155,16 @@ class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const AddExpenseScreen();
+  }
+}
+
+@TypedGoRoute<EditSalaryRoute>(path: '/edit-salary')
+@immutable
+class EditSalaryRoute extends GoRouteData with $EditSalaryRoute {
+  const EditSalaryRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SalarySettingsScreen();
   }
 }
