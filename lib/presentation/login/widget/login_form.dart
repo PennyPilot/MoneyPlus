@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/assets/app_assets.dart';
+import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/text_field.dart';
 
 class LoginForm extends StatefulWidget {
@@ -28,6 +29,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final colors = context.colors;
     return Column(
       children: [
         MTextField(
@@ -58,6 +60,8 @@ class _LoginFormState extends State<LoginForm> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 14),
               child: SvgPicture.asset(
+                width: 20,height: 20,
+                colorFilter: ColorFilter.mode(colors.hint, BlendMode.srcIn),
                 _isPasswordVisible ? AppAssets.eyeOpen : AppAssets.eyeClose,
               ),
             ),
