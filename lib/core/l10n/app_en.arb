@@ -172,5 +172,6 @@
   "categoriesBreakdown": "Categories Breakdown",
   "no_monthly_breakdown": "No expenses to analyze yet",
   "totalSpend": "Total Spend",
-  "category_already_exists": "Category already exists"
+  "category_already_exists": "Category already exists",
+  "no_categories_found": "No categories found, Start by adding new categories"
 }

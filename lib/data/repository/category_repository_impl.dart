@@ -1,7 +1,6 @@
 import 'package:moneyplus/core/errors/result.dart';
 import 'package:moneyplus/domain/entity/category.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../core/service/supabase_service.dart';
 import '../../domain/repository/category_repository.dart';
 
@@ -31,20 +30,6 @@ class CategoryRepositoryImpl extends CategoryRepository {
   }
 
   @override
-  Future<void> deleteCategory(int id) async {
-    try {
-      final (client, userId) = await _getAuthenticatedUser();
-
-      await client.from('categories').delete().match({
-        'id': id,
-        'user_id': userId,
-      });
-    } catch (e) {
-      throw Exception('Failed to delete category: $e');
-    }
-  }
-
-  @override
   Future<void> updateCategory(Category category) async {
     try {
       final (client, userId) = await _getAuthenticatedUser();
@@ -67,14 +52,13 @@ class CategoryRepositoryImpl extends CategoryRepository {
       final client = await supabaseService.getClient();
       final user = client.auth.currentUser;
 
-      final query = client.from('categories').select();
+      if (user == null) return Result.success([]);
 
-      final response =
-          await (user != null
-                  ? query.or('user_id.is.null,user_id.eq.${user.id}')
-                  : query.filter('user_id', 'is', null))
-              .order('user_id', nullsFirst: true)
-              .order('id', ascending: true);
+      final response = await client
+          .from('categories')
+          .select()
+          .eq('user_id', user.id)
+          .order('id', ascending: true);
 
       final categories = (response as List)
           .map((json) => Category.fromJson(json))

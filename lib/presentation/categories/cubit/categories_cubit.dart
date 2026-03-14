@@ -64,21 +64,6 @@ class CategoriesCubit extends Cubit<CategoriesState> {
     }
   }
 
-  Future<void> deleteCategory(int id) async {
-    emit(
-      state.copyWith(
-        status: CategoriesStatus.loading,
-        categories: state.categories,
-      ),
-    );
-    try {
-      await repository.deleteCategory(id);
-      await fetchCategories();
-    } catch (error) {
-      _emitError(error, state.categories);
-    }
-  }
-
   bool _isCategoryExists(String name, {int? excludeId}) {
     if (name.trim().isEmpty) return false;
     final searchName = name.trim().toLowerCase();

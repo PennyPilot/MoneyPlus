@@ -156,5 +156,6 @@
   "categoriesBreakdown": "تفاصيل الفئات",
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
   "totalSpend": "إجمالي الإنفاق",
-  "category_already_exists": "هذا التصنيف موجود بالفعل"
+  "category_already_exists": "هذا التصنيف موجود بالفعل",
+  "no_categories_found": "لا يوجد تصنيفات، ابدأ بإضافة تصنيفات جديدة"
 }

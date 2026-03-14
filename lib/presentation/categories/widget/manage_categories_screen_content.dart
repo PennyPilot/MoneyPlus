@@ -19,6 +19,7 @@ class ManageCategoriesScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
@@ -41,6 +42,18 @@ class ManageCategoriesScreenContent extends StatelessWidget {
         builder: (context, state) {
           if (state.status == CategoriesStatus.loading) {
             return const LoadingView();
+          }
+
+          if (state.categories.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0)
+              child: Center(
+                child: Text(
+                  localizations.no_categories_found,
+                  style: typography.label.medium.copyWith(color: colors.primary),
+                ),
+              )
+            );
           }
 
           return CategoryGrid(

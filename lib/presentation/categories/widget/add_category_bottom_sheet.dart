@@ -83,7 +83,7 @@ class _AddCategorySheetState extends State<AddCategorySheet> {
           const SizedBox(height: 24),
 
           DefaultButton(
-            text: isEdit ? localizations.add : localizations.save,
+            text: isEdit ? localizations.edit : localizations.add,
             isEnabled: _isButtonEnabled,
             onPressed: _isButtonEnabled ? () => _submit(context) : null,
           ),
