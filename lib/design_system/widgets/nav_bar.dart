@@ -32,7 +32,7 @@ enum NavBarTab {
       case NavBarTab.home:
         return l10n.home;
       case NavBarTab.transaction:
-        return l10n.transaction;
+        return l10n.transactions;
       case NavBarTab.statistics:
         return l10n.statistics;
       case NavBarTab.account:
