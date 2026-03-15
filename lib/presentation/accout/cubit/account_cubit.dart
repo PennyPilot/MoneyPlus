@@ -7,7 +7,7 @@ class AccountCubit extends Cubit<AccountState> {
   final AccountRepository _accountRepository;
 
   AccountCubit(this._accountRepository)
-      : super(const AccountLoading(isLoading: true));
+      : super(const AccountInitial());
 
   void loadUserInfo() {
     emit(const AccountLoading(isLoading: true));
@@ -17,5 +17,15 @@ class AccountCubit extends Cubit<AccountState> {
     }).catchError((error) {
       emit(AccountError(errorMessage: error.toString()));
     });
+  }
+
+  Future<void> logout() async {
+    emit(const AccountLoading(isLoading: true));
+    try {
+      await _accountRepository.logout();
+      emit(const LogoutSuccess());
+    } catch (e) {
+      emit(AccountError(errorMessage: e.toString()));
+    }
   }
 }
