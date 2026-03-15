@@ -8,7 +8,9 @@ import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
+import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
+import '../transactions/widget/add_transaction_bottom_sheet.dart';
 import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
 import 'cubit/statistics_state.dart';
@@ -35,7 +37,7 @@ class StatisticsView extends StatefulWidget {
 
 class _StatisticsViewState extends State<StatisticsView> {
   void _onAddTransaction() {
-    // Navigate to add transaction
+    showAddTransactionBottomSheet(context);
   }
 
   void _onRetry() {
@@ -44,22 +46,32 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<StatisticsCubit>().state;
+    final l10n = context.localizations;
+
     return Scaffold(
       backgroundColor: context.colors.surface,
+      appBar: CustomAppBar(
+        title: l10n.statistics,
+        trailing: switch (state) {
+          StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
+              onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
+              year: selectedMonth.year,
+              month: selectedMonth.month,
+            ),
+          _ => null,
+        },
+      ),
       body: SafeArea(
-        child: BlocBuilder<StatisticsCubit, StatisticsState>(
-          builder: (context, state) {
-            return switch (state) {
-              StatisticsIdle() => const SizedBox.shrink(),
-              StatisticsLoading() => const AppLoadingIndicator(),
-              StatisticsSuccess() => _buildSuccess(context, state),
-              StatisticsFailure(:final message) => AppErrorView(
-                message: message,
-                onRetry: _onRetry,
-              ),
-            };
-          },
-        ),
+        child: switch (state) {
+          StatisticsIdle() => const SizedBox.shrink(),
+          StatisticsLoading() => const AppLoadingIndicator(),
+          StatisticsSuccess() => _buildSuccess(context, state),
+          StatisticsFailure(:final message) => AppErrorView(
+              message: message,
+              onRetry: _onRetry,
+            ),
+        },
       ),
     );
   }
@@ -77,24 +89,17 @@ class _StatisticsViewState extends State<StatisticsView> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          CustomAppBar(
-            title: l10n.statistics,
-            trailing: DropDownDateDialog(
-              onDatePick: (date) => {
-                context.read<StatisticsCubit>().changeMonth(date),
-              },
-              year: state.selectedMonth.year,
-              month: state.selectedMonth.month,
-            ),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
             MonthlyOverviewSection(overview: state.monthlyOverview),
+            const SizedBox(height: 16),
             CategoryBreakdownWidget(
               categoriesBreakdown: state.categoriesBreakdown,
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
