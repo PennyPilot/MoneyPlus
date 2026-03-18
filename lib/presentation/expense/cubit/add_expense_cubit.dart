@@ -23,11 +23,11 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
 
   Future<void> _loadCategories() async {
     emit(state.copyWith(isLoadingCategories: true));
-    final result = await _transactionRepository.getTransactionCategories(
+    final transactionCategories = await _transactionRepository.getTransactionCategories(
       type: TransactionType.expense,
     );
 
-    result.when(
+    transactionCategories.when(
       onSuccess: (categories) {
         emit(
           state.copyWith(
@@ -41,7 +41,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
         emit(
           state.copyWith(
             status: FormStatus.failure,
-            errorMessage: "Failed to load categories: ${error.message}",
+            errorMessage: "Failed to load categories.",
           ),
         );
       },
@@ -108,7 +108,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           emit(
             state.copyWith(
               status: FormStatus.failure,
-              errorMessage: "Failed to add expense: ${error.message}",
+              errorMessage: "Failed to add expense.",
             ),
           );
         },
@@ -117,7 +117,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
       emit(
         state.copyWith(
           status: FormStatus.failure,
-          errorMessage: "An unexpected error occurred: $e",
+          errorMessage: "An unexpected error occurred.",
         ),
       );
     }
