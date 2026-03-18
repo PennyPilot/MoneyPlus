@@ -38,6 +38,7 @@ void initRepositoryDI() {
   );
   getIt.registerLazySingleton<CategoryRepository>(
     () => CategoryRepositoryImpl(supabaseService: getIt<SupabaseService>()),
+  );  
   getIt.registerLazySingleton<AppPreferencesRepository>(
         () => AppPreferencesRepositoryImpl(sharedPreferences: getIt<SharedPreferences>()),
   );
