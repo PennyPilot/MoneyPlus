@@ -82,7 +82,7 @@ void initCubitDI() {
 
   getIt.registerFactory<CategoriesCubit>(
     () => CategoriesCubit(getIt<CategoryRepository>()),
-
+);
   getIt.registerFactory<SalarySettingsCubit>(
     () => SalarySettingsCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
   );
