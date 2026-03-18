@@ -46,7 +46,7 @@ class ManageCategoriesScreenContent extends StatelessWidget {
 
           if (state.categories.isEmpty) {
             return Padding(
-              padding: const EdgeInsets.all(16.0)
+              padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: Text(
                   localizations.no_categories_found,
