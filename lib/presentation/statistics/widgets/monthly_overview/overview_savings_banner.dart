@@ -37,7 +37,7 @@ class OverviewSavingsBanner extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SvgPicture.asset(
-            AppAssets.icWalletAdd,
+            AppAssets.icCelebrate,
             width: DesignConstants.iconSizeSmall,
             height: DesignConstants.iconSizeSmall,
             colorFilter: ColorFilter.mode(

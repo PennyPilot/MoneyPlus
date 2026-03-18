@@ -5,6 +5,7 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
+import 'package:moneyplus/presentation/transactions/widget/categories_filter_bottom_sheet.dart';
 import 'package:moneyplus/presentation/transactions/widget/empty_transactions.dart';
 import 'package:moneyplus/presentation/transactions/widget/loading_view.dart';
 import 'package:moneyplus/presentation/transactions/widget/tabs_row.dart';
@@ -62,7 +63,14 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
                 year: state.selectedYear,
                 month: state.selectedMonth,
                 onDatePick: context.read<TransactionCubit>().setSelectedDate,
-                onFilterClicked: () {},
+                onFilterClicked: () {
+                  showCategoriesFilterBottomSheet(
+                    context: context,
+                    categories: state.transactionCategories,
+                    onCategoriesSelected:  context.read<TransactionCubit>().onCategoriesSelected,
+                    initialSelectedCategories: state.selectedCategories.toSet()
+                  );
+                },
               ),
 
               Padding(

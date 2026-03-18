@@ -79,5 +79,9 @@ class AppAssets {
   static const String icSun = '$_icons/ic_sun.svg';
   static const String icTranslation = '$_icons/ic_translation.svg';
   static const String icCurrency = '$_icons/ic_currency.svg';
+  static const String icEmptyRadioButton = '$_icons/ic_circle.svg';
+  static const String icSelectedRadioButton = '$_icons/ic_check_circle.svg';
   static const String glowBackground = '$_images/money_background.png';
+  static const String icCelebrate = '$_icons/ic_celebrate.svg';
+  static const String icLogout = '$_icons/ic_logout.svg';
 }

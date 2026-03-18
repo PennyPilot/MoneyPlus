@@ -2,9 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:svg_flutter/svg.dart';
-import 'package:moneyplus/design_system/theme/money_typography.dart';
 
 import '../theme/money_extension_context.dart';
 
@@ -22,9 +20,12 @@ class MBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+
     return Container(
       decoration: BoxDecoration(
-        color: context.colors.surface,
+        color: colors.surface,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -40,24 +41,26 @@ class MBottomSheet extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: MoneyTypography.typography.title.small.copyWith(
-                  color: Colors.black,
+                style: typography.title.small.copyWith(
+                  color: colors.title,
                 ),
               ),
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: SvgPicture.asset(AppAssets.iconCancel, width: 20, height: 20),
+                child: SvgPicture.asset(
+                  AppAssets.iconCancel,
+                  width: 20,
+                  height: 20,
+                  colorFilter: ColorFilter.mode(colors.title, BlendMode.srcIn),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-
-          Divider(thickness: 1, color: MoneyColors.light.stroke),
+          Divider(thickness: 1, color: colors.stroke),
           const SizedBox(height: 12),
-
           content,
           const SizedBox(height: 24),
-
           if (actionButtons.isNotEmpty)
             Row(
               children: [
@@ -67,8 +70,7 @@ class MBottomSheet extends StatelessWidget {
                 ],
               ],
             ),
-
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
         ],
       ),
     );

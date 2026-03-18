@@ -9,6 +9,9 @@ Future<DateTime?> showMonthYearDialog(
     }) {
   int selectedMonth = initialMonth;
   int selectedYear = initialYear;
+  final localization = context.localizations;
+  final colors = context.colors;
+  final typography = context.typography;
 
   return showDialog<DateTime>(
     context: context,
@@ -16,10 +19,11 @@ Future<DateTime?> showMonthYearDialog(
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            backgroundColor: context.colors.surface,
+            backgroundColor: colors.surface,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             title: Text(
-              "Select month & year",
-              style: context.typography.title.medium,
+              localization.selectMonthYear,
+              style: typography.title.medium.copyWith(color: colors.title),
             ),
             content: Row(
               children: [
@@ -27,6 +31,9 @@ Future<DateTime?> showMonthYearDialog(
                   child: DropdownButton<int>(
                     value: selectedMonth,
                     isExpanded: true,
+                    dropdownColor: colors.surface,
+                    style: typography.body.medium.copyWith(color: colors.title),
+                    underline: Container(height: 1, color: colors.primary),
                     items: List.generate(12, (i) => i + 1)
                         .map(
                           (m) => DropdownMenuItem(
@@ -47,6 +54,9 @@ Future<DateTime?> showMonthYearDialog(
                   child: DropdownButton<int>(
                     value: selectedYear,
                     isExpanded: true,
+                    dropdownColor: colors.surface,
+                    style: typography.body.medium.copyWith(color: colors.title),
+                    underline: Container(height: 1, color: colors.primary),
                     items: List.generate(50, (i) => 2000 + i)
                         .map(
                           (y) => DropdownMenuItem(
@@ -67,14 +77,20 @@ Future<DateTime?> showMonthYearDialog(
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
+                child: Text(
+                  localization.cancel,
+                  style: typography.label.large.copyWith(color: colors.primary),
+                ),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(
                   context,
                   DateTime(selectedYear, selectedMonth),
                 ),
-                child: const Text("OK"),
+                child: Text(
+                  localization.select,
+                  style: typography.label.large.copyWith(color: colors.primary),
+                ),
               ),
             ],
           );
