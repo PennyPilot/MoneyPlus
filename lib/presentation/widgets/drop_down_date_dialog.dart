@@ -40,13 +40,17 @@ class DropDownDateDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 4,
           children: [
             Text(
               "${getMonthNameFromNumber(month, context)}, $year",
               style: typography.label.small.copyWith(color: colors.title),
             ),
-            SvgPicture.asset(AppAssets.arrowDownV2),
+            SvgPicture.asset(AppAssets.arrowDownV2,
+              colorFilter: ColorFilter.mode(colors.title,BlendMode.srcIn),
+              width: 16,
+              height: 16,
+            ),
           ],
         ),
       ),

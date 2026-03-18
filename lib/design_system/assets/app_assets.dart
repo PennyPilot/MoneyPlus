@@ -82,4 +82,6 @@ class AppAssets {
   static const String icEmptyRadioButton = '$_icons/ic_circle.svg';
   static const String icSelectedRadioButton = '$_icons/ic_check_circle.svg';
   static const String glowBackground = '$_images/money_background.png';
+  static const String icCelebrate = '$_icons/ic_celebrate.svg';
+  static const String icLogout = '$_icons/ic_logout.svg';
 }

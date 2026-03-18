@@ -73,7 +73,9 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(AppAssets.icCalender, width: 24, height: 24),
+              SvgPicture.asset(AppAssets.icCalender,
+                  colorFilter: ColorFilter.mode(colors.body,BlendMode.srcIn),
+                  width: 24, height: 24),
               SizedBox(width: 8),
               Expanded(
                 child: TextField(
@@ -99,7 +101,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                       builder: (context, child) {
                         return Theme(
                           data: Theme.of(context).copyWith(
-                            colorScheme: ColorScheme.light(
+                            colorScheme: Theme.of(context).colorScheme.copyWith(
                               primary: colors.primary,
                               onPrimary: colors.onPrimary,
                               onSurface: colors.title,
@@ -128,6 +130,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
               ),
               SvgPicture.asset(
                 AppAssets.icArrowDownRound,
+                colorFilter: ColorFilter.mode(colors.body,BlendMode.srcIn),
                 width: 24,
                 height: 24,
               ),
