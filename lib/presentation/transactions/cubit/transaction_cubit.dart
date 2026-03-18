@@ -15,22 +15,29 @@ class TransactionCubit extends Cubit<TransactionState> {
 
     final now = DateTime.now();
     try {
-      final categories = await transactionRepository.getTransactionCategories(null);
+      final categories = await transactionRepository.getTransactionCategories();
 
       final result = await transactionRepository.getTransactions(
         page: 1,
         date: now,
       );
 
-      emit(
-        state.copyWith(
-          transactions: result,
-          selectedYear: now.year,
-          selectedMonth: now.month,
-          status: TransactionStatus.success,
-          hasMore: result.length == 20,
-          transactionCategories: categories,
-        ),
+      categories.when(
+        onSuccess: (categories) {
+          emit(
+            state.copyWith(
+              transactions: result,
+              selectedYear: now.year,
+              selectedMonth: now.month,
+              status: TransactionStatus.success,
+              hasMore: result.length == 20,
+              transactionCategories: categories,
+            ),
+          );
+        },
+        onError: (error) {
+          emit(state.copyWith(status: TransactionStatus.failure));
+        },
       );
     } catch (_) {
       emit(state.copyWith(status: TransactionStatus.failure));

@@ -22,32 +22,35 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
   }
 
   Future<void> _loadCategories() async {
-    try {
-      emit(state.copyWith(isLoadingCategories: true));
-      final categories = await _transactionRepository.getTransactionCategories(
-        TransactionType.expense,
-      );
+    emit(state.copyWith(isLoadingCategories: true));
+    final transactionCategories = await _transactionRepository.getTransactionCategories(
+      type: TransactionType.expense,
+    );
 
-      emit(
-        state.copyWith(
-          categories: categories,
-          selectedCategory: categories.first,
-          isLoadingCategories: false,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: FormStatus.failure,
-          errorMessage: "Failed to load categories",
-        ),
-      );
-    }
+    transactionCategories.when(
+      onSuccess: (categories) {
+        emit(
+          state.copyWith(
+            categories: categories,
+            selectedCategory: categories.firstOrNull,
+            isLoadingCategories: false,
+          ),
+        );
+      },
+      onError: (error) {
+        emit(
+          state.copyWith(
+            status: FormStatus.failure,
+            errorMessage: "Failed to load categories.",
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _loadCurrency() async {
     try {
-      emit(state.copyWith(status: FormStatus.loading));
+    emit(state.copyWith(status: FormStatus.loading));
       final currency = await _userMoneyRepository.getCurrency();
 
       emit(state.copyWith(currency: currency, status: FormStatus.initial));
@@ -105,7 +108,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           emit(
             state.copyWith(
               status: FormStatus.failure,
-              errorMessage: "Failed to add expense: ${error.message}",
+              errorMessage: "Failed to add expense.",
             ),
           );
         },
@@ -114,7 +117,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
       emit(
         state.copyWith(
           status: FormStatus.failure,
-          errorMessage: "An unexpected error occurred: $e",
+          errorMessage: "An unexpected error occurred.",
         ),
       );
     }
