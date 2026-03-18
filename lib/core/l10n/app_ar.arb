@@ -156,7 +156,7 @@
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
   "totalSpend": "إجمالي الإنفاق",
   "category_already_exists": "هذا التصنيف موجود بالفعل",
-  "no_categories_found": "لا يوجد تصنيفات، ابدأ بإضافة تصنيفات جديدة"
+  "no_categories_found": "لا يوجد تصنيفات، ابدأ بإضافة تصنيفات جديدة",
   "salary_saved": "تم حفظ إعدادات الراتب بنجاح",
   "failed_to_save_salary": "فشل في حفظ إعدادات الراتب",
   "failed_to_load_salary_settings": "فشل في تحميل إعدادات الراتب",
