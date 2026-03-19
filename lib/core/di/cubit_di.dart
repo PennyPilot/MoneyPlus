@@ -16,6 +16,8 @@ import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_c
 
 import '../../presentation/accout/cubit/account_cubit.dart';
 import '../../presentation/expense/cubit/add_expense_cubit.dart';
+import '../../presentation/categories/cubit/categories_cubit.dart';
+import '../../domain/repository/category_repository.dart';
 import 'injection.dart';
 
 void initCubitDI() {
@@ -78,6 +80,9 @@ void initCubitDI() {
     () => AccountCubit(getIt<AccountRepository>()),
   );
 
+  getIt.registerFactory<CategoriesCubit>(
+    () => CategoriesCubit(getIt<CategoryRepository>()),
+);
   getIt.registerFactory<SalarySettingsCubit>(
     () => SalarySettingsCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
   );

@@ -19,6 +19,7 @@ import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
 import '../widget/language_selection_dialog.dart';
 import '../widget/personal_info_card.dart';
+import '../../navigation/routes.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -72,10 +73,7 @@ class AccountScreen extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.75,
               height: 150,
-              child: Image.asset(
-                AppAssets.glowBackground,
-                fit: BoxFit.contain,
-              ),
+              child: Image.asset(AppAssets.glowBackground, fit: BoxFit.contain),
             ),
           ),
         ),
@@ -96,6 +94,7 @@ class AccountScreen extends StatelessWidget {
                   context,
                   title: l10n.manageCategories,
                   iconPath: AppAssets.icSettings,
+                  onTap: () => const ManageCategoriesRoute().push(context),
                 ),
                 accountSection(
                   context,
