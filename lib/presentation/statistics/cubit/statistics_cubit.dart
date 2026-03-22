@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../domain/entity/spending_trend_point.dart';
 import '../../../domain/repository/statistics_repository.dart';
 import 'statistics_state.dart';
 
@@ -11,35 +13,41 @@ class StatisticsCubit extends Cubit<StatisticsState> {
 
   Future<void> loadStatistics({DateTime? month}) async {
     final selectedMonth = month ?? DateTime(2026, 2, 1);
-
     emit(const StatisticsLoading());
 
     final monthlyOverviewResult = await _repository.getMonthlyOverview(
       month: selectedMonth,
     );
+
     monthlyOverviewResult.when(
       onSuccess: (monthlyOverview) async {
-        final categoriesBreakdownResult =
-            await _repository.getCategoriesBreakDown(date:selectedMonth);
+        final categoriesResult = await _repository.getCategoriesBreakDown(
+          date: selectedMonth,
+        );
+        final trendResult = await _repository.getSpendingTrend(
+          month: selectedMonth,
+        );
 
-        categoriesBreakdownResult.when(
+        categoriesResult.when(
           onSuccess: (categoriesBreakdown) {
+            final spendingTrend = trendResult.when(
+              onSuccess: (trend) => trend,
+              onError: (_) => SpendingTrend(points: [], currency: 'IQD'),
+            );
+
             emit(
               StatisticsSuccess(
                 monthlyOverview: monthlyOverview,
                 selectedMonth: selectedMonth,
                 categoriesBreakdown: categoriesBreakdown,
+                spendingTrend: spendingTrend,
               ),
             );
           },
-          onError: (error) {
-            emit(StatisticsFailure(error.message));
-          },
+          onError: (error) => emit(StatisticsFailure(error.message)),
         );
       },
-      onError: (error) {
-        emit(StatisticsFailure(error.message));
-      },
+      onError: (error) => emit(StatisticsFailure(error.message)),
     );
   }
 
