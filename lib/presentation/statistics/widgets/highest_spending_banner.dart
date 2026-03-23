@@ -42,7 +42,7 @@ class HighestSpendingBanner extends StatelessWidget {
           ),
           const SizedBox(width: DesignConstants.spacingXSmall),
           Text(
-            'Your highest spending was on $day $monthAbbr',
+            l10n.highest_spending_message('$day $monthAbbr'),
             style: context.typography.label.xSmall?.copyWith(
               color: context.colors.red,
             ),

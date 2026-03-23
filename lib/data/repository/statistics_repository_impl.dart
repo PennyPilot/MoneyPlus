@@ -141,11 +141,6 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   Future<Result<SpendingTrend>> getSpendingTrend({required DateTime month}) async {
     try {
       final client = await _supabaseService.getClient();
-      final userId = client.auth.currentUser?.id;
-
-      if (userId == null) {
-        return Result.error(ErrorModel('User not logged in'));
-      }
 
       final data = await client.rpc(
         'get_spending_trend',
