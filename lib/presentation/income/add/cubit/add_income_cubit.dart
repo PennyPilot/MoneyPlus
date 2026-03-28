@@ -1,56 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyplus/domain/entity/transaction_category.dart';
-import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
+import 'package:moneyplus/domain/repository/transaction_repository.dart';
 
-import '../../../domain/repository/transaction_repository.dart';
-import '../../../domain/repository/user_money_repository.dart';
-import 'add_expense_state.dart';
+import '../../../../domain/repository/user_money_repository.dart';
+import 'add_income_state.dart';
 
-class AddExpenseCubit extends Cubit<AddExpenseState> {
+
+class AddIncomeCubit extends Cubit<AddIncomeState> {
   final TransactionRepository _transactionRepository;
   final UserMoneyRepository _userMoneyRepository;
 
-  AddExpenseCubit({
+  AddIncomeCubit({
     required TransactionRepository transactionRepository,
     required UserMoneyRepository userMoneyRepository,
   }) : _transactionRepository = transactionRepository,
        _userMoneyRepository = userMoneyRepository,
-       super(AddExpenseState.initial()) {
+       super(AddIncomeState.initial()) {
     _loadCurrency();
-    _loadCategories();
-  }
-
-  Future<void> _loadCategories() async {
-    emit(state.copyWith(isLoadingCategories: true));
-    final transactionCategories = await _transactionRepository.getTransactionCategories(
-      type: TransactionType.expense,
-    );
-
-    transactionCategories.when(
-      onSuccess: (categories) {
-        emit(
-          state.copyWith(
-            categories: categories,
-            selectedCategory: categories.firstOrNull,
-            isLoadingCategories: false,
-          ),
-        );
-      },
-      onError: (error) {
-        emit(
-          state.copyWith(
-            status: FormStatus.failure,
-            errorMessage: "Failed to load categories.",
-          ),
-        );
-      },
-    );
   }
 
   Future<void> _loadCurrency() async {
     try {
-    emit(state.copyWith(status: FormStatus.loading));
+      emit(state.copyWith(status: FormStatus.loading));
       final currency = await _userMoneyRepository.getCurrency();
 
       emit(state.copyWith(currency: currency, status: FormStatus.initial));
@@ -82,20 +53,14 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
     emit(state.copyWith(note: newNote));
   }
 
-  void onCategorySelected(TransactionCategory category) {
-    emit(state.copyWith(selectedCategory: category));
-  }
-
-  Future<void> onSubmitExpense() async {
+  Future<void> onSubmitIncome() async {
     if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
-      final result = await _transactionRepository.addTransaction(
+      final result = await _transactionRepository.addIncomeTransaction(
         amount: state.amount!,
-        type: TransactionType.expense,
         date: state.date,
-        category: state.selectedCategory!,
         currency: state.currency!,
         note: state.note,
       );
@@ -108,7 +73,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
           emit(
             state.copyWith(
               status: FormStatus.failure,
-              errorMessage: "Failed to add expense.",
+              errorMessage: "Failed to add income: ${error.message}",
             ),
           );
         },
@@ -117,7 +82,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
       emit(
         state.copyWith(
           status: FormStatus.failure,
-          errorMessage: "An unexpected error occurred.",
+          errorMessage: "An unexpected error occurred: $e",
         ),
       );
     }

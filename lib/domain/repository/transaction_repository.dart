@@ -24,8 +24,8 @@ abstract class TransactionRepository {
     String note = "",
   });
 
-  Future<bool> editTransaction({
-    required int id,
+  Future<Result<void>> editTransaction({
+    required String id,
     double? amount,
     TransactionType? type,
     DateTime? date,
@@ -33,13 +33,13 @@ abstract class TransactionRepository {
     String? note,
   });
 
-  Future<void> deleteTransaction(String id);
+  Future<Result<void>> deleteTransaction(String id);
 
   Future<List<Transaction>> getTransactions({
     TransactionType? type,
     TransactionCategory? category,
     DateTime? date,
-    List<int> categoriesId = const[],
+    List<int> categoriesId = const [],
     required int page,
   });
 

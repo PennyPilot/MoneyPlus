@@ -4,31 +4,34 @@ import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
 
-import '../../../core/di/injection.dart';
-import '../../../core/l10n/app_localizations.dart';
-import '../../../design_system/theme/money_extension_context.dart';
-import '../../../design_system/widgets/app_bar.dart';
-import '../../../design_system/widgets/buttons/button/default_button.dart';
-import '../../../design_system/widgets/snack_bar.dart';
-import '../../../design_system/widgets/text_field.dart';
-import '../../../design_system/widgets/text_field_date_Picker.dart';
-import '../cubit/add_income_cubit.dart';
-import '../cubit/add_income_state.dart';
+import '../../../../../core/di/injection.dart';
+import '../../../../../core/l10n/app_localizations.dart';
+import '../../../../../design_system/theme/money_extension_context.dart';
+import '../../../../../design_system/widgets/app_bar.dart';
+import '../../../../../design_system/widgets/buttons/button/default_button.dart';
+import '../../../../../design_system/widgets/snack_bar.dart';
+import '../../../../../design_system/widgets/text_field.dart';
+import '../../../../../design_system/widgets/text_field_date_Picker.dart';
+import '../cubit/edit_income_cubit.dart';
+import '../cubit/edit_income_state.dart';
 
-class AddIncomeScreen extends StatelessWidget {
-  const AddIncomeScreen({super.key});
+
+class EditIncomeScreen extends StatelessWidget {
+  final String transactionId;
+
+  const EditIncomeScreen({super.key, required this.transactionId});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AddIncomeCubit>(),
-      child: const _IncomeScreenContent(),
+      create: (context) => getIt<EditIncomeCubit>(param1: transactionId),
+      child: const _EditIncomeScreenContent(),
     );
   }
 }
 
-class _IncomeScreenContent extends StatelessWidget {
-  const _IncomeScreenContent();
+class _EditIncomeScreenContent extends StatelessWidget {
+  const _EditIncomeScreenContent();
 
   @override
   Widget build(BuildContext context) {
@@ -38,32 +41,35 @@ class _IncomeScreenContent extends StatelessWidget {
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: CustomAppBar(
-        title: localization.addIncome,
+        title: localization.editIncome,
         backgroundColor: colors.surfaceLow,
         leading: AppBarCircleButton(
           assetPath: AppAssets.icArrowLeft,
           onTap: () => Navigator.pop(context),
         ),
       ),
-      body: BlocConsumer<AddIncomeCubit, AddIncomeState>(
+      body: BlocConsumer<EditIncomeCubit, EditIncomeState>(
         listener: (context, state) {
           final localization = AppLocalizations.of(context)!;
 
           if (state.status == FormStatus.success) {
             MSnackBar.success(
-              message: localization.incomeAddedSuccessfully,
+              message: localization.incomeUpdatedSuccessfully,
               title: '',
             ).showSnackBar(context: context);
-
             Navigator.pop(context);
           } else if (state.status == FormStatus.failure) {
             MSnackBar.error(
-              message: state.errorMessage ?? localization.failedToAddIncome,
+              message: state.errorMessage ?? localization.failedToUpdateIncome,
               title: '',
             ).showSnackBar(context: context);
           }
         },
         builder: (context, state) {
+          if (state.isLoadingTransaction) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           return SafeArea(
             child: Column(
               children: [
@@ -72,7 +78,7 @@ class _IncomeScreenContent extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
                       _buildAmountSection(context, state),
-                      _buildDateSection(context),
+                      _buildDateSection(context, state),
                       _buildNoteSection(context, state),
                     ],
                   ),
@@ -86,7 +92,7 @@ class _IncomeScreenContent extends StatelessWidget {
     );
   }
 
-  Widget _buildAmountSection(BuildContext context, AddIncomeState state) {
+  Widget _buildAmountSection(BuildContext context, EditIncomeState state) {
     final colors = context.colors;
     final typography = context.typography;
     final localization = AppLocalizations.of(context)!;
@@ -123,13 +129,13 @@ class _IncomeScreenContent extends StatelessWidget {
           ),
         ),
         onChanged: (value) {
-          context.read<AddIncomeCubit>().onAmountChanged(value);
+          context.read<EditIncomeCubit>().onAmountChanged(value);
         },
       ),
     );
   }
 
-  Widget _buildDateSection(BuildContext context) {
+  Widget _buildDateSection(BuildContext context, EditIncomeState state) {
     final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
@@ -137,13 +143,13 @@ class _IncomeScreenContent extends StatelessWidget {
         hint: localization.date,
         onError: () {},
         onDateChange: (date) {
-          context.read<AddIncomeCubit>().onDateChanged(date);
+          context.read<EditIncomeCubit>().onDateChanged(date);
         },
       ),
     );
   }
 
-  Widget _buildNoteSection(BuildContext context, AddIncomeState state) {
+  Widget _buildNoteSection(BuildContext context, EditIncomeState state) {
     final localization = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 16),
@@ -153,13 +159,13 @@ class _IncomeScreenContent extends StatelessWidget {
         minLines: 4,
         maxLines: 6,
         onChanged: (value) {
-          context.read<AddIncomeCubit>().onNoteChanged(value);
+          context.read<EditIncomeCubit>().onNoteChanged(value);
         },
       ),
     );
   }
 
-  Widget _buildSaveButton(BuildContext context, AddIncomeState state) {
+  Widget _buildSaveButton(BuildContext context, EditIncomeState state) {
     final localization = AppLocalizations.of(context)!;
 
     return Padding(
@@ -167,9 +173,9 @@ class _IncomeScreenContent extends StatelessWidget {
       child: DefaultButton(
         text: state.status == FormStatus.loading
             ? localization.saving
-            : localization.add,
+            : localization.save,
         onPressed: () {
-          context.read<AddIncomeCubit>().onSubmitIncome();
+          context.read<EditIncomeCubit>().onSubmitIncome();
         },
         isEnabled: state.canSubmitForm,
       ),

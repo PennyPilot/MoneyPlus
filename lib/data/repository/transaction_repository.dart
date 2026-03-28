@@ -70,27 +70,49 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<bool> editTransaction({
-    required int id,
+  Future<Result<void>> editTransaction({
+    required String id,
     double? amount,
     TransactionType? type,
     DateTime? date,
     TransactionCategory? category,
     String? note,
   }) async {
-    throw UnimplementedError('editTransaction not implemented');
+    try {
+      final client = await service.getClient();
+      await client.rpc(
+        RpcString.editTransaction,
+        params: {
+          'p_id': id,
+          'p_amount': amount,
+          'p_transaction_type_id': type?.value,
+          'p_date': date?.toIso8601String(),
+          'p_category_id': category?.id,
+          'p_note': note,
+        },
+      );
+      return Result.success(null);
+    } catch (e) {
+      return Result.error(ErrorModel("Failed to edit transaction: $e"));
+    }
   }
 
   @override
-  Future<void> deleteTransaction(String id) async {
-    final client = await service.getClient();
-
-    final response = await client.rpc(
-      RpcString.deleteTransaction,
-      params: {'p_id': id},
-    );
-    if (response == null || response['id'] == null) {
-      throw Exception("cannot delete transaction with id: $id ");
+  Future<Result<void>> deleteTransaction(String id) async {
+    try {
+      final client = await service.getClient();
+      final response = await client.rpc(
+        RpcString.deleteTransaction,
+        params: {'p_id': id},
+      );
+      if (response == null || response['id'] == null) {
+        return Result.error(
+          ErrorModel("Cannot delete transaction with id: $id"),
+        );
+      }
+      return Result.success(null);
+    } catch (e) {
+      return Result.error(ErrorModel("Cannot delete transaction with id: $id"));
     }
   }
 
@@ -251,11 +273,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
 }
 
 class RpcString {
-  static String deleteTransaction = 'delete_transaction';
-  static String getTransactionDetails = 'get_transaction_details';
   static String getTransactions = 'get_transactions';
-  static String getDefaultCategories = 'get_default_categories';
+  static String editTransaction = 'edit_transaction';
+  static String deleteTransaction = 'delete_transaction';
   static String getUserCategories = 'get_user_categories';
+  static String getDefaultCategories = 'get_default_categories';
+  static String getTransactionDetails = 'get_transaction_details';
 }
 
 class DefaultTransactionTypeId {

@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
 import 'package:moneyplus/presentation/edit_salary/salary_settings_screen.dart';
-import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
 import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 
 import '../../core/di/injection.dart';
+import '../expense/add/screen/add_expense_screen.dart';
 import '../forget_password/screen/forget_password_screen.dart';
-import '../income/screen/add_income_screen.dart';
+import '../income/add/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../main_container/screen/main_screen.dart';
 import '../statistics/cubit/statistics_cubit.dart';
@@ -113,6 +113,7 @@ class StatisticsRoute extends GoRouteData with $StatisticsRoute {
 class TransactionDetailsRoute extends GoRouteData
     with $TransactionDetailsRoute {
   final String transactionId;
+
   TransactionDetailsRoute(this.transactionId);
 
   @override

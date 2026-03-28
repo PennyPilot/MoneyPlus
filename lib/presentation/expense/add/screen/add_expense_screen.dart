@@ -6,15 +6,15 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
-import 'package:moneyplus/presentation/expense/cubit/add_expense_cubit.dart';
-import 'package:moneyplus/presentation/expense/cubit/add_expense_state.dart';
+import 'package:moneyplus/presentation/expense/add/cubit/add_expense_cubit.dart';
 
-import '../../../core/l10n/app_localizations.dart';
-import '../../../design_system/widgets/buttons/button/default_button.dart';
-import '../../../design_system/widgets/chip.dart';
-import '../../../design_system/widgets/snack_bar.dart';
-import '../../../core/di/injection.dart';
-import '../../../domain/model/form_status.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../core/l10n/app_localizations.dart';
+import '../../../../design_system/widgets/buttons/button/default_button.dart';
+import '../../../../design_system/widgets/chip.dart';
+import '../../../../design_system/widgets/snack_bar.dart';
+import '../../../../domain/model/form_status.dart';
+import '../cubit/add_expense_state.dart';
 
 class AddExpenseScreen extends StatelessWidget {
   const AddExpenseScreen({super.key});
@@ -218,7 +218,9 @@ class _ExpenseScreenContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
       child: DefaultButton(
-        text: state.status == FormStatus.loading ? localization.saving : localization.add,
+        text: state.status == FormStatus.loading
+            ? localization.saving
+            : localization.add,
         onPressed: () {
           context.read<AddExpenseCubit>().onSubmitExpense();
         },

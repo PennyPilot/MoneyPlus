@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
 
-import '../../../domain/entity/currency.dart';
+import '../../../../domain/entity/currency.dart';
 
 class AddIncomeState extends Equatable {
   final double? amount;
