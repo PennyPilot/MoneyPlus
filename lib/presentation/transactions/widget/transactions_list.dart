@@ -4,8 +4,13 @@ import 'package:moneyplus/presentation/transactions/widget/transaction_row.dart'
 
 class TransactionsList extends StatelessWidget {
   final List<Transaction> transactions;
+  final ValueChanged<int> onItemClicked;
 
-  const TransactionsList({super.key, required this.transactions});
+  const TransactionsList({
+    super.key,
+    required this.transactions,
+    required this.onItemClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +20,18 @@ class TransactionsList extends StatelessWidget {
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           final transaction = transactions[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: TransactionRow(
-              transactionType: transaction.type,
-              category: transaction.category.name,
-              currency: transaction.currency,
-              amount: transaction.amount,
-              date: transaction.date,
+          return GestureDetector(
+            onTap: () => onItemClicked(transaction.id),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: TransactionRow(
+                transactionType: transaction.type,
+                category: transaction.category.name,
+                currency: transaction.currency,
+                amount: transaction.amount,
+                date: transaction.date,
+              ),
             ),
           );
         },

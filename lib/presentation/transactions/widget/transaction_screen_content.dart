@@ -12,6 +12,8 @@ import 'package:moneyplus/presentation/transactions/widget/tabs_row.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_app_bar.dart';
 import 'package:moneyplus/presentation/transactions/widget/transactions_list.dart';
 
+import '../../navigation/routes.dart';
+
 class TransactionScreenContent extends StatefulWidget {
   const TransactionScreenContent({super.key});
 
@@ -67,8 +69,10 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
                   showCategoriesFilterBottomSheet(
                     context: context,
                     categories: state.transactionCategories,
-                    onCategoriesSelected:  context.read<TransactionCubit>().onCategoriesSelected,
-                    initialSelectedCategories: state.selectedCategories.toSet()
+                    onCategoriesSelected: context
+                        .read<TransactionCubit>()
+                        .onCategoriesSelected,
+                    initialSelectedCategories: state.selectedCategories.toSet(),
                   );
                 },
               ),
@@ -89,7 +93,12 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
                         ? SliverFillRemaining(child: LoadingView())
                         : state.transactions.isEmpty
                         ? SliverFillRemaining(child: EmptyTransactions())
-                        : TransactionsList(transactions: state.transactions),
+                        : TransactionsList(
+                            transactions: state.transactions,
+                            onItemClicked: (id) => TransactionDetailsRoute(
+                              id.toString(),
+                            ).push(context),
+                          ),
 
                     if (state.isLoadingMore)
                       const SliverToBoxAdapter(child: LoadingView()),
