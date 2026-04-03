@@ -8,9 +8,11 @@ import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
-import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
+import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 import '../transactions/widget/add_transaction_bottom_sheet.dart';
+
 import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
 import 'cubit/statistics_state.dart';
@@ -36,8 +38,23 @@ class StatisticsView extends StatefulWidget {
 }
 
 class _StatisticsViewState extends State<StatisticsView> {
-  void _onAddTransaction() {
-    showAddTransactionBottomSheet(context);
+  void _onAddTransaction() async {
+    final type = await showAddTransactionBottomSheet(context);
+    if (type != null) {
+      if (!mounted) return;
+      bool? result;
+      if (type == TransactionType.income) {
+        result = await const AddIncomeRoute().push<bool>(context);
+      } else {
+        result = await const AddExpenseRoute().push<bool>(context);
+      }
+
+      if (result == true) {
+        if (mounted) {
+          context.read<StatisticsCubit>().loadStatistics();
+        }
+      }
+    }
   }
 
   void _onRetry() {
@@ -55,10 +72,11 @@ class _StatisticsViewState extends State<StatisticsView> {
         title: l10n.statistics,
         trailing: switch (state) {
           StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
-              onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
-              year: selectedMonth.year,
-              month: selectedMonth.month,
-            ),
+            onDatePick: (date) =>
+                context.read<StatisticsCubit>().changeMonth(date),
+            year: selectedMonth.year,
+            month: selectedMonth.month,
+          ),
           _ => null,
         },
       ),
@@ -68,9 +86,9 @@ class _StatisticsViewState extends State<StatisticsView> {
           StatisticsLoading() => const AppLoadingIndicator(),
           StatisticsSuccess() => _buildSuccess(context, state),
           StatisticsFailure(:final message) => AppErrorView(
-              message: message,
-              onRetry: _onRetry,
-            ),
+            message: message,
+            onRetry: _onRetry,
+          ),
         },
       ),
     );

@@ -95,11 +95,19 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
                         ? SliverFillRemaining(child: EmptyTransactions())
                         : TransactionsList(
                             transactions: state.transactions,
-                            onItemClicked: (id) => TransactionDetailsRoute(
-                              id.toString(),
-                            ).push(context),
+                            onItemClicked: (id) async {
+                              final result = await TransactionDetailsRoute(
+                                id.toString(),
+                              ).push<bool>(context);
+                              if (result == true) {
+                                if (context.mounted) {
+                                  context
+                                      .read<TransactionCubit>()
+                                      .refreshData();
+                                }
+                              }
+                            },
                           ),
-
                     if (state.isLoadingMore)
                       const SliverToBoxAdapter(child: LoadingView()),
                   ],

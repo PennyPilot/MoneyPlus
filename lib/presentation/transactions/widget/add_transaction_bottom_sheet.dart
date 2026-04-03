@@ -6,7 +6,6 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
-import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_type_card.dart';
 import 'package:moneyplus/utils/extenstions/show_bottom_sheet.dart';
 
@@ -36,12 +35,7 @@ class _AddTransactionBottomSheetState extends State<AddTransactionBottomSheet> {
     final selected = _selectedType;
     if (selected == null) return;
 
-    Navigator.of(context).pop();
-    if (selected == TransactionType.income) {
-      AddIncomeRoute().push(widget.parentContext);
-    } else {
-      AddExpenseRoute().push(widget.parentContext);
-    }
+    Navigator.of(context).pop(selected);
   }
 
   @override
@@ -94,9 +88,10 @@ class _AddTransactionBottomSheetState extends State<AddTransactionBottomSheet> {
   }
 }
 
-void showAddTransactionBottomSheet(BuildContext context) {
-  context.showBlurBottomSheet(
+Future<TransactionType?> showAddTransactionBottomSheet(BuildContext context) {
+  return context.showBlurBottomSheet<TransactionType>(
     AddTransactionBottomSheet(parentContext: context),
   );
 }
+
 

@@ -4,7 +4,7 @@ import 'package:moneyplus/presentation/transactions/widget/transaction_row.dart'
 
 class TransactionsList extends StatelessWidget {
   final List<Transaction> transactions;
-  final ValueChanged<int> onItemClicked;
+  final ValueChanged<String> onItemClicked;
 
   const TransactionsList({
     super.key,

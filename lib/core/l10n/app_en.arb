@@ -200,5 +200,7 @@
   "logout": "Logout",
   "logout_confirmation": "Are you sure you want to logout?",
   "logout_confirm": "Logout",
-  "logout_cancel": "Cancel"
+  "logout_cancel": "Cancel",
+  "delete_transaction" : "Delete transaction",
+  "confirm_deleting_transaction": "Are you sure to continue deleting transaction"
 }

@@ -30,7 +30,7 @@ List<TopSpendingCategory> getFakeTopSpendingCategories() {
 }
 
 final fakeTransactionExpense = Transaction(
-  id: 1,
+  id: "1",
   amount: 128.50,
   currency: "USD",
   type: TransactionType.expense,
@@ -43,7 +43,7 @@ final fakeTransactionExpense = Transaction(
 );
 
 final fakeTransactionIncome = Transaction(
-  id: 2,
+  id: "2",
   amount: 500.00,
   currency: "USD",
   type: TransactionType.income,

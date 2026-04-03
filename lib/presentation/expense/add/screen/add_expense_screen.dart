@@ -56,7 +56,7 @@ class _ExpenseScreenContent extends StatelessWidget {
               title: '',
             ).showSnackBar(context: context);
 
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           } else if (state.status == FormStatus.failure) {
             MSnackBar.error(
               message: state.errorMessage ?? localization.failedToAddExpense,

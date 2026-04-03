@@ -181,5 +181,7 @@
   "logout": "تسجيل الخروج",
   "logout_confirmation": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
   "logout_confirm": "خروج",
-  "logout_cancel": "إلغاء"
+  "logout_cancel": "إلغاء",
+  "delete_transaction" : "حذف المعاملة",
+  "confirm_deleting_transaction": "هل أنت متأكد حذف المعاملة"
 }

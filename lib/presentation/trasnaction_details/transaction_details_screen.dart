@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
+import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
+import 'package:moneyplus/design_system/widgets/buttons/button/varient_button.dart';
+import 'package:moneyplus/design_system/widgets/buttons/secondary/defult_secondary_button.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
@@ -66,7 +69,7 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
       trailing: _circleIcon(
         iconPath: AppAssets.icShare,
         context: context,
-        onClick: ()  {
+        onClick: () {
           cubit.onClickShareButton(context);
         },
       ),
@@ -88,19 +91,42 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
     bottomNavigationBar: _bottomBar(
       context: context,
       onClickDelete: () {
-        cubit.deleteTransaction().then((success) {
-          if (success) {
-            MSnackBar.success(
-              message: context.localizations.transaction_delete_success,
-              title: context.localizations.success,
-            ).showSnackBar(context: context);
-          } else {
-            MSnackBar.error(
-              message: context.localizations.transaction_delete_fail,
-              title: context.localizations.error,
-            ).showSnackBar(context: context);
-          }
-        });
+        showCustomBottomSheet(
+          context: context,
+          title: context.localizations.delete_transaction,
+          content: Column(
+            children: [
+              Image.asset(AppAssets.trashcan),
+              Text(context.localizations.confirm_deleting_transaction),
+            ],
+          ),
+          actionButtons: [
+            DefaultSecondaryButton(
+              text: context.localizations.cancel,
+              onPressed: () => Navigator.pop(context),
+            ),
+            DefaultErrorButton(
+              text: context.localizations.delete,
+              onPressed: () {
+                cubit.deleteTransaction().then((success) {
+                  if (success) {
+                    MSnackBar.success(
+                      message: context.localizations.transaction_delete_success,
+                      title: context.localizations.success,
+                    ).showSnackBar(context: context);
+                    GoRouter.of(context).pop();
+                    GoRouter.of(context).pop(true);
+                  } else {
+                    MSnackBar.error(
+                      message: context.localizations.transaction_delete_fail,
+                      title: context.localizations.error,
+                    ).showSnackBar(context: context);
+                  }
+                });
+              },
+            ),
+          ],
+        );
       },
     ),
   );

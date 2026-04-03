@@ -141,32 +141,43 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Result<Transaction>> getTransactionDetails(String id) async {
-    final client = await service.getClient();
-    final response = await client.rpc(
-      RpcString.getTransactionDetails,
-      params: {'p_id': id},
-    );
-    final data = response as Map<String, dynamic>;
-    if (data.isEmpty) {
-      return Result.error(ErrorModel("no transaction with that id: $id"));
-    }
-    final transactionType = ((data['transaction_type_id'] as int) == 1)
-        ? TransactionType.income
-        : TransactionType.expense;
-    return Result.success(
-      Transaction(
-        id: 0,
-        amount: (data['amount'] as num).toDouble(),
-        currency: await _getCurrencyAbbreviation(data['currency_id'] as int),
-        type: transactionType,
-        date: DateTime.parse(data['created_at']).toLocal(),
-        category: TransactionCategory(
-          id: data['category_id'] as int,
-          name: await _getCategoryName((data['category_id'] as int).toString()),
+    try {
+      final client = await service.getClient();
+      final response = await client.rpc(
+        RpcString.getTransactionDetails,
+        params: {'p_id': id},
+      );
+
+      if (response == null) {
+        return Result.error(ErrorModel("No transaction found with id: $id"));
+      }
+
+      final data = response as Map<String, dynamic>;
+      if (data.isEmpty) {
+        return Result.error(ErrorModel("No transaction with that id: $id"));
+      }
+
+      final transactionType = ((data['transaction_type_id'] as int) == 1)
+          ? TransactionType.income
+          : TransactionType.expense;
+
+      return Result.success(
+        Transaction(
+          id: id,
+          amount: (data['amount'] as num).toDouble(),
+          currency: await _getCurrencyAbbreviation(data['currency_id'] as int),
+          type: transactionType,
+          date: DateTime.parse(data['created_at']).toLocal(),
+          category: TransactionCategory(
+            id: data['category_id'] as int,
+            name: await _getCategoryName((data['category_id'] as int).toString()),
+          ),
+          note: data['note'] ?? "",
         ),
-        note: data['note'] as String,
-      ),
-    );
+      );
+    } catch (e) {
+      return Result.error(ErrorModel("Failed to get transaction details: $e"));
+    }
   }
 
   Future<String> _getCurrencyAbbreviation(int currencyId) async {

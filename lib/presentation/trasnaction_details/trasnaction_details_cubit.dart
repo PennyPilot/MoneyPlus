@@ -17,6 +17,7 @@ class TransactionDetailsCubit extends Cubit<TransactionDetailsState> {
 
   void getTransactionDetails(String id) async {
     final result = await transactionRepository.getTransactionDetails(id);
+
     result.when(
       onSuccess: (details) {
         emit(
@@ -27,11 +28,7 @@ class TransactionDetailsCubit extends Cubit<TransactionDetailsState> {
         );
       },
       onError: (e) {
-        emit(
-          TransactionDetailsError(
-            errorMsg: "Error, cannot get Translation details",
-          ),
-        );
+        emit(TransactionDetailsError(errorMsg: "Error: ${e.message}"));
       },
     );
   }
@@ -49,6 +46,6 @@ class TransactionDetailsCubit extends Cubit<TransactionDetailsState> {
 
   Future<void> onClickShareButton(BuildContext context) async {
     final transaction = (state as TransactionDetailsLoaded).transactionDetails;
-    await createAndSharePdf(transaction,context);
+    await createAndSharePdf(transaction, context);
   }
 }

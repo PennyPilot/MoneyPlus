@@ -3,7 +3,11 @@ import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
+import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
+import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/presentation/transactions/widget/add_transaction_bottom_sheet.dart';
 
 class EmptyTransactions extends StatelessWidget {
@@ -49,7 +53,24 @@ class EmptyTransactions extends StatelessWidget {
         IntrinsicWidth(
           child: DefaultButton(
             text: localizations.add_transaction,
-            onPressed: () => showAddTransactionBottomSheet(context),
+            onPressed: () async {
+              final type = await showAddTransactionBottomSheet(context);
+              if (type != null) {
+                if (!context.mounted) return;
+                bool? result;
+                if (type == TransactionType.income) {
+                  result = await const AddIncomeRoute().push<bool>(context);
+                } else {
+                  result = await const AddExpenseRoute().push<bool>(context);
+                }
+
+                if (result == true) {
+                  if (context.mounted) {
+                    context.read<TransactionCubit>().refreshData();
+                  }
+                }
+              }
+            },
           ),
         ),
       ],
