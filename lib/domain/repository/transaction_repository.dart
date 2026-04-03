@@ -16,6 +16,14 @@ abstract class TransactionRepository {
     String note = "",
   });
 
+  Future<Result<void>> addIncomeTransaction({
+    required double amount,
+    required DateTime date,
+    TransactionCategory? category,
+    required Currency currency,
+    String note = "",
+  });
+
   Future<bool> editTransaction({
     required int id,
     double? amount,
@@ -31,23 +39,25 @@ abstract class TransactionRepository {
     TransactionType? type,
     TransactionCategory? category,
     DateTime? date,
+    List<int> categoriesId = const[],
+    required int page,
   });
 
-  Future<Result<Transaction>>  getTransactionDetails(String id);
+  Future<Result<Transaction>> getTransactionDetails(String id);
 
   Future<double> getTotalAmount({TransactionType? type});
 
-  Future<List<TransactionCategory>> getTransactionCategories(
+  Future<Result<List<TransactionCategory>>> getTransactionCategories({
     TransactionType? type,
-  );
+  });
+
+  Future<Result<List<TransactionCategory>>> getDefaultTransactionCategories({
+    TransactionType? type,
+  });
 
   Future<List<TopSpendingCategory>> getTopSpendingCategories();
 
   Future<bool> addExpenseCategory(String name);
 
   Future<bool> editExpenseCategory({required int id, required String name});
-
-  Future<List<Transaction>> getAllTransactions();
-
-  Future<List<Transaction>> getAllTransactionsByType(TransactionType type,);
 }

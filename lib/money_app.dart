@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moneyplus/app_preferences_state.dart';
+import 'package:moneyplus/app_prefernces_cubit.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
@@ -10,17 +12,26 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/di/injection.dart';
 import 'core/l10n/app_localizations.dart';
-
+import 'domain/repository/app_preferences_repository.dart';
 
 class AuthRedirectNotifier extends ChangeNotifier {
   final AuthenticationRepository _authRepository;
   late final StreamSubscription<AuthState> _subscription;
   bool _isPasswordRecovery = false;
+  bool _isAuthenticated = false;
+
+  bool get isAuthenticated => _isAuthenticated;
 
   AuthRedirectNotifier(this._authRepository) {
     _subscription = _authRepository.onAuthStateChange.listen((data) {
       if (data.event == AuthChangeEvent.passwordRecovery) {
         _isPasswordRecovery = true;
+        notifyListeners();
+      } else if (data.session != null) {
+        _isAuthenticated = true;
+        notifyListeners();
+      } else {
+        _isAuthenticated = false;
         notifyListeners();
       }
     });
@@ -32,42 +43,71 @@ class AuthRedirectNotifier extends ChangeNotifier {
     super.dispose();
   }
 }
-final _authRedirectNotifier = AuthRedirectNotifier(getIt<AuthenticationRepository>());
+
+final _authRedirectNotifier =
+    AuthRedirectNotifier(getIt<AuthenticationRepository>());
 final _router = GoRouter(
   routes: $appRoutes,
-  initialLocation: '/login',
+  initialLocation: _authRedirectNotifier.isAuthenticated ? RoutePaths.main : RoutePaths.login,
   refreshListenable: _authRedirectNotifier,
   redirect: (context, state) {
     if (_authRedirectNotifier._isPasswordRecovery) {
       _authRedirectNotifier._isPasswordRecovery = false;
-      return '/update_password';
+      return RoutePaths.forgetPassword;
     }
+
+    final loggingIn = state.matchedLocation == RoutePaths.login;
+    if (!_authRedirectNotifier.isAuthenticated && !loggingIn) return RoutePaths.login;
+    if (_authRedirectNotifier.isAuthenticated && loggingIn) return RoutePaths.main;
+
     return null;
   },
 );
 
-
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Money++',
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ar'),
-      ],
-      theme: MoneyTheme.lightTheme,
-      routerConfig: _router,
+    return BlocProvider(
+      create: (context) => AppPreferencesCubit(getIt<AppPreferencesRepository>()),
+      child: const MoneyAppView(),
     );
+  }
+}
+
+class MoneyAppView extends StatelessWidget {
+  const MoneyAppView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppPreferencesCubit, AppPreferencesState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Money++',
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: state.appLanguage == AppLanguage.system
+              ? null
+              : Locale(state.appLanguage.name),
+          theme: MoneyTheme.lightTheme,
+          darkTheme: MoneyTheme.darkTheme,
+          themeMode: _getThemeMode(state.appTheme),
+          routerConfig: _router,
+        );
+      },
+    );
+  }
+}
+
+ThemeMode _getThemeMode(AppTheme theme) {
+  switch (theme) {
+    case AppTheme.light:
+      return ThemeMode.light;
+    case AppTheme.dark:
+      return ThemeMode.dark;
+    case AppTheme.system:
+      return ThemeMode.system;
   }
 }
