@@ -12,10 +12,10 @@ class AccountSetupState {
   final String salary;
   final String salaryDay;
   final String query;
-  final bool isButtonEnabled;
-  final List<Currency> currencies;inal List<Currency> filteredCurrencies;
-  ffinal List<String> categories;
-  final List<String> suggestions;
+  final bool isButtonEnabled;inal List<Currency> currencies;
+  final List<Currency> filteredCurrencies;
+  final List<String> categories;
+  ffinal List<String> suggestions;
   final bool isLoading;
   final String errorMessage;
   final AccountSetupStep accountStep;

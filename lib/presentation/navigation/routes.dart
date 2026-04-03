@@ -9,6 +9,7 @@ import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 
 import '../../core/di/injection.dart';
+import '../categories/screen/manage_categories_screen.dart';
 import '../forget_password/screen/forget_password_screen.dart';
 import '../income/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
@@ -16,7 +17,6 @@ import '../main_container/screen/main_screen.dart';
 import '../statistics/cubit/statistics_cubit.dart';
 import '../statistics/statistics_screen.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
-import '../categories/screen/manage_categories_screen.dart';
 
 part 'routes.g.dart';
 
@@ -31,6 +31,9 @@ abstract class RoutePaths {
   static const String updatePassword = '/update_password';
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
+  static const String accountSetup = '/accountSetup';
+  static const String editSalary = '/edit-salary';
+  static const String manageCategories = '/manage-categories';
 }
 
 @TypedGoRoute<OnBoardingRoute>(path: RoutePaths.onBoarding)
@@ -95,8 +98,7 @@ class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
   }
 }
 
-@TypedGoRoute<StatisticsRoute>(path: RoutePaths.statistics)
-@TypedGoRoute<AccountSetupRoute>(path: '/accountSetup')
+@TypedGoRoute<AccountSetupRoute>(path: RoutePaths.accountSetup)
 @immutable
 class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
   const AccountSetupRoute();
@@ -107,7 +109,7 @@ class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
   }
 }
 
-@TypedGoRoute<StatisticsRoute>(path: '/statistics')
+@TypedGoRoute<StatisticsRoute>(path: RoutePaths.statistics)
 @immutable
 class StatisticsRoute extends GoRouteData with $StatisticsRoute {
   const StatisticsRoute();
@@ -176,7 +178,7 @@ class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
   }
 }
 
-@TypedGoRoute<ManageCategoriesRoute>(path: '/manage-categories')
+@TypedGoRoute<ManageCategoriesRoute>(path: RoutePaths.manageCategories)
 @immutable
 class ManageCategoriesRoute extends GoRouteData with $ManageCategoriesRoute {
   const ManageCategoriesRoute();
@@ -187,7 +189,7 @@ class ManageCategoriesRoute extends GoRouteData with $ManageCategoriesRoute {
   }
 }
 
-@TypedGoRoute<EditSalaryRoute>(path: '/edit-salary')
+@TypedGoRoute<EditSalaryRoute>(path: RoutePaths.editSalary)
 @immutable
 class EditSalaryRoute extends GoRouteData with $EditSalaryRoute {
   const EditSalaryRoute();
