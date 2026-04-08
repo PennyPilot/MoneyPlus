@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 import '../../../design_system/assets/app_assets.dart';
+import '../../navigation/routes.dart';
 
 Widget personalInfoCard(
   BuildContext context, {
@@ -45,7 +46,7 @@ Widget personalInfoCard(
         ),
         GestureDetector(
           onTap: () {
-            // Handle click
+            ProfileSettingsRoute().push(context);
           },
           child: Container(
             decoration: BoxDecoration(

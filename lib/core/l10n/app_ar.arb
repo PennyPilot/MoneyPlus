@@ -26,6 +26,7 @@
   "finishSetup": "إنهاء الإعداد",
   "stepOf": "الخطوة {current} من {total}",
   "stepOfTotal": "الخطوة {current} من {total}",
+  "editProfile": "تعديل الحساب",
   "createAccount": "إنشاء حساب",
   "createNewAccount": "إنشاء حساب جديد",
   "startTakingControl": "ابدأ بالتحكم في أموالك",

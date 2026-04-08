@@ -45,6 +45,7 @@
       "total": {}
     }
   },
+  "editProfile": "Edit Profile",
   "createAccount": "Create Account",
   "createNewAccount": "Create new account",
   "startTakingControl": "Start taking control of your money",
