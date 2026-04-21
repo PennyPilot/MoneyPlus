@@ -1,6 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyplus/domain/entity/transaction_category.dart';
-import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/presentation/income/cubit/add_income_state.dart';
@@ -18,31 +16,6 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
        _userMoneyRepository = userMoneyRepository,
        super(AddIncomeState.initial()) {
     _loadCurrency();
-    _loadCategories();
-  }
-
-  Future<void> _loadCategories() async {
-    try {
-      emit(state.copyWith(isLoadingCategories: true));
-      final categories = await _transactionRepository.getTransactionCategories(
-        TransactionType.expense,
-      );
-
-      emit(
-        state.copyWith(
-          categories: categories,
-          selectedCategory: categories.first,
-          isLoadingCategories: false,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: FormStatus.failure,
-          errorMessage: "Failed to load categories",
-        ),
-      );
-    }
   }
 
   Future<void> _loadCurrency() async {
@@ -79,20 +52,14 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
     emit(state.copyWith(note: newNote));
   }
 
-  void onCategorySelected(TransactionCategory category) {
-    emit(state.copyWith(selectedCategory: category));
-  }
-
   Future<void> onSubmitIncome() async {
     if (!state.canSubmitForm) return;
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
-      final result = await _transactionRepository.addTransaction(
+      final result = await _transactionRepository.addIncomeTransaction(
         amount: state.amount!,
-        type: TransactionType.income,
         date: state.date,
-        category: state.selectedCategory!,
         currency: state.currency!,
         note: state.note,
       );

@@ -36,7 +36,6 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
         _mapResponseToOverview(response as Map<String, dynamic>),
       );
     } catch (e) {
-      print('Error fetching monthly overview: $e');
       return Result.error(ErrorModel(e.toString()));
     }
   }

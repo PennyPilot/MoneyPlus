@@ -1,9 +1,8 @@
 import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/user.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
-import '../../domain/repository/account_repository.dart';
 import '../../core/service/supabase_service.dart';
+import '../../domain/repository/account_repository.dart';
 
 class AccountRepositoryImpl extends AccountRepository {
   final SupabaseService supabaseService;
@@ -26,4 +25,9 @@ class AccountRepositoryImpl extends AccountRepository {
       throw Exception('Failed to get current user');
   }
 
+  @override
+  Future<void> logout() async {
+    final client = await supabaseService.getClient();
+    await client.auth.signOut();
+  }
 }

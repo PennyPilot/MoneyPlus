@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/app_prefernces_cubit.dart';
 import 'package:moneyplus/presentation/accout/widget/theme_selection_dialog.dart';
+import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
+import 'package:moneyplus/design_system/widgets/buttons/secondary/defult_secondary_button.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
@@ -16,6 +19,7 @@ import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
 import '../widget/language_selection_dialog.dart';
 import '../widget/personal_info_card.dart';
+import '../../navigation/routes.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -35,7 +39,11 @@ class AccountScreen extends StatelessWidget {
       body: BlocProvider(
         create: (_) => getIt<AccountCubit>()..loadUserInfo(),
         child: BlocConsumer<AccountCubit, AccountState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is LogoutSuccess) {
+              const LoginRoute().go(context);
+            }
+          },
           builder: (context, state) {
             return _buildBody(context, state, l10n, colors, typography);
           },
@@ -65,10 +73,7 @@ class AccountScreen extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.75,
               height: 150,
-              child: Image.asset(
-                AppAssets.glowBackground,
-                fit: BoxFit.contain,
-              ),
+              child: Image.asset(AppAssets.glowBackground, fit: BoxFit.contain),
             ),
           ),
         ),
@@ -89,6 +94,7 @@ class AccountScreen extends StatelessWidget {
                   context,
                   title: l10n.manageCategories,
                   iconPath: AppAssets.icSettings,
+                  onTap: () => const ManageCategoriesRoute().push(context),
                 ),
                 accountSection(
                   context,
@@ -140,9 +146,18 @@ class AccountScreen extends StatelessWidget {
                   context,
                   title: l10n.helpAndSupport,
                   iconPath: AppAssets.icCustomerSupport,
+                ),
+                accountSection(
+                  context,
+                  title: l10n.logout,
+                  iconPath: AppAssets.icLogout,
                   showDivider: false,
+                  onTap: () {
+                    _showLogoutConfirmation(context);
+                  },
                 ),
                 const SizedBox(height: 24),
+
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
@@ -158,6 +173,33 @@ class AccountScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  void _showLogoutConfirmation(BuildContext context) {
+    final l10n = context.localizations;
+    final cubit = context.read<AccountCubit>();
+
+    showCustomBottomSheet(
+      context: context,
+      title: l10n.logout,
+      content: Text(
+        l10n.logout_confirmation,
+        style: context.typography.body.medium.copyWith(color: context.colors.body),
+      ),
+      actionButtons: [
+        DefaultSecondaryButton(
+          text: l10n.logout_cancel,
+          onPressed: () => Navigator.pop(context),
+        ),
+        DefaultButton(
+          text: l10n.logout_confirm,
+          onPressed: () {
+            Navigator.pop(context);
+            cubit.logout();
+          },
         ),
       ],
     );

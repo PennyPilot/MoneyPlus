@@ -16,6 +16,14 @@ abstract class TransactionRepository {
     String note = "",
   });
 
+  Future<Result<void>> addIncomeTransaction({
+    required double amount,
+    required DateTime date,
+    TransactionCategory? category,
+    required Currency currency,
+    String note = "",
+  });
+
   Future<bool> editTransaction({
     required int id,
     double? amount,
@@ -39,9 +47,13 @@ abstract class TransactionRepository {
 
   Future<double> getTotalAmount({TransactionType? type});
 
-  Future<List<TransactionCategory>> getTransactionCategories(
+  Future<Result<List<TransactionCategory>>> getTransactionCategories({
     TransactionType? type,
-  );
+  });
+
+  Future<Result<List<TransactionCategory>>> getDefaultTransactionCategories({
+    TransactionType? type,
+  });
 
   Future<List<TopSpendingCategory>> getTopSpendingCategories();
 

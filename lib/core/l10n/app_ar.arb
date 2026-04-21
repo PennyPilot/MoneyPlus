@@ -39,7 +39,6 @@
   "forgetPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة التعيين",
   "forgetPasswordEmailHint": "البريد الإلكتروني",
   "forgetPasswordButton": "إرسال رابط إعادة التعيين",
-
   "updatePasswordAppBarTitle": "تحديث كلمة المرور",
   "updatePasswordTitle": "أدخل كلمة مرور جديدة لـ",
   "updatePasswordPasswordHint": "كلمة المرور الجديدة",
@@ -156,6 +155,8 @@
   "categoriesBreakdown": "تفاصيل الفئات",
   "no_monthly_breakdown": "لا يوجد نفقات لتحليلها بعد",
   "totalSpend": "إجمالي الإنفاق",
+  "category_already_exists": "هذا التصنيف موجود بالفعل",
+  "no_categories_found": "لا يوجد تصنيفات، ابدأ بإضافة تصنيفات جديدة",
   "salary_saved": "تم حفظ إعدادات الراتب بنجاح",
   "failed_to_save_salary": "فشل في حفظ إعدادات الراتب",
   "failed_to_load_salary_settings": "فشل في تحميل إعدادات الراتب",
@@ -176,5 +177,9 @@
   "failedToAddIncome": "فشل في إضافة الدخل",
   "whereDoYouUsuallySpendYourMoney": "أين تنفق أموالك عادة؟",
   "suggestions": "اقتراحات",
-  "selectedCategories": "التصنيفات المختارة"
+  "selectedCategories": "التصنيفات المختارة",
+  "logout": "تسجيل الخروج",
+  "logout_confirmation": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+  "logout_confirm": "خروج",
+  "logout_cancel": "إلغاء"
 }

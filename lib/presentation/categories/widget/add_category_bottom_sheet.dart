@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:svg_flutter/svg.dart';
@@ -6,33 +7,46 @@ import 'package:svg_flutter/svg.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/categories_cubit.dart';
+import '../../../domain/entity/category.dart';
 
 class AddCategorySheet extends StatefulWidget {
-  const AddCategorySheet({super.key});
+  final Category? category;
+  const AddCategorySheet({super.key, this.category});
 
   @override
   State<AddCategorySheet> createState() => _AddCategorySheetState();
 }
 
 class _AddCategorySheetState extends State<AddCategorySheet> {
-  final TextEditingController _controller = TextEditingController();
+  String _categoryName = '';
   bool _isButtonEnabled = false;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      setState(() {
-        _isButtonEnabled = _controller.text.trim().isNotEmpty;
-      });
-    });
+    _categoryName = _getInitialName();
+    _isButtonEnabled = _categoryName.trim().isNotEmpty;
+  }
+
+  String _getInitialName() {
+    if (widget.category == null) return '';
+    return _categoryNameByLocale(widget.category!);
+  }
+
+  String _categoryNameByLocale(Category category) {
+    final isArabic = Intl.getCurrentLocale() == 'ar';
+    return (isArabic && category.nameAr.trim().isNotEmpty)
+        ? category.nameAr
+        : category.name;
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
+    final isEdit = widget.category != null;
     return Container(
       padding: EdgeInsets.only(
         left: 16,
@@ -47,29 +61,21 @@ class _AddCategorySheetState extends State<AddCategorySheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(localizations.add_custom_category, style: typography.title.small),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: SvgPicture.asset(AppAssets.iconCancel),
-              ),
-            ],
-          ),
+          _buildHeader(localizations, isEdit),
           Divider(color: colors.stroke, thickness: 1),
           const SizedBox(height: 12),
 
           MTextField(
             leading: Padding(
-              padding: const EdgeInsetsGeometry.only(left: 16, right: 8),
+              padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
               child: SvgPicture.asset(AppAssets.icCategory),
             ),
             hint: localizations.category_name,
-            value: '',
+            value: _categoryName,
             onChanged: (String value) {
               setState(() {
-                _isButtonEnabled = value.trim().isNotEmpty;
+                _categoryName = value;
+                _isButtonEnabled = _categoryName.trim().isNotEmpty;
               });
             },
           ),
@@ -77,16 +83,45 @@ class _AddCategorySheetState extends State<AddCategorySheet> {
           const SizedBox(height: 24),
 
           DefaultButton(
-            text:localizations.add,
+            text: isEdit ? localizations.edit : localizations.add,
             isEnabled: _isButtonEnabled,
-            onPressed: _isButtonEnabled
-                ? () {
-                    Navigator.pop(context);
-                  }
-                : null,
+            onPressed: _isButtonEnabled ? () => _submit(context) : null,
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildHeader(AppLocalizations l10n, bool isEdit) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          isEdit ? l10n.edit : l10n.add_custom_category,
+          style: context.typography.title.small,
+        ),
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: SvgPicture.asset(AppAssets.iconCancel),
+        ),
+      ],
+    );
+  }
+
+  void _submit(BuildContext context) {
+    final cubit = context.read<CategoriesCubit>();
+    final trimmedName = _categoryName.trim();
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+
+    if (widget.category != null) {
+      final updated = isArabic
+          ? widget.category!.copyWith(nameAr: trimmedName)
+          : widget.category!.copyWith(name: trimmedName);
+      cubit.updateCategory(updated);
+    } else {
+      cubit.addCategory(trimmedName);
+    }
+
+    Navigator.pop(context);
   }
 }

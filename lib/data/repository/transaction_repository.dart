@@ -43,6 +43,33 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
+  Future<Result<void>> addIncomeTransaction({
+    required double amount,
+    required DateTime date,
+    TransactionCategory? category,
+    required Currency currency,
+    String note = "",
+  }) async {
+    try {
+      final client = await service.getClient();
+      await client.rpc(
+        'add_transaction',
+        params: {
+          'amount': amount,
+          'transaction_type_id': TransactionType.income.value,
+          'date': date.toIso8601String(),
+          'category_id': DefaultTransactionTypeId.income,
+          'note': note,
+          'currency_id': currency.id,
+        },
+      );
+      return Result.success(null);
+    } catch (e) {
+      return Result.error(e);
+    }
+  }
+
+  @override
   Future<bool> editTransaction({
     required int id,
     double? amount,
@@ -158,15 +185,49 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<List<TransactionCategory>> getTransactionCategories(
+  Future<Result<List<TransactionCategory>>> getTransactionCategories({
     TransactionType? type,
-  ) async {
+  }) async {
     try {
+      final isIncome = type == null ? null : type == TransactionType.income;
+
       final client = await service.getClient();
-      final response = await client.from('categories').select();
-      return response.map((e) => TransactionCategory.fromJson(e)).toList();
+      final data = await client.rpc(
+        RpcString.getUserCategories,
+        params: {'p_is_income': isIncome},
+      );
+
+      final categories = (data as List<dynamic>)
+          .map((e) => TransactionCategory.fromJson(e))
+          .toList();
+      return Result.success(categories);
     } catch (e) {
-      throw Exception('Failed to fetch categories');
+      return Result.error(ErrorModel('Failed to fetch categories: $e'));
+    }
+  }
+
+  @override
+  Future<Result<List<TransactionCategory>>> getDefaultTransactionCategories({
+    TransactionType? type,
+  }) async {
+    try {
+      final isIncome = type == null ? null : type == TransactionType.income;
+
+      final client = await service.getClient();
+      final data = await client.rpc(
+        RpcString.getDefaultCategories,
+        params: {'p_is_income': isIncome},
+      );
+
+      if (data == null) {
+        return Result.success([]);
+      }
+      final categories = (data as List<dynamic>)
+          .map((e) => TransactionCategory.fromJson(e))
+          .toList();
+      return Result.success(categories);
+    } catch (e) {
+      return Result.error(ErrorModel('Failed to fetch default categories: $e'));
     }
   }
 
@@ -193,4 +254,10 @@ class RpcString {
   static String deleteTransaction = 'delete_transaction';
   static String getTransactionDetails = 'get_transaction_details';
   static String getTransactions = 'get_transactions';
+  static String getDefaultCategories = 'get_default_categories';
+  static String getUserCategories = 'get_user_categories';
+}
+
+class DefaultTransactionTypeId {
+  static int income = 27;
 }
