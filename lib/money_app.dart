@@ -26,14 +26,9 @@ class AuthRedirectNotifier extends ChangeNotifier {
     _subscription = _authRepository.onAuthStateChange.listen((data) {
       if (data.event == AuthChangeEvent.passwordRecovery) {
         _isPasswordRecovery = true;
-        notifyListeners();
-      } else if (data.session != null) {
-        _isAuthenticated = true;
-        notifyListeners();
-      } else {
-        _isAuthenticated = false;
-        notifyListeners();
       }
+      _isAuthenticated = data.session != null;
+      notifyListeners();
     });
   }
 
@@ -48,17 +43,32 @@ final _authRedirectNotifier =
     AuthRedirectNotifier(getIt<AuthenticationRepository>());
 final _router = GoRouter(
   routes: $appRoutes,
-  initialLocation: _authRedirectNotifier.isAuthenticated ? RoutePaths.main : RoutePaths.login,
+  initialLocation:
+      _authRedirectNotifier.isAuthenticated ? RoutePaths.main : RoutePaths.login,
   refreshListenable: _authRedirectNotifier,
   redirect: (context, state) {
+    final isAuthenticated = _authRedirectNotifier.isAuthenticated;
+    final matchedLocation = state.matchedLocation;
+
     if (_authRedirectNotifier._isPasswordRecovery) {
       _authRedirectNotifier._isPasswordRecovery = false;
-      return RoutePaths.forgetPassword;
+      return RoutePaths.updatePassword;
     }
 
-    final loggingIn = state.matchedLocation == RoutePaths.login;
-    if (!_authRedirectNotifier.isAuthenticated && !loggingIn) return RoutePaths.login;
-    if (_authRedirectNotifier.isAuthenticated && loggingIn) return RoutePaths.main;
+    final isPublicRoute = matchedLocation == RoutePaths.login ||
+        matchedLocation == RoutePaths.createAccount ||
+        matchedLocation == RoutePaths.forgetPassword ||
+        matchedLocation == RoutePaths.onBoarding;
+
+    if (!isAuthenticated && !isPublicRoute) {
+      return RoutePaths.login;
+    }
+
+    if (isAuthenticated &&
+        isPublicRoute &&
+        matchedLocation != RoutePaths.onBoarding) {
+      return RoutePaths.main;
+    }
 
     return null;
   },
