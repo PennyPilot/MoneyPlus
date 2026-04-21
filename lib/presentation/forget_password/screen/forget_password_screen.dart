@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
@@ -46,7 +47,8 @@ class _ForgetPasswordView extends StatelessWidget {
             appBar: CustomAppBar(
               title: l10n.forgetPasswordAppBarTitle,
               trailing: AppLogo(assetPath: AppAssets.icAppLogo),
-              leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
+              leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft
+                ,onTap: () => context.pop(),),
             ),
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.all(16),
