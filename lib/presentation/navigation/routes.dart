@@ -19,8 +19,10 @@ import '../categories/screen/manage_categories_screen.dart';
 
 part 'routes.g.dart';
 
+
 abstract class RoutePaths {
-  static const String onBoarding = '/';
+  static const String initial = '/';
+  static const String onBoarding = '/onboarding';
   static const String login = '/login';
   static const String main = '/main';
   static const String createAccount = '/createAccount';
@@ -30,6 +32,35 @@ abstract class RoutePaths {
   static const String updatePassword = '/update_password';
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
+}
+
+@TypedGoRoute<InitialRoute>(
+  path: RoutePaths.initial,
+  routes: [
+    TypedGoRoute<LoginRoute>(path: 'login'),
+    TypedGoRoute<OnBoardingRoute>(path: 'onboarding'),
+    TypedGoRoute<MainRoute>(path: 'main'),
+    TypedGoRoute<CreateAccountRoute>(path: 'createAccount'),
+    TypedGoRoute<ForgetPasswordRoute>(path: 'forget_password'),
+    TypedGoRoute<UpdatePasswordRoute>(path: 'update_password'),
+    TypedGoRoute<AddIncomeRoute>(path: 'add-income'),
+    TypedGoRoute<AddExpenseRoute>(path: 'add-expense'),
+    TypedGoRoute<StatisticsRoute>(path: 'statistics'),
+    TypedGoRoute<TransactionDetailsRoute>(path: 'transaction_details'),
+    TypedGoRoute<ManageCategoriesRoute>(path: 'manage-categories'),
+    TypedGoRoute<EditSalaryRoute>(path: 'edit-salary'),
+  ],
+)
+@immutable
+class InitialRoute extends GoRouteData with $InitialRoute {
+  const InitialRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
 }
 
 @TypedGoRoute<OnBoardingRoute>(path: RoutePaths.onBoarding)
@@ -44,12 +75,12 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("onBoarding screen"),
+            const Text("onBoarding screen"),
             ElevatedButton(
               onPressed: () {
-                LoginRoute().push(context);
+                const LoginRoute().push(context);
               },
-              child: Text("Go to Login"),
+              child: const Text("Go to Login"),
             ),
           ],
         ),
