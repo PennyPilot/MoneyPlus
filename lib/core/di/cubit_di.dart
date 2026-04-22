@@ -37,7 +37,7 @@ void initCubitDI() {
     ),
   );
 
-  getIt.registerLazySingleton<AccountSetupCubit>(
+  getIt.registerFactory<AccountSetupCubit>(
     () => AccountSetupCubit(getIt<AccountRepository>()),
   );
 
