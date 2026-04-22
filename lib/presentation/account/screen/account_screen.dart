@@ -13,6 +13,7 @@ import '../../../design_system/theme/money_colors.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/theme/money_typography.dart';
 import '../../../design_system/widgets/app_bar.dart';
+import '../../../design_system/widgets/snack_bar.dart';
 import '../cubit/account_cubit.dart';
 import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
@@ -87,6 +88,13 @@ class AccountScreen extends StatelessWidget {
                   image: '',
                   name: user?.name ?? '',
                   email: user?.email ?? '',
+                  onUpdateSuccess: () {
+                    MSnackBar.success(
+                      message: l10n.profileUpdatedSuccessfully,
+                      title: l10n.success,
+                    ).showSnackBar(context: context);
+                    context.read<AccountCubit>().loadUserInfo();
+                  },
                 ),
                 const SizedBox(height: 24),
                 accountSection(

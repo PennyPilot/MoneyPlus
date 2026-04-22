@@ -182,5 +182,6 @@
   "logout": "تسجيل الخروج",
   "logout_confirmation": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
   "logout_confirm": "خروج",
-  "logout_cancel": "إلغاء"
+  "logout_cancel": "إلغاء",
+  "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح"
 }

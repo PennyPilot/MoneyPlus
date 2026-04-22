@@ -10,6 +10,7 @@ Widget personalInfoCard(
   required String? image,
   required String name,
   required String email,
+  VoidCallback? onUpdateSuccess,
 }) {
   final colors = context.colors;
   final typography = context.typography;
@@ -45,8 +46,11 @@ Widget personalInfoCard(
           ),
         ),
         GestureDetector(
-          onTap: () {
-            ProfileSettingsRoute().push(context);
+          onTap: () async {
+            final result = await ProfileSettingsRoute(name: name, email: email).push<bool>(context);
+            if (result == true && onUpdateSuccess != null) {
+              onUpdateSuccess();
+            }
           },
           child: Container(
             decoration: BoxDecoration(
