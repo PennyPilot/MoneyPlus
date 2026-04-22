@@ -6,17 +6,21 @@ import 'account_state.dart';
 class AccountCubit extends Cubit<AccountState> {
   final AccountRepository _accountRepository;
 
-  AccountCubit(this._accountRepository)
-      : super(const AccountInitial());
+  AccountCubit(this._accountRepository) : super(const AccountInitial());
 
-  void loadUserInfo() {
+  Future<void> loadUserInfo() async {
     emit(const AccountLoading(isLoading: true));
 
-    _accountRepository.getCurrentUser().then((user) {
-      emit(AccountLoaded(user: user));
-    }).catchError((error) {
-      emit(AccountError(errorMessage: error.toString()));
-    });
+    final result = await _accountRepository.getCurrentUser();
+
+    result.when(
+      onSuccess: (user) {
+        emit(AccountLoaded(user: user));
+      },
+      onError: (error) {
+        emit(AccountError(errorMessage: error.toString()));
+      },
+    );
   }
 
   Future<void> logout() async {

@@ -50,6 +50,14 @@ class _MTextFieldState extends State<MTextField> {
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant MTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value && _controller.text != widget.value) {
+      _controller.text = widget.value;
+    }
+  }
+
   bool get _hasError =>
       widget.errorText != null && widget.errorText!.isNotEmpty;
 
