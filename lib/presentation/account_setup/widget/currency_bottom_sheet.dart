@@ -50,6 +50,10 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
                       AppAssets.iconCancel,
                       height: 20,
                       width: 20,
+                      colorFilter: ColorFilter.mode(
+                        context.colors.body,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ],
