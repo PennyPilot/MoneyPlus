@@ -161,4 +161,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     final supabaseClientFuture = await supabaseService.getClient();
     return supabaseClientFuture.auth.currentUser?.email;
   }
+
+  @override
+  Future<void> signOut() async {
+    final client = await supabaseService.getClient();
+    await client.auth.signOut();
+  }
 }

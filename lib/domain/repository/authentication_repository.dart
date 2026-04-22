@@ -24,4 +24,6 @@ abstract class AuthenticationRepository {
   Future<Result<bool>> updatePassword(String password);
 
   Future<Result<bool>> updateUserInfo(user_entity.User user);
+
+  Future<void> signOut();
 }

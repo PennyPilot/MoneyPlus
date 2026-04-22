@@ -34,7 +34,11 @@ class AuthRedirectNotifier extends ChangeNotifier {
     final bool authChanged = hasSession != _isAuthenticated;
     final bool recoveryEvent = data.event == AuthChangeEvent.passwordRecovery;
 
-    if (recoveryEvent) _isPasswordRecovery = true;
+    if (recoveryEvent) {
+      _isPasswordRecovery = true;
+    } else if (data.event == AuthChangeEvent.signedOut) {
+      _isPasswordRecovery = false;
+    }
 
     final bool wasInitialized = _isInitialized;
     _isAuthenticated = hasSession;
@@ -115,10 +119,12 @@ class _MoneyAppViewState extends State<MoneyAppView> {
     final isAuthenticated = _authRedirectNotifier.isAuthenticated;
     final isPasswordRecovery = _authRedirectNotifier.isPasswordRecovery;
 
-    if (isPasswordRecovery) return RoutePaths.updatePassword;
+    if (isPasswordRecovery && location != RoutePaths.updatePassword) {
+      return RoutePaths.updatePassword;
+    }
 
-    if (location == RoutePaths.updatePassword) {
-      _authRedirectNotifier.clearPasswordRecovery();
+    if (location == RoutePaths.updatePassword && isPasswordRecovery) {
+      Future.microtask(() => _authRedirectNotifier.clearPasswordRecovery());
       return null;
     }
 

@@ -7,6 +7,4 @@ abstract class AccountRepository {
   Future<List<Currency>> getCurrencies();
 
   Future<Result<User>> getCurrentUser();
-
-  Future<void> logout();
 }

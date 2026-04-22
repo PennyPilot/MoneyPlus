@@ -47,9 +47,5 @@ class AccountRepositoryImpl extends AccountRepository {
     }
   }
 
-  @override
-  Future<void> logout() async {
-    final client = await supabaseService.getClient();
-    await client.auth.signOut();
-  }
+
 }
