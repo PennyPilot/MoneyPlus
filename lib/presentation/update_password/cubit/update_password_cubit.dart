@@ -38,7 +38,8 @@ class UpdatePasswordCubit extends Cubit<UpdatePasswordState> {
     emit(state.copyWith(status: UpdatePasswordStatus.loading));
     final result = await authenticationRepository.updatePassword(state.password);
     result.when(
-      onSuccess: (value) {
+      onSuccess: (value) async {
+        await authenticationRepository.signOut();
         emit(state.copyWith(status: UpdatePasswordStatus.success));
       },
       onError: (error) {

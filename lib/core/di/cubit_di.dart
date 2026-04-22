@@ -86,7 +86,7 @@ void initCubitDI() {
   );
 
   getIt.registerFactory<AccountCubit>(
-    () => AccountCubit(getIt<AccountRepository>()),
+    () => AccountCubit(getIt<AccountRepository>(), getIt<AuthenticationRepository>()),
   );
 
   getIt.registerFactory<CategoriesCubit>(
