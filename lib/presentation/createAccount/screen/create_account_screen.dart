@@ -163,6 +163,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     required ValueChanged<String> onPasswordChanged,
     required VoidCallback onToggleVisibility,
   }) {
+    final colors = context.colors;
     return MTextField(
       hint: hint,
       value: password,
@@ -183,6 +184,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           onPressed: onToggleVisibility,
           icon: SvgPicture.asset(
             isPasswordVisible ? AppAssets.openEye : AppAssets.closedEye,
+            colorFilter: ColorFilter.mode(colors.hint, BlendMode.srcIn),
             height: 20,
             width: 20,
           ),
