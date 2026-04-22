@@ -26,6 +26,7 @@
   "finishSetup": "إنهاء الإعداد",
   "stepOf": "الخطوة {current} من {total}",
   "stepOfTotal": "الخطوة {current} من {total}",
+  "editProfile": "تعديل الحساب",
   "createAccount": "إنشاء حساب",
   "createNewAccount": "إنشاء حساب جديد",
   "startTakingControl": "ابدأ بالتحكم في أموالك",
@@ -181,5 +182,6 @@
   "logout": "تسجيل الخروج",
   "logout_confirmation": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
   "logout_confirm": "خروج",
-  "logout_cancel": "إلغاء"
+  "logout_cancel": "إلغاء",
+  "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح"
 }

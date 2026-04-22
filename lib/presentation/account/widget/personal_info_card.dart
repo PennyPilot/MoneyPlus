@@ -3,12 +3,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 
 import '../../../design_system/assets/app_assets.dart';
+import '../../navigation/routes.dart';
 
 Widget personalInfoCard(
   BuildContext context, {
   required String? image,
   required String name,
   required String email,
+  VoidCallback? onUpdateSuccess,
 }) {
   final colors = context.colors;
   final typography = context.typography;
@@ -44,8 +46,11 @@ Widget personalInfoCard(
           ),
         ),
         GestureDetector(
-          onTap: () {
-            // Handle click
+          onTap: () async {
+            final result = await ProfileSettingsRoute(name: name, email: email).push<bool>(context);
+            if (result == true && onUpdateSuccess != null) {
+              onUpdateSuccess();
+            }
           },
           child: Container(
             decoration: BoxDecoration(

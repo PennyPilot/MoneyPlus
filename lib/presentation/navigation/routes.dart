@@ -8,14 +8,15 @@ import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 
 import '../../core/di/injection.dart';
+import '../categories/screen/manage_categories_screen.dart';
 import '../forget_password/screen/forget_password_screen.dart';
 import '../income/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../main_container/screen/main_screen.dart';
+import '../profileSetting/screen/profile_settings_screen.dart';
 import '../statistics/cubit/statistics_cubit.dart';
 import '../statistics/statistics_screen.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
-import '../categories/screen/manage_categories_screen.dart';
 
 part 'routes.g.dart';
 
@@ -32,6 +33,7 @@ abstract class RoutePaths {
   static const String updatePassword = '/update_password';
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
+  static const String profileSettings = '/profile-settings';
 }
 
 @TypedGoRoute<InitialRoute>(
@@ -122,6 +124,22 @@ class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return CreateAccountScreen();
+  }
+}
+
+@TypedGoRoute<ProfileSettingsRoute>(path: RoutePaths.profileSettings)
+@immutable
+class ProfileSettingsRoute extends GoRouteData with $ProfileSettingsRoute {
+  final String name;
+  final String email;
+  const ProfileSettingsRoute({required this.name, required this.email});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProfileSettingsScreen(
+      name: name,
+      email: email,
+    );
   }
 }
 

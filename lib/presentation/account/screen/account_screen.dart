@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
-import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/app_prefernces_cubit.dart';
-import 'package:moneyplus/presentation/accout/widget/theme_selection_dialog.dart';
+import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/buttons/secondary/defult_secondary_button.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
@@ -14,12 +13,13 @@ import '../../../design_system/theme/money_colors.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/theme/money_typography.dart';
 import '../../../design_system/widgets/app_bar.dart';
+import '../../../design_system/widgets/snack_bar.dart';
 import '../cubit/account_cubit.dart';
 import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
 import '../widget/language_selection_dialog.dart';
 import '../widget/personal_info_card.dart';
-import '../../navigation/routes.dart';
+import '../widget/theme_selection_dialog.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -88,6 +88,13 @@ class AccountScreen extends StatelessWidget {
                   image: '',
                   name: user?.name ?? '',
                   email: user?.email ?? '',
+                  onUpdateSuccess: () {
+                    MSnackBar.success(
+                      message: l10n.profileUpdatedSuccessfully,
+                      title: l10n.success,
+                    ).showSnackBar(context: context);
+                    context.read<AccountCubit>().loadUserInfo();
+                  },
                 ),
                 const SizedBox(height: 24),
                 accountSection(

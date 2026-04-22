@@ -3,6 +3,7 @@ import '../../core/errors/result.dart';
 import '../../core/service/supabase_service.dart';
 import '../../domain/entity/categories_breakdown.dart';
 import '../../domain/entity/monthly_overview.dart';
+import '../../domain/entity/spending_trend_point.dart';
 import '../../domain/repository/statistics_repository.dart';
 
 class StatisticsRepositoryImpl implements StatisticsRepository {
@@ -135,4 +136,35 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
       return Result.error(ErrorModel(e.toString()));
     }
   }
+
+  @override
+  Future<Result<SpendingTrend>> getSpendingTrend({required DateTime month}) async {
+    try {
+      final client = await _supabaseService.getClient();
+
+      final data = await client.rpc(
+        'get_spending_trend',
+        params: {'in_year': month.year, 'in_month': month.month},
+      );
+
+      if (data == null || (data as List).isEmpty) {
+        return Result.success(SpendingTrend(points: [], currency: 'IQD'));
+      }
+
+      final points = (data as List<dynamic>).map((item) {
+        final map = item as Map<String, dynamic>;
+        return SpendingTrendPoint(
+          date: DateTime.parse(map['spend_date'] as String),
+          amount: (map['total_amount'] as num).toDouble(),
+        );
+      }).toList();
+
+      final currency = (data.first as Map<String, dynamic>)['currency'] as String? ?? 'IQD';
+
+      return Result.success(SpendingTrend(points: points, currency: currency));
+    } catch (e) {
+      return Result.error(ErrorModel(e.toString()));
+    }
+  }
+
 }

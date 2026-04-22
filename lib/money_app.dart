@@ -30,11 +30,21 @@ class AuthRedirectNotifier extends ChangeNotifier {
   }
 
   void _onAuthStateChange(AuthState data) {
-    final wasInitialized = _isInitialized;
-    if (data.event == AuthChangeEvent.passwordRecovery) _isPasswordRecovery = true;
-    _isAuthenticated = data.session != null;
+    final bool hasSession = data.session != null;
+    final bool authChanged = hasSession != _isAuthenticated;
+    final bool recoveryEvent = data.event == AuthChangeEvent.passwordRecovery;
+
+    if (recoveryEvent) _isPasswordRecovery = true;
+
+    final bool wasInitialized = _isInitialized;
+    _isAuthenticated = hasSession;
     _isInitialized = true;
-    wasInitialized ? notifyListeners() : Future.microtask(notifyListeners);
+
+    if (!wasInitialized) {
+      Future.microtask(notifyListeners);
+    } else if (authChanged || recoveryEvent) {
+      notifyListeners();
+    }
   }
 
   void clearPasswordRecovery() {

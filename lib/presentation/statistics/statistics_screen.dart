@@ -7,9 +7,12 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/app_empty_view.dart';
 import 'package:moneyplus/design_system/widgets/app_error_view.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+import 'package:moneyplus/presentation/statistics/utils.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
+import 'package:moneyplus/presentation/statistics/widgets/highest_spending_banner.dart';
 import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
+import '../../design_system/chart/spending_trend_graph.dart';
 import '../transactions/widget/add_transaction_bottom_sheet.dart';
 import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
@@ -88,6 +91,8 @@ class _StatisticsViewState extends State<StatisticsView> {
       );
     }
 
+    final trendDataPoints = state.spendingTrend.toDataPoints();
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,6 +103,15 @@ class _StatisticsViewState extends State<StatisticsView> {
             CategoryBreakdownWidget(
               categoriesBreakdown: state.categoriesBreakdown,
             ),
+            const SizedBox(height: 16),
+
+            SpendingTrendGraph(
+              data: trendDataPoints,
+              currency: state.spendingTrend.currency,
+            ),
+            const SizedBox(height: 8),
+            HighestSpendingBanner(trend: state.spendingTrend),
+            const SizedBox(height: 16),
           ],
         ),
       ),
