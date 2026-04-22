@@ -23,7 +23,7 @@ class ProfileSettingsState {
     bool? isLoading,
     bool? isEnabled,
     String? errorMessage,
-    bool? isSavedSuccess,
+    bool?  isSavedSuccess,
   }) {
     return ProfileSettingsState(
       email: email ?? this.email,

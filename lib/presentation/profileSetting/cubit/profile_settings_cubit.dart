@@ -16,6 +16,11 @@ class ProfileSettingsCubit extends Cubit<ProfileSettingsState> {
     this._accountRepository,
   ) : super(ProfileSettingsState());
 
+  Future<void> initWithData(String name, String email) async {
+    emit(state.copyWith(name: name, email: email));
+    enable();
+  }
+
   Future<void> loadUserInfo() async {
     emit(state.copyWith(isLoading: true));
 
