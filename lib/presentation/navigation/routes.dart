@@ -14,14 +14,17 @@ import '../forget_password/screen/forget_password_screen.dart';
 import '../income/screen/add_income_screen.dart';
 import '../login/cubit/login_cubit.dart';
 import '../main_container/screen/main_screen.dart';
+import '../profileSetting/screen/profile_settings_screen.dart';
 import '../statistics/cubit/statistics_cubit.dart';
 import '../statistics/statistics_screen.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
 
 part 'routes.g.dart';
 
+
 abstract class RoutePaths {
-  static const String onBoarding = '/';
+  static const String initial = '/';
+  static const String onBoarding = '/onboarding';
   static const String login = '/login';
   static const String main = '/main';
   static const String createAccount = '/createAccount';
@@ -31,9 +34,41 @@ abstract class RoutePaths {
   static const String updatePassword = '/update_password';
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
+  static const String profileSettings = '/profile-settings';
   static const String accountSetup = '/accountSetup';
-  static const String editSalary = '/edit-salary';
   static const String manageCategories = '/manage-categories';
+  static const String editSalary = '/edit-salary';
+}
+
+@TypedGoRoute<InitialRoute>(
+  path: RoutePaths.initial,
+  routes: [
+    TypedGoRoute<LoginRoute>(path: 'login'),
+    TypedGoRoute<OnBoardingRoute>(path: 'onboarding'),
+    TypedGoRoute<MainRoute>(path: 'main'),
+    TypedGoRoute<CreateAccountRoute>(path: 'createAccount'),
+    TypedGoRoute<ForgetPasswordRoute>(path: 'forget_password'),
+    TypedGoRoute<UpdatePasswordRoute>(path: 'update_password'),
+    TypedGoRoute<AddIncomeRoute>(path: 'add-income'),
+    TypedGoRoute<AddExpenseRoute>(path: 'add-expense'),
+    TypedGoRoute<StatisticsRoute>(path: 'statistics'),
+    TypedGoRoute<TransactionDetailsRoute>(path: 'transaction_details'),
+    TypedGoRoute<ManageCategoriesRoute>(path: 'manage-categories'),
+    TypedGoRoute<EditSalaryRoute>(path: 'edit-salary'),
+    TypedGoRoute<ProfileSettingsRoute>(path: 'profile-settings'),
+    TypedGoRoute<AccountSetupRoute>(path: 'accountSetup'),
+  ],
+)
+@immutable
+class InitialRoute extends GoRouteData with $InitialRoute {
+  const InitialRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
 }
 
 @TypedGoRoute<OnBoardingRoute>(path: RoutePaths.onBoarding)
@@ -48,12 +83,12 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("onBoarding screen"),
+            const Text("onBoarding screen"),
             ElevatedButton(
               onPressed: () {
-                LoginRoute().push(context);
+                const LoginRoute().push(context);
               },
-              child: Text("Go to Login"),
+              child: const Text("Go to Login"),
             ),
           ],
         ),
@@ -95,6 +130,22 @@ class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return CreateAccountScreen();
+  }
+}
+
+@TypedGoRoute<ProfileSettingsRoute>(path: RoutePaths.profileSettings)
+@immutable
+class ProfileSettingsRoute extends GoRouteData with $ProfileSettingsRoute {
+  final String name;
+  final String email;
+  const ProfileSettingsRoute({required this.name, required this.email});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProfileSettingsScreen(
+      name: name,
+      email: email,
+    );
   }
 }
 

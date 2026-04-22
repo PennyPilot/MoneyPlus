@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:moneyplus/core/security/app_secrets.dart';
@@ -75,7 +73,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on AuthException catch (error) {
       return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
-      log('error in data $error');
       return Result.error(ErrorModel(error.toString()));
     }
   }
@@ -100,7 +97,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on AuthException catch (error) {
       return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
-      log('error in data $error');
       return Result.error(ErrorModel(error.toString()));
     }
   }
@@ -114,7 +110,19 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on AuthException catch (error) {
       return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
-      log('error in data $error');
+      return Result.error(ErrorModel(error.toString()));
+    }
+  }
+
+  @override
+  Future<Result<bool>> updateUserInfo(User user) async {
+    try {
+      final client = await supabaseService.getClient();
+      await client.auth.updateUser(UserAttributes(email: user.email, data: {"name": user.name}));
+      return Result.success(true);
+    } on AuthException catch (error) {
+      return Result.error(SupabaseAuthError.fromAuthException(error));
+    } catch (error) {
       return Result.error(ErrorModel(error.toString()));
     }
   }
@@ -142,7 +150,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on AuthException catch (error) {
       return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
-      log('error in data $error');
       return Result.error(ErrorModel(error.toString()));
     }
   }
@@ -153,5 +160,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<String?> get userEmail async {
     final supabaseClientFuture = await supabaseService.getClient();
     return supabaseClientFuture.auth.currentUser?.email;
+  }
+
+  @override
+  Future<void> signOut() async {
+    final client = await supabaseService.getClient();
+    await client.auth.signOut();
   }
 }

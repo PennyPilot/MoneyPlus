@@ -19,22 +19,41 @@ class AuthRedirectNotifier extends ChangeNotifier {
   late final StreamSubscription<AuthState> _subscription;
   bool _isPasswordRecovery = false;
   bool _isAuthenticated = false;
+  bool _isInitialized = false;
 
   bool get isAuthenticated => _isAuthenticated;
+  bool get isInitialized => _isInitialized;
+  bool get isPasswordRecovery => _isPasswordRecovery;
 
   AuthRedirectNotifier(this._authRepository) {
-    _subscription = _authRepository.onAuthStateChange.listen((data) {
-      if (data.event == AuthChangeEvent.passwordRecovery) {
-        _isPasswordRecovery = true;
-        notifyListeners();
-      } else if (data.session != null) {
-        _isAuthenticated = true;
-        notifyListeners();
-      } else {
-        _isAuthenticated = false;
-        notifyListeners();
-      }
-    });
+    _subscription = _authRepository.onAuthStateChange.listen(_onAuthStateChange);
+  }
+
+  void _onAuthStateChange(AuthState data) {
+    final bool hasSession = data.session != null;
+    final bool authChanged = hasSession != _isAuthenticated;
+    final bool recoveryEvent = data.event == AuthChangeEvent.passwordRecovery;
+
+    if (recoveryEvent) {
+      _isPasswordRecovery = true;
+    } else if (data.event == AuthChangeEvent.signedOut) {
+      _isPasswordRecovery = false;
+    }
+
+    final bool wasInitialized = _isInitialized;
+    _isAuthenticated = hasSession;
+    _isInitialized = true;
+
+    if (!wasInitialized) {
+      Future.microtask(notifyListeners);
+    } else if (authChanged || recoveryEvent) {
+      notifyListeners();
+    }
+  }
+
+  void clearPasswordRecovery() {
+    _isPasswordRecovery = false;
+    notifyListeners();
   }
 
   @override
@@ -44,25 +63,7 @@ class AuthRedirectNotifier extends ChangeNotifier {
   }
 }
 
-final _authRedirectNotifier =
-    AuthRedirectNotifier(getIt<AuthenticationRepository>());
-final _router = GoRouter(
-  routes: $appRoutes,
-  initialLocation: _authRedirectNotifier.isAuthenticated ? RoutePaths.main : RoutePaths.login,
-  refreshListenable: _authRedirectNotifier,
-  redirect: (context, state) {
-    if (_authRedirectNotifier._isPasswordRecovery) {
-      _authRedirectNotifier._isPasswordRecovery = false;
-      return RoutePaths.forgetPassword;
-    }
-
-    final loggingIn = state.matchedLocation == RoutePaths.login;
-    if (!_authRedirectNotifier.isAuthenticated && !loggingIn) return RoutePaths.login;
-    if (_authRedirectNotifier.isAuthenticated && loggingIn) return RoutePaths.main;
-
-    return null;
-  },
-);
+final _authRedirectNotifier = AuthRedirectNotifier(getIt<AuthenticationRepository>());
 
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
@@ -70,44 +71,121 @@ class MoneyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppPreferencesCubit(getIt<AppPreferencesRepository>()),
+      create: (_) => AppPreferencesCubit(getIt<AppPreferencesRepository>()),
       child: const MoneyAppView(),
     );
   }
 }
 
-class MoneyAppView extends StatelessWidget {
+class MoneyAppView extends StatefulWidget {
   const MoneyAppView({super.key});
+
+  @override
+  State<MoneyAppView> createState() => _MoneyAppViewState();
+}
+
+class _MoneyAppViewState extends State<MoneyAppView> {
+  GoRouter? _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _authRedirectNotifier.addListener(_onAuthReady);
+  }
+
+  void _onAuthReady() {
+    if (!_authRedirectNotifier.isInitialized) return;
+    _authRedirectNotifier.removeListener(_onAuthReady);
+    setState(() => _router = _buildRouter());
+  }
+
+  GoRouter _buildRouter() {
+    final startLocation = switch (true) {
+      _ when _authRedirectNotifier.isPasswordRecovery => RoutePaths.updatePassword,
+      _ when _authRedirectNotifier.isAuthenticated => RoutePaths.main,
+      _ => RoutePaths.login,
+    };
+
+    return GoRouter(
+      routes: $appRoutes,
+      initialLocation: startLocation,
+      refreshListenable: _authRedirectNotifier,
+      redirect: _redirect,
+    );
+  }
+
+  String? _redirect(BuildContext context, GoRouterState state) {
+    final location = state.matchedLocation;
+    final isAuthenticated = _authRedirectNotifier.isAuthenticated;
+    final isPasswordRecovery = _authRedirectNotifier.isPasswordRecovery;
+
+    if (isPasswordRecovery && location != RoutePaths.updatePassword) {
+      return RoutePaths.updatePassword;
+    }
+
+    if (location == RoutePaths.updatePassword && isPasswordRecovery) {
+      Future.microtask(() => _authRedirectNotifier.clearPasswordRecovery());
+      return null;
+    }
+
+    final isPublicRoute = {
+      RoutePaths.login,
+      RoutePaths.createAccount,
+      RoutePaths.forgetPassword,
+      RoutePaths.onBoarding,
+      RoutePaths.initial,
+      RoutePaths.updatePassword,
+    }.contains(location);
+
+    if (!isAuthenticated && !isPublicRoute) return RoutePaths.login;
+    if (isAuthenticated && isPublicRoute) return RoutePaths.main;
+
+    return null;
+  }
+
+  @override
+  void dispose() {
+    _authRedirectNotifier.removeListener(_onAuthReady);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppPreferencesCubit, AppPreferencesState>(
       builder: (context, state) {
+        final themeMode = _getThemeMode(state.appTheme);
+        final locale = state.appLanguage == AppLanguage.system
+            ? null
+            : Locale(state.appLanguage.name);
+
+        if (_router == null) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: MoneyTheme.lightTheme,
+            darkTheme: MoneyTheme.darkTheme,
+            themeMode: themeMode,
+            home: const Scaffold(body: Center(child: CircularProgressIndicator())),
+          );
+        }
+
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Money++',
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          locale: state.appLanguage == AppLanguage.system
-              ? null
-              : Locale(state.appLanguage.name),
+          locale: locale,
           theme: MoneyTheme.lightTheme,
           darkTheme: MoneyTheme.darkTheme,
-          themeMode: _getThemeMode(state.appTheme),
-          routerConfig: _router,
+          themeMode: themeMode,
+          routerConfig: _router!,
         );
       },
     );
   }
 }
 
-ThemeMode _getThemeMode(AppTheme theme) {
-  switch (theme) {
-    case AppTheme.light:
-      return ThemeMode.light;
-    case AppTheme.dark:
-      return ThemeMode.dark;
-    case AppTheme.system:
-      return ThemeMode.system;
-  }
-}
+ThemeMode _getThemeMode(AppTheme theme) => switch (theme) {
+  AppTheme.light => ThemeMode.light,
+  AppTheme.dark => ThemeMode.dark,
+  AppTheme.system => ThemeMode.system,
+};

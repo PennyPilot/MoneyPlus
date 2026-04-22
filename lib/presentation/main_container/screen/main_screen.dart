@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
-import 'package:moneyplus/presentation/accout/screen/account_screen.dart';
 import 'package:moneyplus/presentation/main_container/cubit/main_state.dart';
 import 'package:moneyplus/presentation/statistics/statistics_screen.dart';
 import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
 import '../../../design_system/widgets/nav_bar.dart';
+import '../../account/screen/account_screen.dart';
 import '../../home/screen/home_screen.dart';
-import '../../statistics/statistics_screen.dart';
 import '../cubit/main_cubit.dart';
 
 class MainScreen extends StatelessWidget {
@@ -20,14 +19,16 @@ class MainScreen extends StatelessWidget {
       create: (context) => MainCubit(),
       child: BlocBuilder<MainCubit, MainState>(
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: context.colors.surface,
-            body: _getScreenForTab(state.selectedTab),
-            bottomNavigationBar: NavBar(
-              selectedTab: state.selectedTab,
-              onTabSelected: (tab) {
-                context.read<MainCubit>().onTabSelected(tab);
-              },
+          return SafeArea(
+            child: Scaffold(
+              backgroundColor: context.colors.surface,
+              body: _getScreenForTab(state.selectedTab),
+              bottomNavigationBar: NavBar(
+                selectedTab: state.selectedTab,
+                onTabSelected: (tab) {
+                  context.read<MainCubit>().onTabSelected(tab);
+                },
+              ),
             ),
           );
         },

@@ -1,6 +1,12 @@
-import 'package:moneyplus/domain/entity/currency.dart';
-import 'package:moneyplus/domain/entity/user.dart';
+import 'dart:developer';
 
+import 'package:moneyplus/domain/entity/currency.dart';
+import 'package:moneyplus/domain/entity/user.dart' as entity_user;
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../core/errors/error_model.dart';
+import '../../core/errors/result.dart';
+import '../../core/errors/supabase_auth_error.dart';
 import '../../core/service/supabase_service.dart';
 import '../../domain/repository/account_repository.dart';
 
@@ -21,13 +27,25 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   @override
-  Future<User> getCurrentUser() async {
-      throw Exception('Failed to get current user');
+  Future<Result<entity_user.User>> getCurrentUser() async {
+    try {
+      final client = await supabaseService.getClient();
+      final currentUser = client.auth.currentUser;
+
+      if (currentUser == null) {
+        return Result.error(ErrorModel('User not authenticated'));
+      }
+      final user = entity_user.User(
+        id: currentUser.id,
+        email: currentUser.email ?? '',
+        name: currentUser.userMetadata?['name'] ?? '',
+      );
+      return Result.success(user);
+    } catch (error) {
+      log('error in data $error');
+      return Result.error(ErrorModel(error.toString()));
+    }
   }
 
-  @override
-  Future<void> logout() async {
-    final client = await supabaseService.getClient();
-    await client.auth.signOut();
-  }
+
 }

@@ -45,6 +45,7 @@
       "total": {}
     }
   },
+  "editProfile": "Edit Profile",
   "createAccount": "Create Account",
   "createNewAccount": "Create new account",
   "startTakingControl": "Start taking control of your money",
@@ -193,5 +194,6 @@
   "logout": "Logout",
   "logout_confirmation": "Are you sure you want to logout?",
   "logout_confirm": "Logout",
-  "logout_cancel": "Cancel"
+  "logout_cancel": "Cancel",
+  "profileUpdatedSuccessfully": "Profile updated successfully"
 }

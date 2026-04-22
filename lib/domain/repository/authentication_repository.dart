@@ -1,10 +1,9 @@
-import '../entity/user.dart' as user_entity;
-
 import 'dart:async';
 
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 import '../../core/errors/result.dart';
+import '../entity/user.dart' as user_entity;
 import '../entity/user.dart';
 
 abstract class AuthenticationRepository {
@@ -23,4 +22,8 @@ abstract class AuthenticationRepository {
   Future<Result<bool>> signInWithGoogle();
 
   Future<Result<bool>> updatePassword(String password);
+
+  Future<Result<bool>> updateUserInfo(user_entity.User user);
+
+  Future<void> signOut();
 }

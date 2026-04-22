@@ -14,10 +14,11 @@ import 'package:moneyplus/presentation/statistics/cubit/statistics_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 
-import '../../presentation/accout/cubit/account_cubit.dart';
-import '../../presentation/expense/cubit/add_expense_cubit.dart';
-import '../../presentation/categories/cubit/categories_cubit.dart';
 import '../../domain/repository/category_repository.dart';
+import '../../presentation/account/cubit/account_cubit.dart';
+import '../../presentation/categories/cubit/categories_cubit.dart';
+import '../../presentation/expense/cubit/add_expense_cubit.dart';
+import '../../presentation/profileSetting/cubit/profile_settings_cubit.dart';
 import 'injection.dart';
 
 void initCubitDI() {
@@ -36,7 +37,7 @@ void initCubitDI() {
     ),
   );
 
-  getIt.registerLazySingleton<AccountSetupCubit>(
+  getIt.registerFactory<AccountSetupCubit>(
     () => AccountSetupCubit(getIt<AccountRepository>()),
   );
 
@@ -76,8 +77,16 @@ void initCubitDI() {
     ),
   );
 
+  getIt.registerFactory<ProfileSettingsCubit>(
+    () => ProfileSettingsCubit(
+      getIt<AuthenticationValidator>(),
+      getIt<AuthenticationRepository>(),
+      getIt<AccountRepository>(),
+    ),
+  );
+
   getIt.registerFactory<AccountCubit>(
-    () => AccountCubit(getIt<AccountRepository>()),
+    () => AccountCubit(getIt<AccountRepository>(), getIt<AuthenticationRepository>()),
   );
 
   getIt.registerFactory<CategoriesCubit>(
