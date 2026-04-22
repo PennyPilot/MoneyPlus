@@ -30,17 +30,17 @@ class AccountRepositoryImpl extends AccountRepository {
   Future<Result<entity_user.User>> getCurrentUser() async {
     try {
       final client = await supabaseService.getClient();
-      client.auth.currentUser;
-      final response = await client
-          .from('users')
-          .select('*')
-          .eq('id', client.auth.currentUser!.id)
-          .single();
+      final currentUser = client.auth.currentUser;
 
-      final user = entity_user.User.fromJson(response);
+      if (currentUser == null) {
+        return Result.error(ErrorModel('User not authenticated'));
+      }
+      final user = entity_user.User(
+        id: currentUser.id,
+        email: currentUser.email ?? '',
+        name: currentUser.userMetadata?['name'] ?? '',
+      );
       return Result.success(user);
-    } on AuthException catch (error) {
-      return Result.error(SupabaseAuthError.fromAuthException(error));
     } catch (error) {
       log('error in data $error');
       return Result.error(ErrorModel(error.toString()));
