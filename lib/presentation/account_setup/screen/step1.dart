@@ -7,6 +7,7 @@ import 'package:moneyplus/presentation/account_setup/cubit/account_setup_state.d
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+import '../../../domain/entity/currency.dart';
 import '../cubit/account_setup_cubit.dart';
 import '../widget/currency_bottom_sheet.dart';
 
@@ -35,39 +36,42 @@ class _Step1State extends State<Step1> {
           ),
         ),
         SizedBox(height: 24),
-        MTextField(
-          key: ValueKey(widget.state.currency),
-          hint: l10n.currency,
-          leading: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              top: 14,
-              bottom: 14,
-              end: 8,
-            ),
-            child: SvgPicture.asset(AppAssets.iconMoney),
-          ),
-          trailing: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              top: 14,
-              bottom: 14,
-              end: 8,
-            ),
-            child: GestureDetector(
-              onTap: () {
-                _openCurrencyBottomSheet(widget.state);
-              },
-              child: SvgPicture.asset(
-                AppAssets.icArrowDownRound,
-                height: 20,
-                width: 20,
+        GestureDetector(
+          onTap: () => _openCurrencyBottomSheet(widget.state),
+          child: AbsorbPointer(
+            child: MTextField(
+              key: ValueKey(widget.state.selectedCurrency?.id),
+              hint: l10n.currency,
+              leading: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  top: 14,
+                  bottom: 14,
+                  end: 8,
+                ),
+                child: SvgPicture.asset(AppAssets.iconMoney),
               ),
+              trailing: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  top: 14,
+                  bottom: 14,
+                  end: 8,
+                ),
+                child: SvgPicture.asset(
+                  AppAssets.icArrowDownRound,
+                  height: 20,
+                  width: 20,
+                  colorFilter: ColorFilter.mode(
+                    context.colors.body,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+              value: widget.state.selectedCurrency != null
+                  ? "${widget.state.selectedCurrency!.name}-${widget.state.selectedCurrency!.abbreviation}"
+                  : "",
+              onChanged: (value) {},
             ),
           ),
-          keyboardType: TextInputType.number,
-          value: widget.state.currency,
-          onChanged: (value) {
-            context.read<AccountSetupCubit>().onCurrencyChanged(value);
-          },
         ),
         SizedBox(height: 12),
         MTextField(
@@ -136,7 +140,7 @@ class _Step1State extends State<Step1> {
   Future<void> _openCurrencyBottomSheet(AccountSetupState state) async {
     final cubit = context.read<AccountSetupCubit>();
 
-    final result = await showModalBottomSheet<String>(
+    final result = await showModalBottomSheet<Currency>(
       context: context,
       useRootNavigator: false,
       isScrollControlled: true,
@@ -154,7 +158,7 @@ class _Step1State extends State<Step1> {
     );
 
     if (result != null) {
-        cubit.onCurrencyChanged(result);
+      cubit.onCurrencyChanged(result);
     }
   }
 }

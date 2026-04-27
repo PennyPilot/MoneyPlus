@@ -34,7 +34,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return BlocProvider(
       create: (context) => CreateAccountCubit(
         getIt<AuthenticationValidator>(),
-        getIt<AuthenticationRepository>(),
       ),
       child: BlocConsumer<CreateAccountCubit, CreateAccountState>(
         listener: (context, state) {
@@ -45,7 +44,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ).showSnackBar(context: context);
           }
           if (state.isRegisterSuccess) {
-            AccountSetupRoute().push(context);
+            AccountSetupRoute(
+              name: state.name,
+              email: state.email,
+              password: state.password,
+            ).push(context);
           }
         },
         builder: (context, state) {

@@ -152,11 +152,23 @@ class ProfileSettingsRoute extends GoRouteData with $ProfileSettingsRoute {
 @TypedGoRoute<AccountSetupRoute>(path: RoutePaths.accountSetup)
 @immutable
 class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
-  const AccountSetupRoute();
+  final String name;
+  final String email;
+  final String password;
+
+  const AccountSetupRoute({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const AccountSetupScreen();
+    return AccountSetupScreen(
+      name: name,
+      email: email,
+      password: password,
+    );
   }
 }
 

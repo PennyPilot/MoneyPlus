@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../design_system/widgets/buttons/button/default_button.dart';
@@ -20,7 +21,7 @@ class CurrencyBottomSheet extends StatefulWidget {
 
 class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
   final TextEditingController searchController = TextEditingController();
-  String? selectedCurrency;
+  Currency? selectedCurrency;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context, selectedCurrency);
+                      Navigator.pop(context);
                     },
                     child: SvgPicture.asset(
                       AppAssets.iconCancel,
@@ -100,14 +101,12 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
                       itemCount: state.filteredCurrencies.length,
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context, int index) {
-                        final currencyList = state.filteredCurrencies[index];
-                        final isSelected =
-                            selectedCurrency ==
-                            "${currencyList.name}-${currencyList.abbreviation}";
+                        final currency = state.filteredCurrencies[index];
+                        final isSelected = selectedCurrency?.id == currency.id;
 
                         return CurrencyList(
                           trailing: Text(
-                            currencyList.abbreviation,
+                            currency.abbreviation,
                             style: context.typography.label.medium.copyWith(
                               color: isSelected
                                   ? context.colors.primary
@@ -122,8 +121,7 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
                           ),
                           onTap: () {
                             setState(() {
-                              selectedCurrency =
-                                  "${currencyList.name}-${currencyList.abbreviation}";
+                              selectedCurrency = currency;
                             });
                           },
                           subtitleTextStyle: context.typography.label.small
@@ -138,8 +136,8 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
                                     ? context.colors.primary
                                     : context.colors.title,
                               ),
-                          title: currencyList.name,
-                          subtitle: currencyList.country,
+                          title: currency.name,
+                          subtitle: currency.country,
                           leading: isSelected
                               ? SvgPicture.asset(AppAssets.playArrow)
                               : null,

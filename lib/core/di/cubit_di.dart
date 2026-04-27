@@ -75,9 +75,7 @@ void initCubitDI() {
 
   getIt.registerFactory<CreateAccountCubit>(
     () => CreateAccountCubit(
-      getIt<AuthenticationValidator>(),
-      getIt<AuthenticationRepository>(),
-    ),
+      getIt<AuthenticationValidator>(),),
   );
 
   getIt.registerFactory<ProfileSettingsCubit>(
