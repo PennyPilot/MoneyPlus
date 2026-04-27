@@ -21,7 +21,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   });
 
   @override
-  Future<Result<void>> register(User user, String password) async {
+  Future<Result<User>> register(User user, String password) async {
     try {
       final client = await supabaseService.getClient();
       final response = await client.auth.signUp(
@@ -31,7 +31,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
 
       if (response.user != null) {
-        return Result.success(null);
+        final registeredUser = User(
+          id: response.user!.id,
+          email: response.user!.email ?? '',
+          name: response.user!.userMetadata?['name'] ?? '',
+        );
+        return Result.success(registeredUser);
       } else {
         return Result.error(ErrorModel('User data is null'));
       }
