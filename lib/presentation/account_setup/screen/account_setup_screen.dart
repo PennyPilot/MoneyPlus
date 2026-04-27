@@ -95,7 +95,11 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                       leading: AppBarCircleButton(
                         assetPath: AppAssets.icArrowLeft,
                         onTap: () {
-                          Navigator.pop(context);
+                          if (state.accountStep == AccountSetupStep.step1) {
+                            Navigator.pop(context);
+                          } else {
+                            context.read<AccountSetupCubit>().onPreviousStep();
+                          }
                         },
                       ),
                       title: l10n.accountSetup,

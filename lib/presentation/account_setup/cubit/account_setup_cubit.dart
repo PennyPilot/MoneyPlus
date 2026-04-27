@@ -120,6 +120,21 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     }
   }
 
+  void onPreviousStep() {
+    switch (state.accountStep) {
+      case AccountSetupStep.step1:
+        break;
+      case AccountSetupStep.step2:
+        emit(state.copyWith(accountStep: AccountSetupStep.step1));
+        _updateButtonEnabledState();
+        break;
+      case AccountSetupStep.step3:
+        emit(state.copyWith(accountStep: AccountSetupStep.step2));
+        _updateButtonEnabledState();
+        break;
+    }
+  }
+
   void toggleCategory(String category) {
     final List<String> updatedCategories = List.from(state.categories);
     if (updatedCategories.contains(category)) {
