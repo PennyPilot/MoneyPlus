@@ -29,7 +29,7 @@ class AuthRedirectNotifier extends ChangeNotifier {
     _subscription = _authRepository.onAuthStateChange.listen(_onAuthStateChange);
   }
 
-  void _onAuthStateChange(AuthState data) {
+  void _onAuthStateChange(AuthState data) async {
     final bool hasSession = data.session != null;
     final bool authChanged = hasSession != _isAuthenticated;
     final bool recoveryEvent = data.event == AuthChangeEvent.passwordRecovery;
@@ -63,8 +63,6 @@ class AuthRedirectNotifier extends ChangeNotifier {
   }
 }
 
-final _authRedirectNotifier = AuthRedirectNotifier(getIt<AuthenticationRepository>());
-
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
 
@@ -86,10 +84,14 @@ class MoneyAppView extends StatefulWidget {
 
 class _MoneyAppViewState extends State<MoneyAppView> {
   GoRouter? _router;
+  late final AuthRedirectNotifier _authRedirectNotifier;
 
   @override
   void initState() {
     super.initState();
+    _authRedirectNotifier = AuthRedirectNotifier(
+      getIt<AuthenticationRepository>(),
+    );
     _authRedirectNotifier.addListener(_onAuthReady);
   }
 
@@ -135,6 +137,7 @@ class _MoneyAppViewState extends State<MoneyAppView> {
       RoutePaths.onBoarding,
       RoutePaths.initial,
       RoutePaths.updatePassword,
+      RoutePaths.accountSetup,
     }.contains(location);
 
     if (!isAuthenticated && !isPublicRoute) return RoutePaths.login;
@@ -146,6 +149,7 @@ class _MoneyAppViewState extends State<MoneyAppView> {
   @override
   void dispose() {
     _authRedirectNotifier.removeListener(_onAuthReady);
+    _authRedirectNotifier.dispose();
     super.dispose();
   }
 

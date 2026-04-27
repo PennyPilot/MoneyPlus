@@ -7,7 +7,7 @@ import '../entity/user.dart' as user_entity;
 import '../entity/user.dart';
 
 abstract class AuthenticationRepository {
-  Future<Result<void>> register(user_entity.User user, String password);
+  Future<Result<user_entity.User>> register(user_entity.User user, String password);
   Future<Result<User>> signIn({
     required String email,
     required String password,
