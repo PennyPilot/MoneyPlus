@@ -1,4 +1,3 @@
-
 import 'package:moneyplus/domain/entity/currency.dart';
 
 enum AccountSetupStep {
@@ -8,10 +7,14 @@ enum AccountSetupStep {
 }
 
 class AccountSetupState {
-  final String currency;
+  final String name;
+  final String email;
+  final String password;
+  final Currency? selectedCurrency;
   final String salary;
   final String salaryDay;
-  final String query;final bool isButtonEnabled;
+  final String query;
+  final bool isButtonEnabled;
   final List<Currency> currencies;
   final List<Currency> filteredCurrencies;
   final List<String> categories;
@@ -23,7 +26,10 @@ class AccountSetupState {
   final bool navigateToHome;
 
   AccountSetupState({
-    this.currency = "",
+    this.name = "",
+    this.email = "",
+    this.password = "",
+    this.selectedCurrency,
     this.salary = "",
     this.salaryDay = "",
     this.query = "",
@@ -51,7 +57,10 @@ class AccountSetupState {
   });
 
   AccountSetupState copyWith({
-    String? currency,
+    String? name,
+    String? email,
+    String? password,
+    Currency? selectedCurrency,
     String? salary,
     String? salaryDay,
     String? query,
@@ -67,18 +76,23 @@ class AccountSetupState {
     bool? navigateToHome,
   }) {
     return AccountSetupState(
-      currency: currency ?? this.currency,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      selectedCurrency: selectedCurrency ?? this.selectedCurrency,
       salary: salary ?? this.salary,
       salaryDay: salaryDay ?? this.salaryDay,
       query: query ?? this.query,
-      isButtonEnabled: isButtonEnabled?? this.isButtonEnabled,
-      currencies: currencies?? this.currencies,
+      isButtonEnabled: isButtonEnabled ?? this.isButtonEnabled,
+      currencies: currencies ?? this.currencies,
       filteredCurrencies: filteredCurrencies ?? this.filteredCurrencies,
-      errorMessage: errorMessage?? this.errorMessage,
-      isLoading: isLoading?? this.isLoading,
-      accountStep: accountStep?? this.accountStep,
-      currentBalance: currentBalance?? this.currentBalance,
-      navigateToHome: navigateToHome?? this.navigateToHome,
+      categories: categories ?? this.categories,
+      suggestions: suggestions ?? this.suggestions,
+      errorMessage: errorMessage ?? this.errorMessage,
+      isLoading: isLoading ?? this.isLoading,
+      accountStep: accountStep ?? this.accountStep,
+      currentBalance: currentBalance ?? this.currentBalance,
+      navigateToHome: navigateToHome ?? this.navigateToHome,
     );
   }
 }
