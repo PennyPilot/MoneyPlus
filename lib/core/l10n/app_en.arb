@@ -195,5 +195,7 @@
   "logout_confirmation": "Are you sure you want to logout?",
   "logout_confirm": "Logout",
   "logout_cancel": "Cancel",
-  "profileUpdatedSuccessfully": "Profile updated successfully"
+  "profileUpdatedSuccessfully": "Profile updated successfully",
+  "salary_error_limit": "Salary cannot exceed 1,000,000",
+  "salary_day_error_limit": "Day must be between 1 and 28"
 }
