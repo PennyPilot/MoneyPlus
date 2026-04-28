@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../theme/money_extension_context.dart';
 
@@ -13,6 +14,7 @@ class MTextField extends StatefulWidget {
   final bool obscureText;
   final int? minLines;
   final int? maxLines;
+  final List<TextInputFormatter>? inputFormatters;
 
   const MTextField({
     super.key,
@@ -26,6 +28,7 @@ class MTextField extends StatefulWidget {
     this.obscureText = false,
     this.minLines,
     this.maxLines,
+    this.inputFormatters,
   });
 
   @override
@@ -110,6 +113,7 @@ class _MTextFieldState extends State<MTextField> {
                   obscureText: widget.obscureText,
                   minLines: widget.minLines,
                   maxLines: widget.maxLines,
+                  inputFormatters: widget.inputFormatters,
                   cursorColor: borderColor,
                   cursorWidth: 1,
                   obscuringCharacter: '*',

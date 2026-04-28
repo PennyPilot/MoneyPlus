@@ -38,7 +38,10 @@ void initCubitDI() {
   );
 
   getIt.registerFactory<AccountSetupCubit>(
-    () => AccountSetupCubit(getIt<AccountRepository>()),
+    () => AccountSetupCubit(
+      getIt<AccountRepository>(),
+      getIt<AuthenticationRepository>(),
+    ),
   );
 
   getIt.registerFactory<AddExpenseCubit>(
@@ -72,9 +75,7 @@ void initCubitDI() {
 
   getIt.registerFactory<CreateAccountCubit>(
     () => CreateAccountCubit(
-      getIt<AuthenticationValidator>(),
-      getIt<AuthenticationRepository>(),
-    ),
+      getIt<AuthenticationValidator>(),),
   );
 
   getIt.registerFactory<ProfileSettingsCubit>(

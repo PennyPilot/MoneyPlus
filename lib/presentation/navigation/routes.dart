@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moneyplus/presentation/account_setup/screen/account_setup_screen.dart';
 import 'package:moneyplus/presentation/createAccount/screen/create_account_screen.dart';
 import 'package:moneyplus/presentation/edit_salary/salary_settings_screen.dart';
 import 'package:moneyplus/presentation/expense/screen/add_expense_screen.dart';
@@ -34,6 +35,9 @@ abstract class RoutePaths {
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
   static const String profileSettings = '/profile-settings';
+  static const String accountSetup = '/accountSetup';
+  static const String manageCategories = '/manage-categories';
+  static const String editSalary = '/edit-salary';
 }
 
 @TypedGoRoute<InitialRoute>(
@@ -51,6 +55,8 @@ abstract class RoutePaths {
     TypedGoRoute<TransactionDetailsRoute>(path: 'transaction_details'),
     TypedGoRoute<ManageCategoriesRoute>(path: 'manage-categories'),
     TypedGoRoute<EditSalaryRoute>(path: 'edit-salary'),
+    TypedGoRoute<ProfileSettingsRoute>(path: 'profile-settings'),
+    TypedGoRoute<AccountSetupRoute>(path: 'accountSetup'),
   ],
 )
 @immutable
@@ -143,6 +149,29 @@ class ProfileSettingsRoute extends GoRouteData with $ProfileSettingsRoute {
   }
 }
 
+@TypedGoRoute<AccountSetupRoute>(path: RoutePaths.accountSetup)
+@immutable
+class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
+  final String name;
+  final String email;
+  final String password;
+
+  const AccountSetupRoute({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AccountSetupScreen(
+      name: name,
+      email: email,
+      password: password,
+    );
+  }
+}
+
 @TypedGoRoute<StatisticsRoute>(path: RoutePaths.statistics)
 @immutable
 class StatisticsRoute extends GoRouteData with $StatisticsRoute {
@@ -212,7 +241,7 @@ class AddExpenseRoute extends GoRouteData with $AddExpenseRoute {
   }
 }
 
-@TypedGoRoute<ManageCategoriesRoute>(path: '/manage-categories')
+@TypedGoRoute<ManageCategoriesRoute>(path: RoutePaths.manageCategories)
 @immutable
 class ManageCategoriesRoute extends GoRouteData with $ManageCategoriesRoute {
   const ManageCategoriesRoute();
@@ -223,7 +252,7 @@ class ManageCategoriesRoute extends GoRouteData with $ManageCategoriesRoute {
   }
 }
 
-@TypedGoRoute<EditSalaryRoute>(path: '/edit-salary')
+@TypedGoRoute<EditSalaryRoute>(path: RoutePaths.editSalary)
 @immutable
 class EditSalaryRoute extends GoRouteData with $EditSalaryRoute {
   const EditSalaryRoute();

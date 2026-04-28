@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
@@ -7,19 +8,20 @@ import 'package:moneyplus/presentation/account_setup/cubit/account_setup_state.d
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
+import '../../../domain/entity/currency.dart';
 import '../cubit/account_setup_cubit.dart';
-import 'currency_bottom_sheet.dart';
+import '../widget/currency_bottom_sheet.dart';
 
-class Page1 extends StatefulWidget {
+class Step1 extends StatefulWidget {
   final AccountSetupState state;
 
-  const Page1({super.key, required this.state});
+  const Step1({super.key, required this.state});
 
   @override
-  State<Page1> createState() => _Page1State();
+  State<Step1> createState() => _Step1State();
 }
 
-class _Page1State extends State<Page1> {
+class _Step1State extends State<Step1> {
 
   @override
   Widget build(BuildContext context) {
@@ -35,39 +37,42 @@ class _Page1State extends State<Page1> {
           ),
         ),
         SizedBox(height: 24),
-        MTextField(
-          key: ValueKey(widget.state.currency),
-          hint: l10n.currency,
-          leading: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              top: 14,
-              bottom: 14,
-              end: 8,
-            ),
-            child: SvgPicture.asset(AppAssets.iconMoney),
-          ),
-          trailing: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              top: 14,
-              bottom: 14,
-              end: 8,
-            ),
-            child: GestureDetector(
-              onTap: () {
-                _openCurrencyBottomSheet(widget.state);
-              },
-              child: SvgPicture.asset(
-                AppAssets.icArrowDownRound,
-                height: 20,
-                width: 20,
+        GestureDetector(
+          onTap: () => _openCurrencyBottomSheet(widget.state),
+          child: AbsorbPointer(
+            child: MTextField(
+              key: ValueKey(widget.state.selectedCurrency?.id),
+              hint: l10n.currency,
+              leading: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  top: 14,
+                  bottom: 14,
+                  end: 8,
+                ),
+                child: SvgPicture.asset(AppAssets.iconMoney),
               ),
+              trailing: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  top: 14,
+                  bottom: 14,
+                  end: 8,
+                ),
+                child: SvgPicture.asset(
+                  AppAssets.icArrowDownRound,
+                  height: 20,
+                  width: 20,
+                  colorFilter: ColorFilter.mode(
+                    context.colors.body,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+              value: widget.state.selectedCurrency != null
+                  ? "${widget.state.selectedCurrency!.name}-${widget.state.selectedCurrency!.abbreviation}"
+                  : "",
+              onChanged: (value) {},
             ),
           ),
-          keyboardType: TextInputType.number,
-          value: widget.state.currency,
-          onChanged: (value) {
-            context.read<AccountSetupCubit>().onCurrencyChanged(value);
-          },
         ),
         SizedBox(height: 12),
         MTextField(
@@ -82,6 +87,11 @@ class _Page1State extends State<Page1> {
           ),
           keyboardType: TextInputType.number,
           value: widget.state.salary,
+          errorText: widget.state.salaryError.isNotEmpty ? l10n.salary_error_limit : null,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(9),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           onChanged: (value) {
             context.read<AccountSetupCubit>().onSalaryChanged(value);
           },
@@ -97,6 +107,7 @@ class _Page1State extends State<Page1> {
             ),
             child: SvgPicture.asset(AppAssets.iconCalender),
           ),
+          errorText: widget.state.salaryDayError.isNotEmpty ? l10n.salary_day_error_limit : null,
           trailing: Padding(
             padding: const EdgeInsetsDirectional.only(
               top: 14,
@@ -124,6 +135,10 @@ class _Page1State extends State<Page1> {
           ),
           keyboardType: TextInputType.number,
           value: widget.state.salaryDay,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(2),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           onChanged: (value) {
             context.read<AccountSetupCubit>().onSalaryDayChanged(value);
           },
@@ -134,19 +149,27 @@ class _Page1State extends State<Page1> {
   }
 
   Future<void> _openCurrencyBottomSheet(AccountSetupState state) async {
-    final result = await showModalBottomSheet<String>(
+    final cubit = context.read<AccountSetupCubit>();
+
+    final result = await showModalBottomSheet<Currency>(
       context: context,
+      useRootNavigator: false,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       backgroundColor: context.colors.surface,
       useSafeArea: true,
-      builder: (context) => CurrencyBottomSheet(state: state),
+      builder: (_) {
+        return BlocProvider.value(
+          value: cubit,
+          child: const CurrencyBottomSheet(),
+        );
+      },
     );
 
     if (result != null) {
-        context.read<AccountSetupCubit>().onCurrencyChanged(result);
+      cubit.onCurrencyChanged(result);
     }
   }
 }

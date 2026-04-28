@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:moneyplus/domain/entity/category.dart';
 import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/user.dart' as entity_user;
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -47,5 +48,33 @@ class AccountRepositoryImpl extends AccountRepository {
     }
   }
 
+  @override
+  Future<void> completeAccountSetup({
+    required String userId,
+    required double salary,
+    required int salaryDay,
+    required int currencyId,
+    required double initialBalance,
+    required List<String> categories,
+  }) async {
+    final client = await supabaseService.getClient();
 
+    await client.from('users').update({
+      'salary_amount': salary,
+      'salary_day': salaryDay,
+      'default_currency_id': currencyId,
+      'current_balance': initialBalance,
+      'is_complete': true,
+    }).eq('id', userId);
+
+    final categoryData = categories
+        .map((name) => {
+              'name': name,
+              'user_id': userId,
+              'is_income': false,
+            })
+        .toList();
+
+    await client.from('categories').insert(categoryData);
+  }
 }

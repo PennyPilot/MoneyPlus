@@ -8,11 +8,11 @@ import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/text_field.dart';
 import '../cubit/account_setup_cubit.dart';
 
-class Page2 extends StatelessWidget {
+class Step2 extends StatelessWidget {
   final String currency;
   final String currentBalanceState;
 
-  const Page2({super.key, required this.currency, required this.currentBalanceState});
+  const Step2({super.key, required this.currency, required this.currentBalanceState});
 
   @override
   Widget build(BuildContext context) {
