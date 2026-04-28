@@ -38,18 +38,23 @@ class ProtectionService {
 
     final signingHash = dotenv.env[AppConstants.hashedSignature];
     final watcherMail = dotenv.env[AppConstants.watcherMail];
-    final supportedStoresValue = dotenv.env['TALSEC_SUPPORTED_STORES'];
+    final supportedStoresValue = dotenv.env[AppConstants.talsecSupportedStores];
     final supportedStores = supportedStoresValue?.split(',') ?? [];
+
+    final androidPackageName =
+        dotenv.env[AppConstants.talsecAndroidPackageName] ?? "";
+    final iosBundleId = dotenv.env[AppConstants.talsecIosBundleId] ?? "";
+    final iosTeamId = dotenv.env[AppConstants.talsecIosTeamId] ?? "";
 
     final config = TalsecConfig(
       androidConfig: AndroidConfig(
-        packageName: 'com.example.checkout_flutter_ecommerce',
-        signingCertHashes: [?signingHash],
+        packageName: androidPackageName,
+        signingCertHashes: [signingHash ?? ""],
         supportedStores: supportedStores,
       ),
       iosConfig: IOSConfig(
-        bundleIds: ['com.example.checkoutFlutterEcommerce'],
-        teamId: 'YOUR_TEAM_ID',
+        bundleIds: [iosBundleId],
+        teamId: iosTeamId,
       ),
       watcherMail: watcherMail ?? "",
       isProd: true,
