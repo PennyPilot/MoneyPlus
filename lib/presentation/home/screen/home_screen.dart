@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/income_expense.dart';
 import 'package:moneyplus/design_system/widgets/top_spending_card.dart';
