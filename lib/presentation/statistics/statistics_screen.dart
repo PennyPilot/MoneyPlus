@@ -10,7 +10,6 @@ import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/statistics/utils.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
 import 'package:moneyplus/presentation/statistics/widgets/highest_spending_banner.dart';
-import 'package:moneyplus/presentation/transactions/screen/transactions_screen.dart';
 
 import '../../design_system/chart/spending_trend_graph.dart';
 import '../transactions/widget/add_transaction_bottom_sheet.dart';

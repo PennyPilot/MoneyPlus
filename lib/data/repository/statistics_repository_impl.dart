@@ -151,7 +151,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
         return Result.success(SpendingTrend(points: [], currency: 'IQD'));
       }
 
-      final points = (data as List<dynamic>).map((item) {
+      final points = (data).map((item) {
         final map = item as Map<String, dynamic>;
         return SpendingTrendPoint(
           date: DateTime.parse(map['spend_date'] as String),
