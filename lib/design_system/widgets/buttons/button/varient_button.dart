@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
-import 'package:moneyplus/design_system/theme/money_colors.dart';
 
 class VarientButton extends StatefulWidget {
   final String text;
@@ -25,6 +25,7 @@ class VarientButton extends StatefulWidget {
 class _VarientButtonState extends State<VarientButton> {
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return MoneyButton(
       text: widget.text,
       onPressed: widget.onPressed,
@@ -34,10 +35,10 @@ class _VarientButtonState extends State<VarientButton> {
       cornerRadius: 100,
       fontSize: 12,
       height: 36,
-      backgroundColor: MoneyColors.light.primary,
-      disabledBackgroundColor: MoneyColors.light.disabled,
-      textColor: MoneyColors.light.onPrimary,
-      disabledTextColor: MoneyColors.light.onPrimary,
+      backgroundColor: colors.primary,
+      disabledBackgroundColor: colors.disabled,
+      textColor: colors.onPrimary,
+      disabledTextColor: colors.onPrimary,
       hasShadow: true,
       innerShadow: BoxShadow(
         color: const Color(0x80FDECF0),

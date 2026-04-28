@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final currentDate = DateTime.now();
     return BlocProvider(
       create: (context) =>
@@ -59,10 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
           final cubit = context.read<HomeCubit>();
           var content = switch (state) {
             HomeLoading() => Scaffold(
-              backgroundColor: MoneyColors.light.surface,
+              backgroundColor: colors.surface,
               body: Center(
                 child: CircularProgressIndicator(
-                  color: MoneyColors.light.primary,
+                  color: colors.primary,
                 ),
               ),
             ),
@@ -106,7 +107,7 @@ Widget _loadedContent({
   final localizations = AppLocalizations.of(context)!;
   return Scaffold(
     body: Container(
-      color: MoneyColors.light.surface,
+      color: colors.surface,
       child: Column(
         children: [
           AnimatedSize(
@@ -161,7 +162,7 @@ Widget _loadedContent({
                             ),
                             SizedBox(height: 24),
                             Text(
-                              "Top spending category",
+                              localizations.top_spending_category,
                               style: typography.title.small.copyWith(
                                 color: colors.title,
                               ),
@@ -228,7 +229,8 @@ Widget _topSection({
   required BuildContext context,
   required Function reloadScreen,
 }) {
-  final colors = MoneyColors.light;
+  final colors = context.colors;
+  final localizations = AppLocalizations.of(context)!;
   if (showAppBarOnly) {
     return Container(
       color: colors.surfaceLow,
@@ -298,7 +300,7 @@ Widget _topSection({
               children: [
                 Expanded(
                   child: VarientButton(
-                    text: "Add",
+                    text: localizations.add,
                     iconPath: AppAssets.addMoney,
                     onPressed: () async {
                       await AddIncomeRoute().push(context);
@@ -309,7 +311,7 @@ Widget _topSection({
                 SizedBox(width: 4),
                 Expanded(
                   child: SMSecondaryButton(
-                    text: "Spend",
+                    text: localizations.spend,
                     iconPath: AppAssets.spendMoney,
                     onPressed: () async {
                       await AddExpenseRoute().push(context);

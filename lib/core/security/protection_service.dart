@@ -44,7 +44,7 @@ class ProtectionService {
     final config = TalsecConfig(
       androidConfig: AndroidConfig(
         packageName: 'com.example.checkout_flutter_ecommerce',
-        signingCertHashes: [if (signingHash != null) signingHash],
+        signingCertHashes: [?signingHash],
         supportedStores: supportedStores,
       ),
       iosConfig: IOSConfig(

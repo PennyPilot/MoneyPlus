@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_logo.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:svg_flutter/svg.dart';
 
 import '../../../core/di/injection.dart';
@@ -33,7 +34,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return BlocProvider(
       create: (context) => CreateAccountCubit(
         getIt<AuthenticationValidator>(),
-        getIt<AuthenticationRepository>(),
       ),
       child: BlocConsumer<CreateAccountCubit, CreateAccountState>(
         listener: (context, state) {
@@ -44,7 +44,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ).showSnackBar(context: context);
           }
           if (state.isRegisterSuccess) {
-            // TODO navigate to account setup
+            AccountSetupRoute(
+              name: state.name,
+              email: state.email,
+              password: state.password,
+            ).push(context);
           }
         },
         builder: (context, state) {
@@ -162,6 +166,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     required ValueChanged<String> onPasswordChanged,
     required VoidCallback onToggleVisibility,
   }) {
+    final colors = context.colors;
     return MTextField(
       hint: hint,
       value: password,
@@ -182,6 +187,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           onPressed: onToggleVisibility,
           icon: SvgPicture.asset(
             isPasswordVisible ? AppAssets.openEye : AppAssets.closedEye,
+            colorFilter: ColorFilter.mode(colors.hint, BlendMode.srcIn),
             height: 20,
             width: 20,
           ),

@@ -81,7 +81,7 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   List<TopSpendingCategory> _getTopSpendingCategoriesFromResponseRows(
-      List<dynamic> rows,
+    List<dynamic> rows,
   ) {
     return rows.map((row) {
       final data = row as Map<String, dynamic>;
@@ -100,9 +100,9 @@ class UserRepositoryImpl implements UserMoneyRepository {
 
   @override
   Future<Currency> getCurrency() async {
-      final client = await service.getClient();
-      final response = await client.rpc('get_default_currency');
-      return Currency.fromJson(response);
+    final client = await service.getClient();
+    final response = await client.rpc('get_default_currency');
+    return Currency.fromJson(response);
   }
 
   @override
@@ -131,6 +131,35 @@ class UserRepositoryImpl implements UserMoneyRepository {
       return 100;
     }
     return ((currentMonthBalance - previousMonthBalance) / previousMonthBalance) * 100;
+  }
+
+  @override
+  Future<double> getSalary() async {
+    final client = await service.getClient();
+    final response = await client.from('users').select('salary_amount');
+    final balance = (response.firstOrNull?['salary_amount'] as num?)?.toDouble() ?? 0.0;
+    return balance;
+  }
+
+  @override
+  Future<int> getSalaryDay() async {
+    final client = await service.getClient();
+    final response = await client.from('users').select('salary_day');
+    final balance = (response.firstOrNull?['salary_day'] as int?)?.toInt() ?? 0;
+    return balance;
+  }
+
+  @override
+  Future<void> updateSalarySettings({
+    required double salary,
+    required int salaryDay,
+  }) async {
+    final client = await service.getClient();
+
+    await client
+        .from('users')
+        .update({'salary_amount': salary, 'salary_day': salaryDay})
+        .eq('id', client.auth.currentUser!.id);
   }
 
   void _validateMonth(int month){

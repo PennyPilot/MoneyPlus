@@ -47,7 +47,9 @@ class TransactionAppBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100),
               ),
               child: SvgPicture.asset(
-                AppAssets.icFilter, height: 20, width: 20,),
+                AppAssets.icFilter,
+                colorFilter: ColorFilter.mode(colors.title,BlendMode.srcIn),
+                height: 20, width: 20,),
             ),
           ),
         ],

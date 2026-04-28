@@ -10,13 +10,15 @@ class CategoryChip extends StatelessWidget {
 
   const CategoryChip({super.key, required this.label, required this.onEdit});
 
-
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
       decoration: BoxDecoration(
         color: colors.surfaceLow,
         borderRadius: BorderRadius.circular(12),
@@ -26,7 +28,7 @@ class CategoryChip extends StatelessWidget {
         children: [
           Text(label, style: typography.label.medium),
           const SizedBox(width: 8),
-          SvgPicture.asset(AppAssets.icEdit),
+          InkWell(onTap: onEdit, child: SvgPicture.asset(AppAssets.icEdit)),
         ],
       ),
     );

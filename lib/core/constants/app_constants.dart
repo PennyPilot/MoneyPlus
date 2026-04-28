@@ -13,4 +13,6 @@ class AppConstants {
   static const String googleIosClientId = "GOOGLE_IOS_CLIENT_ID";
   static const String hashedSignature = "TALSEC_SIGNING_CERT_HASH";
   static const String watcherMail = "TALSEC_WATCHER_MAIL";
+
+  static const String categoryExistsMessage = "Category already exists";
 }

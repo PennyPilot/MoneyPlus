@@ -6,6 +6,7 @@ import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/domain/validator/authentication_validator.dart';
 import 'package:moneyplus/presentation/account_setup/cubit/account_setup_cubit.dart';
 import 'package:moneyplus/presentation/createAccount/cubit/create_account_cubit.dart';
+import 'package:moneyplus/presentation/edit_salary/salary_settings_cubit.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
 import 'package:moneyplus/presentation/income/cubit/add_income_cubit.dart';
 import 'package:moneyplus/presentation/login/cubit/login_cubit.dart';
@@ -13,8 +14,11 @@ import 'package:moneyplus/presentation/statistics/cubit/statistics_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 
-import '../../presentation/accout/cubit/account_cubit.dart';
+import '../../domain/repository/category_repository.dart';
+import '../../presentation/account/cubit/account_cubit.dart';
+import '../../presentation/categories/cubit/categories_cubit.dart';
 import '../../presentation/expense/cubit/add_expense_cubit.dart';
+import '../../presentation/profileSetting/cubit/profile_settings_cubit.dart';
 import 'injection.dart';
 
 void initCubitDI() {
@@ -33,8 +37,11 @@ void initCubitDI() {
     ),
   );
 
-  getIt.registerLazySingleton<AccountSetupCubit>(
-    () => AccountSetupCubit(getIt<AccountRepository>()),
+  getIt.registerFactory<AccountSetupCubit>(
+    () => AccountSetupCubit(
+      getIt<AccountRepository>(),
+      getIt<AuthenticationRepository>(),
+    ),
   );
 
   getIt.registerFactory<AddExpenseCubit>(
@@ -43,6 +50,7 @@ void initCubitDI() {
       userMoneyRepository: getIt<UserMoneyRepository>(),
     ),
   );
+
   getIt.registerFactory<AddIncomeCubit>(
     () => AddIncomeCubit(
       transactionRepository: getIt<TransactionRepository>(),
@@ -67,11 +75,25 @@ void initCubitDI() {
 
   getIt.registerFactory<CreateAccountCubit>(
     () => CreateAccountCubit(
+      getIt<AuthenticationValidator>(),),
+  );
+
+  getIt.registerFactory<ProfileSettingsCubit>(
+    () => ProfileSettingsCubit(
       getIt<AuthenticationValidator>(),
       getIt<AuthenticationRepository>(),
+      getIt<AccountRepository>(),
     ),
   );
+
   getIt.registerFactory<AccountCubit>(
-        () => AccountCubit(getIt<AccountRepository>()),
+    () => AccountCubit(getIt<AccountRepository>(), getIt<AuthenticationRepository>()),
+  );
+
+  getIt.registerFactory<CategoriesCubit>(
+    () => CategoriesCubit(getIt<CategoryRepository>()),
+);
+  getIt.registerFactory<SalarySettingsCubit>(
+    () => SalarySettingsCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
   );
 }
