@@ -21,6 +21,8 @@ class AccountSetupState {
   final List<String> suggestions;
   final bool isLoading;
   final String errorMessage;
+  final String salaryError;
+  final String salaryDayError;
   final AccountSetupStep accountStep;
   final String currentBalance;
   final bool navigateToHome;
@@ -51,6 +53,8 @@ class AccountSetupState {
     ],
     this.isLoading = true,
     this.errorMessage = "",
+    this.salaryError = "",
+    this.salaryDayError = "",
     this.accountStep = AccountSetupStep.step1,
     this.currentBalance = "",
     this.navigateToHome = false,
@@ -70,6 +74,8 @@ class AccountSetupState {
     List<String>? categories,
     List<String>? suggestions,
     String? errorMessage,
+    String? salaryError,
+    String? salaryDayError,
     bool? isLoading,
     AccountSetupStep? accountStep,
     String? currentBalance,
@@ -89,6 +95,8 @@ class AccountSetupState {
       categories: categories ?? this.categories,
       suggestions: suggestions ?? this.suggestions,
       errorMessage: errorMessage ?? this.errorMessage,
+      salaryError: salaryError ?? this.salaryError,
+      salaryDayError: salaryDayError ?? this.salaryDayError,
       isLoading: isLoading ?? this.isLoading,
       accountStep: accountStep ?? this.accountStep,
       currentBalance: currentBalance ?? this.currentBalance,

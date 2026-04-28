@@ -57,64 +57,68 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     ));
   }
 
-  bool _accountSetUpStep1ValidationInput() {
-    return state.selectedCurrency != null && state.salary.isNotEmpty && state.salaryDay.isNotEmpty;
-  }
-
-  bool _accountSetUpStep2ValidationInput() {
-    return state.currentBalance.isNotEmpty;
-  }
-
-  bool _accountSetUpStep3ValidationInput() {
-    return state.categories.isNotEmpty;
-  }
-
   void onCategoryChanged(List<String> categories) {
     emit(state.copyWith(categories: categories));
-    _updateButtonEnabledState();
+    _validate();
   }
 
   void onSalaryChanged(String salary) {
     emit(state.copyWith(salary: salary));
-    _updateButtonEnabledState();
+    _validate();
   }
 
   void onCurrencyChanged(Currency currency) {
     emit(state.copyWith(selectedCurrency: currency));
-    _updateButtonEnabledState();
+    _validate();
   }
 
   void onSalaryDayChanged(String salaryDay) {
     emit(state.copyWith(salaryDay: salaryDay));
-    _updateButtonEnabledState();
+    _validate();
   }
 
   void onCurrentBalanceChanged(String currentBalance) {
     emit(state.copyWith(currentBalance: currentBalance));
-    _updateButtonEnabledState();
+    _validate();
   }
 
-  void _updateButtonEnabledState() {
+  void _validate() {
+    final salary = double.tryParse(state.salary) ?? 0;
+    final salaryDay = int.tryParse(state.salaryDay) ?? 0;
+
+    final bool isSalaryInvalid = state.salary.isNotEmpty && salary > 999000000;
+    final bool isSalaryDayInvalid = state.salaryDay.isNotEmpty && (salaryDay < 1 || salaryDay > 28);
+
     bool isButtonEnable = switch (state.accountStep) {
-      AccountSetupStep.step1 => _accountSetUpStep1ValidationInput(),
-      AccountSetupStep.step2 => _accountSetUpStep2ValidationInput(),
-      AccountSetupStep.step3 => _accountSetUpStep3ValidationInput(),
+      AccountSetupStep.step1 => 
+        state.selectedCurrency != null &&
+        state.salary.isNotEmpty &&
+        !isSalaryInvalid &&
+        state.salaryDay.isNotEmpty &&
+        !isSalaryDayInvalid,
+      AccountSetupStep.step2 => state.currentBalance.isNotEmpty,
+      AccountSetupStep.step3 => state.categories.isNotEmpty,
     };
-    emit(state.copyWith(isButtonEnabled: isButtonEnable));
+
+    emit(state.copyWith(
+      isButtonEnabled: isButtonEnable,
+      salaryError: isSalaryInvalid ? "limit_exceeded" : "",
+      salaryDayError: isSalaryDayInvalid ? "range_error" : "",
+    ));
   }
 
   void onNextStep() {
     switch (state.accountStep) {
       case AccountSetupStep.step1:
         emit(state.copyWith(accountStep: AccountSetupStep.step2));
-        _updateButtonEnabledState();
+        _validate();
         break;
       case AccountSetupStep.step2:
         emit(state.copyWith(accountStep: AccountSetupStep.step3));
-        _updateButtonEnabledState();
+        _validate();
         break;
       case AccountSetupStep.step3:
-        _updateButtonEnabledState();
+        _validate();
         submitAccountSetupData();
         break;
     }
@@ -126,11 +130,11 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
         break;
       case AccountSetupStep.step2:
         emit(state.copyWith(accountStep: AccountSetupStep.step1));
-        _updateButtonEnabledState();
+        _validate();
         break;
       case AccountSetupStep.step3:
         emit(state.copyWith(accountStep: AccountSetupStep.step2));
-        _updateButtonEnabledState();
+        _validate();
         break;
     }
   }
@@ -143,7 +147,7 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
       updatedCategories.add(category);
     }
     emit(state.copyWith(categories: updatedCategories));
-    _updateButtonEnabledState();
+    _validate();
   }
 
   Future<void> submitAccountSetupData() async {

@@ -85,27 +85,26 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: context.colors.surface,
+            appBar: CustomAppBar(
+              leading: AppBarCircleButton(
+                assetPath: AppAssets.icArrowLeft,
+                onTap: () {
+                  if (state.accountStep == AccountSetupStep.step1) {
+                    Navigator.pop(context);
+                  } else {
+                    context.read<AccountSetupCubit>().onPreviousStep();
+                  }
+                },
+              ),
+              title: l10n.accountSetup,
+              trailing: SvgPicture.asset(AppAssets.appBrand),
+            ),
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsetsDirectional.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomAppBar(
-                      leading: AppBarCircleButton(
-                        assetPath: AppAssets.icArrowLeft,
-                        onTap: () {
-                          if (state.accountStep == AccountSetupStep.step1) {
-                            Navigator.pop(context);
-                          } else {
-                            context.read<AccountSetupCubit>().onPreviousStep();
-                          }
-                        },
-                      ),
-                      title: l10n.accountSetup,
-                      trailing: SvgPicture.asset(AppAssets.appBrand),
-                    ),
-                    SizedBox(height: 36),
                     Indicator(currentIndex: currentIndex),
                     SizedBox(height: 16),
                     Text(

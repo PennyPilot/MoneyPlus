@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
@@ -86,6 +87,11 @@ class _Step1State extends State<Step1> {
           ),
           keyboardType: TextInputType.number,
           value: widget.state.salary,
+          errorText: widget.state.salaryError.isNotEmpty ? l10n.salary_error_limit : null,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(9),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           onChanged: (value) {
             context.read<AccountSetupCubit>().onSalaryChanged(value);
           },
@@ -101,6 +107,7 @@ class _Step1State extends State<Step1> {
             ),
             child: SvgPicture.asset(AppAssets.iconCalender),
           ),
+          errorText: widget.state.salaryDayError.isNotEmpty ? l10n.salary_day_error_limit : null,
           trailing: Padding(
             padding: const EdgeInsetsDirectional.only(
               top: 14,
@@ -128,6 +135,10 @@ class _Step1State extends State<Step1> {
           ),
           keyboardType: TextInputType.number,
           value: widget.state.salaryDay,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(2),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           onChanged: (value) {
             context.read<AccountSetupCubit>().onSalaryDayChanged(value);
           },
