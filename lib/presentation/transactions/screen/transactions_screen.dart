@@ -10,11 +10,9 @@ class TransactionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocProvider(
-        create: (_) => getIt<TransactionCubit>()..loadData(),
-        child: TransactionScreenContent(),
-      ),
+    return BlocProvider(
+      create: (_) => getIt<TransactionCubit>()..loadData(),
+      child: TransactionScreenContent(),
     );
   }
 }
