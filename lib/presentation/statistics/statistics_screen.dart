@@ -53,27 +53,33 @@ class _StatisticsViewState extends State<StatisticsView> {
 
     return Scaffold(
       backgroundColor: context.colors.surface,
-      appBar: CustomAppBar(
-        title: l10n.statistics,
-        trailing: switch (state) {
-          StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
-              onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
-              year: selectedMonth.year,
-              month: selectedMonth.month,
-            ),
-          _ => null,
-        },
-      ),
-      body: SafeArea(
-        child: switch (state) {
-          StatisticsIdle() => const SizedBox.shrink(),
-          StatisticsLoading() => const AppLoadingIndicator(),
-          StatisticsSuccess() => _buildSuccess(context, state),
-          StatisticsFailure(:final message) => AppErrorView(
-              message: message,
-              onRetry: _onRetry,
-            ),
-        },
+      body: Column(
+        children: [
+          CustomAppBar(
+            backgroundColor: context.colors.surfaceLow,
+            title: l10n.statistics,
+            trailing: switch (state) {
+              StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
+                  onDatePick: (date) =>
+                      context.read<StatisticsCubit>().changeMonth(date),
+                  year: selectedMonth.year,
+                  month: selectedMonth.month,
+                ),
+              _ => null,
+            },
+          ),
+          Expanded(
+            child: switch (state) {
+              StatisticsIdle() => const SizedBox.shrink(),
+              StatisticsLoading() => const AppLoadingIndicator(),
+              StatisticsSuccess() => _buildSuccess(context, state),
+              StatisticsFailure(:final message) => AppErrorView(
+                  message: message,
+                  onRetry: _onRetry,
+                ),
+            },
+          ),
+        ],
       ),
     );
   }

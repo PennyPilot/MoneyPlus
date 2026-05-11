@@ -32,21 +32,27 @@ class AccountScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: CustomAppBar(
-        title: l10n.account,
-        backgroundColor: colors.surfaceLow,
-      ),
       body: BlocProvider(
         create: (_) => getIt<AccountCubit>()..loadUserInfo(),
-        child: BlocConsumer<AccountCubit, AccountState>(
-          listener: (context, state) {
-            if (state is LogoutSuccess) {
-              const LoginRoute().go(context);
-            }
-          },
-          builder: (context, state) {
-            return _buildBody(context, state, l10n, colors, typography);
-          },
+        child: Column(
+          children: [
+            CustomAppBar(
+              title: l10n.account,
+              backgroundColor: colors.surfaceLow,
+            ),
+            Expanded(
+              child: BlocConsumer<AccountCubit, AccountState>(
+                listener: (context, state) {
+                  if (state is LogoutSuccess) {
+                    const LoginRoute().go(context);
+                  }
+                },
+                builder: (context, state) {
+                  return _buildBody(context, state, l10n, colors, typography);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
