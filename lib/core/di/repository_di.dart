@@ -15,6 +15,7 @@ import '../../domain/repository/user_money_repository.dart';
 import '../../domain/repository/category_repository.dart';
 import '../../data/repository/category_repository_impl.dart';
 import '../../domain/service/auth_service.dart';
+import '../../domain/service/category_service.dart';
 import '../../domain/service/transaction_service.dart';
 import '../../domain/service/user_money_service.dart';
 import '../service/supabase_service.dart';
@@ -39,9 +40,13 @@ void initRepositoryDI() {
     () => StatisticsRepositoryImpl(supabaseService: getIt<SupabaseService>()),
   );
   getIt.registerLazySingleton<CategoryRepository>(
-    () => CategoryRepositoryImpl(supabaseService: getIt<SupabaseService>()),
-  );  
+    () => CategoryRepositoryImpl(
+      service: getIt<CategoryService>(),
+      supabaseService: getIt<SupabaseService>(),
+    ),
+  );
   getIt.registerLazySingleton<AppPreferencesRepository>(
-        () => AppPreferencesRepositoryImpl(sharedPreferences: getIt<SharedPreferences>()),
+    () => AppPreferencesRepositoryImpl(
+        sharedPreferences: getIt<SharedPreferences>()),
   );
 }

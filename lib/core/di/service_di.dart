@@ -4,7 +4,9 @@ import 'package:moneyplus/data/repository/secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/data_source/supabase/auth_service.dart';
+import '../../data/data_source/supabase/category_service.dart';
 import '../../data/data_source/supabase/transaction_service.dart';
+import '../../domain/service/category_service.dart';
 import '../../domain/service/transaction_service.dart';
 import '../security/protection_service.dart';
 import '../service/firebase_service.dart';
@@ -58,6 +60,13 @@ void initServiceDI() {
 
   getIt.registerSingletonAsync<UserMoneyService>(
     () async => SupabaseUserMoneyService(
+      service: getIt<SupabaseService>(),
+    ),
+    dependsOn: [SupabaseService],
+  );
+
+  getIt.registerSingletonAsync<CategoryService>(
+    () async => SupabaseCategoryService(
       service: getIt<SupabaseService>(),
     ),
     dependsOn: [SupabaseService],
