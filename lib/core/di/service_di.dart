@@ -10,6 +10,8 @@ import '../security/protection_service.dart';
 import '../service/firebase_service.dart';
 import '../service/supabase_service.dart';
 import '../../domain/service/auth_service.dart';
+import '../../data/data_source/supabase/user_money_service.dart';
+import '../../domain/service/user_money_service.dart';
 import 'injection.dart';
 
 void initServiceDI() {
@@ -49,6 +51,13 @@ void initServiceDI() {
 
   getIt.registerSingletonAsync<TransactionService>(
     () async => SupabaseTransactionService(
+      service: getIt<SupabaseService>(),
+    ),
+    dependsOn: [SupabaseService],
+  );
+
+  getIt.registerSingletonAsync<UserMoneyService>(
+    () async => SupabaseUserMoneyService(
       service: getIt<SupabaseService>(),
     ),
     dependsOn: [SupabaseService],
