@@ -14,14 +14,14 @@ import '../../domain/repository/transaction_repository.dart';
 import '../../domain/repository/user_money_repository.dart';
 import '../../domain/repository/category_repository.dart';
 import '../../data/repository/category_repository_impl.dart';
+import '../../domain/service/auth_service.dart';
 import '../service/supabase_service.dart';
 import 'injection.dart';
 
 void initRepositoryDI() {
   getIt.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImpl(
-      supabaseService: getIt<SupabaseService>(),
-      appSecrets: getIt(),
+      authService: getIt<AuthService>(),
     ),
   );
   getIt.registerLazySingleton<UserMoneyRepository>(
