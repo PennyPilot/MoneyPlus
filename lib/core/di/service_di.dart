@@ -4,6 +4,8 @@ import 'package:moneyplus/data/repository/secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/data_source/supabase/auth_service.dart';
+import '../../data/data_source/supabase/transaction_service.dart';
+import '../../domain/service/transaction_service.dart';
 import '../security/protection_service.dart';
 import '../service/firebase_service.dart';
 import '../service/supabase_service.dart';
@@ -43,5 +45,12 @@ void initServiceDI() {
       appSecrets: getIt<AppSecrets>(),
     ),
     dependsOn: [SupabaseService, AppSecrets],
+  );
+
+  getIt.registerSingletonAsync<TransactionService>(
+    () async => SupabaseTransactionService(
+      service: getIt<SupabaseService>(),
+    ),
+    dependsOn: [SupabaseService],
   );
 }
