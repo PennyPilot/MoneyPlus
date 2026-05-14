@@ -5,12 +5,16 @@ import '../../domain/entity/categories_breakdown.dart';
 import '../../domain/entity/monthly_overview.dart';
 import '../../domain/entity/spending_trend_point.dart';
 import '../../domain/repository/statistics_repository.dart';
+import '../../domain/service/statistics_service.dart';
 
 class StatisticsRepositoryImpl implements StatisticsRepository {
+  final StatisticsService service;
   final SupabaseService _supabaseService;
 
-  StatisticsRepositoryImpl({required SupabaseService supabaseService})
-    : _supabaseService = supabaseService;
+  StatisticsRepositoryImpl({
+    required this.service,
+    required SupabaseService supabaseService,
+  }) : _supabaseService = supabaseService;
 
   @override
   Future<Result<MonthlyOverview>> getMonthlyOverview({
@@ -24,11 +28,11 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
         return Result.error(ErrorModel('User not logged in'));
       }
 
-      // Call RPC function
-      final response = await client.rpc(
-        'get_monthly_overview',
-        params: {'in_year': month.year, 'in_month': month.month},
+      final response = await service.getMonthlyOverview(
+        year: month.year,
+        month: month.month,
       );
+      
       if (response == null) {
         return Result.success(_createEmptyOverview());
       }
@@ -46,7 +50,6 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     final expenses = (json['expenses'] as num).toDouble();
     final currency = json['currency'] as String? ?? 'IQD';
 
-    // Calculate max value and scale labels
     final maxAmount = income > expenses ? income : expenses;
     final maxValue = _calculateMaxValue(maxAmount);
     final scaleLabels = _generateScaleLabels(maxValue);
@@ -121,10 +124,9 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     required DateTime date,
   }) async {
     try {
-      final client = await _supabaseService.getClient();
-      final data = await client.rpc(
-        'get_expenses_categories_breakdown',
-        params: {'in_year': date.year, 'in_month': date.month},
+      final data = await service.getCategoriesBreakDown(
+        year: date.year,
+        month: date.month,
       );
       if (data == null) {
         return Result.success(
@@ -140,11 +142,9 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   @override
   Future<Result<SpendingTrend>> getSpendingTrend({required DateTime month}) async {
     try {
-      final client = await _supabaseService.getClient();
-
-      final data = await client.rpc(
-        'get_spending_trend',
-        params: {'in_year': month.year, 'in_month': month.month},
+      final data = await service.getSpendingTrend(
+        year: month.year,
+        month: month.month,
       );
 
       if (data == null || (data as List).isEmpty) {
@@ -166,5 +166,4 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
       return Result.error(ErrorModel(e.toString()));
     }
   }
-
 }

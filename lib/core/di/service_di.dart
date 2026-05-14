@@ -3,10 +3,14 @@ import 'package:moneyplus/core/security/app_secrets.dart';
 import 'package:moneyplus/data/repository/secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/data_source/supabase/account_service.dart';
 import '../../data/data_source/supabase/auth_service.dart';
 import '../../data/data_source/supabase/category_service.dart';
+import '../../data/data_source/supabase/statistics_service.dart';
 import '../../data/data_source/supabase/transaction_service.dart';
+import '../../domain/service/account_service.dart';
 import '../../domain/service/category_service.dart';
+import '../../domain/service/statistics_service.dart';
 import '../../domain/service/transaction_service.dart';
 import '../security/protection_service.dart';
 import '../service/firebase_service.dart';
@@ -67,6 +71,20 @@ void initServiceDI() {
 
   getIt.registerSingletonAsync<CategoryService>(
     () async => SupabaseCategoryService(
+      service: getIt<SupabaseService>(),
+    ),
+    dependsOn: [SupabaseService],
+  );
+
+  getIt.registerSingletonAsync<AccountService>(
+    () async => SupabaseAccountService(
+      service: getIt<SupabaseService>(),
+    ),
+    dependsOn: [SupabaseService],
+  );
+
+  getIt.registerSingletonAsync<StatisticsService>(
+    () async => SupabaseStatisticsService(
       service: getIt<SupabaseService>(),
     ),
     dependsOn: [SupabaseService],
