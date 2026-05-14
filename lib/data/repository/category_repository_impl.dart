@@ -3,16 +3,21 @@ import 'package:moneyplus/domain/entity/category.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/service/supabase_service.dart';
 import '../../domain/repository/category_repository.dart';
+import '../../domain/service/category_service.dart';
 
 class CategoryRepositoryImpl extends CategoryRepository {
+  final CategoryService service;
   final SupabaseService supabaseService;
 
-  CategoryRepositoryImpl({required this.supabaseService});
+  CategoryRepositoryImpl({
+    required this.service,
+    required this.supabaseService,
+  });
 
   @override
   Future<void> addCategory(Category category) async {
     try {
-      final (client, userId) = await _getAuthenticatedUser();
+      final (_, userId) = await _getAuthenticatedUser();
 
       final data = category.toJson();
       if (data['id'] == 0 || data['id'] == null) {
@@ -21,7 +26,7 @@ class CategoryRepositoryImpl extends CategoryRepository {
 
       data['user_id'] = userId;
 
-      await client.from('categories').insert(data);
+      await service.addCategory(data);
     } on PostgrestException catch (e) {
       _handlePostgrestException(e, 'add');
     } catch (e) {
@@ -32,13 +37,11 @@ class CategoryRepositoryImpl extends CategoryRepository {
   @override
   Future<void> updateCategory(Category category) async {
     try {
-      final (client, userId) = await _getAuthenticatedUser();
+      final (_, userId) = await _getAuthenticatedUser();
       final data = category.toJson();
       data['user_id'] = userId;
-      await client.from('categories').update(data).match({
-        'id': category.id,
-        'user_id': userId,
-      });
+      
+      await service.updateCategory(data, category.id, userId);
     } on PostgrestException catch (e) {
       _handlePostgrestException(e, 'update');
     } catch (e) {
@@ -54,13 +57,9 @@ class CategoryRepositoryImpl extends CategoryRepository {
 
       if (user == null) return Result.success([]);
 
-      final response = await client
-          .from('categories')
-          .select()
-          .eq('user_id', user.id)
-          .order('id', ascending: true);
+      final response = await service.getCategories(user.id);
 
-      final categories = (response as List)
+      final categories = (response)
           .map((json) => Category.fromJson(json))
           .toList();
       return Result.success(categories);

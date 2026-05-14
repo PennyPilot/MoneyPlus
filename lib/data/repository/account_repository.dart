@@ -7,17 +7,21 @@ import '../../core/errors/error_model.dart';
 import '../../core/errors/result.dart';
 import '../../core/service/supabase_service.dart';
 import '../../domain/repository/account_repository.dart';
+import '../../domain/service/account_service.dart';
 
 class AccountRepositoryImpl extends AccountRepository {
+  final AccountService service;
   final SupabaseService supabaseService;
 
-  AccountRepositoryImpl({required this.supabaseService});
+  AccountRepositoryImpl({
+    required this.service,
+    required this.supabaseService,
+  });
 
   @override
   Future<List<Currency>> getCurrencies() async {
     try {
-      final client = await supabaseService.getClient();
-      final response = await client.from('currencies').select();
+      final response = await service.getCurrencies();
       return response.map((e) => Currency.fromJson(e)).toList();
     } catch (e) {
       throw Exception('Failed to fetch currencies');
@@ -53,24 +57,14 @@ class AccountRepositoryImpl extends AccountRepository {
     required int currencyId,
     required double initialBalance,
     required List<String> categories,
-  }) async {
-    final client = await supabaseService.getClient();
-
-    await client
-        .from('users')
-        .update({
-          'salary_amount': salary,
-          'salary_day': salaryDay,
-          'default_currency_id': currencyId,
-          'current_balance': initialBalance,
-          'is_complete': true,
-        })
-        .eq('id', userId);
-
-    final categoryData = categories
-        .map((name) => {'name': name, 'user_id': userId, 'is_income': false})
-        .toList();
-
-    await client.from('categories').insert(categoryData);
+  }) {
+    return service.completeAccountSetup(
+      userId: userId,
+      salary: salary,
+      salaryDay: salaryDay,
+      currencyId: currencyId,
+      initialBalance: initialBalance,
+      categories: categories,
+    );
   }
 }
