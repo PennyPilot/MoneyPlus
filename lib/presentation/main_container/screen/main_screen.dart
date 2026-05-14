@@ -22,7 +22,7 @@ class MainScreen extends StatelessWidget {
           return SafeArea(
             child: Scaffold(
               backgroundColor: context.colors.surface,
-              body: _getScreenForTab(state.selectedTab),
+              body: _getScreenForTab(state.selectedTab, state.transactionCategoryFilters),
               bottomNavigationBar: NavBar(
                 selectedTab: state.selectedTab,
                 onTabSelected: (tab) {
@@ -36,12 +36,12 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _getScreenForTab(NavBarTab tab) {
+  Widget _getScreenForTab(NavBarTab tab, List<int>? filters) {
     switch (tab) {
       case NavBarTab.home:
         return const HomeScreen();
       case NavBarTab.transaction:
-        return const TransactionsScreen();
+        return TransactionsScreen(initialCategoryIds: filters);
       case NavBarTab.statistics:
         return const StatisticsScreen();
       case NavBarTab.account:

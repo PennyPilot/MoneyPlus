@@ -16,20 +16,15 @@ class TransactionsList extends StatelessWidget {
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           final transaction = transactions[index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: InkWell(
-              onTap: () {
-                TransactionDetailsRoute(transaction.id.toString()).push(context);
-              },
-              child: TransactionRow(
-                transactionType: transaction.type,
-                category: transaction.category.name,
-                currency: transaction.currency,
-                amount: transaction.amount,
-                date: transaction.date,
-              ),
-            ),
+          return TransactionRow(
+            onTap: () {
+              TransactionDetailsRoute(transaction.id).push(context);
+            },
+            transactionType: transaction.type,
+            category: transaction.category.name,
+            currency: transaction.currency,
+            amount: transaction.amount,
+            date: transaction.date,
           );
         },
       ),

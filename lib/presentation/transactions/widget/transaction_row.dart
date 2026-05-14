@@ -9,6 +9,7 @@ class TransactionRow extends StatelessWidget {
   final String currency;
   final double amount;
   final DateTime date;
+  final VoidCallback? onTap;
 
   const TransactionRow({
     super.key,
@@ -17,56 +18,65 @@ class TransactionRow extends StatelessWidget {
     required this.currency,
     required this.amount,
     required this.date,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          category,
-          style: context.typography.label.medium.copyWith(
-            color: context.colors.title,
-          ),
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
+            Text(
+              category,
+              style: context.typography.label.medium.copyWith(
+                color: context.colors.title,
+              ),
+            ),
+            Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  transactionType == TransactionType.income ? "+" : "-",
-                  style: context.typography.label.medium.copyWith(
-                    color: transactionType == TransactionType.income
-                        ? context.colors.green
-                        : context.colors.red,
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      transactionType == TransactionType.income ? "+" : "-",
+                      style: context.typography.label.medium.copyWith(
+                        color: transactionType == TransactionType.income
+                            ? context.colors.green
+                            : context.colors.red,
+                      ),
+                    ),
+                    Text(
+                      NumberFormat('#,##0').format(amount),
+                      style: context.typography.label.medium.copyWith(
+                        color: context.colors.title,
+                      ),
+                    ),
+                    Text(
+                      " $currency",
+                      style: context.typography.label.medium.copyWith(
+                        color: context.colors.title,
+                      ),
+                    ),
+                  ],
                 ),
                 Text(
-                  NumberFormat('#,##0').format(amount),
-                  style: context.typography.label.medium.copyWith(
-                    color: context.colors.title,
-                  ),
-                ),
-                Text(
-                  " $currency",
-                  style: context.typography.label.medium.copyWith(
-                    color: context.colors.title,
+                  DateFormat('dd MMM yyyy').format(date),
+                  style: context.typography.label.small.copyWith(
+                    color: context.colors.hint,
                   ),
                 ),
               ],
             ),
-            Text(
-              DateFormat('dd MMM yyyy').format(date),
-              style: context.typography.label.small.copyWith(
-                color: context.colors.hint,
-              ),
-            ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

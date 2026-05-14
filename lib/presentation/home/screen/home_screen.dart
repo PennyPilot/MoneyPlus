@@ -12,6 +12,7 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import '../../../core/di/injection.dart';
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
+import '../../main_container/cubit/main_cubit.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
 
@@ -197,11 +198,9 @@ Widget _loadedContent({
                               left: 16,
                               right: 16,
                             ),
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
-                                // For top spending category, we might want to navigate to a filtered transactions list
-                                // or show details. Since it's a category aggregation, we'll keep it as is or
-                                // implement navigation if there was a specific design for it.
+                                context.read<MainCubit>().navigateToTransactionsWithFilter([categoryData.category.id]);
                               },
                               child: TopSpendingCard(
                                 expenseCategory: categoryData.category.name,
