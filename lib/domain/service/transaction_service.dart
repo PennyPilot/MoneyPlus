@@ -21,6 +21,15 @@ abstract class TransactionService {
 
   Future<Map<String, dynamic>> getTransactionDetails(String id);
 
+  Future<bool> editTransaction({
+    required String id,
+    double? amount,
+    int? typeId,
+    DateTime? date,
+    int? categoryId,
+    String? note,
+  });
+
   Future<String> getCurrencyAbbreviation(int currencyId);
 
   Future<String> getCategoryName(String categoryId);

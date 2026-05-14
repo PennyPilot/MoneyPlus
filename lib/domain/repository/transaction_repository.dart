@@ -25,7 +25,7 @@ abstract class TransactionRepository {
   });
 
   Future<bool> editTransaction({
-    required int id,
+    required String id,
     double? amount,
     TransactionType? type,
     DateTime? date,

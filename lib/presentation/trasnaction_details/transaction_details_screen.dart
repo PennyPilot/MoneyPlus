@@ -6,6 +6,7 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
+import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 import 'package:svg_flutter/svg.dart';
@@ -57,6 +58,7 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
       backgroundColor: colors.surfaceLow,
       leading: _circleIcon(
         iconPath: AppAssets.icArrowLeft,
+
         context: context,
         onClick: () {
           GoRouter.of(context).pop();
@@ -87,6 +89,7 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
     ),
     bottomNavigationBar: _bottomBar(
       context: context,
+      state: state,
       onClickDelete: () {
         cubit.deleteTransaction().then((success) {
           if (success) {
@@ -127,6 +130,7 @@ Widget _circleIcon({
         iconPath,
         width: 20,
         height: 20,
+        colorFilter: ColorFilter.mode(context.colors.title, BlendMode.srcIn),
         matchTextDirection: true,
       ),
     ),
@@ -136,6 +140,7 @@ Widget _circleIcon({
 Widget _bottomBar({
   required BuildContext context,
   required Function onClickDelete,
+  required TransactionDetailsLoaded state,
 }) {
   final localizations = context.localizations;
   return Container(
@@ -151,7 +156,12 @@ Widget _bottomBar({
           mainAxisSize: MainAxisSize.min,
           spacing: 12,
           children: [
-            DefaultButton(text: localizations.edit),
+            DefaultButton(
+              text: localizations.edit,
+              onPressed: () {
+                EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
+              },
+            ),
             DefaultErrorButton(
               text: localizations.delete,
               onPressed: () {

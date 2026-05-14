@@ -190,21 +190,25 @@ Widget _loadedContent({
                       delegate: SliverChildBuilderDelegate(
                         childCount: topSpendingCategories.length,
                         (context, index) {
+                          final categoryData = topSpendingCategories[index];
                           return Padding(
                             padding: const EdgeInsets.only(
                               bottom: 12,
                               left: 16,
                               right: 16,
                             ),
-                            child: TopSpendingCard(
-                              expenseCategory:
-                                  topSpendingCategories[index].category.name,
-                              amount:
-                                  "${formatWithCommas(topSpendingCategories[index].total)} ${topSpendingCategories[index].currency}",
-                              transactionCount:
-                                  topSpendingCategories[index].numberOfTransactions,
-                              percentage:
-                                  topSpendingCategories[index].percentage,
+                            child: InkWell(
+                              onTap: () {
+                                // For top spending category, we might want to navigate to a filtered transactions list
+                                // or show details. Since it's a category aggregation, we'll keep it as is or
+                                // implement navigation if there was a specific design for it.
+                              },
+                              child: TopSpendingCard(
+                                expenseCategory: categoryData.category.name,
+                                amount: "${formatWithCommas(categoryData.total)} ${categoryData.currency}",
+                                transactionCount: categoryData.numberOfTransactions,
+                                percentage: categoryData.percentage,
+                              ),
                             ),
                           );
                         },
