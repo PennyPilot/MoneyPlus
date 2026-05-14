@@ -158,8 +158,11 @@ Widget _bottomBar({
           children: [
             DefaultButton(
               text: localizations.edit,
-              onPressed: () {
-                EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
+              onPressed: () async {
+                await EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
+                if (context.mounted) {
+                  context.read<TransactionDetailsCubit>().getTransactionDetails(state.transactionId);
+                }
               },
             ),
             DefaultErrorButton(

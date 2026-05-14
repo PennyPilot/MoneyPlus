@@ -57,6 +57,15 @@ class _EditTransactionScreenContent extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        if (state.status == FormStatus.loading && state.amount == null) {
+          return Scaffold(
+            backgroundColor: colors.surface,
+            body: Center(
+              child: CircularProgressIndicator(color: colors.primary),
+            ),
+          );
+        }
+
         final title = state.transactionType == TransactionType.income
             ? localization.editIncome
             : localization.editExpense;
