@@ -50,30 +50,36 @@ class _StatisticsViewState extends State<StatisticsView> {
   Widget build(BuildContext context) {
     final state = context.watch<StatisticsCubit>().state;
     final l10n = context.localizations;
+    final colors = context.colors;
 
-    return Scaffold(
-      backgroundColor: context.colors.surface,
-      appBar: CustomAppBar(
-        title: l10n.statistics,
-        trailing: switch (state) {
-          StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
-              onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
-              year: selectedMonth.year,
-              month: selectedMonth.month,
-            ),
-          _ => null,
-        },
-      ),
-      body: SafeArea(
-        child: switch (state) {
-          StatisticsIdle() => const SizedBox.shrink(),
-          StatisticsLoading() => const AppLoadingIndicator(),
-          StatisticsSuccess() => _buildSuccess(context, state),
-          StatisticsFailure(:final message) => AppErrorView(
-              message: message,
-              onRetry: _onRetry,
-            ),
-        },
+    return Container(
+      color: colors.surface,
+      child: Column(
+        children: [
+          CustomAppBar(
+            title: l10n.statistics,
+            backgroundColor: colors.surfaceLow,
+            trailing: switch (state) {
+              StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
+                  onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
+                  year: selectedMonth.year,
+                  month: selectedMonth.month,
+                ),
+              _ => null,
+            },
+          ),
+          Expanded(
+            child: switch (state) {
+              StatisticsIdle() => const SizedBox.shrink(),
+              StatisticsLoading() => const AppLoadingIndicator(),
+              StatisticsSuccess() => _buildSuccess(context, state),
+              StatisticsFailure(:final message) => AppErrorView(
+                  message: message,
+                  onRetry: _onRetry,
+                ),
+            },
+          ),
+        ],
       ),
     );
   }
@@ -82,37 +88,51 @@ class _StatisticsViewState extends State<StatisticsView> {
     final l10n = AppLocalizations.of(context)!;
 
     if (state.hasNoData) {
-      return AppEmptyView(
-        title: l10n.no_statistics_title,
-        subtitle: l10n.no_statistics_subtitle,
-        buttonText: l10n.add_transaction,
-        onButtonPressed: _onAddTransaction,
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: AppEmptyView(
+                  title: l10n.no_statistics_title,
+                  subtitle: l10n.no_statistics_subtitle,
+                  buttonText: l10n.add_transaction,
+                  onButtonPressed: _onAddTransaction,
+                ),
+              ),
+            ),
+          );
+        },
       );
     }
 
     final trendDataPoints = state.spendingTrend.toDataPoints();
 
-    return SingleChildScrollView(
-      child: Padding(
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: ListView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            MonthlyOverviewSection(overview: state.monthlyOverview),
-            const SizedBox(height: 16),
-            CategoryBreakdownWidget(
-              categoriesBreakdown: state.categoriesBreakdown,
-            ),
-            const SizedBox(height: 16),
-
-            SpendingTrendGraph(
-              data: trendDataPoints,
-              currency: state.spendingTrend.currency,
-            ),
-            const SizedBox(height: 8),
-            HighestSpendingBanner(trend: state.spendingTrend),
-            const SizedBox(height: 16),
-          ],
-        ),
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          MonthlyOverviewSection(overview: state.monthlyOverview),
+          const SizedBox(height: 16),
+          CategoryBreakdownWidget(
+            categoriesBreakdown: state.categoriesBreakdown,
+          ),
+          const SizedBox(height: 16),
+          SpendingTrendGraph(
+            data: trendDataPoints,
+            currency: state.spendingTrend.currency,
+          ),
+          const SizedBox(height: 8),
+          HighestSpendingBanner(trend: state.spendingTrend),
+          const SizedBox(height: 150), // Sufficient space to scroll above NavBar
+        ],
       ),
     );
   }

@@ -82,54 +82,64 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
                 },
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16, left: 16, top: 16),
-                child: TabsRow(
-                  selectedTab: state.selectedTab,
-                  onTabSelected: context.read<TransactionCubit>().onTabSelected,
-                ),
-              ),
-
-              if (state.transactionCategories.isNotEmpty)
-                Container(
-                  height: 40,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: state.transactionCategories.length,
-                    separatorBuilder: (context, index) => const SizedBox(width: 8),
-                    itemBuilder: (context, index) {
-                      final category = state.transactionCategories[index];
-                      final isSelected = state.selectedCategories.contains(category.id);
-                      return MChip(
-                        label: category.name,
-                        selected: isSelected,
-                        onTap: () {
-                          final currentSelected = List<int>.from(state.selectedCategories);
-                          if (isSelected) {
-                            currentSelected.remove(category.id);
-                          } else {
-                            currentSelected.add(category.id);
-                          }
-                          context.read<TransactionCubit>().onCategoriesSelected(currentSelected);
-                        },
-                      );
-                    },
-                  ),
-                ),
-
               Expanded(
-                child: CustomScrollView(
-                  controller: _controller,
-                  slivers: [
-                    state.transactions.isEmpty
-                        ? SliverFillRemaining(child: EmptyTransactions())
-                        : TransactionsList(transactions: state.transactions),
+                child: SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16, left: 16, top: 16),
+                        child: TabsRow(
+                          selectedTab: state.selectedTab,
+                          onTabSelected: context.read<TransactionCubit>().onTabSelected,
+                        ),
+                      ),
 
-                    if (state.isLoadingMore)
-                      const SliverToBoxAdapter(child: LoadingView()),
-                  ],
+                      if (state.transactionCategories.isNotEmpty)
+                        Container(
+                          height: 40,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: ListView.separated(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.transactionCategories.length,
+                            separatorBuilder: (context, index) => const SizedBox(width: 8),
+                            itemBuilder: (context, index) {
+                              final category = state.transactionCategories[index];
+                              final isSelected = state.selectedCategories.contains(category.id);
+                              return MChip(
+                                label: category.name,
+                                selected: isSelected,
+                                onTap: () {
+                                  final currentSelected = List<int>.from(state.selectedCategories);
+                                  if (isSelected) {
+                                    currentSelected.remove(category.id);
+                                  } else {
+                                    currentSelected.add(category.id);
+                                  }
+                                  context.read<TransactionCubit>().onCategoriesSelected(currentSelected);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+
+                      Expanded(
+                        child: CustomScrollView(
+                          controller: _controller,
+                          slivers: [
+                            state.transactions.isEmpty
+                                ? SliverFillRemaining(child: EmptyTransactions())
+                                : TransactionsList(transactions: state.transactions),
+
+                            if (state.isLoadingMore)
+                              const SliverToBoxAdapter(child: LoadingView()),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

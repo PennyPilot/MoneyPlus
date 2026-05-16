@@ -77,107 +77,112 @@ class AccountScreen extends StatelessWidget {
             ),
           ),
         ),
-        SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                personalInfoCard(
-                  context,
-                  image: '',
-                  name: user?.name ?? '',
-                  email: user?.email ?? '',
-                  onUpdateSuccess: () {
-                    MSnackBar.success(
-                      message: l10n.profileUpdatedSuccessfully,
-                      title: l10n.success,
-                    ).showSnackBar(context: context);
-                    context.read<AccountCubit>().loadUserInfo();
-                  },
-                ),
-                const SizedBox(height: 24),
-                accountSection(
-                  context,
-                  title: l10n.manageCategories,
-                  iconPath: AppAssets.icSettings,
-                  onTap: () => const ManageCategoriesRoute().push(context),
-                ),
-                accountSection(
-                  context,
-                  title: l10n.appLanguage,
-                  iconPath: AppAssets.icTranslation,
-                  onTap: () {
-                    final language = context.read<AppPreferencesCubit>().state.appLanguage;
-                    showDialog(
-                      context: context,
-                      builder: (context) => LanguageSelectionDialog(
-                        currentLanguage: language,
-                      ),
-                    );
-                  },
-                ),
-                accountSection(
-                  context,
-                  title: l10n.appTheme,
-                  iconPath: AppAssets.icSun,
-                  onTap: () {
-                    final theme = context.read<AppPreferencesCubit>().state.appTheme;
-                    showDialog(
-                      context: context,
-                      builder: (context) => ThemeSelectionDialog(
-                        currentTheme: theme,
-                      ),
-                    );
-                  },
-                ),
-                accountSection(
-                  context,
-                  title: l10n.currency,
-                  iconPath: AppAssets.icCurrency,
-                ),
-                accountSection(
-                  context,
-                  title: l10n.salarySettings,
-                  iconPath: AppAssets.iconMoney,
-                  onTap: () {
-                    EditSalaryRoute().push(context);
-                  },
-                ),
-                accountSection(
-                  context,
-                  title: l10n.frequentlyAskedQuestion,
-                  iconPath: AppAssets.icHelp,
-                ),
-                accountSection(
-                  context,
-                  title: l10n.helpAndSupport,
-                  iconPath: AppAssets.icCustomerSupport,
-                ),
-                accountSection(
-                  context,
-                  title: l10n.logout,
-                  iconPath: AppAssets.icLogout,
-                  showDivider: false,
-                  onTap: () {
-                    _showLogoutConfirmation(context);
-                  },
-                ),
-                const SizedBox(height: 24),
+        SafeArea(
+          top: false,
+          bottom: false,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  personalInfoCard(
+                    context,
+                    image: '',
+                    name: user?.name ?? '',
+                    email: user?.email ?? '',
+                    onUpdateSuccess: () {
+                      MSnackBar.success(
+                        message: l10n.profileUpdatedSuccessfully,
+                        title: l10n.success,
+                      ).showSnackBar(context: context);
+                      context.read<AccountCubit>().loadUserInfo();
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  accountSection(
+                    context,
+                    title: l10n.manageCategories,
+                    iconPath: AppAssets.icSettings,
+                    onTap: () => const ManageCategoriesRoute().push(context),
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.appLanguage,
+                    iconPath: AppAssets.icTranslation,
+                    onTap: () {
+                      final language = context.read<AppPreferencesCubit>().state.appLanguage;
+                      showDialog(
+                        context: context,
+                        builder: (context) => LanguageSelectionDialog(
+                          currentLanguage: language,
+                        ),
+                      );
+                    },
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.appTheme,
+                    iconPath: AppAssets.icSun,
+                    onTap: () {
+                      final theme = context.read<AppPreferencesCubit>().state.appTheme;
+                      showDialog(
+                        context: context,
+                        builder: (context) => ThemeSelectionDialog(
+                          currentTheme: theme,
+                        ),
+                      );
+                    },
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.currency,
+                    iconPath: AppAssets.icCurrency,
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.salarySettings,
+                    iconPath: AppAssets.iconMoney,
+                    onTap: () {
+                      EditSalaryRoute().push(context);
+                    },
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.frequentlyAskedQuestion,
+                    iconPath: AppAssets.icHelp,
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.helpAndSupport,
+                    iconPath: AppAssets.icCustomerSupport,
+                  ),
+                  accountSection(
+                    context,
+                    title: l10n.logout,
+                    iconPath: AppAssets.icLogout,
+                    showDivider: false,
+                    onTap: () {
+                      _showLogoutConfirmation(context);
+                    },
+                  ),
+                  const SizedBox(height: 24),
 
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(
-                      "${l10n.appVersion} 1.0",
-                      style: typography.label.small.copyWith(
-                        color: colors.body,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        "${l10n.appVersion} 1.0",
+                        style: typography.label.small.copyWith(
+                          color: colors.body,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 100), // Bottom padding for edge-to-edge NavBar
+                ],
+              ),
             ),
           ),
         ),

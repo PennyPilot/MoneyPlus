@@ -54,11 +54,12 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
   final cubit = context.read<TransactionDetailsCubit>();
   final localizations = context.localizations;
   return Scaffold(
+    extendBody: true,
+    backgroundColor: colors.surface,
     appBar: CustomAppBar(
       backgroundColor: colors.surfaceLow,
       leading: _circleIcon(
         iconPath: AppAssets.icArrowLeft,
-
         context: context,
         onClick: () {
           GoRouter.of(context).pop();
@@ -73,42 +74,80 @@ Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
         },
       ),
     ),
-    body: Container(
-      height: double.infinity,
-      color: colors.surface,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: SingleChildScrollView(
-          child: Center(
-            child: TransactionDetailsComponent(
-              transaction: state.transactionDetails,
+    body: SingleChildScrollView(
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Center(
+              child: TransactionDetailsComponent(
+                transaction: state.transactionDetails,
+              ),
             ),
-          ),
+            const SizedBox(height: 250), // Extra padding to scroll above the footer
+          ],
         ),
       ),
     ),
-    bottomNavigationBar: _bottomBar(
-      context: context,
-      state: state,
-      onClickDelete: () {
-        cubit.deleteTransaction().then((success) {
-          if (success) {
-            MSnackBar.success(
-              message: context.localizations.transaction_delete_success,
-              title: context.localizations.success,
-            ).showSnackBar(context: context);
-          } else {
-            MSnackBar.error(
-              message: context.localizations.transaction_delete_fail,
-              title: context.localizations.error,
-            ).showSnackBar(context: context);
-          }
-        });
-      },
+    bottomNavigationBar: SafeArea(
+      top: false,
+      child: _bottomBar(
+        context: context,
+        state: state,
+        onClickDelete: () {
+          cubit.deleteTransaction().then((success) {
+            if (success) {
+              MSnackBar.success(
+                message: context.localizations.transaction_delete_success,
+                title: context.localizations.success,
+              ).showSnackBar(context: context);
+            } else {
+              MSnackBar.error(
+                message: context.localizations.transaction_delete_fail,
+                title: context.localizations.error,
+              ).showSnackBar(context: context);
+            }
+          });
+        },
+      ),
     ),
   );
 }
 
+Widget _bottomBar({
+  required BuildContext context,
+  required Function onClickDelete,
+  required TransactionDetailsLoaded state,
+}) {
+  final localizations = context.localizations;
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 12,
+      children: [
+        DefaultButton(
+          text: localizations.edit,
+          onPressed: () async {
+            await EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
+            if (context.mounted) {
+              context.read<TransactionDetailsCubit>().getTransactionDetails(state.transactionId);
+            }
+          },
+        ),
+        DefaultErrorButton(
+          text: localizations.delete,
+          onPressed: () {
+            onClickDelete();
+          },
+        ),
+      ],
+    ),
+  );
+}
 Widget _circleIcon({
   required String iconPath,
   required BuildContext context,
@@ -132,47 +171,6 @@ Widget _circleIcon({
         height: 20,
         colorFilter: ColorFilter.mode(context.colors.title, BlendMode.srcIn),
         matchTextDirection: true,
-      ),
-    ),
-  );
-}
-
-Widget _bottomBar({
-  required BuildContext context,
-  required Function onClickDelete,
-  required TransactionDetailsLoaded state,
-}) {
-  final localizations = context.localizations;
-  return Container(
-    width: double.infinity,
-    color: context.colors.surface,
-    child: SafeArea(
-      top: false,
-      right: false,
-      left: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 12,
-          children: [
-            DefaultButton(
-              text: localizations.edit,
-              onPressed: () async {
-                await EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
-                if (context.mounted) {
-                  context.read<TransactionDetailsCubit>().getTransactionDetails(state.transactionId);
-                }
-              },
-            ),
-            DefaultErrorButton(
-              text: localizations.delete,
-              onPressed: () {
-                onClickDelete();
-              },
-            ),
-          ],
-        ),
       ),
     ),
   );
