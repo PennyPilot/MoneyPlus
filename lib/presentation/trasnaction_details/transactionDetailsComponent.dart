@@ -31,9 +31,13 @@ class TransactionDetailsComponent extends StatelessWidget {
           Positioned.fill(
             left: 0,
             right: 0,
-            child: Image.asset(
+            child: SvgPicture.asset(
               AppAssets.transactionDetailsBackground,
               fit: BoxFit.fill,
+              colorFilter: ColorFilter.mode(
+                colors.surfaceLow,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           Positioned(
@@ -164,7 +168,7 @@ Widget _infoRow(
     children: [
       Text(
         firstValue,
-        style: typography.label.medium.copyWith(color: colors.body),
+        style: typography.label.medium.copyWith(color: colors.title),
       ),
       Spacer(),
       Text(
@@ -172,7 +176,11 @@ Widget _infoRow(
         style: typography.label.medium.copyWith(color: colors.title),
       ),
       SizedBox(width: iconPadding),
-      if (iconPath != null) SvgPicture.asset(iconPath),
+      if (iconPath != null)
+        SvgPicture.asset(
+          iconPath,
+          colorFilter: ColorFilter.mode(colors.title, BlendMode.srcIn),
+        ),
     ],
   );
 }

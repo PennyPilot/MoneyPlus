@@ -1,3 +1,5 @@
+import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_cubit.dart';
 import 'package:moneyplus/domain/repository/account_repository.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/domain/repository/statistics_repository.dart';
@@ -95,5 +97,14 @@ void initCubitDI() {
 );
   getIt.registerFactory<SalarySettingsCubit>(
     () => SalarySettingsCubit(userMoneyRepository: getIt<UserMoneyRepository>()),
+  );
+
+  getIt.registerFactoryParam<ManageTransactionCubit, TransactionType, String?>(
+    (type, id) => ManageTransactionCubit(
+      transactionRepository: getIt<TransactionRepository>(),
+      userMoneyRepository: getIt<UserMoneyRepository>(),
+      initialType: type,
+      transactionId: id,
+    ),
   );
 }

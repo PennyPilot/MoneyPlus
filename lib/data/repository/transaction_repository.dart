@@ -53,14 +53,21 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<bool> editTransaction({
-    required int id,
+    required String id,
     double? amount,
     TransactionType? type,
     DateTime? date,
     TransactionCategory? category,
     String? note,
   }) async {
-    throw UnimplementedError('editTransaction not implemented');
+    return service.editTransaction(
+      id: id,
+      amount: amount,
+      typeId: type?.value,
+      date: date,
+      categoryId: category?.id,
+      note: note,
+    );
   }
 
   @override
@@ -93,23 +100,16 @@ class TransactionRepositoryImpl implements TransactionRepository {
     if (data.isEmpty) {
       return Result.error(ErrorModel("no transaction with that id: $id"));
     }
-    final transactionType = ((data['transaction_type_id'] as int) == 1)
-        ? TransactionType.income
-        : TransactionType.expense;
-    return Result.success(
-      Transaction(
-        id: 0,
-        amount: (data['amount'] as num).toDouble(),
-        currency: await service.getCurrencyAbbreviation(data['currency_id'] as int),
-        type: transactionType,
-        date: DateTime.parse(data['created_at']).toLocal(),
-        category: TransactionCategory(
-          id: data['category_id'] as int,
-          name: await service.getCategoryName((data['category_id'] as int).toString()),
-        ),
-        note: data['note'] as String,
-      ),
-    );
+    
+
+    
+    final currencyAbbreviation = await service.getCurrencyAbbreviation(data['currency_id'] as int);
+    final categoryName = await service.getCategoryName((data['category_id'] as int).toString());
+    
+    data['currency_abbreviation'] = currencyAbbreviation;
+    data['category_name'] = categoryName;
+    
+    return Result.success(Transaction.fromJson(data));
   }
 
   @override

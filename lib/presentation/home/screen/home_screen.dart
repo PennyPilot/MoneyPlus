@@ -12,6 +12,7 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import '../../../core/di/injection.dart';
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
+import '../../main_container/cubit/main_cubit.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
 
@@ -190,21 +191,23 @@ Widget _loadedContent({
                       delegate: SliverChildBuilderDelegate(
                         childCount: topSpendingCategories.length,
                         (context, index) {
+                          final categoryData = topSpendingCategories[index];
                           return Padding(
                             padding: const EdgeInsets.only(
                               bottom: 12,
                               left: 16,
                               right: 16,
                             ),
-                            child: TopSpendingCard(
-                              expenseCategory:
-                                  topSpendingCategories[index].category.name,
-                              amount:
-                                  "${formatWithCommas(topSpendingCategories[index].total)} ${topSpendingCategories[index].currency}",
-                              transactionCount:
-                                  topSpendingCategories[index].numberOfTransactions,
-                              percentage:
-                                  topSpendingCategories[index].percentage,
+                            child: GestureDetector(
+                              onTap: () {
+                                context.read<MainCubit>().navigateToTransactionsWithFilter([categoryData.category.id]);
+                              },
+                              child: TopSpendingCard(
+                                expenseCategory: categoryData.category.name,
+                                amount: "${formatWithCommas(categoryData.total)} ${categoryData.currency}",
+                                transactionCount: categoryData.numberOfTransactions,
+                                percentage: categoryData.percentage,
+                              ),
                             ),
                           );
                         },

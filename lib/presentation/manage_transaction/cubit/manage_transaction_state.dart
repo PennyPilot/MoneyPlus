@@ -1,0 +1,93 @@
+import 'package:equatable/equatable.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
+import 'package:moneyplus/domain/entity/transaction_category.dart';
+import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/domain/model/form_status.dart';
+
+class ManageTransactionState extends Equatable {
+  final TransactionType transactionType;
+  final double? amount;
+  final DateTime date;
+  final String note;
+  final Currency? currency;
+  final FormStatus status;
+  final String? errorMessage;
+  final List<TransactionCategory> categories;
+  final TransactionCategory? selectedCategory;
+  final bool isLoadingCategories;
+  final bool isEditing;
+  final String? transactionId;
+
+  const ManageTransactionState({
+    required this.transactionType,
+    this.amount,
+    required this.date,
+    this.note = '',
+    this.currency,
+    required this.status,
+    this.errorMessage,
+    this.categories = const [],
+    this.selectedCategory,
+    this.isLoadingCategories = false,
+    this.isEditing = false,
+    this.transactionId,
+  });
+
+  bool get canSubmitForm =>
+      amount != null && amount! > 0 && selectedCategory != null && status != FormStatus.loading;
+
+  factory ManageTransactionState.initial(TransactionType type) {
+    return ManageTransactionState(
+      transactionType: type,
+      date: DateTime.now(),
+      status: FormStatus.initial,
+    );
+  }
+
+  ManageTransactionState copyWith({
+    TransactionType? transactionType,
+    double? amount,
+    DateTime? date,
+    String? note,
+    Currency? currency,
+    FormStatus? status,
+    String? errorMessage,
+    List<TransactionCategory>? categories,
+    TransactionCategory? selectedCategory,
+    bool? isLoadingCategories,
+    bool? isEditing,
+    String? transactionId,
+    bool clearAmount = false,
+  }) {
+    return ManageTransactionState(
+      transactionType: transactionType ?? this.transactionType,
+      amount: clearAmount ? null : (amount ?? this.amount),
+      date: date ?? this.date,
+      note: note ?? this.note,
+      currency: currency ?? this.currency,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+      categories: categories ?? this.categories,
+      selectedCategory: selectedCategory ?? this.selectedCategory,
+      isLoadingCategories: isLoadingCategories ?? this.isLoadingCategories,
+      isEditing: isEditing ?? this.isEditing,
+      transactionId: transactionId ?? this.transactionId,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        transactionType,
+        amount,
+        date,
+        note,
+        currency,
+        status,
+        errorMessage,
+        categories,
+        selectedCategory,
+        isLoadingCategories,
+        isEditing,
+        transactionId,
+      ];
+}

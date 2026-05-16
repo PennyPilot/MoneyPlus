@@ -10,8 +10,13 @@ class TransactionCubit extends Cubit<TransactionState> {
   TransactionCubit({required this.transactionRepository})
     : super(TransactionState.initial());
 
-  void loadData() async {
-    emit(state.copyWith(status: TransactionStatus.loading));
+  void loadData({List<int>? initialCategories}) async {
+    emit(state.copyWith(
+      status: TransactionStatus.loading,
+      selectedCategories: initialCategories,
+      selectedTab: initialCategories==null?
+          null:TransactionTabs.expenses
+    ));
 
     final now = DateTime.now();
     try {
@@ -20,6 +25,7 @@ class TransactionCubit extends Cubit<TransactionState> {
       final result = await transactionRepository.getTransactions(
         page: 1,
         date: now,
+        categoriesId: initialCategories?? List.empty(),
       );
 
       categories.when(

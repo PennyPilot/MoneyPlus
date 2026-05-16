@@ -79,6 +79,33 @@ class SupabaseTransactionService implements TransactionService {
   }
 
   @override
+  Future<bool> editTransaction({
+    required String id,
+    double? amount,
+    int? typeId,
+    DateTime? date,
+    int? categoryId,
+    String? note,
+  }) async {
+    try {
+      final client = await service.getClient();
+      final Map<String, dynamic> updates = {};
+      if (amount != null) updates['amount'] = amount;
+      if (typeId != null) updates['transaction_type_id'] = typeId;
+      if (date != null) updates['date'] = date.toIso8601String();
+      if (categoryId != null) updates['category_id'] = categoryId;
+      if (note != null) updates['note'] = note;
+
+      if (updates.isEmpty) return true;
+
+      await client.from('transactions').update(updates).eq('id', id);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
   Future<String> getCurrencyAbbreviation(int currencyId) async {
     final client = await service.getClient();
     final response = await client
