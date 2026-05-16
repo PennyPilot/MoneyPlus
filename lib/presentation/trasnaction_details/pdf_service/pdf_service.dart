@@ -18,13 +18,17 @@ Future<TransactionPdfAssets> loadTransactionPdfAssets() async {
     return pw.MemoryImage(data.buffer.asUint8List());
   }
 
+  Future<String> loadSvg(String path) async {
+    return await rootBundle.loadString(path);
+  }
+
   Future<pw.Font> loadFont() async {
     final fontData = await rootBundle.load('assets/fonts/Cairo-Regular.ttf');
     return pw.Font.ttf(fontData);
   }
 
   return TransactionPdfAssets(
-    background: await load(AppAssets.transactionDetailsBackground),
+    backgroundSvg: await loadSvg(AppAssets.transactionDetailsBackground),
     coinStack: await load(AppAssets.transactionCoinStack),
     lineSeparator: await load(AppAssets.lineSeparator),
     font: await loadFont(),
@@ -32,13 +36,13 @@ Future<TransactionPdfAssets> loadTransactionPdfAssets() async {
 }
 
 class TransactionPdfAssets {
-  final pw.ImageProvider background;
+  final String backgroundSvg;
   final pw.ImageProvider coinStack;
   final pw.ImageProvider lineSeparator;
   final pw.Font font;
 
   const TransactionPdfAssets({
-    required this.background,
+    required this.backgroundSvg,
     required this.coinStack,
     required this.lineSeparator,
     required this.font,
@@ -68,7 +72,7 @@ pw.Widget pdfContent(
       child: pw.Stack(
         children: [
           pw.Positioned.fill(
-            child: pw.Image(assets.background, fit: pw.BoxFit.fill),
+            child: pw.SvgImage(svg: assets.backgroundSvg, fit: pw.BoxFit.fill),
           ),
 
           pw.Positioned(
