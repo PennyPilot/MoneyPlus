@@ -28,7 +28,7 @@ class TransactionForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 120), // Added 120px bottom padding
       children: [
         _buildAmountSection(context),
         _buildDateSection(context),

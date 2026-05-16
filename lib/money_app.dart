@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/app_preferences_state.dart';
@@ -162,26 +163,36 @@ class _MoneyAppViewState extends State<MoneyAppView> {
             ? null
             : Locale(state.appLanguage.name);
 
-        if (_router == null) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: MoneyTheme.lightTheme,
-            darkTheme: MoneyTheme.darkTheme,
-            themeMode: themeMode,
-            home: const Scaffold(body: Center(child: CircularProgressIndicator())),
-          );
-        }
+        final isDark = state.appTheme == AppTheme.dark ||
+            (state.appTheme == AppTheme.system &&
+                MediaQuery.platformBrightnessOf(context) == Brightness.dark);
 
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Money++',
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: locale,
-          theme: MoneyTheme.lightTheme,
-          darkTheme: MoneyTheme.darkTheme,
-          themeMode: themeMode,
-          routerConfig: _router!,
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.transparent,
+            statusBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+            statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          ),
+          child: _router == null
+              ? MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  theme: MoneyTheme.lightTheme,
+                  darkTheme: MoneyTheme.darkTheme,
+                  themeMode: themeMode,
+                  home: const Scaffold(body: Center(child: CircularProgressIndicator())),
+                )
+              : MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  title: 'Money++',
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: locale,
+                  theme: MoneyTheme.lightTheme,
+                  darkTheme: MoneyTheme.darkTheme,
+                  themeMode: themeMode,
+                  routerConfig: _router!,
+                ),
         );
       },
     );

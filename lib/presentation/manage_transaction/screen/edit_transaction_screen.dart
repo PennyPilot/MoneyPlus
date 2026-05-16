@@ -80,10 +80,12 @@ class _EditTransactionScreenContent extends StatelessWidget {
               onTap: () => Navigator.pop(context),
             ),
           ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
+          body: Column(
+            children: [
+              Expanded(
+                child: SafeArea(
+                  top: false,
+                  bottom: false,
                   child: TransactionForm(
                     state: state,
                     onAmountChanged: (val) => context.read<ManageTransactionCubit>().onAmountChanged(val),
@@ -92,7 +94,10 @@ class _EditTransactionScreenContent extends StatelessWidget {
                     onNoteChanged: (val) => context.read<ManageTransactionCubit>().onNoteChanged(val),
                   ),
                 ),
-                Padding(
+              ),
+              SafeArea(
+                top: false,
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
                   child: DefaultButton(
                     text: state.status == FormStatus.loading ? localization.saving : localization.save,
@@ -100,8 +105,8 @@ class _EditTransactionScreenContent extends StatelessWidget {
                     isEnabled: state.canSubmitForm,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

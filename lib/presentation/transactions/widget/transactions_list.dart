@@ -11,7 +11,7 @@ class TransactionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 100), // Bottom padding for NavBar
       sliver: SliverList.builder(
         itemCount: transactions.length,
         itemBuilder: (context, index) {

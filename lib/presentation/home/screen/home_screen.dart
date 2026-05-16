@@ -125,97 +125,104 @@ Widget _loadedContent({
             ),
           ),
           Expanded(
-            child: Stack(
-              children: [
-                CustomScrollView(
-                  controller: scrollController,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: IncomeExpense(
-                                    type: IncomeExpenseType.income,
-                                    currency: state.currency,
-                                    amount: formatWithCommas(
-                                      state.totalMonthIncome,
-                                    ).toString(),
+            child: SafeArea(
+              top: false,
+              bottom: false,
+              child: Stack(
+                children: [
+                  CustomScrollView(
+                    controller: scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: IncomeExpense(
+                                      type: IncomeExpenseType.income,
+                                      currency: state.currency,
+                                      amount: formatWithCommas(
+                                        state.totalMonthIncome,
+                                      ).toString(),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: IncomeExpense(
-                                    type: IncomeExpenseType.expense,
-                                    currency: state.currency,
-                                    amount: formatWithCommas(
-                                      state.totalMonthExpense,
-                                    ).toString(),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: IncomeExpense(
+                                      type: IncomeExpenseType.expense,
+                                      currency: state.currency,
+                                      amount: formatWithCommas(
+                                        state.totalMonthExpense,
+                                      ).toString(),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 24),
-                            Text(
-                              localizations.top_spending_category,
-                              style: typography.title.small.copyWith(
-                                color: colors.title,
+                                ],
                               ),
-                            ),
-                            SizedBox(height: 8),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    if (topSpendingCategories.isEmpty)
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            localizations.no_spending_categories,
-                            style: typography.body.medium.copyWith(
-                              color: colors.primary,
-                            ),
+                              SizedBox(height: 24),
+                              Text(
+                                localizations.top_spending_category,
+                                style: typography.title.small.copyWith(
+                                  color: colors.title,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                            ],
                           ),
                         ),
-                      )
-                    else
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        childCount: topSpendingCategories.length,
-                        (context, index) {
-                          final categoryData = topSpendingCategories[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 12,
-                              left: 16,
-                              right: 16,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                context.read<MainCubit>().navigateToTransactionsWithFilter([categoryData.category.id]);
-                              },
-                              child: TopSpendingCard(
-                                expenseCategory: categoryData.category.name,
-                                amount: "${formatWithCommas(categoryData.total)} ${categoryData.currency}",
-                                transactionCount: categoryData.numberOfTransactions,
-                                percentage: categoryData.percentage,
+                      ),
+
+                      if (topSpendingCategories.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              localizations.no_spending_categories,
+                              style: typography.body.medium.copyWith(
+                                color: colors.primary,
                               ),
                             ),
-                          );
-                        },
+                          ),
+                        )
+                      else
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          childCount: topSpendingCategories.length,
+                          (context, index) {
+                            final categoryData = topSpendingCategories[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 12,
+                                left: 16,
+                                right: 16,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.read<MainCubit>().navigateToTransactionsWithFilter([categoryData.category.id]);
+                                },
+                                child: TopSpendingCard(
+                                  expenseCategory: categoryData.category.name,
+                                  amount: "${formatWithCommas(categoryData.total)} ${categoryData.currency}",
+                                  transactionCount: categoryData.numberOfTransactions,
+                                  percentage: categoryData.percentage,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 100),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
