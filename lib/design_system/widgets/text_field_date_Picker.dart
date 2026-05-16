@@ -10,6 +10,7 @@ class TextFieldDatePicker extends StatefulWidget {
   final VoidCallback onError;
   final void Function(DateTime) onDateChange;
   final DateTime? initialDate;
+  final DateTime? lastDate;
 
   const TextFieldDatePicker({
     super.key,
@@ -18,6 +19,7 @@ class TextFieldDatePicker extends StatefulWidget {
     required this.onError,
     required this.onDateChange,
     this.initialDate,
+    this.lastDate,
   });
 
   @override
@@ -107,12 +109,18 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                     border: InputBorder.none,
                   ),
                   onTap: () async {
-                    DateTime initial = widget.initialDate ?? DateTime.now();
+                    DateTime now = DateTime.now();
+                    DateTime initial = widget.initialDate ?? now;
+                    final last = widget.lastDate ?? now;
+                    if (initial.isAfter(last)) {
+                      initial = last;
+                    }
+
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: initial,
                       firstDate: DateTime(2000),
-                      lastDate: DateTime(2200),
+                      lastDate: last,
                       builder: (context, child) {
                         return Theme(
                           data: Theme.of(context).copyWith(

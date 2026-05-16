@@ -6,9 +6,12 @@ Future<DateTime?> showMonthYearDialog(
     BuildContext context, {
       required int initialMonth,
       required int initialYear,
+      DateTime? lastDate,
     }) {
   int selectedMonth = initialMonth;
   int selectedYear = initialYear;
+  final now = lastDate ?? DateTime.now();
+
   final localization = context.localizations;
   final colors = context.colors;
   final typography = context.typography;
@@ -18,6 +21,11 @@ Future<DateTime?> showMonthYearDialog(
     builder: (_) {
       return StatefulBuilder(
         builder: (context, setState) {
+          final availableYears = List.generate(now.year - 2000 + 1, (i) => 2000 + i);
+          final availableMonths = selectedYear == now.year
+              ? List.generate(now.month, (i) => i + 1)
+              : List.generate(12, (i) => i + 1);
+
           return AlertDialog(
             backgroundColor: colors.surface,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -29,12 +37,12 @@ Future<DateTime?> showMonthYearDialog(
               children: [
                 Expanded(
                   child: DropdownButton<int>(
-                    value: selectedMonth,
+                    value: selectedMonth > availableMonths.last ? availableMonths.last : selectedMonth,
                     isExpanded: true,
                     dropdownColor: colors.surface,
                     style: typography.body.medium.copyWith(color: colors.title),
                     underline: Container(height: 1, color: colors.primary),
-                    items: List.generate(12, (i) => i + 1)
+                    items: availableMonths
                         .map(
                           (m) => DropdownMenuItem(
                         value: m,
@@ -57,7 +65,7 @@ Future<DateTime?> showMonthYearDialog(
                     dropdownColor: colors.surface,
                     style: typography.body.medium.copyWith(color: colors.title),
                     underline: Container(height: 1, color: colors.primary),
-                    items: List.generate(50, (i) => 2000 + i)
+                    items: availableYears
                         .map(
                           (y) => DropdownMenuItem(
                         value: y,
@@ -68,6 +76,9 @@ Future<DateTime?> showMonthYearDialog(
                     onChanged: (v) {
                       setState(() {
                         selectedYear = v!;
+                        if (selectedYear == now.year && selectedMonth > now.month) {
+                          selectedMonth = now.month;
+                        }
                       });
                     },
                   ),

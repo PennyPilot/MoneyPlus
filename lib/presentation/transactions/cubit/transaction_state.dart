@@ -28,15 +28,21 @@ class TransactionState {
     this.selectedTab = TransactionTabs.all,
     this.transactionCategories = const [],
     this.selectedCategories = const [],
-    this.selectedYear = 2026,
-    this.selectedMonth = 1,
+    required this.selectedYear,
+    required this.selectedMonth,
     this.currentPage = 1,
     this.hasMore = true,
     this.isLoadingMore = false
   });
 
-  factory TransactionState.initial() =>
-      const TransactionState(status: TransactionStatus.initial);
+  factory TransactionState.initial() {
+    final now = DateTime.now();
+    return TransactionState(
+      status: TransactionStatus.initial,
+      selectedYear: now.year,
+      selectedMonth: now.month,
+    );
+  }
 
   TransactionState copyWith({
     TransactionStatus? status,
