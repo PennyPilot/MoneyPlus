@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moneyplus/core/di/injection.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
@@ -69,7 +70,7 @@ class _AddTransactionScreenContent extends StatelessWidget {
             backgroundColor: colors.surfaceLow,
             leading: AppBarCircleButton(
               assetPath: AppAssets.icArrowLeft,
-              onTap: () => Navigator.pop(context),
+              onTap: () => context.pop(),
             ),
           ),
           body: Column(

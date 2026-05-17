@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
@@ -6,6 +7,8 @@ import 'package:moneyplus/presentation/widgets/drop_down_date_dialog.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/assets/app_assets.dart';
+import '../../../design_system/widgets/nav_bar.dart';
+import '../../main_container/cubit/main_cubit.dart';
 
 class TransactionAppBar extends StatelessWidget {
   final Function(int month, int year) onDatePick;
@@ -29,6 +32,12 @@ class TransactionAppBar extends StatelessWidget {
     return CustomAppBar(
       title: localizations.transaction,
       backgroundColor: colors.surfaceLow,
+      leading: AppBarCircleButton(
+        assetPath: AppAssets.icArrowLeft,
+        onTap: () {
+          context.read<MainCubit>().onTabSelected(NavBarTab.home);
+        },
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

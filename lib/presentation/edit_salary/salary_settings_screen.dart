@@ -25,7 +25,10 @@ class SalarySettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: localization.salarySettings,
-        leading: _appBarLeading(context),
+        leading: AppBarCircleButton(
+          assetPath: AppAssets.icArrowLeft,
+          onTap: () => context.pop(),
+        ),
         backgroundColor: colors.surfaceLow,
       ),
       body: BlocProvider(

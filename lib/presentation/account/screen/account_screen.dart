@@ -13,7 +13,9 @@ import '../../../design_system/theme/money_colors.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/theme/money_typography.dart';
 import '../../../design_system/widgets/app_bar.dart';
+import '../../../design_system/widgets/nav_bar.dart';
 import '../../../design_system/widgets/snack_bar.dart';
+import '../../main_container/cubit/main_cubit.dart';
 import '../cubit/account_cubit.dart';
 import '../cubit/account_state.dart';
 import '../widget/account_section.dart';
@@ -35,6 +37,12 @@ class AccountScreen extends StatelessWidget {
       appBar: CustomAppBar(
         title: l10n.account,
         backgroundColor: colors.surfaceLow,
+        leading: AppBarCircleButton(
+          assetPath: AppAssets.icArrowLeft,
+          onTap: () {
+            context.read<MainCubit>().onTabSelected(NavBarTab.home);
+          },
+        ),
       ),
       body: BlocProvider(
         create: (_) => getIt<AccountCubit>()..loadUserInfo(),

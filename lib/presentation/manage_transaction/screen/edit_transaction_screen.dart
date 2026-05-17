@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moneyplus/core/di/injection.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
@@ -25,7 +26,7 @@ class EditTransactionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<ManageTransactionCubit>(
-        param1: TransactionType.expense, // Default, will be updated from fetch
+        param1: TransactionType.expense,
         param2: transactionId,
       ),
       child: const _EditTransactionScreenContent(),
@@ -57,15 +58,6 @@ class _EditTransactionScreenContent extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.status == FormStatus.loading && state.amount == null) {
-          return Scaffold(
-            backgroundColor: colors.surface,
-            body: Center(
-              child: CircularProgressIndicator(color: colors.primary),
-            ),
-          );
-        }
-
         final title = state.transactionType == TransactionType.income
             ? localization.editIncome
             : localization.editExpense;
@@ -77,7 +69,7 @@ class _EditTransactionScreenContent extends StatelessWidget {
             backgroundColor: colors.surfaceLow,
             leading: AppBarCircleButton(
               assetPath: AppAssets.icArrowLeft,
-              onTap: () => Navigator.pop(context),
+              onTap: () => context.pop(),
             ),
           ),
           body: Column(
@@ -86,13 +78,19 @@ class _EditTransactionScreenContent extends StatelessWidget {
                 child: SafeArea(
                   top: false,
                   bottom: false,
-                  child: TransactionForm(
-                    state: state,
-                    onAmountChanged: (val) => context.read<ManageTransactionCubit>().onAmountChanged(val),
-                    onDateChanged: (val) => context.read<ManageTransactionCubit>().onDateChanged(val),
-                    onCategorySelected: (val) => context.read<ManageTransactionCubit>().onCategorySelected(val),
-                    onNoteChanged: (val) => context.read<ManageTransactionCubit>().onNoteChanged(val),
-                  ),
+                  child: state.status == FormStatus.loading && state.amount == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : TransactionForm(
+                          state: state,
+                          onAmountChanged: (val) =>
+                              context.read<ManageTransactionCubit>().onAmountChanged(val),
+                          onDateChanged: (val) =>
+                              context.read<ManageTransactionCubit>().onDateChanged(val),
+                          onCategorySelected: (val) =>
+                              context.read<ManageTransactionCubit>().onCategorySelected(val),
+                          onNoteChanged: (val) =>
+                              context.read<ManageTransactionCubit>().onNoteChanged(val),
+                        ),
                 ),
               ),
               SafeArea(
@@ -100,7 +98,9 @@ class _EditTransactionScreenContent extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
                   child: DefaultButton(
-                    text: state.status == FormStatus.loading ? localization.saving : localization.save,
+                    text: state.status == FormStatus.loading
+                        ? localization.saving
+                        : localization.save,
                     onPressed: () => context.read<ManageTransactionCubit>().submit(),
                     isEnabled: state.canSubmitForm,
                   ),
