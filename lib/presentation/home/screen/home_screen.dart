@@ -106,28 +106,28 @@ Widget _loadedContent({
   final typography = context.typography;
   final localizations = AppLocalizations.of(context)!;
   return Scaffold(
-    body: Container(
-      color: colors.surface,
-      child: Column(
-        children: [
-          AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: _topSection(
-                showAppBarOnly: showAppBarOnly,
-                state: state,
-                onDatePick: setSelectedDate,
-                context: context,
-                reloadScreen: reloadScreen
+    body: SafeArea(
+      top: false,
+      bottom: false,
+      child: Container(
+        color: colors.surface,
+        child: Column(
+          children: [
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: _topSection(
+                  showAppBarOnly: showAppBarOnly,
+                  state: state,
+                  onDatePick: setSelectedDate,
+                  context: context,
+                  reloadScreen: reloadScreen
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: SafeArea(
-              top: false,
-              bottom: false,
+            Expanded(
               child: Stack(
                 children: [
                   CustomScrollView(
@@ -224,8 +224,8 @@ Widget _loadedContent({
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
