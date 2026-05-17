@@ -12,6 +12,7 @@ import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
 import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_cubit.dart';
 import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_state.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/manage_transaction/widgets/transaction_form.dart';
 
 class EditTransactionScreen extends StatelessWidget {
@@ -79,7 +80,7 @@ class _EditTransactionScreenContent extends StatelessWidget {
                   top: false,
                   bottom: false,
                   child: state.status == FormStatus.loading && state.amount == null
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const AppLoadingIndicator()
                       : TransactionForm(
                           state: state,
                           onAmountChanged: (val) =>

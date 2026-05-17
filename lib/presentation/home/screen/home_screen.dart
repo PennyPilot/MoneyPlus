@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/design_system/widgets/income_expense.dart';
 import 'package:moneyplus/design_system/widgets/top_spending_card.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
@@ -61,11 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           var content = switch (state) {
             HomeLoading() => Scaffold(
               backgroundColor: colors.surface,
-              body: Center(
-                child: CircularProgressIndicator(
-                  color: colors.primary,
-                ),
-              ),
+              body: const AppLoadingIndicator(),
             ),
             HomeLoaded() => _loadedContent(
               context: context,

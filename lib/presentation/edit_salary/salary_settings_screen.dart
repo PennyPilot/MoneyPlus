@@ -8,8 +8,8 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/edit_salary/salary_settings_cubit.dart';
 import 'package:moneyplus/presentation/widgets/error_content.dart';
-import 'package:moneyplus/presentation/widgets/loading_indicator.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 
 import '../../design_system/widgets/buttons/button/default_button.dart';
 import '../../design_system/widgets/snack_bar.dart';
@@ -36,7 +36,7 @@ class SalarySettingsScreen extends StatelessWidget {
         child: BlocBuilder<SalarySettingsCubit, SalarySettingsState>(
           builder: (context, state) {
             var content = switch (state) {
-              SalarySettingsLoading() => LoadingIndicator(),
+              SalarySettingsLoading() => const AppLoadingIndicator(),
               SalarySettingsLoaded() => _loadedContent(context, state),
               SalarySettingsError() => errorContent(_getErrorMessage(state.failure, context)),
             };

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/domain/entity/currency.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
@@ -92,11 +93,7 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
             ),
             Expanded(
               child: state.isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        color: context.colors.primary,
-                      ),
-                    )
+                  ? const AppLoadingIndicator()
                   : ListView.separated(
                       itemCount: state.filteredCurrencies.length,
                       padding: EdgeInsets.zero,

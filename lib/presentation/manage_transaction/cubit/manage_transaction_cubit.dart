@@ -20,7 +20,7 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
         super(ManageTransactionState.initial(initialType).copyWith(
           transactionId: transactionId,
           isEditing: transactionId != null,
-          status: FormStatus.loading,
+          status: FormStatus.initial,
         )) {
     _init();
   }
