@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:moneyplus/app_preferences_state.dart';
 import 'package:moneyplus/app_prefernces_cubit.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -180,7 +181,7 @@ class _MoneyAppViewState extends State<MoneyAppView> {
                   theme: MoneyTheme.lightTheme,
                   darkTheme: MoneyTheme.darkTheme,
                   themeMode: themeMode,
-                  home: const Scaffold(body: Center(child: CircularProgressIndicator())),
+                  home: const Scaffold(body: Center(child: AppLoadingIndicator())),
                 )
               : MaterialApp.router(
                   debugShowCheckedModeBanner: false,

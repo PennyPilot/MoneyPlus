@@ -11,7 +11,10 @@ import 'package:moneyplus/presentation/statistics/utils.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
 import 'package:moneyplus/presentation/statistics/widgets/highest_spending_banner.dart';
 
+import '../../design_system/assets/app_assets.dart';
 import '../../design_system/chart/spending_trend_graph.dart';
+import '../../design_system/widgets/nav_bar.dart';
+import '../main_container/cubit/main_cubit.dart';
 import '../transactions/widget/add_transaction_bottom_sheet.dart';
 import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
@@ -59,6 +62,12 @@ class _StatisticsViewState extends State<StatisticsView> {
           CustomAppBar(
             title: l10n.statistics,
             backgroundColor: colors.surfaceLow,
+            leading: AppBarCircleButton(
+              assetPath: AppAssets.icArrowLeft,
+              onTap: () {
+                context.read<MainCubit>().onTabSelected(NavBarTab.home);
+              },
+            ),
             trailing: switch (state) {
               StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
                   onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
@@ -131,7 +140,7 @@ class _StatisticsViewState extends State<StatisticsView> {
           ),
           const SizedBox(height: 8),
           HighestSpendingBanner(trend: state.spendingTrend),
-          const SizedBox(height: 150), // Sufficient space to scroll above NavBar
+          const SizedBox(height: 150),
         ],
       ),
     );

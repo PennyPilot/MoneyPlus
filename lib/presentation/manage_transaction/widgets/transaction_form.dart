@@ -6,6 +6,7 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/chip.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_state.dart';
 
@@ -100,7 +101,7 @@ class TransactionForm extends StatelessWidget {
     if (state.isLoadingCategories && state.categories.isEmpty) {
       return const Padding(
         padding: EdgeInsets.only(top: 16),
-        child: Center(child: CircularProgressIndicator()),
+        child: AppLoadingIndicator(),
       );
     }
 

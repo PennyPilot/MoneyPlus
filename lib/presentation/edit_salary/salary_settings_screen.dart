@@ -8,8 +8,8 @@ import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/presentation/edit_salary/salary_settings_cubit.dart';
 import 'package:moneyplus/presentation/widgets/error_content.dart';
-import 'package:moneyplus/presentation/widgets/loading_indicator.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 
 import '../../design_system/widgets/buttons/button/default_button.dart';
 import '../../design_system/widgets/snack_bar.dart';
@@ -25,7 +25,10 @@ class SalarySettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: localization.salarySettings,
-        leading: _appBarLeading(context),
+        leading: AppBarCircleButton(
+          assetPath: AppAssets.icArrowLeft,
+          onTap: () => context.pop(),
+        ),
         backgroundColor: colors.surfaceLow,
       ),
       body: BlocProvider(
@@ -33,7 +36,7 @@ class SalarySettingsScreen extends StatelessWidget {
         child: BlocBuilder<SalarySettingsCubit, SalarySettingsState>(
           builder: (context, state) {
             var content = switch (state) {
-              SalarySettingsLoading() => LoadingIndicator(),
+              SalarySettingsLoading() => const AppLoadingIndicator(),
               SalarySettingsLoaded() => _loadedContent(context, state),
               SalarySettingsError() => errorContent(_getErrorMessage(state.failure, context)),
             };
@@ -51,17 +54,28 @@ Widget _loadedContent(BuildContext context, SalarySettingsLoaded state) {
 
   return Container(
     color: colors.surface,
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        spacing:12,
-        children: [
-          _salaryBox(context, state, cubit),
-          _salaryDayBox(context, state, cubit),
-          Spacer(),
-          _saveButton(context, state, cubit),
-        ],
-      ),
+    child: Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              spacing: 12,
+              children: [
+                _salaryBox(context, state, cubit),
+                _salaryDayBox(context, state, cubit),
+              ],
+            ),
+          ),
+        ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
+            child: _saveButton(context, state, cubit),
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -152,18 +166,6 @@ Widget _saveButton(
         }
       });
     },
-  );
-}
-
-Widget _appBarLeading(BuildContext context) {
-  final colors = context.colors;
-  return GestureDetector(
-    onTap: () => context.pop(),
-    child: Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: colors.surface, shape: BoxShape.circle),
-      child: SvgPicture.asset(AppAssets.icArrowLeft),
-    ),
   );
 }
 

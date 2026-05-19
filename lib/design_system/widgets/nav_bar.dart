@@ -58,64 +58,69 @@ class NavBar extends StatelessWidget {
     final l10n = context.localizations;
 
     return Container(
-      padding: EdgeInsetsGeometry.directional(start: 16, end: 16, top: 8),
-      decoration: BoxDecoration(color: colors.surfaceLow),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        verticalDirection: VerticalDirection.up,
-        children: NavBarTab.values.map((tab) {
-          final isSelected = tab == selectedTab;
+      color: colors.surfaceLow,
+      child: SafeArea(
+        top: false,
+        child: Container(
+          padding: const EdgeInsetsDirectional.only(start: 16, end: 16, top: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            verticalDirection: VerticalDirection.up,
+            children: NavBarTab.values.map((tab) {
+              final isSelected = tab == selectedTab;
 
-          return GestureDetector(
-            onTap: () {
-              onTabSelected(tab);
-            },
-            child: SizedBox(
-              width: 82,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(
-                    isSelected ? tab.assetSelected : tab.assetUnselected,
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                        isSelected ? colors.primary : colors.body,
-                        BlendMode.srcIn),
-                  ),
-                  if (isSelected) ...[
-                    Text(
-                      tab.getTitle(l10n),
-                      style: typography.label.small.copyWith(
-                        color: colors.primary,
+              return GestureDetector(
+                onTap: () {
+                  onTabSelected(tab);
+                },
+                child: SizedBox(
+                  width: 82,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        isSelected ? tab.assetSelected : tab.assetUnselected,
+                        width: 24,
+                        height: 24,
+                        colorFilter: ColorFilter.mode(
+                            isSelected ? colors.primary : colors.body,
+                            BlendMode.srcIn),
                       ),
-                    ),
-                    Container(
-                      width: 32,
-                      height: 4,
-                      margin: EdgeInsetsGeometry.directional(top: 11),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: colors.primary.withValues(alpha: 0.2),
-                            blurRadius: 16,
-                            spreadRadius: 2,
-                            offset: Offset.fromDirection(0, -4),
+                      if (isSelected) ...[
+                        Text(
+                          tab.getTitle(l10n),
+                          style: typography.label.small.copyWith(
+                            color: colors.primary,
                           ),
-                        ],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(4),
-                          topRight: Radius.circular(4),
                         ),
-                        color: colors.primary,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          );
-        }).toList(),
+                        Container(
+                          width: 32,
+                          height: 4,
+                          margin: const EdgeInsetsGeometry.directional(top: 11),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: colors.primary.withValues(alpha: 0.2),
+                                blurRadius: 16,
+                                spreadRadius: 2,
+                                offset: Offset.fromDirection(0, -4),
+                              ),
+                            ],
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4),
+                              topRight: Radius.circular(4),
+                            ),
+                            color: colors.primary,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
       ),
     );
   }

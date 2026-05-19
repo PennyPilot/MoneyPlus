@@ -9,7 +9,7 @@ import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
-import 'package:svg_flutter/svg.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import '../../core/di/injection.dart';
 import '../../design_system/widgets/buttons/error/default_error_button.dart';
 
@@ -20,100 +20,100 @@ class TransactionDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final localizations = context.localizations;
+
     return BlocProvider(
       create: (context) =>
           getIt<TransactionDetailsCubit>()
             ..getTransactionDetails(transactionId),
-      child: BlocBuilder<TransactionDetailsCubit, TransactionDetailsState>(
-        builder: (context, state) {
-          return switch (state) {
-            TransactionDetailsLoading() => _loadingContent(context),
-            TransactionDetailsLoaded() => _loadedContent(context, state),
-            TransactionDetailsError() => _errorContent(state.errorMsg),
-          };
-        },
+      child: Scaffold(
+        extendBody: true,
+        backgroundColor: colors.surface,
+        appBar: CustomAppBar(
+          backgroundColor: colors.surfaceLow,
+          leading: AppBarCircleButton(
+            assetPath: AppAssets.icArrowLeft,
+            onTap: () {
+              context.pop();
+            },
+          ),
+          title: localizations.transaction_details,
+          trailing: BlocBuilder<TransactionDetailsCubit, TransactionDetailsState>(
+            builder: (context, state) {
+              if (state is TransactionDetailsLoaded) {
+                return AppBarCircleButton(
+                  assetPath: AppAssets.icShare,
+                  onTap: () => context.read<TransactionDetailsCubit>().onClickShareButton(context),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+        body: BlocBuilder<TransactionDetailsCubit, TransactionDetailsState>(
+          builder: (context, state) {
+            if (state is TransactionDetailsLoading) {
+              return const AppLoadingIndicator();
+            }
+            if (state is TransactionDetailsError) {
+              return Center(child: Text(state.errorMsg));
+            }
+            if (state is TransactionDetailsLoaded) {
+              return SingleChildScrollView(
+                child: SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      Center(
+                        child: TransactionDetailsComponent(
+                          transaction: state.transactionDetails,
+                        ),
+                      ),
+                      const SizedBox(height: 250),
+                    ],
+                  ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+        bottomNavigationBar: BlocBuilder<TransactionDetailsCubit, TransactionDetailsState>(
+          builder: (context, state) {
+            if (state is TransactionDetailsLoaded) {
+              return SafeArea(
+                top: false,
+                child: _bottomBar(
+                  context: context,
+                  state: state,
+                  onClickDelete: () {
+                    context.read<TransactionDetailsCubit>().deleteTransaction().then((success) {
+                      if (success) {
+                        MSnackBar.success(
+                          message: context.localizations.transaction_delete_success,
+                          title: context.localizations.success,
+                        ).showSnackBar(context: context);
+                        context.pop();
+                      } else {
+                        MSnackBar.error(
+                          message: context.localizations.transaction_delete_fail,
+                          title: context.localizations.error,
+                        ).showSnackBar(context: context);
+                      }
+                    });
+                  },
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
-}
-
-Widget _loadingContent(BuildContext context) {
-  return Scaffold(
-    body: Center(
-      child: CircularProgressIndicator(color: context.colors.primary),
-    ),
-  );
-}
-
-Widget _errorContent(String errorMsg) {
-  return Scaffold(body: Center(child: Text(errorMsg)));
-}
-
-Widget _loadedContent(BuildContext context, TransactionDetailsLoaded state) {
-  final colors = context.colors;
-  final cubit = context.read<TransactionDetailsCubit>();
-  final localizations = context.localizations;
-  return Scaffold(
-    extendBody: true,
-    backgroundColor: colors.surface,
-    appBar: CustomAppBar(
-      backgroundColor: colors.surfaceLow,
-      leading: _circleIcon(
-        iconPath: AppAssets.icArrowLeft,
-        context: context,
-        onClick: () {
-          GoRouter.of(context).pop();
-        },
-      ),
-      title: localizations.transaction_details,
-      trailing: _circleIcon(
-        iconPath: AppAssets.icShare,
-        context: context,
-        onClick: ()  {
-          cubit.onClickShareButton(context);
-        },
-      ),
-    ),
-    body: SingleChildScrollView(
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Center(
-              child: TransactionDetailsComponent(
-                transaction: state.transactionDetails,
-              ),
-            ),
-            const SizedBox(height: 250), // Extra padding to scroll above the footer
-          ],
-        ),
-      ),
-    ),
-    bottomNavigationBar: SafeArea(
-      top: false,
-      child: _bottomBar(
-        context: context,
-        state: state,
-        onClickDelete: () {
-          cubit.deleteTransaction().then((success) {
-            if (success) {
-              MSnackBar.success(
-                message: context.localizations.transaction_delete_success,
-                title: context.localizations.success,
-              ).showSnackBar(context: context);
-            } else {
-              MSnackBar.error(
-                message: context.localizations.transaction_delete_fail,
-                title: context.localizations.error,
-              ).showSnackBar(context: context);
-            }
-          });
-        },
-      ),
-    ),
-  );
 }
 
 Widget _bottomBar({
@@ -145,33 +145,6 @@ Widget _bottomBar({
           },
         ),
       ],
-    ),
-  );
-}
-Widget _circleIcon({
-  required String iconPath,
-  required BuildContext context,
-  Function? onClick,
-}) {
-  return GestureDetector(
-    onTap: () {
-      onClick?.call();
-    },
-    child: Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: context.colors.surface,
-      ),
-      alignment: Alignment.center,
-      child: SvgPicture.asset(
-        iconPath,
-        width: 20,
-        height: 20,
-        colorFilter: ColorFilter.mode(context.colors.title, BlendMode.srcIn),
-        matchTextDirection: true,
-      ),
     ),
   );
 }

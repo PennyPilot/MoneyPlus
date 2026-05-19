@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
 import 'package:moneyplus/presentation/transactions/widget/categories_filter_bottom_sheet.dart';
@@ -59,11 +60,7 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
         },
         builder: (context, state) {
           if (state.status == TransactionStatus.loading) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: colors.primary,
-              ),
-            );
+            return const AppLoadingIndicator();
           }
 
           return Column(

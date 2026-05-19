@@ -69,7 +69,8 @@ class InitialRoute extends GoRouteData with $InitialRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+      backgroundColor: Colors.transparent,
+      body: SizedBox.shrink(),
     );
   }
 }
