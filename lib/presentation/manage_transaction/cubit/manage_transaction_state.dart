@@ -18,6 +18,12 @@ class ManageTransactionState extends Equatable {
   final bool isEditing;
   final String? transactionId;
 
+  final List<Currency> currencies;
+  final List<Currency> filteredCurrencies;
+  final String currencyQuery;
+  final bool isLoadingCurrencies;
+  final bool isFirstTransaction;
+
   const ManageTransactionState({
     required this.transactionType,
     this.amount,
@@ -31,10 +37,15 @@ class ManageTransactionState extends Equatable {
     this.isLoadingCategories = false,
     this.isEditing = false,
     this.transactionId,
+    this.currencies = const [],
+    this.filteredCurrencies = const [],
+    this.currencyQuery = '',
+    this.isLoadingCurrencies = false,
+    this.isFirstTransaction = false,
   });
 
   bool get canSubmitForm =>
-      amount != null && amount! > 0 && selectedCategory != null && status != FormStatus.loading;
+      amount != null && amount! > 0 && selectedCategory != null && currency != null && status != FormStatus.loading;
 
   factory ManageTransactionState.initial(TransactionType type) {
     return ManageTransactionState(
@@ -58,6 +69,11 @@ class ManageTransactionState extends Equatable {
     bool? isEditing,
     String? transactionId,
     bool clearAmount = false,
+    List<Currency>? currencies,
+    List<Currency>? filteredCurrencies,
+    String? currencyQuery,
+    bool? isLoadingCurrencies,
+    bool? isFirstTransaction,
   }) {
     return ManageTransactionState(
       transactionType: transactionType ?? this.transactionType,
@@ -72,6 +88,11 @@ class ManageTransactionState extends Equatable {
       isLoadingCategories: isLoadingCategories ?? this.isLoadingCategories,
       isEditing: isEditing ?? this.isEditing,
       transactionId: transactionId ?? this.transactionId,
+      currencies: currencies ?? this.currencies,
+      filteredCurrencies: filteredCurrencies ?? this.filteredCurrencies,
+      currencyQuery: currencyQuery ?? this.currencyQuery,
+      isLoadingCurrencies: isLoadingCurrencies ?? this.isLoadingCurrencies,
+      isFirstTransaction: isFirstTransaction ?? this.isFirstTransaction,
     );
   }
 
@@ -89,5 +110,10 @@ class ManageTransactionState extends Equatable {
         isLoadingCategories,
         isEditing,
         transactionId,
+        currencies,
+        filteredCurrencies,
+        currencyQuery,
+        isLoadingCurrencies,
+        isFirstTransaction,
       ];
 }

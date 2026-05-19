@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
+import 'package:moneyplus/domain/repository/account_repository.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'manage_transaction_state.dart';
@@ -9,14 +11,17 @@ import 'manage_transaction_state.dart';
 class ManageTransactionCubit extends Cubit<ManageTransactionState> {
   final TransactionRepository _transactionRepository;
   final UserMoneyRepository _userMoneyRepository;
+  final AccountRepository _accountRepository;
 
   ManageTransactionCubit({
     required TransactionRepository transactionRepository,
     required UserMoneyRepository userMoneyRepository,
+    required AccountRepository accountRepository,
     required TransactionType initialType,
     String? transactionId,
   })  : _transactionRepository = transactionRepository,
         _userMoneyRepository = userMoneyRepository,
+        _accountRepository = accountRepository,
         super(ManageTransactionState.initial(initialType).copyWith(
           transactionId: transactionId,
           isEditing: transactionId != null,
@@ -26,6 +31,7 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
   }
 
   Future<void> _init() async {
+    await fetchCurrencies();
     await _loadCurrency();
     if (state.isEditing) {
       await _loadTransaction();
@@ -42,11 +48,16 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
     
     result.when(
       onSuccess: (transaction) async {
+        final transactionCurrency = state.currencies
+            .where((c) => c.abbreviation == transaction.currency)
+            .firstOrNull;
+            
         emit(state.copyWith(
           amount: transaction.amount,
           date: transaction.date,
           note: transaction.note,
           transactionType: transaction.type,
+          currency: transactionCurrency,
         ));
         await _loadCategories(transaction.type, selectedCategoryId: transaction.category.id);
         emit(state.copyWith(status: FormStatus.initial));
@@ -90,10 +101,48 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
   Future<void> _loadCurrency() async {
     try {
       final currency = await _userMoneyRepository.getCurrency();
-      emit(state.copyWith(currency: currency));
+      if (currency.abbreviation.isEmpty) {
+        emit(state.copyWith(isFirstTransaction: true));
+      } else {
+        emit(state.copyWith(
+          currency: currency,
+          isFirstTransaction: false,
+        ));
+      }
     } catch (e) {
-      // Handle error or ignore if not critical
+      emit(state.copyWith(isFirstTransaction: true));
     }
+  }
+
+  Future<void> fetchCurrencies() async {
+    emit(state.copyWith(isLoadingCurrencies: true));
+    try {
+      final currencies = await _accountRepository.getCurrencies();
+      emit(state.copyWith(
+        currencies: currencies,
+        filteredCurrencies: currencies,
+        isLoadingCurrencies: false,
+      ));
+    } catch (e) {
+      emit(state.copyWith(isLoadingCurrencies: false));
+    }
+  }
+
+  void onCurrencySearchChanged(String query) {
+    final filtered = state.currencies
+        .where((currency) =>
+            currency.name.toLowerCase().contains(query.toLowerCase()) ||
+            currency.abbreviation.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    emit(state.copyWith(
+      currencyQuery: query,
+      filteredCurrencies: filtered,
+    ));
+  }
+
+  void onCurrencyChanged(Currency currency) {
+    emit(state.copyWith(currency: currency));
   }
 
   void onAmountChanged(String value) {
@@ -149,8 +198,11 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
           note: state.note,
         );
 
-        result.when(
-          onSuccess: (_) {
+        await result.when(
+          onSuccess: (_) async {
+            if (state.isFirstTransaction) {
+              await _accountRepository.updateCurrency(state.currency!.id);
+            }
             emit(state.copyWith(status: FormStatus.success));
           },
           onError: (error) {

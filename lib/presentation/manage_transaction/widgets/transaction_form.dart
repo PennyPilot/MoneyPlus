@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
@@ -7,7 +8,10 @@ import 'package:moneyplus/design_system/widgets/chip.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
+import 'package:moneyplus/presentation/account_setup/widget/currency_bottom_sheet.dart';
+import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_cubit.dart';
 import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_state.dart';
 
 class TransactionForm extends StatelessWidget {
@@ -16,6 +20,7 @@ class TransactionForm extends StatelessWidget {
   final Function(DateTime) onDateChanged;
   final Function(TransactionCategory) onCategorySelected;
   final Function(String) onNoteChanged;
+  final Function(Currency)? onCurrencySelected;
 
   const TransactionForm({
     super.key,
@@ -24,13 +29,38 @@ class TransactionForm extends StatelessWidget {
     required this.onDateChanged,
     required this.onCategorySelected,
     required this.onNoteChanged,
+    this.onCurrencySelected,
   });
 
-  @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 120), // Added 120px bottom padding
       children: [
+        if (state.isFirstTransaction)
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: context.colors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: context.colors.primary, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      localization.first_transaction_hint,
+                      style: context.typography.label.small.copyWith(color: context.colors.primary),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         _buildAmountSection(context),
         _buildDateSection(context),
         _buildCategorySection(context),
@@ -58,26 +88,110 @@ class TransactionForm extends StatelessWidget {
             height: 24,
           ),
         ),
-        trailing: Container(
-          margin: const EdgeInsets.all(12),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: colors.surface,
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                state.currency?.abbreviation ?? "",
-                style: typography.label.small.copyWith(color: colors.body),
-              ),
-            ],
-          ),
-        ),
+        trailing: onCurrencySelected != null
+            ? GestureDetector(
+                onTap: () => _openCurrencyBottomSheet(context),
+                child: state.currency != null && state.currency!.abbreviation.isNotEmpty
+                    ? Container(
+                        margin: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: colors.surface,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              state.currency!.abbreviation,
+                              style: typography.label.small.copyWith(color: colors.body),
+                            ),
+                            const SizedBox(width: 4),
+                            SvgPicture.asset(
+                              AppAssets.icArrowDownRound,
+                              height: 12,
+                              width: 12,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.body,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                          top: 14,
+                          bottom: 14,
+                          end: 8,
+                        ),
+                        child: SvgPicture.asset(
+                          AppAssets.icArrowDownRound,
+                          height: 20,
+                          width: 20,
+                          colorFilter: ColorFilter.mode(
+                            context.colors.body,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+              )
+            : state.currency != null && state.currency!.abbreviation.isNotEmpty
+                ? Container(
+                    margin: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: colors.surface,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          state.currency!.abbreviation,
+                          style: typography.label.small.copyWith(color: colors.body),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
         onChanged: onAmountChanged,
       ),
     );
+  }
+
+  Future<void> _openCurrencyBottomSheet(BuildContext context) async {
+    final cubit = context.read<ManageTransactionCubit>();
+
+    final result = await showModalBottomSheet<Currency>(
+      context: context,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      backgroundColor: context.colors.surface,
+      useSafeArea: true,
+      builder: (_) {
+        return BlocBuilder<ManageTransactionCubit, ManageTransactionState>(
+          bloc: cubit,
+          builder: (context, state) {
+            return CurrencyBottomSheet(
+              currencies: state.filteredCurrencies,
+              isLoading: state.isLoadingCurrencies,
+              query: state.currencyQuery,
+              onSearchChanged: (value) {
+                cubit.onCurrencySearchChanged(value);
+              },
+            );
+          },
+        );
+      },
+    );
+
+    if (result != null) {
+      onCurrencySelected?.call(result);
+    }
   }
 
   Widget _buildDateSection(BuildContext context) {
