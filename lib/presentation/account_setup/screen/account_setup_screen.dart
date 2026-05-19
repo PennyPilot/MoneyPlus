@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/widgets/app_bar.dart';
-import 'package:moneyplus/presentation/account_setup/screen/step1.dart';
-import 'package:moneyplus/presentation/account_setup/screen/step2.dart';
-import 'package:moneyplus/presentation/account_setup/screen/step3.dart';
+import 'package:moneyplus/presentation/account_setup/screen/salary_management_step.dart';
+import 'package:moneyplus/presentation/account_setup/screen/current_balance_step.dart';
+import 'package:moneyplus/presentation/account_setup/screen/category_selection_step.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
