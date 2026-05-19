@@ -11,7 +11,10 @@ import 'package:moneyplus/presentation/statistics/utils.dart';
 import 'package:moneyplus/presentation/statistics/widgets/CategoryBreakdown.dart';
 import 'package:moneyplus/presentation/statistics/widgets/highest_spending_banner.dart';
 
+import '../../design_system/assets/app_assets.dart';
 import '../../design_system/chart/spending_trend_graph.dart';
+import '../../design_system/widgets/nav_bar.dart';
+import '../main_container/cubit/main_cubit.dart';
 import '../transactions/widget/add_transaction_bottom_sheet.dart';
 import '../widgets/drop_down_date_dialog.dart';
 import 'cubit/statistics_cubit.dart';
@@ -50,18 +53,24 @@ class _StatisticsViewState extends State<StatisticsView> {
   Widget build(BuildContext context) {
     final state = context.watch<StatisticsCubit>().state;
     final l10n = context.localizations;
+    final colors = context.colors;
 
-    return Scaffold(
-      backgroundColor: context.colors.surface,
-      body: Column(
+    return Container(
+      color: colors.surface,
+      child: Column(
         children: [
           CustomAppBar(
-            backgroundColor: context.colors.surfaceLow,
             title: l10n.statistics,
+            backgroundColor: colors.surfaceLow,
+            leading: AppBarCircleButton(
+              assetPath: AppAssets.icArrowLeft,
+              onTap: () {
+                context.read<MainCubit>().onTabSelected(NavBarTab.home);
+              },
+            ),
             trailing: switch (state) {
               StatisticsSuccess(:final selectedMonth) => DropDownDateDialog(
-                  onDatePick: (date) =>
-                      context.read<StatisticsCubit>().changeMonth(date),
+                  onDatePick: (date) => context.read<StatisticsCubit>().changeMonth(date),
                   year: selectedMonth.year,
                   month: selectedMonth.month,
                 ),
@@ -88,37 +97,51 @@ class _StatisticsViewState extends State<StatisticsView> {
     final l10n = AppLocalizations.of(context)!;
 
     if (state.hasNoData) {
-      return AppEmptyView(
-        title: l10n.no_statistics_title,
-        subtitle: l10n.no_statistics_subtitle,
-        buttonText: l10n.add_transaction,
-        onButtonPressed: _onAddTransaction,
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: AppEmptyView(
+                  title: l10n.no_statistics_title,
+                  subtitle: l10n.no_statistics_subtitle,
+                  buttonText: l10n.add_transaction,
+                  onButtonPressed: _onAddTransaction,
+                ),
+              ),
+            ),
+          );
+        },
       );
     }
 
     final trendDataPoints = state.spendingTrend.toDataPoints();
 
-    return SingleChildScrollView(
-      child: Padding(
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: ListView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            MonthlyOverviewSection(overview: state.monthlyOverview),
-            const SizedBox(height: 16),
-            CategoryBreakdownWidget(
-              categoriesBreakdown: state.categoriesBreakdown,
-            ),
-            const SizedBox(height: 16),
-
-            SpendingTrendGraph(
-              data: trendDataPoints,
-              currency: state.spendingTrend.currency,
-            ),
-            const SizedBox(height: 8),
-            HighestSpendingBanner(trend: state.spendingTrend),
-            const SizedBox(height: 16),
-          ],
-        ),
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          MonthlyOverviewSection(overview: state.monthlyOverview),
+          const SizedBox(height: 16),
+          CategoryBreakdownWidget(
+            categoriesBreakdown: state.categoriesBreakdown,
+          ),
+          const SizedBox(height: 16),
+          SpendingTrendGraph(
+            data: trendDataPoints,
+            currency: state.spendingTrend.currency,
+          ),
+          const SizedBox(height: 8),
+          HighestSpendingBanner(trend: state.spendingTrend),
+          const SizedBox(height: 150),
+        ],
       ),
     );
   }

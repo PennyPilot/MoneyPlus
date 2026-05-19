@@ -9,6 +9,8 @@ class TextFieldDatePicker extends StatefulWidget {
   final String hint;
   final VoidCallback onError;
   final void Function(DateTime) onDateChange;
+  final DateTime? initialDate;
+  final DateTime? lastDate;
 
   const TextFieldDatePicker({
     super.key,
@@ -16,6 +18,8 @@ class TextFieldDatePicker extends StatefulWidget {
     required this.hint,
     required this.onError,
     required this.onDateChange,
+    this.initialDate,
+    this.lastDate,
   });
 
   @override
@@ -31,8 +35,20 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
   @override
   void initState() {
     super.initState();
-    dateInput.text = "";
+    if (widget.initialDate != null) {
+      dateInput.text = DateFormat('dd/MM/yyyy').format(widget.initialDate!);
+    } else {
+      dateInput.text = "";
+    }
     _focusNode = FocusNode()..addListener(() => setState(() {}));
+  }
+
+  @override
+  void didUpdateWidget(covariant TextFieldDatePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDate != oldWidget.initialDate && widget.initialDate != null) {
+      dateInput.text = DateFormat('dd/MM/yyyy').format(widget.initialDate!);
+    }
   }
 
   @override
@@ -93,11 +109,18 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                     border: InputBorder.none,
                   ),
                   onTap: () async {
+                    DateTime now = DateTime.now();
+                    DateTime initial = widget.initialDate ?? now;
+                    final last = widget.lastDate ?? now;
+                    if (initial.isAfter(last)) {
+                      initial = last;
+                    }
+
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: initial,
                       firstDate: DateTime(2000),
-                      lastDate: DateTime(2200),
+                      lastDate: last,
                       builder: (context, child) {
                         return Theme(
                           data: Theme.of(context).copyWith(

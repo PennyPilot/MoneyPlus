@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
+import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
 import 'package:moneyplus/domain/entity/category.dart';
 import 'package:moneyplus/presentation/categories/cubit/categories_cubit.dart';
@@ -25,9 +27,13 @@ class ManageCategoriesScreenContent extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.surface,
-      appBar: CategoryAppBar(
+      appBar: CustomAppBar(
         title: localizations.manage_categories,
-        onBackPressed: () => context.pop(),
+        backgroundColor: colors.surfaceLow,
+        leading: AppBarCircleButton(
+          assetPath: AppAssets.icArrowLeft,
+          onTap: () => context.pop(),
+        ),
       ),
       body: BlocConsumer<CategoriesCubit, CategoriesState>(
         listenWhen: (previous, current) => previous.status != current.status,

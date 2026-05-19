@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/design_system/widgets/income_expense.dart';
 import 'package:moneyplus/design_system/widgets/top_spending_card.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import '../../../core/di/injection.dart';
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
+import '../../main_container/cubit/main_cubit.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
 
@@ -60,11 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           var content = switch (state) {
             HomeLoading() => Scaffold(
               backgroundColor: colors.surface,
-              body: Center(
-                child: CircularProgressIndicator(
-                  color: colors.primary,
-                ),
-              ),
+              body: const AppLoadingIndicator(),
             ),
             HomeLoaded() => _loadedContent(
               context: context,
@@ -105,117 +103,126 @@ Widget _loadedContent({
   final typography = context.typography;
   final localizations = AppLocalizations.of(context)!;
   return Scaffold(
-    body: Container(
-      color: colors.surface,
-      child: Column(
-        children: [
-          AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: _topSection(
-                showAppBarOnly: showAppBarOnly,
-                state: state,
-                onDatePick: setSelectedDate,
-                context: context,
-                reloadScreen: reloadScreen
+    body: SafeArea(
+      top: false,
+      bottom: false,
+      child: Container(
+        color: colors.surface,
+        child: Column(
+          children: [
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: _topSection(
+                  showAppBarOnly: showAppBarOnly,
+                  state: state,
+                  onDatePick: setSelectedDate,
+                  context: context,
+                  reloadScreen: reloadScreen
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                CustomScrollView(
-                  controller: scrollController,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: IncomeExpense(
-                                    type: IncomeExpenseType.income,
-                                    currency: state.currency,
-                                    amount: formatWithCommas(
-                                      state.totalMonthIncome,
-                                    ).toString(),
+            Expanded(
+              child: Stack(
+                children: [
+                  CustomScrollView(
+                    controller: scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: IncomeExpense(
+                                      type: IncomeExpenseType.income,
+                                      currency: state.currency,
+                                      amount: formatWithCommas(
+                                        state.totalMonthIncome,
+                                      ).toString(),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: IncomeExpense(
-                                    type: IncomeExpenseType.expense,
-                                    currency: state.currency,
-                                    amount: formatWithCommas(
-                                      state.totalMonthExpense,
-                                    ).toString(),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: IncomeExpense(
+                                      type: IncomeExpenseType.expense,
+                                      currency: state.currency,
+                                      amount: formatWithCommas(
+                                        state.totalMonthExpense,
+                                      ).toString(),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 24),
-                            Text(
-                              localizations.top_spending_category,
-                              style: typography.title.small.copyWith(
-                                color: colors.title,
+                                ],
                               ),
-                            ),
-                            SizedBox(height: 8),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    if (topSpendingCategories.isEmpty)
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            localizations.no_spending_categories,
-                            style: typography.body.medium.copyWith(
-                              color: colors.primary,
-                            ),
+                              SizedBox(height: 24),
+                              Text(
+                                localizations.top_spending_category,
+                                style: typography.title.small.copyWith(
+                                  color: colors.title,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                            ],
                           ),
                         ),
-                      )
-                    else
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        childCount: topSpendingCategories.length,
-                        (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 12,
-                              left: 16,
-                              right: 16,
-                            ),
-                            child: TopSpendingCard(
-                              expenseCategory:
-                                  topSpendingCategories[index].category.name,
-                              amount:
-                                  "${formatWithCommas(topSpendingCategories[index].total)} ${topSpendingCategories[index].currency}",
-                              transactionCount:
-                                  topSpendingCategories[index].numberOfTransactions,
-                              percentage:
-                                  topSpendingCategories[index].percentage,
-                            ),
-                          );
-                        },
                       ),
-                    ),
-                  ],
-                ),
-              ],
+
+                      if (topSpendingCategories.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              localizations.no_spending_categories,
+                              style: typography.body.medium.copyWith(
+                                color: colors.primary,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          childCount: topSpendingCategories.length,
+                          (context, index) {
+                            final categoryData = topSpendingCategories[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 12,
+                                left: 16,
+                                right: 16,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.read<MainCubit>().navigateToTransactionsWithFilter([categoryData.category.id]);
+                                },
+                                child: TopSpendingCard(
+                                  expenseCategory: categoryData.category.name,
+                                  amount: "${formatWithCommas(categoryData.total)} ${categoryData.currency}",
+                                  transactionCount: categoryData.numberOfTransactions,
+                                  percentage: categoryData.percentage,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 100),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );

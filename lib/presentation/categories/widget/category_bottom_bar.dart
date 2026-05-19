@@ -17,11 +17,13 @@ class CategoryBottomBar extends StatelessWidget {
     final colors = context.colors;
     return Container(
       width: double.infinity,
-      height: 84,
       color: colors.surfaceLow,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: DefaultButton(text: buttonText, onPressed: onPressed),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 19),
+          child: DefaultButton(text: buttonText, onPressed: onPressed),
+        ),
       ),
     );
   }

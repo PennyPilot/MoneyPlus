@@ -7,6 +7,7 @@ import 'package:moneyplus/design_system/widgets/app_bar.dart';
 import 'package:moneyplus/design_system/widgets/text_field.dart';
 import 'package:moneyplus/design_system/widgets/text_field_date_Picker.dart';
 import 'package:moneyplus/presentation/expense/cubit/add_expense_cubit.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/expense/cubit/add_expense_state.dart';
 
 import '../../../core/l10n/app_localizations.dart';
@@ -153,7 +154,7 @@ class _ExpenseScreenContent extends StatelessWidget {
     if (state.isLoadingCategories && state.categories.isEmpty) {
       return const Padding(
         padding: EdgeInsets.only(top: 16),
-        child: Center(child: CircularProgressIndicator()),
+        child: AppLoadingIndicator(),
       );
     }
 

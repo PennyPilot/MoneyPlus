@@ -63,7 +63,7 @@ class AppAssets {
   static const String icMoneyRemove = '$_icons/ic_money_remove.svg';
   static const String lineSeparator = '$_images/line-separator.png';
   static const String transactionCoinStack = '$_images/transaction-coin-stack.png';
-  static const String transactionDetailsBackground = '$_images/transaction-details-background.png';
+  static const String transactionDetailsBackground = '$_icons/ic_transaction_details_background.svg';
   static const String icFrenchFries = '$_icons/ic-french-fries.svg';
   static const String icShare = '$_icons/ic_share.svg';
   static const String icEmptyTransactionImage = '$_images/empty_transaction_image.png';

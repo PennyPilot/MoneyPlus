@@ -19,11 +19,17 @@ class MainScreen extends StatelessWidget {
       create: (context) => MainCubit(),
       child: BlocBuilder<MainCubit, MainState>(
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: context.colors.surface,
-            body: _getScreenForTab(state.selectedTab),
-            bottomNavigationBar: SafeArea(
-              child: NavBar(
+          return PopScope(
+            canPop: state.selectedTab == NavBarTab.home,
+            onPopInvokedWithResult: (didPop, result) {
+              if (didPop) return;
+              context.read<MainCubit>().onTabSelected(NavBarTab.home);
+            },
+            child: Scaffold(
+              extendBody: true,
+              backgroundColor: context.colors.surface,
+              body: _getScreenForTab(state.selectedTab, state.transactionCategoryFilters),
+              bottomNavigationBar: NavBar(
                 selectedTab: state.selectedTab,
                 onTabSelected: (tab) {
                   context.read<MainCubit>().onTabSelected(tab);
@@ -36,12 +42,12 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _getScreenForTab(NavBarTab tab) {
+  Widget _getScreenForTab(NavBarTab tab, List<int>? filters) {
     switch (tab) {
       case NavBarTab.home:
         return const HomeScreen();
       case NavBarTab.transaction:
-        return const TransactionsScreen();
+        return TransactionsScreen(initialCategoryIds: filters);
       case NavBarTab.statistics:
         return const StatisticsScreen();
       case NavBarTab.account:

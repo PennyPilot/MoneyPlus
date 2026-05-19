@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/snack_bar.dart';
+import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_state.dart';
 import 'package:moneyplus/presentation/transactions/widget/categories_filter_bottom_sheet.dart';
@@ -11,6 +12,7 @@ import 'package:moneyplus/presentation/transactions/widget/loading_view.dart';
 import 'package:moneyplus/presentation/transactions/widget/tabs_row.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_app_bar.dart';
 import 'package:moneyplus/presentation/transactions/widget/transactions_list.dart';
+import '../../../design_system/widgets/chip.dart';
 
 class TransactionScreenContent extends StatefulWidget {
   const TransactionScreenContent({super.key});
@@ -57,6 +59,10 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
           }
         },
         builder: (context, state) {
+          if (state.status == TransactionStatus.loading) {
+            return const AppLoadingIndicator();
+          }
+
           return Column(
             children: [
               TransactionAppBar(
@@ -73,27 +79,64 @@ class _TransactionsScreenContentState extends State<TransactionScreenContent> {
                 },
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16, left: 16, top: 16),
-                child: TabsRow(
-                  selectedTab: state.selectedTab,
-                  onTabSelected: context.read<TransactionCubit>().onTabSelected,
-                ),
-              ),
-
               Expanded(
-                child: CustomScrollView(
-                  controller: _controller,
-                  slivers: [
-                    state.status == TransactionStatus.loading
-                        ? SliverFillRemaining(child: LoadingView())
-                        : state.transactions.isEmpty
-                        ? SliverFillRemaining(child: EmptyTransactions())
-                        : TransactionsList(transactions: state.transactions),
+                child: SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16, left: 16, top: 16),
+                        child: TabsRow(
+                          selectedTab: state.selectedTab,
+                          onTabSelected: context.read<TransactionCubit>().onTabSelected,
+                        ),
+                      ),
 
-                    if (state.isLoadingMore)
-                      const SliverToBoxAdapter(child: LoadingView()),
-                  ],
+                      if (state.transactionCategories.isNotEmpty)
+                        Container(
+                          height: 40,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: ListView.separated(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.transactionCategories.length,
+                            separatorBuilder: (context, index) => const SizedBox(width: 8),
+                            itemBuilder: (context, index) {
+                              final category = state.transactionCategories[index];
+                              final isSelected = state.selectedCategories.contains(category.id);
+                              return MChip(
+                                label: category.name,
+                                selected: isSelected,
+                                onTap: () {
+                                  final currentSelected = List<int>.from(state.selectedCategories);
+                                  if (isSelected) {
+                                    currentSelected.remove(category.id);
+                                  } else {
+                                    currentSelected.add(category.id);
+                                  }
+                                  context.read<TransactionCubit>().onCategoriesSelected(currentSelected);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+
+                      Expanded(
+                        child: CustomScrollView(
+                          controller: _controller,
+                          slivers: [
+                            state.transactions.isEmpty
+                                ? SliverFillRemaining(child: EmptyTransactions())
+                                : TransactionsList(transactions: state.transactions),
+
+                            if (state.isLoadingMore)
+                              const SliverToBoxAdapter(child: LoadingView()),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
