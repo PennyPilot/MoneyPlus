@@ -34,6 +34,7 @@ class CategoryAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: SvgPicture.asset(
                 AppAssets.icArrowLeft,
                 matchTextDirection: true,
+                colorFilter: ColorFilter.mode(colors.title, BlendMode.srcIn),
               ),
             ),
           ),

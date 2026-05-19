@@ -54,17 +54,28 @@ Widget _loadedContent(BuildContext context, SalarySettingsLoaded state) {
 
   return Container(
     color: colors.surface,
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        spacing:12,
-        children: [
-          _salaryBox(context, state, cubit),
-          _salaryDayBox(context, state, cubit),
-          Spacer(),
-          _saveButton(context, state, cubit),
-        ],
-      ),
+    child: Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              spacing: 12,
+              children: [
+                _salaryBox(context, state, cubit),
+                _salaryDayBox(context, state, cubit),
+              ],
+            ),
+          ),
+        ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 19),
+            child: _saveButton(context, state, cubit),
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -155,18 +166,6 @@ Widget _saveButton(
         }
       });
     },
-  );
-}
-
-Widget _appBarLeading(BuildContext context) {
-  final colors = context.colors;
-  return GestureDetector(
-    onTap: () => context.pop(),
-    child: Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: colors.surface, shape: BoxShape.circle),
-      child: SvgPicture.asset(AppAssets.icArrowLeft),
-    ),
   );
 }
 

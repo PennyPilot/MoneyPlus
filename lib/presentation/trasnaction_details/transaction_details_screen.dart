@@ -10,7 +10,6 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
-import 'package:svg_flutter/svg.dart';
 import '../../core/di/injection.dart';
 import '../../design_system/widgets/buttons/error/default_error_button.dart';
 

@@ -156,12 +156,15 @@ class _CurrencyBottomSheetState extends State<CurrencyBottomSheet> {
             ),
             Padding(
               padding: const EdgeInsetsDirectional.all(16),
-              child: DefaultButton(
-                text: l10n.select,
-                isEnabled: selectedCurrency != null,
-                onPressed: () {
-                  Navigator.pop(context, selectedCurrency);
-                },
+              child: SafeArea(
+                top: false,
+                child: DefaultButton(
+                  text: l10n.select,
+                  isEnabled: selectedCurrency != null,
+                  onPressed: () {
+                    Navigator.pop(context, selectedCurrency);
+                  },
+                ),
               ),
             ),
           ],

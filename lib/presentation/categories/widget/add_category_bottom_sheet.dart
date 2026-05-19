@@ -48,46 +48,48 @@ class _AddCategorySheetState extends State<AddCategorySheet> {
     final localizations = AppLocalizations.of(context)!;
     final isEdit = widget.category != null;
     return Container(
-      padding: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 24,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-      ),
       decoration: BoxDecoration(
         color: colors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildHeader(localizations, isEdit),
-          Divider(color: colors.stroke, thickness: 1),
-          const SizedBox(height: 12),
-
-          MTextField(
-            leading: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
-              child: SvgPicture.asset(AppAssets.icCategory),
-            ),
-            hint: localizations.category_name,
-            value: _categoryName,
-            onChanged: (String value) {
-              setState(() {
-                _categoryName = value;
-                _isButtonEnabled = _categoryName.trim().isNotEmpty;
-              });
-            },
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 24,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           ),
-
-          const SizedBox(height: 24),
-
-          DefaultButton(
-            text: isEdit ? localizations.edit : localizations.add,
-            isEnabled: _isButtonEnabled,
-            onPressed: _isButtonEnabled ? () => _submit(context) : null,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildHeader(localizations, isEdit),
+              Divider(color: colors.stroke, thickness: 1),
+              const SizedBox(height: 12),
+              MTextField(
+                leading: Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
+                  child: SvgPicture.asset(AppAssets.icCategory),
+                ),
+                hint: localizations.category_name,
+                value: _categoryName,
+                onChanged: (String value) {
+                  setState(() {
+                    _categoryName = value;
+                    _isButtonEnabled = _categoryName.trim().isNotEmpty;
+                  });
+                },
+              ),
+              const SizedBox(height: 24),
+              DefaultButton(
+                text: isEdit ? localizations.edit : localizations.add,
+                isEnabled: _isButtonEnabled,
+                onPressed: _isButtonEnabled ? () => _submit(context) : null,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
