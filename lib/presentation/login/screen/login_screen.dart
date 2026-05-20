@@ -32,22 +32,25 @@ class LoginScreen extends StatelessWidget {
             _sliverAppBar(),
             SliverFillRemaining(
               hasScrollBody: false,
-              child: Padding(
-                padding: EdgeInsetsGeometry.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _LoginHeader(),
-                    SizedBox(height: 16),
-                    _LoginFields(),
-                    ForgetPasswordButton(),
-                    Spacer(),
-                    _LoginSubmitButton(),
-                    SizedBox(height: 8),
-                    _buildOrWidget(colors, typography, localizations),
-                    SizedBox(height: 8),
-                    _SocialMediaButtons(),
-                  ],
+              child: SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _LoginHeader(),
+                      const SizedBox(height: 16),
+                      const _LoginFields(),
+                      const ForgetPasswordButton(),
+                      const Spacer(),
+                      const _LoginSubmitButton(),
+                      const SizedBox(height: 8),
+                      _buildOrWidget(colors, typography, localizations),
+                      const SizedBox(height: 8),
+                      const _SocialMediaButtons(),
+                    ],
+                  ),
                 ),
               ),
             ),

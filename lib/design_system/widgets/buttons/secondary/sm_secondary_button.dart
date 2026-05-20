@@ -37,6 +37,7 @@ class _SMSecondaryButtonState extends State<SMSecondaryButton> {
       backgroundColor: colors.surfaceLow,
       disabledBackgroundColor: colors.disabled,
       textColor: colors.title,
+      iconColor: colors.title,
       disabledTextColor: colors.onPrimary,
       hasShadow: false,
       cornerRadius: 100,

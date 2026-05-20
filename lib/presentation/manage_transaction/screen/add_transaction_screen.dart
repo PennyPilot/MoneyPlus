@@ -85,6 +85,7 @@ class _AddTransactionScreenContent extends StatelessWidget {
                     onDateChanged: (val) => context.read<ManageTransactionCubit>().onDateChanged(val),
                     onCategorySelected: (val) => context.read<ManageTransactionCubit>().onCategorySelected(val),
                     onNoteChanged: (val) => context.read<ManageTransactionCubit>().onNoteChanged(val),
+                    onCurrencySelected: (val) => context.read<ManageTransactionCubit>().onCurrencyChanged(val),
                   ),
                 ),
               ),

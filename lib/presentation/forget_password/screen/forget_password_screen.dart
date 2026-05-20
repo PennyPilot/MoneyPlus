@@ -50,15 +50,23 @@ class _ForgetPasswordView extends StatelessWidget {
               leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft
                 ,onTap: () => context.pop(),),
             ),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(16),
-              child: DefaultButton(
-                text: l10n.forgetPasswordButton,
-                isEnabled: state.isEmailValid,
-                isLoading: state.status == ForgetPasswordStatus.loading,
-                onPressed: () {
-                  context.read<ForgetPasswordCubit>().onClickForgetPassword();
-                },
+            bottomNavigationBar: AnimatedPadding(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOut,
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                left: 16,
+                right: 16,
+              ),
+              child: SafeArea(
+                child: DefaultButton(
+                  text: l10n.forgetPasswordButton,
+                  isEnabled: state.isEmailValid,
+                  isLoading: state.status == ForgetPasswordStatus.loading,
+                  onPressed: () {
+                    context.read<ForgetPasswordCubit>().onClickForgetPassword();
+                  },
+                ),
               ),
             ),
             body: Padding(

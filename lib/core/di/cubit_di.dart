@@ -103,6 +103,7 @@ void initCubitDI() {
     (type, id) => ManageTransactionCubit(
       transactionRepository: getIt<TransactionRepository>(),
       userMoneyRepository: getIt<UserMoneyRepository>(),
+      accountRepository: getIt<AccountRepository>(),
       initialType: type,
       transactionId: id,
     ),

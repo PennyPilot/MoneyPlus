@@ -10,6 +10,8 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import 'package:moneyplus/presentation/trasnaction_details/transactionDetailsComponent.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
+import 'package:moneyplus/design_system/widgets/buttons/secondary/defult_secondary_button.dart';
 import '../../core/di/injection.dart';
 import '../../design_system/widgets/buttons/error/default_error_button.dart';
 
@@ -90,20 +92,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                   context: context,
                   state: state,
                   onClickDelete: () {
-                    context.read<TransactionDetailsCubit>().deleteTransaction().then((success) {
-                      if (success) {
-                        MSnackBar.success(
-                          message: context.localizations.transaction_delete_success,
-                          title: context.localizations.success,
-                        ).showSnackBar(context: context);
-                        context.pop();
-                      } else {
-                        MSnackBar.error(
-                          message: context.localizations.transaction_delete_fail,
-                          title: context.localizations.error,
-                        ).showSnackBar(context: context);
-                      }
-                    });
+                    _showDeleteConfirmation(context);
                   },
                 ),
               );
@@ -146,5 +135,47 @@ Widget _bottomBar({
         ),
       ],
     ),
+  );
+}
+
+void _showDeleteConfirmation(BuildContext context) {
+  final l10n = context.localizations;
+  final cubit = context.read<TransactionDetailsCubit>();
+
+  showCustomBottomSheet(
+    context: context,
+    title: l10n.delete_transaction,
+    content: Text(
+      l10n.delete_transaction_confirmation,
+      style: context.typography.body.medium.copyWith(color: context.colors.body),
+    ),
+    actionButtons: [
+      DefaultSecondaryButton(
+        text: l10n.cancel,
+        onPressed: () => Navigator.pop(context),
+      ),
+      DefaultErrorButton(
+        text: l10n.delete,
+        onPressed: () {
+          Navigator.pop(context);
+          cubit.deleteTransaction().then((success) {
+            if (context.mounted) {
+              if (success) {
+                MSnackBar.success(
+                  message: context.localizations.transaction_delete_success,
+                  title: context.localizations.success,
+                ).showSnackBar(context: context);
+                context.pop();
+              } else {
+                MSnackBar.error(
+                  message: context.localizations.transaction_delete_fail,
+                  title: context.localizations.error,
+                ).showSnackBar(context: context);
+              }
+            }
+          });
+        },
+      ),
+    ],
   );
 }

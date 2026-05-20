@@ -16,4 +16,6 @@ abstract class AccountRepository {
     required double initialBalance,
     required List<String> categories,
   });
+
+  Future<void> updateCurrency(int currencyId);
 }

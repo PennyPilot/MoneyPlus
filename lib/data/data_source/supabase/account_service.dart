@@ -40,4 +40,13 @@ class SupabaseAccountService implements AccountService {
 
     await client.from('categories').insert(categoryData);
   }
+
+  @override
+  Future<void> updateCurrency(String userId, int currencyId) async {
+    final client = await service.getClient();
+    await client
+        .from('users')
+        .update({'default_currency_id': currencyId})
+        .eq('id', userId);
+  }
 }

@@ -204,13 +204,21 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
     bool isLoading,
     UpdatePasswordState state,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: DefaultButton(
-        text: localizations.updatePasswordButton,
-        isLoading: isLoading,
-        isEnabled: state.isEnabled,
-        onPressed: cubit.updatePassword,
+    return AnimatedPadding(
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeOut,
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+        left: 16,
+        right: 16,
+      ),
+      child: SafeArea(
+        child: DefaultButton(
+          text: localizations.updatePasswordButton,
+          isLoading: isLoading,
+          isEnabled: state.isEnabled,
+          onPressed: cubit.updatePassword,
+        ),
       ),
     );
   }

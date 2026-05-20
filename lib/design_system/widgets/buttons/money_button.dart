@@ -114,10 +114,10 @@ class MoneyButton extends StatelessWidget {
                       iconPath!,
                       width: iconWidth,
                       height: iconHeight,
-                      // colorFilter: ColorFilter.mode(
-                      //   finalIconColor,
-                      //   BlendMode.srcIn,
-                      // ),
+                      colorFilter: ColorFilter.mode(
+                        finalIconColor,
+                        BlendMode.srcIn,
+                      ),
                     ),
             ],
           ],

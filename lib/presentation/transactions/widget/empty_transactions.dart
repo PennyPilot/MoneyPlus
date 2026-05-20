@@ -15,44 +15,50 @@ class EmptyTransactions extends StatelessWidget {
     final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          alignment: Alignment.topCenter,
+    return Center(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(
-              AppAssets.icEmptyTransactionPattern,
-              height: 150,
-              width: 250,
+            Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                SvgPicture.asset(
+                  AppAssets.icEmptyTransactionPattern,
+                  height: 150,
+                  width: 250,
+                ),
+                Positioned(
+                  top: 25,
+                  child: Image.asset(
+                    AppAssets.icEmptyTransactionImage,
+                    height: 112,
+                    width: 96,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 25,
-              child: Image.asset(
-                AppAssets.icEmptyTransactionImage,
-                height: 112,
-                width: 96,
+            Text(
+              localizations.no_transaction_record_title,
+              style: typography.title.small.copyWith(color: colors.title),
+            ),
+            SizedBox(height: 4),
+            Text(
+              localizations.no_transaction_record_content,
+              style: typography.body.small.copyWith(color: colors.body),
+            ),
+            SizedBox(height: 24),
+            IntrinsicWidth(
+              child: DefaultButton(
+                text: localizations.add_transaction,
+                onPressed: () => showAddTransactionBottomSheet(context),
               ),
             ),
           ],
         ),
-        Text(
-          localizations.no_transaction_record_title,
-          style: typography.title.small.copyWith(color: colors.title),
-        ),
-        SizedBox(height: 4),
-        Text(
-          localizations.no_transaction_record_content,
-          style: typography.body.small.copyWith(color: colors.body),
-        ),
-        SizedBox(height: 24),
-        IntrinsicWidth(
-          child: DefaultButton(
-            text: localizations.add_transaction,
-            onPressed: () => showAddTransactionBottomSheet(context),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

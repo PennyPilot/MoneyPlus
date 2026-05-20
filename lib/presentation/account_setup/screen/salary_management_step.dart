@@ -161,9 +161,18 @@ class _Step1State extends State<Step1> {
       backgroundColor: context.colors.surface,
       useSafeArea: true,
       builder: (_) {
-        return BlocProvider.value(
-          value: cubit,
-          child: const CurrencyBottomSheet(),
+        return BlocBuilder<AccountSetupCubit, AccountSetupState>(
+          bloc: cubit,
+          builder: (context, state) {
+            return CurrencyBottomSheet(
+              currencies: state.filteredCurrencies,
+              isLoading: state.isLoading,
+              query: state.query,
+              onSearchChanged: (value) {
+                cubit.onSearchChanged(value);
+              },
+            );
+          },
         );
       },
     );

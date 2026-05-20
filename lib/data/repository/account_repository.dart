@@ -67,4 +67,13 @@ class AccountRepositoryImpl extends AccountRepository {
       categories: categories,
     );
   }
+
+  @override
+  Future<void> updateCurrency(int currencyId) async {
+    final client = await supabaseService.getClient();
+    final userId = client.auth.currentUser?.id;
+    if (userId != null) {
+      await service.updateCurrency(userId, currencyId);
+    }
+  }
 }

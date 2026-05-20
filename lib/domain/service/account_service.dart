@@ -9,4 +9,6 @@ abstract class AccountService {
     required double initialBalance,
     required List<String> categories,
   });
+
+  Future<void> updateCurrency(String userId, int currencyId);
 }
