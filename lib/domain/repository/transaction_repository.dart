@@ -16,14 +16,6 @@ abstract class TransactionRepository {
     String note = "",
   });
 
-  Future<Result<void>> addIncomeTransaction({
-    required double amount,
-    required DateTime date,
-    TransactionCategory? category,
-    required Currency currency,
-    String note = "",
-  });
-
   Future<bool> editTransaction({
     required String id,
     double? amount,

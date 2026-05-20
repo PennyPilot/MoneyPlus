@@ -36,6 +36,29 @@ class _Step1State extends State<Step1> {
             color: context.colors.body,
           ),
         ),
+        if (widget.state.selectedCurrency != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: context.colors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: context.colors.primary, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.first_transaction_hint(widget.state.selectedCurrency!.abbreviation),
+                      style: context.typography.label.small.copyWith(color: context.colors.primary),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         SizedBox(height: 24),
         GestureDetector(
           onTap: () => _openCurrencyBottomSheet(widget.state),

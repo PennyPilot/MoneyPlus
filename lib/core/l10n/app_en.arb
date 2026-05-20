@@ -203,7 +203,12 @@
   "profileUpdatedSuccessfully": "Profile updated successfully",
   "salary_error_limit": "Salary cannot exceed 999,000,000",
   "salary_day_error_limit": "Day must be between 1 and 28",
-  "first_transaction_hint": "This is your first transaction. The selected currency will be your default until updated.",
+  "first_transaction_hint": "Your base currency will be set to {currency} and cannot be changed. This ensures your financial history stays accurate.",
+  "@first_transaction_hint": {
+    "placeholders": {
+      "currency": {}
+    }
+  },
   "delete_transaction": "Delete transaction",
   "delete_transaction_confirmation": "Are you sure you want to delete this transaction?"
 }

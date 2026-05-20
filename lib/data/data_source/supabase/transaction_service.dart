@@ -19,9 +19,9 @@ class SupabaseTransactionService implements TransactionService {
   }) async {
     try {
       final client = await service.getClient();
-      await client.rpc(
+      await client.functions.invoke(
         'add_transaction',
-        params: {
+        body: {
           'amount': amount,
           'transaction_type_id': typeId,
           'date': date.toIso8601String(),
@@ -73,7 +73,7 @@ class SupabaseTransactionService implements TransactionService {
     final client = await service.getClient();
     final response = await client.rpc(
       'get_transaction_details',
-      params: {'p_id': id},
+      params: {'p_transaction_id': id},
     );
     return response as Map<String, dynamic>;
   }

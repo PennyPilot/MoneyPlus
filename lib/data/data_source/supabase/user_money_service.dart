@@ -42,14 +42,18 @@ class SupabaseUserMoneyService implements UserMoneyService {
 
   @override
   Future<dynamic> getTopSpendingResponse({
-    required int month,
-    required int year,
     required int count,
+    int? month,
+    int? year,
   }) async {
     final client = await service.getClient();
     return await client.rpc(
       'get_top_spending_categories',
-      params: {'p_month': month, 'p_year': year, 'p_limit': count},
+      params: {
+        'p_limit': count,
+        'p_month': month,
+        'p_year': year,
+      },
     );
   }
 
@@ -57,6 +61,9 @@ class SupabaseUserMoneyService implements UserMoneyService {
   Future<Currency> getCurrency() async {
     final client = await service.getClient();
     final response = await client.rpc('get_default_currency');
+    if (response == null) {
+      return Currency(id: 0, name: '', country: '', abbreviation: '');
+    }
     return Currency.fromJson(response);
   }
 

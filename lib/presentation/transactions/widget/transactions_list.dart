@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
+import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/transactions/widget/transaction_row.dart';
 
 class TransactionsList extends StatelessWidget {
@@ -17,8 +19,11 @@ class TransactionsList extends StatelessWidget {
         itemBuilder: (context, index) {
           final transaction = transactions[index];
           return TransactionRow(
-            onTap: () {
-              TransactionDetailsRoute(transaction.id).push(context);
+            onTap: () async {
+              final result = await TransactionDetailsRoute(transaction.id).push(context);
+              if (result == true && context.mounted) {
+                context.read<TransactionCubit>().refresh();
+              }
             },
             transactionType: transaction.type,
             category: transaction.category.name,

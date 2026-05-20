@@ -34,24 +34,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Result<void>> addIncomeTransaction({
-    required double amount,
-    required DateTime date,
-    TransactionCategory? category,
-    required Currency currency,
-    String note = "",
-  }) async {
-    return service.addTransaction(
-      amount: amount,
-      typeId: TransactionType.income.value,
-      date: date,
-      categoryId: DefaultTransactionTypeId.income,
-      note: note,
-      currencyId: currency.id,
-    );
-  }
-
-  @override
   Future<bool> editTransaction({
     required String id,
     double? amount,
@@ -100,11 +82,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
     if (data.isEmpty) {
       return Result.error(ErrorModel("no transaction with that id: $id"));
     }
-    
 
-    
-    final currencyAbbreviation = await service.getCurrencyAbbreviation(data['currency_id'] as int);
-    final categoryName = await service.getCategoryName((data['category_id'] as int).toString());
+    final currencyId = data['currency_id'] as int? ?? 0;
+    final categoryId = data['category_id'] as int? ?? 0;
+
+    final currencyAbbreviation = await service.getCurrencyAbbreviation(currencyId);
+    final categoryName = await service.getCategoryName(categoryId.toString());
     
     data['currency_abbreviation'] = currencyAbbreviation;
     data['category_name'] = categoryName;
@@ -168,8 +151,4 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }) async {
     throw UnimplementedError('editExpenseCategory not implemented');
   }
-}
-
-class DefaultTransactionTypeId {
-  static int income = 27;
 }

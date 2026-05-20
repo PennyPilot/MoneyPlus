@@ -152,6 +152,37 @@ class TransactionCubit extends Cubit<TransactionState> {
     }
   }
 
+  void refresh() async {
+    emit(
+      state.copyWith(
+        status: TransactionStatus.loading,
+        currentPage: 1,
+        hasMore: true,
+      ),
+    );
+
+    try {
+      final result = await _getTransaction(
+        page: 1,
+        tab: state.selectedTab,
+        year: state.selectedYear,
+        month: state.selectedMonth,
+        selectedCategories: state.selectedCategories,
+      );
+
+      emit(
+        state.copyWith(
+          status: TransactionStatus.success,
+          transactions: result,
+          currentPage: 1,
+          hasMore: result.length == 20,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: TransactionStatus.failure));
+    }
+  }
+
   void loadMore() async {
     if (!state.hasMore || state.isLoadingMore) return;
 
