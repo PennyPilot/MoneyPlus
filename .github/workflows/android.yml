@@ -103,6 +103,44 @@ jobs:
         timeout-minutes: 30
         run: flutter build apk --release --obfuscate --split-debug-info=build/app/outputs/symbols
 
+      - name: Get merged branch name
+        id: branch_info
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "branch=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+          else
+            LAST_MSG=$(git log -1 --pretty=%B)
+            if echo "$LAST_MSG" | grep -q "Merge pull request"; then
+              BRANCH=$(echo "$LAST_MSG" | grep -oP '(?<=from )[^ ]+' | rev | cut -d/ -f1 | rev)
+            elif echo "$LAST_MSG" | grep -q "Merge branch"; then
+              BRANCH=$(echo "$LAST_MSG" | grep -oP "(?<=branch ')[^']+")
+            else
+              BRANCH="${{ github.ref_name }}"
+            fi
+            echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version and push tag
+        id: tag_version
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+
+      - name: Create a GitHub Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }} - ${{ steps.branch_info.outputs.branch }}
+          body: |
+            Automated release from merged branch: ${{ steps.branch_info.outputs.branch }}
+            
+            Changes in this release:
+            ${{ steps.tag_version.outputs.changelog }}
+          files: build/app/outputs/flutter-apk/app-release.apk
+
       - name: Distribute to Firebase
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
@@ -111,4 +149,4 @@ jobs:
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
             --app "$FIREBASE_APP_ID" \
             --groups "closed-beta-testers" \
-            --release-notes "Build from ${{ github.ref_name }} - Commit: ${{ github.sha }}"
+            --release-notes "Merged Branch: ${{ steps.branch_info.outputs.branch }} - Version: ${{ steps.tag_version.outputs.new_tag || 'N/A' }}"
