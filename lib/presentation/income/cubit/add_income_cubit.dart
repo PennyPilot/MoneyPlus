@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/domain/entity/transaction_category.dart';
+import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/presentation/income/cubit/add_income_state.dart';
@@ -56,9 +58,11 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
-      final result = await _transactionRepository.addIncomeTransaction(
+      final result = await _transactionRepository.upsertTransaction(
         amount: state.amount!,
+        type: TransactionType.income,
         date: state.date,
+        category: TransactionCategory(id: 27, name: 'Income'), // Default income category
         currency: state.currency!,
         note: state.note,
       );

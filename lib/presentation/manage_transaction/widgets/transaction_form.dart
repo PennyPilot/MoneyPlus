@@ -38,7 +38,7 @@ class TransactionForm extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 120), // Added 120px bottom padding
       children: [
-        if (state.isFirstTransaction)
+        if (state.isFirstTransaction && state.currency != null)
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Container(
@@ -53,7 +53,7 @@ class TransactionForm extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      localization.first_transaction_hint,
+                      localization.first_transaction_hint(state.currency!.abbreviation),
                       style: context.typography.label.small.copyWith(color: context.colors.primary),
                     ),
                   ),

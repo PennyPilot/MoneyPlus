@@ -191,6 +191,12 @@
   "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
   "salary_error_limit": "لا يمكن أن يتجاوز الراتب 999,000,000",
   "salary_day_error_limit": "يجب أن يكون اليوم بين 1 و 28",
+  "first_transaction_hint": "سيتم تعيين عملتك الأساسية إلى {currency} ولا يمكن تغييرها. يضمن ذلك بقاء تاريخك المالي دقيقًا.",
+  "@first_transaction_hint": {
+    "placeholders": {
+      "currency": {}
+    }
+  },
   "delete_transaction": "حذف المعاملة",
   "delete_transaction_confirmation": "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟"
 }

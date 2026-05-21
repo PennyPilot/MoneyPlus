@@ -51,13 +51,13 @@ class UserRepositoryImpl implements UserMoneyRepository {
       final data = row as Map<String, dynamic>;
       return TopSpendingCategory(
         category: TransactionCategory(
-          id: data['category_id'] as int,
-          name: data['category_name'] as String,
+          id: data['category_id'] as int? ?? 0,
+          name: data['category_name'] as String? ?? '',
         ),
-        total: (data['total_amount'] as num).toDouble(),
-        numberOfTransactions: (data['transactions_count'] as num).toInt(),
-        percentage: (data['percentage'] as num).toDouble(),
-        currency: data['currency_abbreviation'] as String,
+        total: (data['total_amount'] as num?)?.toDouble() ?? 0.0,
+        numberOfTransactions: (data['transactions_count'] as num?)?.toInt() ?? 0,
+        percentage: (data['percentage'] as num?)?.toDouble() ?? 0.0,
+        currency: data['currency_abbreviation'] as String? ?? '',
       );
     }).toList();
   }

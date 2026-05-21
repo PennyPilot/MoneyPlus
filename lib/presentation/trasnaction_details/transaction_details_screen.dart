@@ -121,7 +121,7 @@ Widget _bottomBar({
         DefaultButton(
           text: localizations.edit,
           onPressed: () async {
-            await EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
+            await EditTransactionRoute(transactionId: state.transactionId).push(context);
             if (context.mounted) {
               context.read<TransactionDetailsCubit>().getTransactionDetails(state.transactionId);
             }
@@ -165,7 +165,7 @@ void _showDeleteConfirmation(BuildContext context) {
                   message: context.localizations.transaction_delete_success,
                   title: context.localizations.success,
                 ).showSnackBar(context: context);
-                context.pop();
+                context.pop(true);
               } else {
                 MSnackBar.error(
                   message: context.localizations.transaction_delete_fail,

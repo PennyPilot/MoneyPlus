@@ -15,7 +15,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   TransactionRepositoryImpl({required this.service});
 
   @override
-  Future<Result<void>> addTransaction({
+  Future<Result<void>> upsertTransaction({
+    String? id,
     required double amount,
     required TransactionType type,
     required DateTime date,
@@ -23,49 +24,13 @@ class TransactionRepositoryImpl implements TransactionRepository {
     required Currency currency,
     String note = "",
   }) async {
-    return service.addTransaction(
+    return service.upsertTransaction(
+      id: id,
       amount: amount,
       typeId: type.value,
       date: date,
       categoryId: category.id,
       currencyId: currency.id,
-      note: note,
-    );
-  }
-
-  @override
-  Future<Result<void>> addIncomeTransaction({
-    required double amount,
-    required DateTime date,
-    TransactionCategory? category,
-    required Currency currency,
-    String note = "",
-  }) async {
-    return service.addTransaction(
-      amount: amount,
-      typeId: TransactionType.income.value,
-      date: date,
-      categoryId: DefaultTransactionTypeId.income,
-      note: note,
-      currencyId: currency.id,
-    );
-  }
-
-  @override
-  Future<bool> editTransaction({
-    required String id,
-    double? amount,
-    TransactionType? type,
-    DateTime? date,
-    TransactionCategory? category,
-    String? note,
-  }) async {
-    return service.editTransaction(
-      id: id,
-      amount: amount,
-      typeId: type?.value,
-      date: date,
-      categoryId: category?.id,
       note: note,
     );
   }
@@ -100,15 +65,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
     if (data.isEmpty) {
       return Result.error(ErrorModel("no transaction with that id: $id"));
     }
-    
 
-    
-    final currencyAbbreviation = await service.getCurrencyAbbreviation(data['currency_id'] as int);
-    final categoryName = await service.getCategoryName((data['category_id'] as int).toString());
-    
-    data['currency_abbreviation'] = currencyAbbreviation;
-    data['category_name'] = categoryName;
-    
     return Result.success(Transaction.fromJson(data));
   }
 
@@ -168,8 +125,4 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }) async {
     throw UnimplementedError('editExpenseCategory not implemented');
   }
-}
-
-class DefaultTransactionTypeId {
-  static int income = 27;
 }

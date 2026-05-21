@@ -7,30 +7,14 @@ import '../../core/errors/result.dart';
 import '../entity/currency.dart';
 
 abstract class TransactionRepository {
-  Future<Result<void>> addTransaction({
+  Future<Result<void>> upsertTransaction({
+    String? id,
     required double amount,
     required TransactionType type,
     required DateTime date,
     required TransactionCategory category,
     required Currency currency,
     String note = "",
-  });
-
-  Future<Result<void>> addIncomeTransaction({
-    required double amount,
-    required DateTime date,
-    TransactionCategory? category,
-    required Currency currency,
-    String note = "",
-  });
-
-  Future<bool> editTransaction({
-    required String id,
-    double? amount,
-    TransactionType? type,
-    DateTime? date,
-    TransactionCategory? category,
-    String? note,
   });
 
   Future<void> deleteTransaction(String id);

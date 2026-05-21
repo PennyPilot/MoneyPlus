@@ -9,7 +9,8 @@ class SupabaseTransactionService implements TransactionService {
   SupabaseTransactionService({required this.service});
 
   @override
-  Future<Result<void>> addTransaction({
+  Future<Result<void>> upsertTransaction({
+    String? id,
     required double amount,
     required int typeId,
     required DateTime date,
@@ -19,9 +20,10 @@ class SupabaseTransactionService implements TransactionService {
   }) async {
     try {
       final client = await service.getClient();
-      await client.rpc(
-        'add_transaction',
-        params: {
+      await client.functions.invoke(
+        'upsert_transaction',
+        body: {
+          'id': id,
           'amount': amount,
           'transaction_type_id': typeId,
           'date': date.toIso8601String(),
@@ -73,66 +75,9 @@ class SupabaseTransactionService implements TransactionService {
     final client = await service.getClient();
     final response = await client.rpc(
       'get_transaction_details',
-      params: {'p_id': id},
+      params: {'p_transaction_id': id},
     );
     return response as Map<String, dynamic>;
-  }
-
-  @override
-  Future<bool> editTransaction({
-    required String id,
-    double? amount,
-    int? typeId,
-    DateTime? date,
-    int? categoryId,
-    String? note,
-  }) async {
-    try {
-      final client = await service.getClient();
-      final Map<String, dynamic> updates = {};
-      if (amount != null) updates['amount'] = amount;
-      if (typeId != null) updates['transaction_type_id'] = typeId;
-      if (date != null) updates['date'] = date.toIso8601String();
-      if (categoryId != null) updates['category_id'] = categoryId;
-      if (note != null) updates['note'] = note;
-
-      if (updates.isEmpty) return true;
-
-      await client.from('transactions').update(updates).eq('id', id);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  @override
-  Future<String> getCurrencyAbbreviation(int currencyId) async {
-    final client = await service.getClient();
-    final response = await client
-        .from('currencies')
-        .select('abbreviation')
-        .eq('id', currencyId)
-        .maybeSingle();
-
-    if (response == null) {
-      throw Exception("No currency found with id: $currencyId");
-    }
-    return response['abbreviation'] as String;
-  }
-
-  @override
-  Future<String> getCategoryName(String categoryId) async {
-    final client = await service.getClient();
-    final response = await client
-        .from('categories')
-        .select('name')
-        .eq('id', categoryId)
-        .maybeSingle();
-
-    if (response == null) {
-      throw Exception("No category found with id: $categoryId");
-    }
-    return response['name'] as String;
   }
 
   @override
