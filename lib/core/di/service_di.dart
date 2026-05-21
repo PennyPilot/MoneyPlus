@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moneyplus/core/security/app_secrets.dart';
 import 'package:moneyplus/data/repository/secure_storage.dart';
+import 'package:moneyplus/domain/repository/app_preferences_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/data_source/supabase/account_service.dart';
@@ -43,7 +44,10 @@ void initServiceDI() {
   );
 
   getIt.registerSingletonAsync<SupabaseService>(
-    () async => SupabaseService(appSecrets: getIt<AppSecrets>()),
+    () async => SupabaseService(
+      appSecrets: getIt<AppSecrets>(),
+      appPreferencesRepository: getIt<AppPreferencesRepository>(),
+    ),
     dependsOn: [AppSecrets],
   );
 
