@@ -7,10 +7,9 @@ abstract class UserMoneyService {
 
   Future<double> getTotalBalance();
 
-  Future<dynamic> getTopSpendingResponse({
+  Future<dynamic> getCurrencyBreakdownResponse({
     required int month,
     required int year,
-    required int count,
   });
 
   Future<Currency> getCurrency();

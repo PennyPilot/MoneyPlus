@@ -1,6 +1,5 @@
 import 'package:moneyplus/domain/entity/currency.dart';
-import 'package:moneyplus/domain/entity/transaction_category.dart';
-import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
+import 'package:moneyplus/domain/repository/model/currency_breakdown.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/domain/service/user_money_service.dart';
 
@@ -27,39 +26,19 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth({
+  Future<List<CurrencyBreakdown>> getCurrencyBreakdown({
     required int month,
     required int year,
-    required int count,
   }) async {
     _validateMonth(month);
-    final response = await service.getTopSpendingResponse(
+    final response = await service.getCurrencyBreakdownResponse(
       month: month,
       year: year,
-      count: count,
     );
     final rows = response as List<dynamic>;
     if (rows.isEmpty) return List.empty();
 
-    return _getTopSpendingCategoriesFromResponseRows(rows);
-  }
-
-  List<TopSpendingCategory> _getTopSpendingCategoriesFromResponseRows(
-    List<dynamic> rows,
-  ) {
-    return rows.map((row) {
-      final data = row as Map<String, dynamic>;
-      return TopSpendingCategory(
-        category: TransactionCategory(
-          id: data['category_id'] as int? ?? 0,
-          name: data['category_name'] as String? ?? '',
-        ),
-        total: (data['total_amount'] as num?)?.toDouble() ?? 0.0,
-        numberOfTransactions: (data['transactions_count'] as num?)?.toInt() ?? 0,
-        percentage: (data['percentage'] as num?)?.toDouble() ?? 0.0,
-        currency: data['currency_abbreviation'] as String? ?? '',
-      );
-    }).toList();
+    return rows.map((row) => CurrencyBreakdown.fromJson(row as Map<String, dynamic>)).toList();
   }
 
   @override
@@ -68,25 +47,30 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<double> getSavingSpendingPercentage(int month, int year) async {
+  Future<double> getSavingSpendingPercentage(
+    int month,
+    int year, {
+    double? currentIncome,
+    double? currentExpense,
+  }) async {
     _validateMonth(month);
     final isJanuary = month == 1;
     final previousMonth = isJanuary ? 12 : month - 1;
     final previousYear = isJanuary ? year - 1 : year;
 
+    // Use provided values or fetch if null
+    final double income = currentIncome ?? await getMonthIncome(month, year);
+    final double expense = currentExpense ?? await getMonthExpense(month, year);
+
     final [
-      currentIncome,
-      currentExpense,
       previousIncome,
       previousExpense,
     ] = await Future.wait([
-      getMonthIncome(month, year),
-      getMonthExpense(month, year),
       getMonthIncome(previousMonth, previousYear),
       getMonthExpense(previousMonth, previousYear),
     ]);
 
-    final currentMonthBalance = currentIncome - currentExpense;
+    final currentMonthBalance = income - expense;
     final previousMonthBalance = previousIncome - previousExpense;
 
     if (previousMonthBalance == 0) {

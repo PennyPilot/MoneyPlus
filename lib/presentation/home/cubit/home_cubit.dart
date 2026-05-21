@@ -1,28 +1,44 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
+import 'package:moneyplus/domain/repository/model/currency_breakdown.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final UserMoneyRepository userMoneyRepository;
 
-  final _topSpendingCount = 5;
-
   HomeCubit({required this.userMoneyRepository}) : super(HomeLoading());
 
   void getData({required int month, required int year}) async {
     emit(HomeLoading());
     try {
+      final results = await Future.wait([
+        getTotalBalance(),
+        getTotalMonthIncome(month, year),
+        getTotalMonthExpense(month, year),
+        getCurrencyBreakdown(month, year),
+        getCurrency(),
+      ]);
+
+      final balance = results[0] as double;
+      final income = results[1] as double;
+      final expense = results[2] as double;
+      final breakdown = results[3] as List<CurrencyBreakdown>;
+      final curr = results[4] as String;
+
+      final percentage = await userMoneyRepository.getSavingSpendingPercentage(
+        month,
+        year,
+        currentIncome: income,
+        currentExpense: expense,
+      );
+
       final loadedContent = HomeLoaded(
-        currentBalance: await getTotalBalance(),
-        currentSavingSpendingPercentage: await getSavingSpendingPercentage(
-          month,
-          year,
-        ),
-        totalMonthIncome: await getTotalMonthIncome(month, year),
-        totalMonthExpense: await getTotalMonthExpense(month, year),
-        topSpendingCategories: await getTopSpendingCategories(month, year),
-        currency: await getCurrency(),
+        currentBalance: balance,
+        currentSavingSpendingPercentage: percentage,
+        totalMonthIncome: income,
+        totalMonthExpense: expense,
+        currencyBreakdown: breakdown,
+        currency: curr,
         selectedMonth: month,
         selectedYear: year,
       );
@@ -43,13 +59,13 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     final expense = await getTotalMonthExpense(month, year);
     final income = await getTotalMonthIncome(month, year);
-    final topSpendingCategories = await getTopSpendingCategories(month, year);
+    final currencyBreakdown = await getCurrencyBreakdown(month, year);
     final savingSpendingPercentage = await getSavingSpendingPercentage(month, year);
     emit(
       loadedState.copyWith(
         totalMonthIncome: income,
         totalMonthExpense: expense,
-        topSpendingCategories: topSpendingCategories,
+        currencyBreakdown: currencyBreakdown,
         currentSavingSpendingPercentage: savingSpendingPercentage,
         selectedMonth: month,
         selectedYear: year,
@@ -78,14 +94,13 @@ class HomeCubit extends Cubit<HomeState> {
     return await userMoneyRepository.getMonthExpense(month, year);
   }
 
-  Future<List<TopSpendingCategory>> getTopSpendingCategories(
+  Future<List<CurrencyBreakdown>> getCurrencyBreakdown(
     int month,
     int year,
   ) async {
-    return await userMoneyRepository.getTopSpendingCategoriesInMonth(
+    return await userMoneyRepository.getCurrencyBreakdown(
       month: month,
       year: year,
-      count: _topSpendingCount,
     );
   }
 

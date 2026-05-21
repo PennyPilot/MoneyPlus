@@ -1,6 +1,6 @@
 import 'package:moneyplus/domain/entity/currency.dart';
 
-import 'model/top_spending_category.dart';
+import 'model/currency_breakdown.dart';
 
 abstract class UserMoneyRepository {
   Future<double> getTotalBalance();
@@ -9,15 +9,19 @@ abstract class UserMoneyRepository {
 
   Future<double> getMonthExpense(int month, int year);
 
-  Future<List<TopSpendingCategory>> getTopSpendingCategoriesInMonth({
+  Future<List<CurrencyBreakdown>> getCurrencyBreakdown({
     required int month,
     required int year,
-    required int count,
   });
 
   Future<Currency> getCurrency();
 
-  Future<double> getSavingSpendingPercentage(int month, int year);
+  Future<double> getSavingSpendingPercentage(
+    int month,
+    int year, {
+    double? currentIncome,
+    double? currentExpense,
+  });
 
   Future<double> getSalary();
 
