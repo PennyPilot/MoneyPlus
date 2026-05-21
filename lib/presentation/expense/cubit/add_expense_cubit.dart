@@ -90,7 +90,7 @@ class AddExpenseCubit extends Cubit<AddExpenseState> {
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
-      final result = await _transactionRepository.addTransaction(
+      final result = await _transactionRepository.upsertTransaction(
         amount: state.amount!,
         type: TransactionType.expense,
         date: state.date,

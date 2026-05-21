@@ -15,7 +15,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   TransactionRepositoryImpl({required this.service});
 
   @override
-  Future<Result<void>> addTransaction({
+  Future<Result<void>> upsertTransaction({
+    String? id,
     required double amount,
     required TransactionType type,
     required DateTime date,
@@ -23,31 +24,13 @@ class TransactionRepositoryImpl implements TransactionRepository {
     required Currency currency,
     String note = "",
   }) async {
-    return service.addTransaction(
+    return service.upsertTransaction(
+      id: id,
       amount: amount,
       typeId: type.value,
       date: date,
       categoryId: category.id,
       currencyId: currency.id,
-      note: note,
-    );
-  }
-
-  @override
-  Future<bool> editTransaction({
-    required String id,
-    double? amount,
-    TransactionType? type,
-    DateTime? date,
-    TransactionCategory? category,
-    String? note,
-  }) async {
-    return service.editTransaction(
-      id: id,
-      amount: amount,
-      typeId: type?.value,
-      date: date,
-      categoryId: category?.id,
       note: note,
     );
   }
@@ -83,15 +66,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
       return Result.error(ErrorModel("no transaction with that id: $id"));
     }
 
-    final currencyId = data['currency_id'] as int? ?? 0;
-    final categoryId = data['category_id'] as int? ?? 0;
-
-    final currencyAbbreviation = await service.getCurrencyAbbreviation(currencyId);
-    final categoryName = await service.getCategoryName(categoryId.toString());
-    
-    data['currency_abbreviation'] = currencyAbbreviation;
-    data['category_name'] = categoryName;
-    
     return Result.success(Transaction.fromJson(data));
   }
 

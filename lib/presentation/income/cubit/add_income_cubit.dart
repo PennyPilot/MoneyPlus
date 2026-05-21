@@ -58,7 +58,7 @@ class AddIncomeCubit extends Cubit<AddIncomeState> {
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
-      final result = await _transactionRepository.addTransaction(
+      final result = await _transactionRepository.upsertTransaction(
         amount: state.amount!,
         type: TransactionType.income,
         date: state.date,

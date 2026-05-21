@@ -171,48 +171,30 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
 
     emit(state.copyWith(status: FormStatus.loading));
     try {
-      if (state.isEditing) {
-        final success = await _transactionRepository.editTransaction(
-          id: state.transactionId!,
-          amount: state.amount!,
-          type: state.transactionType,
-          date: state.date,
-          category: state.selectedCategory!,
-          note: state.note,
-        );
-        if (success) {
+      final result = await _transactionRepository.upsertTransaction(
+        id: state.isEditing ? state.transactionId : null,
+        amount: state.amount!,
+        type: state.transactionType,
+        date: state.date,
+        category: state.selectedCategory!,
+        currency: state.currency!,
+        note: state.note,
+      );
+
+      await result.when(
+        onSuccess: (_) async {
+          if (!state.isEditing && state.isFirstTransaction) {
+            await _accountRepository.updateCurrency(state.currency!.id);
+          }
           emit(state.copyWith(status: FormStatus.success));
-        } else {
+        },
+        onError: (error) {
           emit(state.copyWith(
             status: FormStatus.failure,
-            errorMessage: "Failed to update transaction.",
+            errorMessage: state.isEditing ? "Failed to update transaction." : "Failed to add transaction.",
           ));
-        }
-      } else {
-        final result = await _transactionRepository.addTransaction(
-          amount: state.amount!,
-          type: state.transactionType,
-          date: state.date,
-          category: state.selectedCategory!,
-          currency: state.currency!,
-          note: state.note,
-        );
-
-        await result.when(
-          onSuccess: (_) async {
-            if (state.isFirstTransaction) {
-              await _accountRepository.updateCurrency(state.currency!.id);
-            }
-            emit(state.copyWith(status: FormStatus.success));
-          },
-          onError: (error) {
-            emit(state.copyWith(
-              status: FormStatus.failure,
-              errorMessage: "Failed to add transaction.",
-            ));
-          },
-        );
-      }
+        },
+      );
     } catch (e) {
       emit(state.copyWith(
         status: FormStatus.failure,

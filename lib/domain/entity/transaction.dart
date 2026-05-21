@@ -41,32 +41,16 @@ class Transaction {
   }
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
-    // Determine transaction type
-    TransactionType type = TransactionType.expense;
-    final typeData = json['transaction_type_id'] ?? json['type_id'];
-    if (typeData != null) {
-      if (typeData is int) {
-        type = typeData == 1 ? TransactionType.income : TransactionType.expense;
-      } else if (typeData is String) {
-        type = typeData.toLowerCase() == 'income' ? TransactionType.income : TransactionType.expense;
-      }
-    } else if (json['transaction_type'] != null) {
-      type = json['transaction_type'].toString().toLowerCase() == 'income' 
-          ? TransactionType.income 
-          : TransactionType.expense;
-    }
-
     return Transaction(
-      id: (json['id'] ?? json['transaction_id'] ?? '').toString(),
-      amount: (json['amount'] as num).toDouble(),
-      currency: (json['currency_abbreviation'] ?? json['currency'] ?? '').toString(),
-      type: type,
-      date: DateTime.parse((json['created_at'] ?? json['date'] ?? DateTime.now().toIso8601String()).toString()).toLocal(),
-      category: TransactionCategory(
-        id: json['category_id'] as int? ?? 0,
-        name: (json['category_name'] ?? json['category'] ?? '').toString(),
-      ),
-      note: (json['note'] ?? '').toString(),
+      id: (json['id'] ?? '').toString(),
+      amount: (json['amount'] as num? ?? 0.0).toDouble(),
+      currency: (json['currency_abbreviation'] ?? '').toString(),
+      type: TransactionType.fromInt((json['transaction_type_id'] as num? ?? 2).toInt()),
+      date: DateTime.parse(json['date']?.toString() ?? DateTime.now().toIso8601String()).toLocal(),
+      category: json['category'] != null 
+          ? TransactionCategory.fromJson(json['category']) 
+          : TransactionCategory(id: 0, name: ''),
+      note: json['note']?.toString() ?? "",
     );
   }
 }

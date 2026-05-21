@@ -1,7 +1,8 @@
 import '../../core/errors/result.dart';
 
 abstract class TransactionService {
-  Future<Result<void>> addTransaction({
+  Future<Result<void>> upsertTransaction({
+    String? id,
     required double amount,
     required int typeId,
     required DateTime date,
@@ -20,19 +21,6 @@ abstract class TransactionService {
   });
 
   Future<Map<String, dynamic>> getTransactionDetails(String id);
-
-  Future<bool> editTransaction({
-    required String id,
-    double? amount,
-    int? typeId,
-    DateTime? date,
-    int? categoryId,
-    String? note,
-  });
-
-  Future<String> getCurrencyAbbreviation(int currencyId);
-
-  Future<String> getCategoryName(String categoryId);
 
   Future<List<dynamic>> getTransactionCategories({
     bool? isIncome,

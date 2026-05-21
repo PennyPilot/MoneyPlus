@@ -10,8 +10,8 @@ class TransactionCategory {
 
   factory TransactionCategory.fromJson(Map<String, dynamic> json) {
     return TransactionCategory(
-      id: json['id'],
-      name: json['name'],
+      id: json['id'] as int,
+      name: json['name'].toString(),
     );
   }
 }

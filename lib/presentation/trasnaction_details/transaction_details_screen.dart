@@ -121,7 +121,7 @@ Widget _bottomBar({
         DefaultButton(
           text: localizations.edit,
           onPressed: () async {
-            await EditTransactionRoute(transactionId: state.transactionDetails.id).push(context);
+            await EditTransactionRoute(transactionId: state.transactionId).push(context);
             if (context.mounted) {
               context.read<TransactionDetailsCubit>().getTransactionDetails(state.transactionId);
             }
