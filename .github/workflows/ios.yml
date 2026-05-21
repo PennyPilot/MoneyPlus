@@ -23,7 +23,7 @@ jobs:
           cache: true
 
       - name: Cache pub dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ env.PUB_CACHE }}
@@ -64,6 +64,9 @@ jobs:
             --out=lib/firebase_options.dart \
             --token=$FIREBASE_TOKEN \
             --ios-bundle-id=com.pennypilot.moneyplus
+
+      - name: Pre-create FlutterFire iOS environment directory
+        run: mkdir -p .dart_tool/flutterfire/platforms/ios/default
 
       - name: Build iOS (simulator)
         run: flutter build ios --simulator --no-codesign
