@@ -3,6 +3,7 @@ import 'package:moneyplus/core/errors/result.dart';
 import 'package:moneyplus/domain/entity/transaction.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
+import 'package:moneyplus/domain/repository/model/currency_rate.dart';
 import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/domain/service/transaction_service.dart';
@@ -33,6 +34,19 @@ class TransactionRepositoryImpl implements TransactionRepository {
       currencyId: currency.id,
       note: note,
     );
+  }
+
+  @override
+  Future<List<CurrencyRate>> getExchangeRate({
+    required int baseCurrencyId,
+    required DateTime date,
+  }) async {
+    final response = await service.getExchangeRate(
+      baseCurrencyId: baseCurrencyId,
+      date: date,
+    );
+    final rates = response['rates'] as List;
+    return rates.map((e) => CurrencyRate.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   @override

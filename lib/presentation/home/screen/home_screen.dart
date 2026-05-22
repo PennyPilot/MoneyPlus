@@ -5,7 +5,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/design_system/widgets/income_expense.dart';
-import 'package:moneyplus/design_system/widgets/top_spending_card.dart';
+import 'package:moneyplus/design_system/widgets/currency_breakdown_card.dart';
 import 'package:moneyplus/presentation/home/cubit/home_cubit.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
 import 'package:moneyplus/presentation/home/widget/current_balance.dart';
@@ -99,7 +99,7 @@ Widget _loadedContent({
   required Function reloadScreen,
 }) {
   final colors = context.colors;
-  final topSpendingCategories = state.topSpendingCategories;
+  final currencyBreakdown = state.currencyBreakdown;
   final typography = context.typography;
   final localizations = AppLocalizations.of(context)!;
   return Scaffold(
@@ -162,7 +162,7 @@ Widget _loadedContent({
                               ),
                               SizedBox(height: 24),
                               Text(
-                                localizations.top_spending_category,
+                                localizations.currency_breakdown,
                                 style: typography.title.small.copyWith(
                                   color: colors.title,
                                 ),
@@ -173,13 +173,13 @@ Widget _loadedContent({
                         ),
                       ),
 
-                      if (topSpendingCategories.isEmpty)
+                      if (currencyBreakdown.isEmpty)
                         SliverFillRemaining(
                           hasScrollBody: false,
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              localizations.no_spending_categories,
+                              localizations.noDataAvailable,
                               style: typography.body.medium.copyWith(
                                 color: colors.primary,
                               ),
@@ -189,25 +189,20 @@ Widget _loadedContent({
                       else
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          childCount: topSpendingCategories.length,
+                          childCount: currencyBreakdown.length,
                           (context, index) {
-                            final categoryData = topSpendingCategories[index];
+                            final breakdown = currencyBreakdown[index];
                             return Padding(
                               padding: const EdgeInsets.only(
                                 bottom: 12,
                                 left: 16,
                                 right: 16,
                               ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  context.read<MainCubit>().navigateToTransactionsWithFilter([categoryData.category.id]);
-                                },
-                                child: TopSpendingCard(
-                                  expenseCategory: categoryData.category.name,
-                                  amount: "${formatWithCommas(categoryData.total)} ${categoryData.currency}",
-                                  transactionCount: categoryData.numberOfTransactions,
-                                  percentage: categoryData.percentage,
-                                ),
+                              child: CurrencyBreakdownCard(
+                                currencyName: breakdown.name,
+                                abbreviation: breakdown.abbreviation,
+                                amount: "${formatWithCommas(breakdown.totalAmount)} ${breakdown.abbreviation}",
+                                transactionCount: breakdown.transactionCount,
                               ),
                             );
                           },

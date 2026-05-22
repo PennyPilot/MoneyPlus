@@ -11,6 +11,11 @@ abstract class TransactionService {
     String note = "",
   });
 
+  Future<Map<String, dynamic>> getExchangeRate({
+    required int baseCurrencyId,
+    required DateTime date,
+  });
+
   Future<void> deleteTransaction(String id);
 
   Future<List<dynamic>> getTransactions({

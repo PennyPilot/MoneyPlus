@@ -127,6 +127,7 @@
   "expenses": "المصروفات",
   "transaction": "المعاملة",
   "transactions": "المعاملات",
+  "transaction_unit": "معاملة",
   "transaction_error_title": "خطأ في المعاملات",
   "transaction_error_content": "فشل في تحميل المعاملات",
   "manage_categories" : "ادارةالتصنيفات",
@@ -169,6 +170,7 @@
   "system": "النظام",
   "home": "الرئيسية",
   "top_spending_category": "أكثر فئات الإنفاق",
+  "currency_breakdown": "تفصيل العملات",
   "spend": "إنفاق",
   "selectMonthYear": "اختر الشهر والسنة",
   "addIncome": "إضافة دخل",
@@ -198,5 +200,9 @@
     }
   },
   "delete_transaction": "حذف المعاملة",
-  "delete_transaction_confirmation": "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟"
+  "delete_transaction_confirmation": "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟",
+  "currencyRates": "أسعار العملات",
+  "from": "من",
+  "to": "إلى",
+  "result": "النتيجة"
 }

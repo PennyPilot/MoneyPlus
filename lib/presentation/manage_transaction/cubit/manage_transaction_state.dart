@@ -3,6 +3,7 @@ import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/entity/transaction_category.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/domain/model/form_status.dart';
+import 'package:moneyplus/domain/repository/model/currency_rate.dart';
 
 class ManageTransactionState extends Equatable {
   final TransactionType transactionType;
@@ -23,6 +24,7 @@ class ManageTransactionState extends Equatable {
   final String currencyQuery;
   final bool isLoadingCurrencies;
   final bool isFirstTransaction;
+  final List<CurrencyRate> exchangeRates;
 
   const ManageTransactionState({
     required this.transactionType,
@@ -42,6 +44,7 @@ class ManageTransactionState extends Equatable {
     this.currencyQuery = '',
     this.isLoadingCurrencies = false,
     this.isFirstTransaction = false,
+    this.exchangeRates = const [],
   });
 
   bool get canSubmitForm =>
@@ -74,6 +77,7 @@ class ManageTransactionState extends Equatable {
     String? currencyQuery,
     bool? isLoadingCurrencies,
     bool? isFirstTransaction,
+    List<CurrencyRate>? exchangeRates,
   }) {
     return ManageTransactionState(
       transactionType: transactionType ?? this.transactionType,
@@ -93,6 +97,7 @@ class ManageTransactionState extends Equatable {
       currencyQuery: currencyQuery ?? this.currencyQuery,
       isLoadingCurrencies: isLoadingCurrencies ?? this.isLoadingCurrencies,
       isFirstTransaction: isFirstTransaction ?? this.isFirstTransaction,
+      exchangeRates: exchangeRates ?? this.exchangeRates,
     );
   }
 
@@ -115,5 +120,6 @@ class ManageTransactionState extends Equatable {
         currencyQuery,
         isLoadingCurrencies,
         isFirstTransaction,
+        exchangeRates,
       ];
 }

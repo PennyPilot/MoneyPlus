@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:moneyplus/domain/repository/model/top_spending_category.dart';
+import 'package:moneyplus/domain/repository/model/currency_breakdown.dart';
 
 @immutable
 sealed class HomeState {
@@ -18,14 +18,14 @@ class HomeLoaded extends HomeState {
   final double totalMonthIncome;
   final double totalMonthExpense;
   final String currency;
-  final List<TopSpendingCategory> topSpendingCategories;
+  final List<CurrencyBreakdown> currencyBreakdown;
 
   const HomeLoaded({
     required this.currentBalance,
     required this.currentSavingSpendingPercentage,
     required this.totalMonthIncome,
     required this.totalMonthExpense,
-    required this.topSpendingCategories,
+    required this.currencyBreakdown,
     required this.currency,
     required this.selectedMonth,
     required this.selectedYear,
@@ -39,7 +39,7 @@ class HomeLoaded extends HomeState {
     double? totalMonthIncome,
     double? totalMonthExpense,
     String? currency,
-    List<TopSpendingCategory>? topSpendingCategories,
+    List<CurrencyBreakdown>? currencyBreakdown,
   }) {
     return HomeLoaded(
       selectedMonth: selectedMonth ?? this.selectedMonth,
@@ -49,7 +49,7 @@ class HomeLoaded extends HomeState {
       totalMonthIncome: totalMonthIncome ?? this.totalMonthIncome,
       totalMonthExpense: totalMonthExpense ?? this.totalMonthExpense,
       currency: currency ?? this.currency,
-      topSpendingCategories: topSpendingCategories ?? this.topSpendingCategories,
+      currencyBreakdown: currencyBreakdown ?? this.currencyBreakdown,
     );
   }
 }
