@@ -3,6 +3,7 @@ import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/repository/account_repository.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
+import '../../../domain/repository/model/currency_rate.dart';
 import 'currency_rates_state.dart';
 
 class CurrencyRatesCubit extends Cubit<CurrencyRatesState> {
@@ -36,6 +37,7 @@ class CurrencyRatesCubit extends Cubit<CurrencyRatesState> {
   Future<void> loadRates({DateTime? date}) async {
     if (state.baseCurrency == null) return;
     
+    final oldBaseId = state.baseCurrency?.id;
     emit(state.copyWith(isLoading: true));
     try {
       final targetDate = date ?? state.date;
@@ -50,6 +52,11 @@ class CurrencyRatesCubit extends Cubit<CurrencyRatesState> {
       final updatedBaseCurrency = enrichedRates.where((r) => r.id == state.baseCurrency?.id).firstOrNull;
       
       var newTarget = enrichedRates.where((r) => r.id == state.selectedTarget?.id).firstOrNull;
+      
+      if (newTarget?.id == state.baseCurrency?.id) {
+        newTarget = enrichedRates.where((r) => r.id == oldBaseId).firstOrNull;
+      }
+      
       newTarget ??= enrichedRates.where((r) => r.id != state.baseCurrency!.id).firstOrNull;
       newTarget ??= enrichedRates.firstOrNull;
 
@@ -74,7 +81,8 @@ class CurrencyRatesCubit extends Cubit<CurrencyRatesState> {
     }
   }
 
-  void onBaseCurrencyChanged(dynamic currencyId) async {
+  void onBaseCurrencyChanged(int currencyId) async {
+    final oldBase = state.baseCurrency;
     final rate = state.rates.where((r) => r.id == currencyId).firstOrNull;
     final Currency? newBase;
     
@@ -90,17 +98,52 @@ class CurrencyRatesCubit extends Cubit<CurrencyRatesState> {
     }
 
     if (newBase != null) {
-      emit(state.copyWith(baseCurrency: newBase));
+      if (newBase.id == state.selectedTarget?.id && oldBase != null) {
+        final newTarget = enrichedRateFromCurrency(oldBase, state.rates);
+        emit(state.copyWith(baseCurrency: newBase, selectedTarget: newTarget));
+      } else {
+        emit(state.copyWith(baseCurrency: newBase));
+      }
       await loadRates();
     }
   }
 
-  void onTargetCurrencyChanged(dynamic targetId) {
+  void onTargetCurrencyChanged(int targetId) async {
+    if (targetId == state.baseCurrency?.id) {
+      final oldTarget = state.selectedTarget;
+      final oldBase = state.baseCurrency;
+      
+      if (oldTarget != null && oldBase != null) {
+        final newBase = Currency(
+          id: oldTarget.id,
+          name: oldTarget.name,
+          country: '',
+          abbreviation: oldTarget.abbreviation
+        );
+        
+        final newTarget = enrichedRateFromCurrency(oldBase, state.rates);
+        
+        emit(state.copyWith(baseCurrency: newBase, selectedTarget: newTarget));
+        await loadRates();
+      }
+      return;
+    }
+
     final newTarget = state.rates.where((r) => r.id == targetId).firstOrNull;
     if (newTarget != null) {
       emit(state.copyWith(selectedTarget: newTarget));
       _calculateResult();
     }
+  }
+
+  CurrencyRate? enrichedRateFromCurrency(Currency c, List<CurrencyRate> rates) {
+    final r = rates.where((r) => r.id == c.id).firstOrNull;
+    return CurrencyRate(
+      id: c.id,
+      name: c.name,
+      abbreviation: c.abbreviation,
+      ratio: r?.ratio ?? 1.0,
+    );
   }
 
   void onAmountChanged(String value) {

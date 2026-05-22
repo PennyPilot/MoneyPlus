@@ -1,5 +1,5 @@
 class CurrencyRate {
-  final dynamic id;
+  final int id;
   final String name;
   final String abbreviation;
   final double ratio;
@@ -13,7 +13,7 @@ class CurrencyRate {
 
   factory CurrencyRate.fromJson(Map<String, dynamic> json) {
     return CurrencyRate(
-      id: json['id'],
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String? ?? '',
       abbreviation: json['abbreviation'] as String? ?? '',
       ratio: (json['ratio'] as num? ?? 1.0).toDouble(),
