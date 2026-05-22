@@ -38,6 +38,7 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
     } else {
       await _loadCategories(state.transactionType);
     }
+    await _loadExchangeRates();
   }
 
   Future<void> _loadTransaction() async {
@@ -143,6 +144,7 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
 
   void onCurrencyChanged(Currency currency) {
     emit(state.copyWith(currency: currency));
+    _loadExchangeRates();
   }
 
   void onAmountChanged(String value) {
@@ -156,6 +158,19 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
 
   void onDateChanged(DateTime newDate) {
     emit(state.copyWith(date: newDate));
+    _loadExchangeRates();
+  }
+
+  Future<void> _loadExchangeRates() async {
+    if (state.currency == null) return;
+    try {
+      final rates = await _transactionRepository.getExchangeRate(
+        baseCurrencyId: state.currency!.id,
+        date: state.date,
+      );
+      emit(state.copyWith(exchangeRates: rates));
+    } catch (e) {
+    }
   }
 
   void onNoteChanged(String newNote) {

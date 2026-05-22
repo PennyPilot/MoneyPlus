@@ -46,5 +46,6 @@ class SupabaseService {
     final langCode = language == AppLanguage.ar ? 'ar' : 'en';
 
     client.rest.headers['accept-language'] = langCode;
+    client.functions.headers['accept-language'] = langCode;
   }
 }

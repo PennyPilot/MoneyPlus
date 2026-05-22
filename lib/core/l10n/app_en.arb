@@ -212,5 +212,9 @@
     }
   },
   "delete_transaction": "Delete transaction",
-  "delete_transaction_confirmation": "Are you sure you want to delete this transaction?"
+  "delete_transaction_confirmation": "Are you sure you want to delete this transaction?",
+  "currencyRates": "Currency rates",
+  "from": "From",
+  "to": "To",
+  "result": "Result"
 }

@@ -200,5 +200,9 @@
     }
   },
   "delete_transaction": "حذف المعاملة",
-  "delete_transaction_confirmation": "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟"
+  "delete_transaction_confirmation": "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟",
+  "currencyRates": "أسعار العملات",
+  "from": "من",
+  "to": "إلى",
+  "result": "النتيجة"
 }

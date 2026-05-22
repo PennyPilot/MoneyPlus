@@ -1,4 +1,3 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/errors/result.dart';
 import '../../../core/service/supabase_service.dart';
 import '../../../domain/service/transaction_service.dart';
@@ -36,6 +35,22 @@ class SupabaseTransactionService implements TransactionService {
     } catch (e) {
       return Result.error(e);
     }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getExchangeRate({
+    required int baseCurrencyId,
+    required DateTime date,
+  }) async {
+    final client = await service.getClient();
+    final response = await client.functions.invoke(
+      'get_exchange_rate',
+      body: {
+        'base_currency': baseCurrencyId,
+        'date': date.toIso8601String().split('T')[0],
+      },
+    );
+    return response.data as Map<String, dynamic>;
   }
 
   @override
