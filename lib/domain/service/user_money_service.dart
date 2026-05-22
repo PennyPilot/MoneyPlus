@@ -1,6 +1,11 @@
 import '../entity/currency.dart';
 
 abstract class UserMoneyService {
+  Future<dynamic> getBalanceStatusResponse({
+    required int month,
+    required int year,
+  });
+
   Future<double> getMonthExpense(int month, int year);
 
   Future<double> getMonthIncome(int month, int year);

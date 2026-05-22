@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/domain/repository/model/balance_status.dart';
 import 'package:moneyplus/domain/repository/model/currency_breakdown.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/presentation/home/cubit/home_state.dart';
@@ -12,39 +14,32 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     try {
       final results = await Future.wait([
-        getTotalBalance(),
-        getTotalMonthIncome(month, year),
-        getTotalMonthExpense(month, year),
-        getCurrencyBreakdown(month, year),
-        getCurrency(),
+        userMoneyRepository.getBalanceStatus(month: month, year: year),
+        userMoneyRepository.getCurrencyBreakdown(month: month, year: year),
       ]);
 
-      final balance = results[0] as double;
-      final income = results[1] as double;
-      final expense = results[2] as double;
-      final breakdown = results[3] as List<CurrencyBreakdown>;
-      final curr = results[4] as String;
+      final balanceStatus = results[0] as BalanceStatus;
+      final breakdown = results[1] as List<CurrencyBreakdown>;
 
       final percentage = await userMoneyRepository.getSavingSpendingPercentage(
         month,
         year,
-        currentIncome: income,
-        currentExpense: expense,
+        currentIncome: balanceStatus.monthIncome,
+        currentExpense: balanceStatus.monthExpense,
       );
 
       final loadedContent = HomeLoaded(
-        currentBalance: balance,
+        currentBalance: balanceStatus.currentBalance,
         currentSavingSpendingPercentage: percentage,
-        totalMonthIncome: income,
-        totalMonthExpense: expense,
+        totalMonthIncome: balanceStatus.monthIncome,
+        totalMonthExpense: balanceStatus.monthExpense,
         currencyBreakdown: breakdown,
-        currency: curr,
+        currency: balanceStatus.defaultCurrency.abbreviation,
         selectedMonth: month,
         selectedYear: year,
       );
       emit(loadedContent);
     } catch (e) {
-      print("error in home cubit: $e");
       emit(HomeError(errorMessage: "Failed to get Data"));
     }
   }
@@ -56,57 +51,11 @@ class HomeCubit extends Cubit<HomeState> {
     if (loadedState.selectedMonth == month && loadedState.selectedYear == year) {
       return;
     }
-    emit(HomeLoading());
-    final expense = await getTotalMonthExpense(month, year);
-    final income = await getTotalMonthIncome(month, year);
-    final currencyBreakdown = await getCurrencyBreakdown(month, year);
-    final savingSpendingPercentage = await getSavingSpendingPercentage(month, year);
-    emit(
-      loadedState.copyWith(
-        totalMonthIncome: income,
-        totalMonthExpense: expense,
-        currencyBreakdown: currencyBreakdown,
-        currentSavingSpendingPercentage: savingSpendingPercentage,
-        selectedMonth: month,
-        selectedYear: year,
-      ),
-    );
+    getData(month: month, year: year);
   }
 
   void onRefreshHomeScreen(){
     final currentDate = DateTime.now();
     getData(month: currentDate.month, year: currentDate.year);
-  }
-
-  Future<double> getTotalBalance() async {
-    return await userMoneyRepository.getTotalBalance();
-  }
-
-  Future<double> getSavingSpendingPercentage(int month, int year) async {
-    return await userMoneyRepository.getSavingSpendingPercentage(month, year);
-  }
-
-  Future<double> getTotalMonthIncome(int month, int year) async {
-    return await userMoneyRepository.getMonthIncome(month, year);
-  }
-
-  Future<double> getTotalMonthExpense(int month, int year) async {
-    return await userMoneyRepository.getMonthExpense(month, year);
-  }
-
-  Future<List<CurrencyBreakdown>> getCurrencyBreakdown(
-    int month,
-    int year,
-  ) async {
-    return await userMoneyRepository.getCurrencyBreakdown(
-      month: month,
-      year: year,
-    );
-  }
-
-  Future<String> getCurrency() async {
-    return await userMoneyRepository.getCurrency().then(
-      (value) => value.abbreviation,
-    );
   }
 }

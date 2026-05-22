@@ -1,4 +1,5 @@
 import 'package:moneyplus/domain/entity/currency.dart';
+import 'package:moneyplus/domain/repository/model/balance_status.dart';
 import 'package:moneyplus/domain/repository/model/currency_breakdown.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
 import 'package:moneyplus/domain/service/user_money_service.dart';
@@ -7,6 +8,19 @@ class UserRepositoryImpl implements UserMoneyRepository {
   final UserMoneyService service;
 
   UserRepositoryImpl({required this.service});
+
+  @override
+  Future<BalanceStatus> getBalanceStatus({
+    required int month,
+    required int year,
+  }) async {
+    _validateMonth(month);
+    final response = await service.getBalanceStatusResponse(
+      month: month,
+      year: year,
+    );
+    return BalanceStatus.fromJson(response as Map<String, dynamic>);
+  }
 
   @override
   Future<double> getMonthExpense(int month, int year) async {
