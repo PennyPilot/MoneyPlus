@@ -34,4 +34,14 @@ class AccountCubit extends Cubit<AccountState> {
       emit(AccountError(errorMessage: e.toString()));
     }
   }
+
+  Future<void> updateCurrency(int currencyId) async {
+    emit(const AccountLoading(isLoading: true));
+    try {
+      await _accountRepository.updateCurrency(currencyId);
+      await loadUserInfo();
+    } catch (e) {
+      emit(AccountError(errorMessage: e.toString()));
+    }
+  }
 }

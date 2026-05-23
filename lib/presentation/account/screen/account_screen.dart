@@ -5,6 +5,9 @@ import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
 import 'package:moneyplus/design_system/widgets/bottom_sheet.dart';
 import 'package:moneyplus/design_system/widgets/buttons/button/default_button.dart';
 import 'package:moneyplus/design_system/widgets/buttons/secondary/defult_secondary_button.dart';
+import 'package:moneyplus/presentation/account/cubit/currency_selection_cubit.dart';
+import 'package:moneyplus/presentation/account_setup/widget/currency_bottom_sheet.dart';
+import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
 
 import '../../../core/di/injection.dart';
@@ -147,6 +150,7 @@ class AccountScreen extends StatelessWidget {
                     context,
                     title: l10n.currency,
                     iconPath: AppAssets.icCurrency,
+                    onTap: () => _openCurrencyBottomSheet(context),
                   ),
                   accountSection(
                     context,
@@ -224,5 +228,40 @@ class AccountScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _openCurrencyBottomSheet(BuildContext context) async {
+    final accountCubit = context.read<AccountCubit>();
+    final currencyCubit = getIt<CurrencySelectionCubit>()..fetchCurrencies();
+
+    final result = await showModalBottomSheet<Currency>(
+      context: context,
+      useRootNavigator: false,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      backgroundColor: context.colors.surface,
+      useSafeArea: true,
+      builder: (_) {
+        return BlocBuilder<CurrencySelectionCubit, CurrencySelectionState>(
+          bloc: currencyCubit,
+          builder: (context, state) {
+            return CurrencyBottomSheet(
+              currencies: state.filteredCurrencies,
+              isLoading: state.isLoading,
+              query: state.query,
+              onSearchChanged: (value) {
+                currencyCubit.onSearchChanged(value);
+              },
+            );
+          },
+        );
+      },
+    );
+
+    if (result != null) {
+      await accountCubit.updateCurrency(result.id);
+    }
   }
 }

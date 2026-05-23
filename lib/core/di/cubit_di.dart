@@ -1,3 +1,4 @@
+import 'package:moneyplus/presentation/account/cubit/currency_selection_cubit.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/presentation/currency/cubit/currency_rates_cubit.dart';
 import 'package:moneyplus/presentation/manage_transaction/cubit/manage_transaction_cubit.dart';
@@ -91,6 +92,10 @@ void initCubitDI() {
 
   getIt.registerFactory<AccountCubit>(
     () => AccountCubit(getIt<AccountRepository>(), getIt<AuthenticationRepository>()),
+  );
+
+  getIt.registerFactory<CurrencySelectionCubit>(
+    () => CurrencySelectionCubit(getIt<AccountRepository>()),
   );
 
   getIt.registerFactory<CategoriesCubit>(
