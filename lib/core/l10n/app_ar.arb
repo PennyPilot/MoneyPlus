@@ -204,5 +204,8 @@
   "currencyRates": "أسعار العملات",
   "from": "من",
   "to": "إلى",
-  "result": "النتيجة"
+  "result": "النتيجة",
+  "pickCurrencyTitle": "إعداد العملة مطلوب",
+  "pickCurrencyMessage": "يرجى اختيار عملتك الأساسية للبدء في تتبع أموالك بدقة.",
+  "goToAccount": "تحديد العملة الأساسية"
 }

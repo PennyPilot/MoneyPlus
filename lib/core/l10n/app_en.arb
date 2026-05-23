@@ -216,5 +216,8 @@
   "currencyRates": "Currency rates",
   "from": "From",
   "to": "To",
-  "result": "Result"
+  "result": "Result",
+  "pickCurrencyTitle": "Currency Setup Required",
+  "pickCurrencyMessage": "Please choose your primary currency to start tracking your finances accurately.",
+  "goToAccount": "Set Primary Currency"
 }

@@ -13,7 +13,9 @@ import 'package:moneyplus/presentation/navigation/routes.dart';
 import '../../../core/di/injection.dart';
 import '../../../design_system/widgets/buttons/button/varient_button.dart';
 import '../../../design_system/widgets/buttons/secondary/sm_secondary_button.dart';
+import '../../../design_system/widgets/nav_bar.dart';
 import '../../main_container/cubit/main_cubit.dart';
+import 'package:moneyplus/presentation/home/widget/pick_currency_dialog.dart';
 import '../utils/StringFormattingHelpers.dart';
 import '../widget/home_app_bar.dart';
 
@@ -49,6 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  void _showPickCurrencyDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => PickCurrencyDialog(
+        onActionPressed: () {
+          Navigator.pop(dialogContext);
+          context.read<MainCubit>().onTabSelected(NavBarTab.account);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -56,7 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (context) =>
           getIt<HomeCubit>()..getData(month: currentDate.month, year: currentDate.year),
-      child: BlocBuilder<HomeCubit, HomeState>(
+      child: BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {
+          if (state is HomeLoaded && state.currency.isEmpty) {
+            _showPickCurrencyDialog(context);
+          }
+        },
         builder: (context, state) {
           final cubit = context.read<HomeCubit>();
           var content = switch (state) {
