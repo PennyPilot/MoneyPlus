@@ -23,39 +23,6 @@ class SupabaseUserMoneyService implements UserMoneyService {
   }
 
   @override
-  Future<double> getMonthExpense(int month, int year) async {
-    final client = await service.getClient();
-    final response = await client.rpc(
-      'get_month_expense',
-      params: {
-        'p_month': month,
-        'p_year': year,
-      },
-    );
-    return (response as num).toDouble();
-  }
-
-  @override
-  Future<double> getMonthIncome(int month, int year) async {
-    final client = await service.getClient();
-    final response = await client.rpc(
-      'get_month_income',
-      params: {
-        'p_month': month,
-        'p_year': year,
-      },
-    );
-    return (response as num).toDouble();
-  }
-
-  @override
-  Future<double> getTotalBalance() async {
-    final client = await service.getClient();
-    final response = await client.from('users').select('current_balance');
-    return (response.firstOrNull?['current_balance'] as num?)?.toDouble() ?? 0.0;
-  }
-
-  @override
   Future<dynamic> getCurrencyBreakdownResponse({
     required int month,
     required int year,

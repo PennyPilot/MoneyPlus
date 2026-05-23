@@ -6,12 +6,6 @@ abstract class UserMoneyService {
     required int year,
   });
 
-  Future<double> getMonthExpense(int month, int year);
-
-  Future<double> getMonthIncome(int month, int year);
-
-  Future<double> getTotalBalance();
-
   Future<dynamic> getCurrencyBreakdownResponse({
     required int month,
     required int year,

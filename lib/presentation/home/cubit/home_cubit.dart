@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/domain/repository/model/balance_status.dart';
 import 'package:moneyplus/domain/repository/model/currency_breakdown.dart';
@@ -21,16 +20,9 @@ class HomeCubit extends Cubit<HomeState> {
       final balanceStatus = results[0] as BalanceStatus;
       final breakdown = results[1] as List<CurrencyBreakdown>;
 
-      final percentage = await userMoneyRepository.getSavingSpendingPercentage(
-        month,
-        year,
-        currentIncome: balanceStatus.monthIncome,
-        currentExpense: balanceStatus.monthExpense,
-      );
-
       final loadedContent = HomeLoaded(
         currentBalance: balanceStatus.currentBalance,
-        currentSavingSpendingPercentage: percentage,
+        currentSavingSpendingPercentage: balanceStatus.savingSpendingPercentage,
         totalMonthIncome: balanceStatus.monthIncome,
         totalMonthExpense: balanceStatus.monthExpense,
         currencyBreakdown: breakdown,

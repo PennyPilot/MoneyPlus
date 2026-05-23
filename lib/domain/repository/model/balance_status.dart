@@ -4,20 +4,23 @@ class BalanceStatus {
   final double currentBalance;
   final double monthIncome;
   final double monthExpense;
+  final double savingSpendingPercentage;
   final Currency defaultCurrency;
 
   BalanceStatus({
     required this.currentBalance,
     required this.monthIncome,
     required this.monthExpense,
+    required this.savingSpendingPercentage,
     required this.defaultCurrency,
   });
 
   factory BalanceStatus.fromJson(Map<String, dynamic> json) {
     return BalanceStatus(
-      currentBalance: (json['current_balance'] as num).toDouble(),
-      monthIncome: (json['month_income'] as num).toDouble(),
-      monthExpense: (json['month_expense'] as num).toDouble(),
+      currentBalance: (json['current_balance'] as num? ?? 0).toDouble(),
+      monthIncome: (json['month_income'] as num? ?? 0).toDouble(),
+      monthExpense: (json['month_expense'] as num? ?? 0).toDouble(),
+      savingSpendingPercentage: (json['saving_spending_percentage'] as num? ?? 0).toDouble(),
       defaultCurrency: Currency.fromJson(json['default_currency'] as Map<String, dynamic>),
     );
   }
