@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyplus/domain/entity/currency.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
+import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/domain/entity/user.dart' as entity;
 
 import '../../../domain/repository/account_repository.dart';
@@ -9,14 +10,19 @@ import 'account_setup_state.dart';
 class AccountSetupCubit extends Cubit<AccountSetupState> {
   final AccountRepository _accountSetupRepository;
   final AuthenticationRepository _authRepository;
+  final TransactionRepository _transactionRepository;
 
   AccountSetupCubit(
     this._accountSetupRepository,
     this._authRepository,
+    this._transactionRepository,
   ) : super(AccountSetupState());
 
   Future<void> init() async {
-    await fetchCurrencies();
+    await Future.wait([
+      fetchCurrencies(),
+      fetchDefaultCategories(),
+    ]);
   }
 
   void initUserData({
@@ -42,6 +48,19 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
+  }
+
+  Future<void> fetchDefaultCategories() async {
+    final result = await _transactionRepository.getTransactionCategories();
+    result.when(
+      onSuccess: (categories) {
+        final suggestions = categories.map((e) => e.name).toList();
+        emit(state.copyWith(suggestions: suggestions));
+      },
+      onError: (error) {
+        emit(state.copyWith(errorMessage: error.message));
+      },
+    );
   }
 
   void onSearchChanged(String query) {

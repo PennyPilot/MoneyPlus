@@ -45,6 +45,7 @@ void initCubitDI() {
     () => AccountSetupCubit(
       getIt<AccountRepository>(),
       getIt<AuthenticationRepository>(),
+      getIt<TransactionRepository>(),
     ),
   );
 
