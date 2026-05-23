@@ -23,23 +23,6 @@ class UserRepositoryImpl implements UserMoneyRepository {
   }
 
   @override
-  Future<double> getMonthExpense(int month, int year) async {
-    _validateMonth(month);
-    return service.getMonthExpense(month, year);
-  }
-
-  @override
-  Future<double> getMonthIncome(int month, int year) async {
-    _validateMonth(month);
-    return service.getMonthIncome(month, year);
-  }
-
-  @override
-  Future<double> getTotalBalance() {
-    return service.getTotalBalance();
-  }
-
-  @override
   Future<List<CurrencyBreakdown>> getCurrencyBreakdown({
     required int month,
     required int year,
@@ -58,39 +41,6 @@ class UserRepositoryImpl implements UserMoneyRepository {
   @override
   Future<Currency> getCurrency() {
     return service.getCurrency();
-  }
-
-  @override
-  Future<double> getSavingSpendingPercentage(
-    int month,
-    int year, {
-    double? currentIncome,
-    double? currentExpense,
-  }) async {
-    _validateMonth(month);
-    final isJanuary = month == 1;
-    final previousMonth = isJanuary ? 12 : month - 1;
-    final previousYear = isJanuary ? year - 1 : year;
-
-    // Use provided values or fetch if null
-    final double income = currentIncome ?? await getMonthIncome(month, year);
-    final double expense = currentExpense ?? await getMonthExpense(month, year);
-
-    final [
-      previousIncome,
-      previousExpense,
-    ] = await Future.wait([
-      getMonthIncome(previousMonth, previousYear),
-      getMonthExpense(previousMonth, previousYear),
-    ]);
-
-    final currentMonthBalance = income - expense;
-    final previousMonthBalance = previousIncome - previousExpense;
-
-    if (previousMonthBalance == 0) {
-      return 100;
-    }
-    return ((currentMonthBalance - previousMonthBalance) / previousMonthBalance) * 100;
   }
 
   @override

@@ -9,7 +9,7 @@ class SupabaseAccountService implements AccountService {
   @override
   Future<List<dynamic>> getCurrencies() async {
     final client = await service.getClient();
-    return await client.from('currencies').select();
+    return await client.rpc('get_currencies');
   }
 
   @override
@@ -44,9 +44,9 @@ class SupabaseAccountService implements AccountService {
   @override
   Future<void> updateCurrency(String userId, int currencyId) async {
     final client = await service.getClient();
-    await client
-        .from('users')
-        .update({'default_currency_id': currencyId})
-        .eq('id', userId);
+    await client.functions.invoke(
+      'change_currency',
+      body: {'new_currency_id': currencyId},
+    );
   }
 }

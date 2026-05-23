@@ -9,25 +9,12 @@ abstract class UserMoneyRepository {
     required int year,
   });
 
-  Future<double> getTotalBalance();
-
-  Future<double> getMonthIncome(int month, int year);
-
-  Future<double> getMonthExpense(int month, int year);
-
   Future<List<CurrencyBreakdown>> getCurrencyBreakdown({
     required int month,
     required int year,
   });
 
   Future<Currency> getCurrency();
-
-  Future<double> getSavingSpendingPercentage(
-    int month,
-    int year, {
-    double? currentIncome,
-    double? currentExpense,
-  });
 
   Future<double> getSalary();
 
