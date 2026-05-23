@@ -1,7 +1,7 @@
 import 'package:moneyplus/domain/entity/currency.dart';
 
 enum AccountSetupStep {
-  step1,
+  salaryManagementStep,
   step2,
   step3,
 }
@@ -55,7 +55,7 @@ class AccountSetupState {
     this.errorMessage = "",
     this.salaryError = "",
     this.salaryDayError = "",
-    this.accountStep = AccountSetupStep.step1,
+    this.accountStep = AccountSetupStep.salaryManagementStep,
     this.currentBalance = "",
     this.navigateToHome = false,
   });

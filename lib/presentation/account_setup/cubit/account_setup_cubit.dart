@@ -90,7 +90,7 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     final bool isSalaryDayInvalid = state.salaryDay.isNotEmpty && (salaryDay < 1 || salaryDay > 28);
 
     bool isButtonEnable = switch (state.accountStep) {
-      AccountSetupStep.step1 => 
+      AccountSetupStep.salaryManagementStep =>
         state.selectedCurrency != null &&
         state.salary.isNotEmpty &&
         !isSalaryInvalid &&
@@ -109,7 +109,7 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   void onNextStep() {
     switch (state.accountStep) {
-      case AccountSetupStep.step1:
+      case AccountSetupStep.salaryManagementStep:
         emit(state.copyWith(accountStep: AccountSetupStep.step2));
         _validate();
         break;
@@ -126,10 +126,10 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   void onPreviousStep() {
     switch (state.accountStep) {
-      case AccountSetupStep.step1:
+      case AccountSetupStep.salaryManagementStep:
         break;
       case AccountSetupStep.step2:
-        emit(state.copyWith(accountStep: AccountSetupStep.step1));
+        emit(state.copyWith(accountStep: AccountSetupStep.salaryManagementStep));
         _validate();
         break;
       case AccountSetupStep.step3:
