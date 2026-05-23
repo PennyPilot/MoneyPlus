@@ -19,7 +19,15 @@ class UserRepositoryImpl implements UserMoneyRepository {
       month: month,
       year: year,
     );
-    return BalanceStatus.fromJson(response as Map<String, dynamic>);
+
+    final Map<String, dynamic> data;
+    if (response is List) {
+      data = response.isNotEmpty ? response.first as Map<String, dynamic> : {};
+    } else {
+      data = response as Map<String, dynamic>? ?? {};
+    }
+
+    return BalanceStatus.fromJson(data);
   }
 
   @override
@@ -32,10 +40,10 @@ class UserRepositoryImpl implements UserMoneyRepository {
       month: month,
       year: year,
     );
-    final rows = response as List<dynamic>;
-    if (rows.isEmpty) return List.empty();
+    
+    if (response is! List) return List.empty();
 
-    return rows.map((row) => CurrencyBreakdown.fromJson(row as Map<String, dynamic>)).toList();
+    return response.map((row) => CurrencyBreakdown.fromJson(row as Map<String, dynamic>)).toList();
   }
 
   @override

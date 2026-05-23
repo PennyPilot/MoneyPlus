@@ -38,29 +38,6 @@ class TransactionForm extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 120), // Added 120px bottom padding
       children: [
-        if (state.isFirstTransaction && state.currency != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: context.colors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: context.colors.primary, size: 20),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      localization.first_transaction_hint(state.currency!.abbreviation),
-                      style: context.typography.label.small.copyWith(color: context.colors.primary),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
         _buildAmountSection(context),
         _buildDateSection(context),
         _buildCategorySection(context),
