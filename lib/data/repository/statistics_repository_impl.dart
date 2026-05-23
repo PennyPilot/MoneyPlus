@@ -32,13 +32,22 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
         year: month.year,
         month: month.month,
       );
-      
+
+      final Map<String, dynamic> data;
       if (response == null) {
+        data = {};
+      } else if (response is List) {
+        data = response.isNotEmpty ? response.first as Map<String, dynamic> : {};
+      } else {
+        data = response as Map<String, dynamic>;
+      }
+
+      if (data.isEmpty) {
         return Result.success(_createEmptyOverview());
       }
 
       return Result.success(
-        _mapResponseToOverview(response as Map<String, dynamic>),
+        _mapResponseToOverview(data),
       );
     } catch (e) {
       return Result.error(ErrorModel(e.toString()));
@@ -46,8 +55,8 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
   }
 
   MonthlyOverview _mapResponseToOverview(Map<String, dynamic> json) {
-    final income = (json['income'] as num).toDouble();
-    final expenses = (json['expenses'] as num).toDouble();
+    final income = (json['income'] as num? ?? 0).toDouble();
+    final expenses = (json['expenses'] as num? ?? 0).toDouble();
     final currency = json['currency'] as String? ?? 'IQD';
 
     final maxAmount = income > expenses ? income : expenses;
@@ -155,7 +164,7 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
         final map = item as Map<String, dynamic>;
         return SpendingTrendPoint(
           date: DateTime.parse(map['spend_date'] as String),
-          amount: (map['total_amount'] as num).toDouble(),
+          amount: (map['total_amount'] as num? ?? 0).toDouble(),
         );
       }).toList();
 
