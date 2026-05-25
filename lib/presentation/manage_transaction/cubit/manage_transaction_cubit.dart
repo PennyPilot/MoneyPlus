@@ -6,22 +6,26 @@ import 'package:moneyplus/domain/model/form_status.dart';
 import 'package:moneyplus/domain/repository/account_repository.dart';
 import 'package:moneyplus/domain/repository/transaction_repository.dart';
 import 'package:moneyplus/domain/repository/user_money_repository.dart';
+import 'package:moneyplus/core/service/receipt_scanner_service.dart';
 import 'manage_transaction_state.dart';
 
 class ManageTransactionCubit extends Cubit<ManageTransactionState> {
   final TransactionRepository _transactionRepository;
   final UserMoneyRepository _userMoneyRepository;
   final AccountRepository _accountRepository;
+  final ReceiptScannerService _scannerService;
 
   ManageTransactionCubit({
     required TransactionRepository transactionRepository,
     required UserMoneyRepository userMoneyRepository,
     required AccountRepository accountRepository,
+    required ReceiptScannerService scannerService,
     required TransactionType initialType,
     String? transactionId,
   })  : _transactionRepository = transactionRepository,
         _userMoneyRepository = userMoneyRepository,
         _accountRepository = accountRepository,
+        _scannerService = scannerService,
         super(ManageTransactionState.initial(initialType).copyWith(
           transactionId: transactionId,
           isEditing: transactionId != null,
@@ -179,6 +183,25 @@ class ManageTransactionCubit extends Cubit<ManageTransactionState> {
 
   void onCategorySelected(TransactionCategory category) {
     emit(state.copyWith(selectedCategory: category));
+  }
+
+  Future<void> scanReceipt({bool fromCamera = true}) async {
+    final image = await _scannerService.pickImage(fromCamera: fromCamera);
+    if (image == null) return;
+
+    emit(state.copyWith(isScanning: true));
+    try {
+      final receipt = await _scannerService.scanReceipt(image);
+
+      emit(state.copyWith(
+        amount: receipt.amount,
+        date: receipt.date,
+        note: receipt.merchant,
+        isScanning: false,
+      ));
+    } catch (e) {
+      emit(state.copyWith(isScanning: false));
+    }
   }
 
   Future<void> submit() async {

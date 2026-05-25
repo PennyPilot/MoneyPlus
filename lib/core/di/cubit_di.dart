@@ -1,3 +1,4 @@
+import 'package:moneyplus/core/service/receipt_scanner_service.dart';
 import 'package:moneyplus/presentation/account/cubit/currency_selection_cubit.dart';
 import 'package:moneyplus/domain/entity/transaction_type.dart';
 import 'package:moneyplus/presentation/currency/cubit/currency_rates_cubit.dart';
@@ -118,6 +119,7 @@ void initCubitDI() {
       transactionRepository: getIt<TransactionRepository>(),
       userMoneyRepository: getIt<UserMoneyRepository>(),
       accountRepository: getIt<AccountRepository>(),
+      scannerService: getIt<ReceiptScannerService>(),
       initialType: type,
       transactionId: id,
     ),
