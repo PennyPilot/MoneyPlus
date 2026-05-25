@@ -165,7 +165,8 @@ Widget _loadedContent({
                                       currency: state.currency,
                                       amount: formatWithCommas(
                                         state.totalMonthIncome,
-                                      ).toString(),
+                                        decimalPlaces: 2,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -175,7 +176,8 @@ Widget _loadedContent({
                                       currency: state.currency,
                                       amount: formatWithCommas(
                                         state.totalMonthExpense,
-                                      ).toString(),
+                                        decimalPlaces: 2,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -221,7 +223,7 @@ Widget _loadedContent({
                               child: CurrencyBreakdownCard(
                                 currencyName: breakdown.name,
                                 abbreviation: breakdown.abbreviation,
-                                amount: "${formatWithCommas(breakdown.totalAmount)} ${breakdown.abbreviation}",
+                                amount: "${formatWithCommas(breakdown.totalAmount, decimalPlaces: 2)} ${breakdown.abbreviation}",
                                 transactionCount: breakdown.transactionCount,
                               ),
                             );
@@ -309,7 +311,7 @@ Widget _topSection({
             left: 0,
             bottom: 52,
             child: CurrentBalanceCard(
-              balance: '${formatWithCommas(state.currentBalance)} ${state.currency}',
+              balance: '${formatWithCommas(state.currentBalance, decimalPlaces: 2)} ${state.currency}',
               percentage: state.currentSavingSpendingPercentage,
             ),
           ),
