@@ -45,6 +45,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We need camera access to scan receipts</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need photo library access to scan receipts</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

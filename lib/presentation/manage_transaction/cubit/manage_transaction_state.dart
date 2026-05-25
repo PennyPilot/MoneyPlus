@@ -25,6 +25,7 @@ class ManageTransactionState extends Equatable {
   final bool isLoadingCurrencies;
   final bool isFirstTransaction;
   final List<CurrencyRate> exchangeRates;
+  final bool isScanning;
 
   const ManageTransactionState({
     required this.transactionType,
@@ -45,6 +46,7 @@ class ManageTransactionState extends Equatable {
     this.isLoadingCurrencies = false,
     this.isFirstTransaction = false,
     this.exchangeRates = const [],
+    this.isScanning = false,
   });
 
   bool get canSubmitForm =>
@@ -78,6 +80,7 @@ class ManageTransactionState extends Equatable {
     bool? isLoadingCurrencies,
     bool? isFirstTransaction,
     List<CurrencyRate>? exchangeRates,
+    bool? isScanning,
   }) {
     return ManageTransactionState(
       transactionType: transactionType ?? this.transactionType,
@@ -98,6 +101,7 @@ class ManageTransactionState extends Equatable {
       isLoadingCurrencies: isLoadingCurrencies ?? this.isLoadingCurrencies,
       isFirstTransaction: isFirstTransaction ?? this.isFirstTransaction,
       exchangeRates: exchangeRates ?? this.exchangeRates,
+      isScanning: isScanning ?? this.isScanning,
     );
   }
 
@@ -121,5 +125,6 @@ class ManageTransactionState extends Equatable {
         isLoadingCurrencies,
         isFirstTransaction,
         exchangeRates,
+        isScanning,
       ];
 }
