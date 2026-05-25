@@ -213,5 +213,8 @@
   "result": "Result",
   "pickCurrencyTitle": "Currency Setup Required",
   "pickCurrencyMessage": "Please choose your primary currency to start tracking your finances accurately.",
-  "goToAccount": "Set Primary Currency"
+  "goToAccount": "Set Primary Currency",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "scanReceipt": "Scan Receipt"
 }

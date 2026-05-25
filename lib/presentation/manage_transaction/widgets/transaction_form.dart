@@ -37,11 +37,92 @@ class TransactionForm extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
       children: [
+        _buildScanButton(context),
         _buildAmountSection(context),
         _buildDateSection(context),
         _buildCategorySection(context),
         _buildNoteSection(context),
       ],
+    );
+  }
+
+  Widget _buildScanButton(BuildContext context) {
+    final cubit = context.read<ManageTransactionCubit>();
+    final colors = context.colors;
+    final typography = context.typography;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: InkWell(
+        onTap: state.isScanning ? null : () => _showScanOptions(context, cubit, l10n),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: colors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: colors.primary.withValues(alpha: 0.2)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (state.isScanning)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                Icon(Icons.document_scanner_outlined, color: colors.primary),
+              const SizedBox(width: 8),
+              Text(
+                state.isScanning ? "${l10n.loading}..." : l10n.scanReceipt,
+                style: typography.label.medium.copyWith(
+                  color: colors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showScanOptions(BuildContext context, ManageTransactionCubit cubit, AppLocalizations l10n) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      backgroundColor: context.colors.surface,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt_outlined),
+                title: Text(l10n.camera),
+                onTap: () {
+                  Navigator.pop(context);
+                  cubit.scanReceipt(fromCamera: true);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_outlined),
+                title: Text(l10n.gallery),
+                onTap: () {
+                  Navigator.pop(context);
+                  cubit.scanReceipt(fromCamera: false);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
