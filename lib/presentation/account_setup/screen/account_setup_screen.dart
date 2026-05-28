@@ -35,6 +35,7 @@ class AccountSetupScreen extends StatefulWidget {
 class _AccountSetupScreenState extends State<AccountSetupScreen> {
   late PageController pageController;
   int currentIndex = 0;
+  bool isFirstSync = true;
 
   @override
   initState() {
@@ -69,14 +70,21 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
             ).showSnackBar(context: context);
           }
           if (state.accountStep.index != currentIndex) {
-            pageController.animateToPage(
-              state.accountStep.index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
+            if (isFirstSync) {
+              pageController.jumpToPage(state.accountStep.index);
+              isFirstSync = false;
+            } else {
+              pageController.animateToPage(
+                state.accountStep.index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
             setState(() {
               currentIndex = state.accountStep.index;
             });
+          } else if (isFirstSync && state.accountStep.index == 0) {
+             isFirstSync = false;
           }
           if (state.navigateToHome) {
             MainRoute().go(context);
@@ -90,7 +98,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                 assetPath: AppAssets.icArrowLeft,
                 onTap: () {
                   if (state.accountStep == AccountSetupStep.step1) {
-                    Navigator.pop(context);
+                    const CreateAccountRoute().pushReplacement(context);
                   } else {
                     context.read<AccountSetupCubit>().onPreviousStep();
                   }

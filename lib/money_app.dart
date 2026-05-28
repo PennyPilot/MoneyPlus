@@ -97,9 +97,10 @@ class _MoneyAppViewState extends State<MoneyAppView> {
     _authRedirectNotifier.addListener(_onAuthReady);
   }
 
-  void _onAuthReady() {
+  void _onAuthReady() async {
     if (!_authRedirectNotifier.isInitialized) return;
     _authRedirectNotifier.removeListener(_onAuthReady);
+    
     setState(() => _router = _buildRouter());
   }
 
@@ -143,7 +144,7 @@ class _MoneyAppViewState extends State<MoneyAppView> {
     }.contains(location);
 
     if (!isAuthenticated && !isPublicRoute) return RoutePaths.login;
-    if (isAuthenticated && isPublicRoute) return RoutePaths.main;
+    if (isAuthenticated && isPublicRoute && location != RoutePaths.accountSetup) return RoutePaths.main;
 
     return null;
   }

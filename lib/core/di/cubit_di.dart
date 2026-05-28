@@ -19,6 +19,7 @@ import 'package:moneyplus/presentation/statistics/cubit/statistics_cubit.dart';
 import 'package:moneyplus/presentation/transactions/cubit/transaction_cubit.dart';
 import 'package:moneyplus/presentation/trasnaction_details/trasnaction_details_cubit.dart';
 
+import '../../domain/repository/app_preferences_repository.dart';
 import '../../domain/repository/category_repository.dart';
 import '../../presentation/account/cubit/account_cubit.dart';
 import '../../presentation/categories/cubit/categories_cubit.dart';
@@ -46,6 +47,7 @@ void initCubitDI() {
     () => AccountSetupCubit(
       getIt<AccountRepository>(),
       getIt<AuthenticationRepository>(),
+      getIt<AppPreferencesRepository>(),
     ),
   );
 
@@ -80,7 +82,9 @@ void initCubitDI() {
 
   getIt.registerFactory<CreateAccountCubit>(
     () => CreateAccountCubit(
-      getIt<AuthenticationValidator>(),),
+      getIt<AuthenticationValidator>(),
+      getIt<AppPreferencesRepository>(),
+    ),
   );
 
   getIt.registerFactory<ProfileSettingsCubit>(

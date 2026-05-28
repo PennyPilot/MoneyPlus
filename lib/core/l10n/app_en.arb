@@ -216,5 +216,9 @@
   "goToAccount": "Set Primary Currency",
   "camera": "Camera",
   "gallery": "Gallery",
-  "scanReceipt": "Scan Receipt"
+  "scanReceipt": "Scan Receipt",
+  "resume_setup_title": "Resume Setup?",
+  "resume_setup_subtitle": "It looks like you didn't finish setting up your account. Tap resume to continue.",
+  "resume_setup_button": "Resume Progress",
+  "resume_setup_discard": "Discard"
 }

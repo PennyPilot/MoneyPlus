@@ -4,7 +4,9 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
+import 'package:moneyplus/domain/repository/app_preferences_repository.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
+import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/snack_bar.dart';
@@ -13,49 +15,188 @@ import '../cubit/login_state.dart';
 import '../widget/forget_password_button.dart';
 import '../widget/login_form.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  Map<String, dynamic>? _savedProgress;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkProgress();
+  }
+
+  Future<void> _checkProgress() async {
+    final progress = await getIt<AppPreferencesRepository>().getAccountSetupProgress();
+    if (progress != null && mounted) {
+      setState(() {
+        _savedProgress = progress;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: colors.surface,
-      body: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) =>
-            _handleStateChanges(context, state, localizations),
-        child: CustomScrollView(
-          slivers: [
-            _sliverAppBar(),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: SafeArea(
-                top: false,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _LoginHeader(),
-                      const SizedBox(height: 16),
-                      const _LoginFields(),
-                      const ForgetPasswordButton(),
-                      const Spacer(),
-                      const _LoginSubmitButton(),
-                      const SizedBox(height: 8),
-                      _buildOrWidget(colors, typography, localizations),
-                      const SizedBox(height: 8),
-                      const _SocialMediaButtons(),
-                    ],
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: colors.surface,
+          body: BlocListener<LoginCubit, LoginState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) =>
+                _handleStateChanges(context, state, localizations),
+            child: CustomScrollView(
+              slivers: [
+                _sliverAppBar(),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const _LoginHeader(),
+                          const SizedBox(height: 16),
+                          const _LoginFields(),
+                          const ForgetPasswordButton(),
+                          const Spacer(),
+                          const _LoginSubmitButton(),
+                          const SizedBox(height: 8),
+                          _buildOrWidget(colors, typography, localizations),
+                          const SizedBox(height: 8),
+                          const _SocialMediaButtons(),
+                        ],
+                      ),
+                    ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (_savedProgress != null) _buildResumeHint(context, _savedProgress!, localizations),
+      ],
+    );
+  }
+
+  Widget _buildResumeHint(BuildContext context, Map<String, dynamic> progress, AppLocalizations localizations) {
+    final colors = context.colors;
+    final typography = context.typography;
+
+    return Material(
+      color: Colors.black.withValues(alpha: 0.6),
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: 32,
+            right: 16,
+            left: 16,
+            child: TweenAnimationBuilder<double>(
+              duration: const Duration(milliseconds: 600),
+              tween: Tween(begin: 0.0, end: 1.0),
+              curve: Curves.elasticOut,
+              builder: (context, value, child) {
+                return Transform.translate(
+                  offset: Offset(0, 20 * (1 - value)),
+                  child: Opacity(
+                    opacity: value.clamp(0.0, 1.0),
+                    child: child,
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colors.surface,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(4),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colors.primary.withValues(alpha: 0.4),
+                      blurRadius: 24,
+                      offset: const Offset(0, 8),
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: colors.primary.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.lightbulb_outline, 
+                                     color: colors.primary, size: 18),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            localizations.resume_setup_title,
+                            style: typography.label.medium.copyWith(
+                              color: colors.title,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            getIt<AppPreferencesRepository>().clearAccountSetupProgress();
+                            setState(() => _savedProgress = null);
+                          },
+                          icon: Icon(Icons.close, color: colors.body, size: 18),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      localizations.resume_setup_subtitle,
+                      style: typography.body.small.copyWith(color: colors.body),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MoneyButton(
+                        onPressed: () {
+                          AccountSetupRoute(
+                            name: progress['name'] as String? ?? '',
+                            email: progress['email'] as String? ?? '',
+                            password: progress['password'] as String? ?? '',
+                          ).push(context);
+                        },
+                        text: localizations.resume_setup_button,
+                        backgroundColor: colors.primary,
+                        disabledBackgroundColor: colors.disabled,
+                        textColor: colors.onPrimary,
+                        disabledTextColor: colors.onPrimary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

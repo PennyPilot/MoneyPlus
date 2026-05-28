@@ -12,6 +12,7 @@ import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
+import '../../../domain/repository/app_preferences_repository.dart';
 import '../../../domain/validator/authentication_validator.dart';
 import '../cubit/create_account_cubit.dart';
 import '../cubit/create_account_state.dart';
@@ -33,7 +34,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return BlocProvider(
       create: (context) => CreateAccountCubit(
         getIt<AuthenticationValidator>(),
-      ),
+          getIt<AppPreferencesRepository>()
+      )..init(),
       child: BlocConsumer<CreateAccountCubit, CreateAccountState>(
         listener: (context, state) {
           if (state.errorMessage != null) {

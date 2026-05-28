@@ -7,6 +7,12 @@ abstract class AppPreferencesRepository {
   Future<AppLanguage> getAppLanguage();
 
   Future<void> setAppLanguage(AppLanguage language);
+
+  Future<void> saveAccountSetupProgress(Map<String, dynamic> progress);
+
+  Future<Map<String, dynamic>?> getAccountSetupProgress();
+
+  Future<void> clearAccountSetupProgress();
 }
 
 enum AppTheme { dark, light, system }
