@@ -12,6 +12,7 @@ import '../../../design_system/widgets/app_bar.dart';
 import '../../../design_system/widgets/buttons/button/default_button.dart';
 import '../../../design_system/widgets/snack_bar.dart';
 import '../../../design_system/widgets/text_field.dart';
+import '../../../domain/repository/app_preferences_repository.dart';
 import '../../../domain/validator/authentication_validator.dart';
 import '../cubit/create_account_cubit.dart';
 import '../cubit/create_account_state.dart';
@@ -31,9 +32,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
-      create: (context) => CreateAccountCubit(
-        getIt<AuthenticationValidator>(),
-      ),
+      create: (context) => CreateAccountCubit(getIt<AuthenticationValidator>(),
+          getIt<AppPreferencesRepository>())
+        ..init(),
       child: BlocConsumer<CreateAccountCubit, CreateAccountState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
@@ -43,11 +44,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ).showSnackBar(context: context);
           }
           if (state.isRegisterSuccess) {
-            AccountSetupRoute(
-              name: state.name,
-              email: state.email,
-              password: state.password,
-            ).push(context);
+            const AccountSetupRoute().push(context);
           }
         },
         builder: (context, state) {
@@ -67,7 +64,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               color: colors.surface,
               padding: const EdgeInsets.all(16),
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -115,7 +112,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
               ),
             ),
-
             bottomNavigationBar: AnimatedPadding(
               duration: const Duration(milliseconds: 150),
               curve: Curves.easeOut,
@@ -152,7 +148,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       minLines: 1,
       maxLines: 1,
       leading: Padding(
-        padding: EdgeInsetsGeometry.symmetric(vertical: 14, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
         child: SvgPicture.asset(assetPath),
       ),
     );
@@ -181,7 +177,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         child: SvgPicture.asset(AppAssets.icSquareLock),
       ),
       trailing: Padding(
-        padding: EdgeInsetsGeometry.only(top: 2),
+        padding: const EdgeInsets.only(top: 2),
         child: IconButton(
           onPressed: onToggleVisibility,
           icon: SvgPicture.asset(

@@ -17,16 +17,7 @@ import '../cubit/account_setup_cubit.dart';
 import '../cubit/account_setup_state.dart';
 
 class AccountSetupScreen extends StatefulWidget {
-  final String name;
-  final String email;
-  final String password;
-
-  const AccountSetupScreen({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.password,
-  });
+  const AccountSetupScreen({super.key});
 
   @override
   State<AccountSetupScreen> createState() => _AccountSetupScreenState();
@@ -35,9 +26,10 @@ class AccountSetupScreen extends StatefulWidget {
 class _AccountSetupScreenState extends State<AccountSetupScreen> {
   late PageController pageController;
   int currentIndex = 0;
+  bool isFirstSync = true;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     pageController = PageController(initialPage: currentIndex);
   }
@@ -54,11 +46,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
     return BlocProvider(
       create: (context) => getIt<AccountSetupCubit>()
-        ..initUserData(
-          name: widget.name,
-          email: widget.email,
-          password: widget.password,
-        )
+        ..initUserData()
         ..init(),
       child: BlocConsumer<AccountSetupCubit, AccountSetupState>(
         listener: (context, state) {
@@ -69,14 +57,21 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
             ).showSnackBar(context: context);
           }
           if (state.accountStep.index != currentIndex) {
-            pageController.animateToPage(
-              state.accountStep.index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
+            if (isFirstSync) {
+              pageController.jumpToPage(state.accountStep.index);
+              isFirstSync = false;
+            } else {
+              pageController.animateToPage(
+                state.accountStep.index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
             setState(() {
               currentIndex = state.accountStep.index;
             });
+          } else if (isFirstSync && state.accountStep.index == 0) {
+            isFirstSync = false;
           }
           if (state.navigateToHome) {
             MainRoute().go(context);
@@ -90,7 +85,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                 assetPath: AppAssets.icArrowLeft,
                 onTap: () {
                   if (state.accountStep == AccountSetupStep.step1) {
-                    Navigator.pop(context);
+                    LoginRoute(showResumeHint: true).go(context);
                   } else {
                     context.read<AccountSetupCubit>().onPreviousStep();
                   }
@@ -106,21 +101,21 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Indicator(currentIndex: currentIndex),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
                       l10n.stepOfTotal(currentIndex + 1, 3),
                       style: context.typography.label.small.copyWith(
                         color: context.colors.body,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       l10n.setUpYourAccount,
                       style: context.typography.headline.medium.copyWith(
                         color: context.colors.title,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Expanded(
                       child: PageView(
                         controller: pageController,
@@ -132,9 +127,12 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                         },
                         children: [
                           SingleChildScrollView(child: Step1(state: state)),
-                          SingleChildScrollView(child: Step2(
-                              currency: state.selectedCurrency?.abbreviation?? "",
-                              currentBalanceState: state.currentBalance)),
+                          SingleChildScrollView(
+                              child: Step2(
+                                  currency:
+                                      state.selectedCurrency?.abbreviation ??
+                                          "",
+                                  currentBalanceState: state.currentBalance)),
                           SingleChildScrollView(child: Step3(state: state))
                         ],
                       ),

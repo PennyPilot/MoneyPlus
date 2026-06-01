@@ -1,13 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moneyplus/domain/repository/app_preferences_repository.dart';
 
 import '../../../domain/validator/authentication_validator.dart';
 import 'create_account_state.dart';
 
 class CreateAccountCubit extends Cubit<CreateAccountState> {
   final AuthenticationValidator _validator;
+  final AppPreferencesRepository _preferencesRepository;
 
-  CreateAccountCubit(this._validator)
+  CreateAccountCubit(this._validator, this._preferencesRepository)
       : super(CreateAccountState());
+
+  Future<void> init() async {
+    final progress = await _preferencesRepository.getAccountSetupProgress();
+    if (progress != null) {
+      emit(state.copyWith(
+        name: progress['name'] as String? ?? state.name,
+        email: progress['email'] as String? ?? state.email,
+        password: progress['password'] as String? ?? state.password,
+      ));
+      enable();
+    }
+  }
 
   void emailChanged(String value) {
     emit(state.copyWith(email: value));
@@ -39,6 +53,12 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
   }
 
   Future<void> submit() async {
+    await _preferencesRepository.saveAccountSetupProgress({
+      'name': state.name,
+      'email': state.email,
+      'password': state.password,
+      'step': 0,
+    });
     emit(state.copyWith(isRegisterSuccess: true));
   }
 

@@ -13,49 +13,185 @@ import '../cubit/login_state.dart';
 import '../widget/forget_password_button.dart';
 import '../widget/login_form.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  final bool showResumeHint;
+  const LoginScreen({super.key, this.showResumeHint = false});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<LoginCubit>().checkAccountSetupHint(widget.showResumeHint);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: colors.surface,
-      body: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) => previous.status != current.status,
-        listener: (context, state) =>
-            _handleStateChanges(context, state, localizations),
-        child: CustomScrollView(
-          slivers: [
-            _sliverAppBar(),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: SafeArea(
-                top: false,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _LoginHeader(),
-                      const SizedBox(height: 16),
-                      const _LoginFields(),
-                      const ForgetPasswordButton(),
-                      const Spacer(),
-                      const _LoginSubmitButton(),
-                      const SizedBox(height: 8),
-                      _buildOrWidget(colors, typography, localizations),
-                      const SizedBox(height: 8),
-                      const _SocialMediaButtons(),
-                    ],
+
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: colors.surface,
+          body: BlocListener<LoginCubit, LoginState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) =>
+                _handleStateChanges(context, state, localizations),
+            child: CustomScrollView(
+              slivers: [
+                _sliverAppBar(),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const _LoginHeader(),
+                          const SizedBox(height: 16),
+                          const _LoginFields(),
+                          const ForgetPasswordButton(),
+                          const Spacer(),
+                          const _LoginSubmitButton(),
+                          const SizedBox(height: 8),
+                          _buildOrWidget(colors, typography, localizations),
+                          const SizedBox(height: 8),
+                          const _SocialMediaButtons(),
+                        ],
+                      ),
+                    ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        BlocBuilder<LoginCubit, LoginState>(
+          buildWhen: (previous, current) =>
+              previous.showAccountSetupHint != current.showAccountSetupHint,
+          builder: (context, state) {
+            if (!state.showAccountSetupHint) return const SizedBox.shrink();
+            return _buildResumeHint(context, localizations);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildResumeHint(
+      BuildContext context, AppLocalizations localizations) {
+    final colors = context.colors;
+    final typography = context.typography;
+
+    return Material(
+      color: Colors.black.withValues(alpha: 0.6),
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: 120,
+            right: 16,
+            left: 16,
+            child: TweenAnimationBuilder<double>(
+              duration: const Duration(milliseconds: 600),
+              tween: Tween(begin: 0.0, end: 1.0),
+              curve: Curves.elasticOut,
+              builder: (context, value, child) {
+                return Transform.translate(
+                  offset: Offset(0, 20 * (1 - value)),
+                  child: Opacity(
+                    opacity: value.clamp(0.0, 1.0),
+                    child: child,
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colors.surface,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(4),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colors.primary.withValues(alpha: 0.4),
+                      blurRadius: 24,
+                      offset: const Offset(0, 8),
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: colors.primary.withValues(alpha: 0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.lightbulb_outline,
+                              color: colors.primary, size: 18),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            localizations.resume_setup_title,
+                            style: typography.label.medium.copyWith(
+                              color: colors.title,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            context.read<LoginCubit>().hideAccountSetupHint();
+                          },
+                          icon: Icon(Icons.close, color: colors.body, size: 18),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      localizations.resume_setup_subtitle,
+                      style: typography.body.small.copyWith(color: colors.body),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MoneyButton(
+                        onPressed: () {
+                          context.read<LoginCubit>().hideAccountSetupHint();
+                          const AccountSetupRoute().push(context);
+                        },
+                        text: localizations.resume_setup_button,
+                        backgroundColor: colors.primary,
+                        disabledBackgroundColor: colors.disabled,
+                        textColor: colors.onPrimary,
+                        disabledTextColor: colors.onPrimary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -116,13 +252,13 @@ class LoginScreen extends StatelessWidget {
         title: localizations.success,
       ).showSnackBar(context: context);
 
-      MainRoute().pushReplacement(context);
+      const AccountSetupRoute().go(context);
     }
   }
 }
 
 class _LoginHeader extends StatelessWidget {
-  const _LoginHeader({super.key});
+  const _LoginHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +287,7 @@ class _LoginHeader extends StatelessWidget {
 }
 
 class _LoginFields extends StatelessWidget {
-  const _LoginFields({super.key});
+  const _LoginFields();
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +307,7 @@ class _LoginFields extends StatelessWidget {
 }
 
 class _LoginSubmitButton extends StatelessWidget {
-  const _LoginSubmitButton({super.key});
+  const _LoginSubmitButton();
 
   @override
   Widget build(BuildContext context) {
@@ -183,12 +319,12 @@ class _LoginSubmitButton extends StatelessWidget {
         return MoneyButton(
           onPressed: () => context.read<LoginCubit>().login(),
           isEnabled: state.isEnabled && !isLoading,
-          innerShadow: BoxShadow(
+          innerShadow: const BoxShadow(
             blurRadius: 8,
             offset: Offset(0, 4),
             color: Color(0xDC143C29),
           ),
-          outerShadow: BoxShadow(
+          outerShadow: const BoxShadow(
             blurRadius: 12,
             offset: Offset(0, 4),
             color: Color(0xFDECF080),
@@ -205,7 +341,7 @@ class _LoginSubmitButton extends StatelessWidget {
 }
 
 class _SocialMediaButtons extends StatelessWidget {
-  const _SocialMediaButtons({super.key});
+  const _SocialMediaButtons();
 
   @override
   Widget build(BuildContext context) {
@@ -226,10 +362,10 @@ class _SocialMediaButtons extends StatelessWidget {
           text: localizations.login_google_button,
           iconPath: AppAssets.google,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         MoneyButton(
           onPressed: () {
-            CreateAccountRoute().push(context);
+            const CreateAccountRoute().push(context);
           },
           backgroundColor: colors.surfaceLow,
           disabledBackgroundColor: Colors.red,

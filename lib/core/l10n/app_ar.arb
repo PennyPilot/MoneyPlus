@@ -204,5 +204,9 @@
   "goToAccount": "تحديد العملة الأساسية",
   "camera": "الكاميرا",
   "gallery": "المعرض",
-  "scanReceipt": "مسح الفاتورة"
+  "scanReceipt": "مسح الفاتورة",
+  "resume_setup_title": "استئناف الإعداد؟",
+  "resume_setup_subtitle": "يبدو أنك لم تنتهِ من إعداد حسابك. اضغط على استئناف للمتابعة.",
+  "resume_setup_button": "استئناف التقدم",
+  "resume_setup_discard": "تجاهل"
 }
