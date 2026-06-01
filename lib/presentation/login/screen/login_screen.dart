@@ -4,9 +4,7 @@ import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_colors.dart';
 import 'package:moneyplus/design_system/theme/money_typography.dart';
 import 'package:moneyplus/design_system/widgets/buttons/money_button.dart';
-import 'package:moneyplus/domain/repository/app_preferences_repository.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
-import '../../../core/di/injection.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/snack_bar.dart';
@@ -16,28 +14,20 @@ import '../widget/forget_password_button.dart';
 import '../widget/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool showResumeHint;
+  const LoginScreen({super.key, this.showResumeHint = false});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  Map<String, dynamic>? _savedProgress;
-
   @override
   void initState() {
     super.initState();
-    _checkProgress();
-  }
-
-  Future<void> _checkProgress() async {
-    final progress = await getIt<AppPreferencesRepository>().getAccountSetupProgress();
-    if (progress != null && mounted) {
-      setState(() {
-        _savedProgress = progress;
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<LoginCubit>().checkAccountSetupHint(widget.showResumeHint);
+    });
   }
 
   @override
@@ -45,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final colors = context.colors;
     final typography = context.typography;
     final localizations = AppLocalizations.of(context)!;
+
     return Stack(
       children: [
         Scaffold(
@@ -84,12 +75,20 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-        if (_savedProgress != null) _buildResumeHint(context, _savedProgress!, localizations),
+        BlocBuilder<LoginCubit, LoginState>(
+          buildWhen: (previous, current) =>
+              previous.showAccountSetupHint != current.showAccountSetupHint,
+          builder: (context, state) {
+            if (!state.showAccountSetupHint) return const SizedBox.shrink();
+            return _buildResumeHint(context, localizations);
+          },
+        ),
       ],
     );
   }
 
-  Widget _buildResumeHint(BuildContext context, Map<String, dynamic> progress, AppLocalizations localizations) {
+  Widget _buildResumeHint(
+      BuildContext context, AppLocalizations localizations) {
     final colors = context.colors;
     final typography = context.typography;
 
@@ -98,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Stack(
         children: [
           Positioned(
-            bottom: 32,
+            bottom: 120,
             right: 16,
             left: 16,
             child: TweenAnimationBuilder<double>(
@@ -144,8 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: colors.primary.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(Icons.lightbulb_outline, 
-                                     color: colors.primary, size: 18),
+                          child: Icon(Icons.lightbulb_outline,
+                              color: colors.primary, size: 18),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -159,8 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         IconButton(
                           onPressed: () {
-                            getIt<AppPreferencesRepository>().clearAccountSetupProgress();
-                            setState(() => _savedProgress = null);
+                            context.read<LoginCubit>().hideAccountSetupHint();
                           },
                           icon: Icon(Icons.close, color: colors.body, size: 18),
                           padding: EdgeInsets.zero,
@@ -178,11 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       child: MoneyButton(
                         onPressed: () {
-                          AccountSetupRoute(
-                            name: progress['name'] as String? ?? '',
-                            email: progress['email'] as String? ?? '',
-                            password: progress['password'] as String? ?? '',
-                          ).push(context);
+                          context.read<LoginCubit>().hideAccountSetupHint();
+                          const AccountSetupRoute().push(context);
                         },
                         text: localizations.resume_setup_button,
                         backgroundColor: colors.primary,
@@ -257,13 +252,13 @@ class _LoginScreenState extends State<LoginScreen> {
         title: localizations.success,
       ).showSnackBar(context: context);
 
-      MainRoute().pushReplacement(context);
+      const AccountSetupRoute().go(context);
     }
   }
 }
 
 class _LoginHeader extends StatelessWidget {
-  const _LoginHeader({super.key});
+  const _LoginHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -292,7 +287,7 @@ class _LoginHeader extends StatelessWidget {
 }
 
 class _LoginFields extends StatelessWidget {
-  const _LoginFields({super.key});
+  const _LoginFields();
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +307,7 @@ class _LoginFields extends StatelessWidget {
 }
 
 class _LoginSubmitButton extends StatelessWidget {
-  const _LoginSubmitButton({super.key});
+  const _LoginSubmitButton();
 
   @override
   Widget build(BuildContext context) {
@@ -324,12 +319,12 @@ class _LoginSubmitButton extends StatelessWidget {
         return MoneyButton(
           onPressed: () => context.read<LoginCubit>().login(),
           isEnabled: state.isEnabled && !isLoading,
-          innerShadow: BoxShadow(
+          innerShadow: const BoxShadow(
             blurRadius: 8,
             offset: Offset(0, 4),
             color: Color(0xDC143C29),
           ),
-          outerShadow: BoxShadow(
+          outerShadow: const BoxShadow(
             blurRadius: 12,
             offset: Offset(0, 4),
             color: Color(0xFDECF080),
@@ -346,7 +341,7 @@ class _LoginSubmitButton extends StatelessWidget {
 }
 
 class _SocialMediaButtons extends StatelessWidget {
-  const _SocialMediaButtons({super.key});
+  const _SocialMediaButtons();
 
   @override
   Widget build(BuildContext context) {
@@ -367,10 +362,10 @@ class _SocialMediaButtons extends StatelessWidget {
           text: localizations.login_google_button,
           iconPath: AppAssets.google,
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         MoneyButton(
           onPressed: () {
-            CreateAccountRoute().push(context);
+            const CreateAccountRoute().push(context);
           },
           backgroundColor: colors.surfaceLow,
           disabledBackgroundColor: Colors.red,

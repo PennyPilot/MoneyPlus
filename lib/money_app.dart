@@ -8,9 +8,9 @@ import 'package:moneyplus/app_preferences_state.dart';
 import 'package:moneyplus/app_prefernces_cubit.dart';
 import 'package:moneyplus/design_system/theme/money_theme.dart';
 import 'package:moneyplus/design_system/widgets/app_loading_indicator.dart';
+import 'package:moneyplus/domain/entity/auth_status.dart';
 import 'package:moneyplus/domain/repository/authentication_repository.dart';
 import 'package:moneyplus/presentation/navigation/routes.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/di/injection.dart';
 import 'core/l10n/app_localizations.dart';
@@ -18,43 +18,39 @@ import 'domain/repository/app_preferences_repository.dart';
 
 class AuthRedirectNotifier extends ChangeNotifier {
   final AuthenticationRepository _authRepository;
-  late final StreamSubscription<AuthState> _subscription;
-  bool _isPasswordRecovery = false;
-  bool _isAuthenticated = false;
+  late final StreamSubscription<AuthStatus> _subscription;
+  AuthStatus _status = AuthStatus.initial;
   bool _isInitialized = false;
 
-  bool get isAuthenticated => _isAuthenticated;
+  AuthStatus get status => _status;
   bool get isInitialized => _isInitialized;
-  bool get isPasswordRecovery => _isPasswordRecovery;
+  bool get isAuthenticated =>
+      _status == AuthStatus.authenticated ||
+      _status == AuthStatus.accountSetupIncomplete;
+  bool get isAccountSetupIncomplete =>
+      _status == AuthStatus.accountSetupIncomplete;
+  bool get isPasswordRecovery => _status == AuthStatus.passwordRecovery;
 
   AuthRedirectNotifier(this._authRepository) {
-    _subscription = _authRepository.onAuthStateChange.listen(_onAuthStateChange);
+    _subscription =
+        _authRepository.onAuthStatusChange.listen(_onAuthStatusChange);
+    _authRepository.refreshAuthStatus();
   }
 
-  void _onAuthStateChange(AuthState data) async {
-    final bool hasSession = data.session != null;
-    final bool authChanged = hasSession != _isAuthenticated;
-    final bool recoveryEvent = data.event == AuthChangeEvent.passwordRecovery;
-
-    if (recoveryEvent) {
-      _isPasswordRecovery = true;
-    } else if (data.event == AuthChangeEvent.signedOut) {
-      _isPasswordRecovery = false;
-    }
-
+  void _onAuthStatusChange(AuthStatus status) {
     final bool wasInitialized = _isInitialized;
-    _isAuthenticated = hasSession;
+    _status = status;
     _isInitialized = true;
 
     if (!wasInitialized) {
       Future.microtask(notifyListeners);
-    } else if (authChanged || recoveryEvent) {
+    } else {
       notifyListeners();
     }
   }
 
   void clearPasswordRecovery() {
-    _isPasswordRecovery = false;
+    _status = AuthStatus.unauthenticated;
     notifyListeners();
   }
 
@@ -100,13 +96,16 @@ class _MoneyAppViewState extends State<MoneyAppView> {
   void _onAuthReady() async {
     if (!_authRedirectNotifier.isInitialized) return;
     _authRedirectNotifier.removeListener(_onAuthReady);
-    
+
     setState(() => _router = _buildRouter());
   }
 
   GoRouter _buildRouter() {
     final startLocation = switch (true) {
-      _ when _authRedirectNotifier.isPasswordRecovery => RoutePaths.updatePassword,
+      _ when _authRedirectNotifier.isPasswordRecovery =>
+        RoutePaths.updatePassword,
+      _ when _authRedirectNotifier.isAccountSetupIncomplete =>
+        const LoginRoute(showResumeHint: true).location,
       _ when _authRedirectNotifier.isAuthenticated => RoutePaths.main,
       _ => RoutePaths.login,
     };
@@ -120,15 +119,17 @@ class _MoneyAppViewState extends State<MoneyAppView> {
   }
 
   String? _redirect(BuildContext context, GoRouterState state) {
-    final location = state.matchedLocation;
+    final path = state.uri.path;
     final isAuthenticated = _authRedirectNotifier.isAuthenticated;
     final isPasswordRecovery = _authRedirectNotifier.isPasswordRecovery;
+    final isAccountSetupIncomplete =
+        _authRedirectNotifier.isAccountSetupIncomplete;
 
-    if (isPasswordRecovery && location != RoutePaths.updatePassword) {
+    if (isPasswordRecovery && path != RoutePaths.updatePassword) {
       return RoutePaths.updatePassword;
     }
 
-    if (location == RoutePaths.updatePassword && isPasswordRecovery) {
+    if (path == RoutePaths.updatePassword && isPasswordRecovery) {
       Future.microtask(() => _authRedirectNotifier.clearPasswordRecovery());
       return null;
     }
@@ -141,10 +142,28 @@ class _MoneyAppViewState extends State<MoneyAppView> {
       RoutePaths.initial,
       RoutePaths.updatePassword,
       RoutePaths.accountSetup,
-    }.contains(location);
+    }.contains(path);
 
     if (!isAuthenticated && !isPublicRoute) return RoutePaths.login;
-    if (isAuthenticated && isPublicRoute && location != RoutePaths.accountSetup) return RoutePaths.main;
+
+    if (isAuthenticated) {
+      if (isAccountSetupIncomplete) {
+        if (path == RoutePaths.login || path == RoutePaths.accountSetup) {
+          return null;
+        }
+        return const LoginRoute(showResumeHint: true).location;
+      }
+
+      final isAuthRoute = {
+        RoutePaths.login,
+        RoutePaths.createAccount,
+        RoutePaths.forgetPassword,
+      }.contains(path);
+
+      if (isAuthRoute || path == RoutePaths.accountSetup) {
+        return RoutePaths.main;
+      }
+    }
 
     return null;
   }
@@ -173,8 +192,10 @@ class _MoneyAppViewState extends State<MoneyAppView> {
           value: SystemUiOverlayStyle(
             systemNavigationBarColor: Colors.transparent,
             statusBarColor: Colors.transparent,
-            systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-            statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+            systemNavigationBarIconBrightness:
+                isDark ? Brightness.light : Brightness.dark,
+            statusBarIconBrightness:
+                isDark ? Brightness.light : Brightness.dark,
           ),
           child: _router == null
               ? MaterialApp(
@@ -182,12 +203,14 @@ class _MoneyAppViewState extends State<MoneyAppView> {
                   theme: MoneyTheme.lightTheme,
                   darkTheme: MoneyTheme.darkTheme,
                   themeMode: themeMode,
-                  home: const Scaffold(body: Center(child: AppLoadingIndicator())),
+                  home: const Scaffold(
+                      body: Center(child: AppLoadingIndicator())),
                 )
               : MaterialApp.router(
                   debugShowCheckedModeBanner: false,
                   title: 'Money++',
-                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
                   supportedLocales: AppLocalizations.supportedLocales,
                   locale: locale,
                   theme: MoneyTheme.lightTheme,
@@ -202,7 +225,7 @@ class _MoneyAppViewState extends State<MoneyAppView> {
 }
 
 ThemeMode _getThemeMode(AppTheme theme) => switch (theme) {
-  AppTheme.light => ThemeMode.light,
-  AppTheme.dark => ThemeMode.dark,
-  AppTheme.system => ThemeMode.system,
-};
+      AppTheme.light => ThemeMode.light,
+      AppTheme.dark => ThemeMode.dark,
+      AppTheme.system => ThemeMode.system,
+    };

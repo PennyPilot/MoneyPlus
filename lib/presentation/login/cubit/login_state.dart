@@ -13,6 +13,7 @@ class LoginState {
   final String password;
   final bool isEnabled;
   final User? user;
+  final bool showAccountSetupHint;
 
   const LoginState({
     required this.status,
@@ -21,6 +22,7 @@ class LoginState {
     this.isEnabled = false,
     this.error,
     this.user,
+    this.showAccountSetupHint = false,
   });
 
   factory LoginState.initial() => const LoginState(status: LoginStatus.initial);
@@ -32,6 +34,7 @@ class LoginState {
     bool? isEnabled,
     ErrorModel? error,
     User? user,
+    bool? showAccountSetupHint,
   }) {
     return LoginState(
       status: status ?? this.status,
@@ -40,6 +43,7 @@ class LoginState {
       isEnabled: isEnabled ?? this.isEnabled,
       error: error ?? this.error,
       user: user ?? this.user,
+      showAccountSetupHint: showAccountSetupHint ?? this.showAccountSetupHint,
     );
   }
 }

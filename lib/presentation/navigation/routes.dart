@@ -11,6 +11,7 @@ import 'package:moneyplus/presentation/login/screen/login_screen.dart';
 import 'package:moneyplus/presentation/update_password/screen/update_password_screen.dart';
 
 import '../../core/di/injection.dart';
+import '../../design_system/widgets/app_loading_indicator.dart';
 import '../categories/screen/manage_categories_screen.dart';
 import '../forget_password/screen/forget_password_screen.dart';
 import '../login/cubit/login_cubit.dart';
@@ -21,7 +22,6 @@ import '../statistics/statistics_screen.dart';
 import '../trasnaction_details/transaction_details_screen.dart';
 
 part 'routes.g.dart';
-
 
 abstract class RoutePaths {
   static const String initial = '/';
@@ -42,36 +42,51 @@ abstract class RoutePaths {
   static const String editSalary = '/edit-salary';
 }
 
-@TypedGoRoute<InitialRoute>(
-  path: RoutePaths.initial,
-  routes: [
-    TypedGoRoute<LoginRoute>(path: 'login'),
-    TypedGoRoute<OnBoardingRoute>(path: 'onboarding'),
-    TypedGoRoute<MainRoute>(path: 'main'),
-    TypedGoRoute<CreateAccountRoute>(path: 'createAccount'),
-    TypedGoRoute<ForgetPasswordRoute>(path: 'forget_password'),
-    TypedGoRoute<UpdatePasswordRoute>(path: 'update_password'),
-    TypedGoRoute<AddIncomeRoute>(path: 'add-income'),
-    TypedGoRoute<AddExpenseRoute>(path: 'add-expense'),
-    TypedGoRoute<EditTransactionRoute>(path: 'edit-transaction'),
-    TypedGoRoute<StatisticsRoute>(path: 'statistics'),
-    TypedGoRoute<TransactionDetailsRoute>(path: 'transaction_details'),
-    TypedGoRoute<ManageCategoriesRoute>(path: 'manage-categories'),
-    TypedGoRoute<EditSalaryRoute>(path: 'edit-salary'),
-    TypedGoRoute<ProfileSettingsRoute>(path: 'profile-settings'),
-    TypedGoRoute<AccountSetupRoute>(path: 'accountSetup'),
-  ],
-)
+@TypedGoRoute<InitialRoute>(path: RoutePaths.initial)
 @immutable
 class InitialRoute extends GoRouteData with $InitialRoute {
   const InitialRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SizedBox.shrink(),
+    return const Scaffold(body: Center(child: AppLoadingIndicator()));
+  }
+}
+
+@TypedGoRoute<LoginRoute>(path: RoutePaths.login)
+@immutable
+class LoginRoute extends GoRouteData with $LoginRoute {
+  final bool showResumeHint;
+  const LoginRoute({this.showResumeHint = false});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlocProvider(
+      create: (context) => getIt<LoginCubit>(),
+      child: LoginScreen(showResumeHint: showResumeHint),
     );
+  }
+}
+
+@TypedGoRoute<MainRoute>(path: RoutePaths.main)
+@immutable
+class MainRoute extends GoRouteData with $MainRoute {
+  const MainRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MainScreen();
+  }
+}
+
+@TypedGoRoute<AccountSetupRoute>(path: RoutePaths.accountSetup)
+@immutable
+class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
+  const AccountSetupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AccountSetupScreen();
   }
 }
 
@@ -101,31 +116,6 @@ class OnBoardingRoute extends GoRouteData with $OnBoardingRoute {
   }
 }
 
-@TypedGoRoute<LoginRoute>(path: RoutePaths.login)
-@immutable
-class LoginRoute extends GoRouteData with $LoginRoute {
-  const LoginRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return BlocProvider(
-      create: (context) => getIt<LoginCubit>(),
-      child: const LoginScreen(),
-    );
-  }
-}
-
-@TypedGoRoute<MainRoute>(path: RoutePaths.main)
-@immutable
-class MainRoute extends GoRouteData with $MainRoute {
-  const MainRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const MainScreen();
-  }
-}
-
 @TypedGoRoute<CreateAccountRoute>(path: RoutePaths.createAccount)
 @immutable
 class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
@@ -133,7 +123,7 @@ class CreateAccountRoute extends GoRouteData with $CreateAccountRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return CreateAccountScreen();
+    return const CreateAccountScreen();
   }
 }
 
@@ -149,29 +139,6 @@ class ProfileSettingsRoute extends GoRouteData with $ProfileSettingsRoute {
     return ProfileSettingsScreen(
       name: name,
       email: email,
-    );
-  }
-}
-
-@TypedGoRoute<AccountSetupRoute>(path: RoutePaths.accountSetup)
-@immutable
-class AccountSetupRoute extends GoRouteData with $AccountSetupRoute {
-  final String name;
-  final String email;
-  final String password;
-
-  const AccountSetupRoute({
-    required this.name,
-    required this.email,
-    required this.password,
-  });
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return AccountSetupScreen(
-      name: name,
-      email: email,
-      password: password,
     );
   }
 }

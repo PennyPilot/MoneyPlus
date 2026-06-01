@@ -31,7 +31,7 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
         stepIndex = 0;
       }
       final savedStep = AccountSetupStep.values[stepIndex];
-      
+
       Currency? selectedCurrency;
       if (progress['currencyId'] != null && state.currencies.isNotEmpty) {
         final currencyId = progress['currencyId'] as int;
@@ -49,7 +49,8 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
         salaryDay: progress['salaryDay'] as String? ?? state.salaryDay,
         selectedCurrency: selectedCurrency ?? state.selectedCurrency,
         currentBalance: progress['balance'] as String? ?? state.currentBalance,
-        categories: (progress['categories'] as List<dynamic>?)?.cast<String>() ?? state.categories,
+        categories: (progress['categories'] as List<dynamic>?)?.cast<String>() ??
+            state.categories,
         accountStep: savedStep,
       ));
       _validate();
@@ -57,20 +58,22 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
   }
 
   void initUserData({
-    required String name,
-    required String email,
-    required String password,
+    String? name,
+    String? email,
+    String? password,
   }) {
     emit(state.copyWith(
-      name: name,
-      email: email,
-      password: password,
+      name: name ?? state.name,
+      email: email ?? state.email,
+      password: password ?? state.password,
     ));
-    _preferencesRepository.saveAccountSetupProgress({
-      'name': name,
-      'email': email,
-      'password': password,
-    });
+    if (name != null || email != null || password != null) {
+      _preferencesRepository.saveAccountSetupProgress({
+        if (name != null) 'name': name,
+        if (email != null) 'email': email,
+        if (password != null) 'password': password,
+      });
+    }
   }
 
   Future<void> fetchCurrencies() async {
@@ -134,7 +137,8 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   void onCurrentBalanceChanged(String currentBalance) {
     emit(state.copyWith(currentBalance: currentBalance));
-    _preferencesRepository.saveAccountSetupProgress({'balance': currentBalance});
+    _preferencesRepository
+        .saveAccountSetupProgress({'balance': currentBalance});
     _validate();
   }
 
@@ -143,15 +147,16 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
     final salaryDay = int.tryParse(state.salaryDay) ?? 0;
 
     final bool isSalaryInvalid = state.salary.isNotEmpty && salary > 999000000;
-    final bool isSalaryDayInvalid = state.salaryDay.isNotEmpty && (salaryDay < 1 || salaryDay > 28);
+    final bool isSalaryDayInvalid =
+        state.salaryDay.isNotEmpty && (salaryDay < 1 || salaryDay > 28);
 
     bool isButtonEnable = switch (state.accountStep) {
-      AccountSetupStep.step1 => 
+      AccountSetupStep.step1 =>
         state.selectedCurrency != null &&
-        state.salary.isNotEmpty &&
-        !isSalaryInvalid &&
-        state.salaryDay.isNotEmpty &&
-        !isSalaryDayInvalid,
+            state.salary.isNotEmpty &&
+            !isSalaryInvalid &&
+            state.salaryDay.isNotEmpty &&
+            !isSalaryDayInvalid,
       AccountSetupStep.step2 => state.currentBalance.isNotEmpty,
       AccountSetupStep.step3 => state.categories.isNotEmpty,
     };
@@ -207,46 +212,65 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
       updatedCategories.add(category);
     }
     emit(state.copyWith(categories: updatedCategories));
-    _preferencesRepository.saveAccountSetupProgress({'categories': updatedCategories});
+    _preferencesRepository
+        .saveAccountSetupProgress({'categories': updatedCategories});
     _validate();
   }
 
   Future<void> submitAccountSetupData() async {
     emit(state.copyWith(isLoading: true));
     try {
-      final registerResult = await _authRepository.register(
-        entity.User(
-          id: '',
-          email: state.email,
-          name: state.name,
-        ),
-        state.password,
-      );
+      final userResult = await _accountSetupRepository.getCurrentUser();
 
-      await registerResult.when(
+      await userResult.when(
         onSuccess: (user) async {
-          final salary = double.tryParse(state.salary) ?? 0.0;
-          final salaryDay = int.tryParse(state.salaryDay) ?? 1;
-          final currentBalance = double.tryParse(state.currentBalance) ?? 0.0;
-
-          await _accountSetupRepository.completeAccountSetup(
-            userId: user.id,
-            salary: salary,
-            salaryDay: salaryDay,
-            currencyId: state.selectedCurrency?.id ?? 0,
-            initialBalance: currentBalance,
-            categories: state.categories,
-          );
-
-          await _preferencesRepository.clearAccountSetupProgress();
-          emit(state.copyWith(navigateToHome: true, isLoading: false));
+          await _completeSetup(user.id);
         },
-        onError: (error) {
-          emit(state.copyWith(isLoading: false, errorMessage: error.message));
+        onError: (error) async {
+          await _registerAndComplete();
         },
       );
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
+  }
+
+  Future<void> _registerAndComplete() async {
+    final registerResult = await _authRepository.register(
+      entity.User(
+        id: '',
+        email: state.email,
+        name: state.name,
+      ),
+      state.password,
+    );
+
+    await registerResult.when(
+      onSuccess: (user) async {
+        await _completeSetup(user.id);
+      },
+      onError: (error) {
+        emit(state.copyWith(isLoading: false, errorMessage: error.message));
+      },
+    );
+  }
+
+  Future<void> _completeSetup(String userId) async {
+    final salary = double.tryParse(state.salary) ?? 0.0;
+    final salaryDay = int.tryParse(state.salaryDay) ?? 1;
+    final currentBalance = double.tryParse(state.currentBalance) ?? 0.0;
+
+    await _accountSetupRepository.completeAccountSetup(
+      userId: userId,
+      salary: salary,
+      salaryDay: salaryDay,
+      currencyId: state.selectedCurrency?.id ?? 0,
+      initialBalance: currentBalance,
+      categories: state.categories,
+    );
+
+    await _authRepository.refreshAuthStatus();
+    await _preferencesRepository.clearAccountSetupProgress();
+    emit(state.copyWith(navigateToHome: true, isLoading: false));
   }
 }

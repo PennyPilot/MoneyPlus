@@ -40,6 +40,7 @@ void initCubitDI() {
     () => LoginCubit(
       authRepository: getIt<AuthenticationRepository>(),
       validator: getIt<AuthenticationValidator>(),
+      preferencesRepository: getIt<AppPreferencesRepository>(),
     ),
   );
 
