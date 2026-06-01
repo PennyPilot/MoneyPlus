@@ -14,7 +14,12 @@ class UpdatePasswordCubit extends Cubit<UpdatePasswordState> {
   }) : super(const UpdatePasswordState());
 
   void onPasswordChanged(String password) {
-    emit(state.copyWith(password: password));
+    emit(state.copyWith(
+      password: password,
+      hasMinLength: validator.hasMinLength(password),
+      hasUppercase: validator.hasUppercase(password),
+      hasSpecialChar: validator.hasSpecialChar(password),
+    ));
     _checkIsInputsValid();
   }
 
@@ -25,7 +30,8 @@ class UpdatePasswordCubit extends Cubit<UpdatePasswordState> {
 
   void _checkIsInputsValid() {
     final isPasswordValid = validator.isPasswordValid(state.password);
-    final doPasswordsMatch = state.password.isNotEmpty && state.password == state.confirmPassword;
+    final doPasswordsMatch =
+        state.password.isNotEmpty && state.password == state.confirmPassword;
     emit(state.copyWith(isEnabled: isPasswordValid && doPasswordsMatch));
   }
 

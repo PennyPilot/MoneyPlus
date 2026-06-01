@@ -90,7 +90,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     _textField(
                       hint: localizations.email,
                       value: state.email,
-                      onChanged: cubit.emailChanged,
+                      onChanged: (val) => cubit.emailChanged(val.trim()),
                       assetPath: AppAssets.icEmail,
                     ),
                     const SizedBox(height: 12),

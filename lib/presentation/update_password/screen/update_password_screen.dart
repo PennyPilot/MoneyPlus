@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moneyplus/core/l10n/app_localizations.dart';
 import 'package:moneyplus/design_system/assets/app_assets.dart';
 import 'package:moneyplus/design_system/theme/money_extension_context.dart';
@@ -61,14 +62,14 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
         if (state.status == UpdatePasswordStatus.success) {
           MSnackBar.success(
                   message: localizations.updatePasswordSuccessMessage,
-                  title: localizations.updatePasswordSuccessMessage)
+                  title: localizations.success)
               .showSnackBar(context: context);
           const LoginRoute().go(context);
         }
         if (state.status == UpdatePasswordStatus.error) {
           MSnackBar.error(
                   message: localizations.updatePasswordErrorMessage,
-                  title: localizations.updatePasswordErrorMessage)
+                  title: localizations.error)
               .showSnackBar(context: context);
         }
       },
@@ -81,10 +82,14 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
             backgroundColor: colors.surface,
             appBar: CustomAppBar(
               title: localizations.updatePasswordAppBarTitle,
-              leading: AppBarCircleButton(assetPath: AppAssets.icArrowLeft),
+              leading: AppBarCircleButton(
+                assetPath: AppAssets.icArrowLeft,
+                onTap: () => context.pop(),
+              ),
               trailing: AppLogo(assetPath: AppAssets.icAppLogo),
             ),
-            bottomNavigationBar: _buildBottomButton(localizations, cubit, isLoading, state),
+            bottomNavigationBar:
+                _buildBottomButton(localizations, cubit, isLoading, state),
             body: Padding(
               padding: const EdgeInsetsDirectional.only(
                 start: 16,
@@ -98,6 +103,21 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
                     _buildHeader(typography, colors, localizations, state),
                     const SizedBox(height: 12),
                     _buildForm(localizations, cubit, state),
+                    const SizedBox(height: 16),
+                    _buildPasswordRequirement(
+                      label: localizations.password_min_length,
+                      isMet: state.hasMinLength,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildPasswordRequirement(
+                      label: localizations.password_uppercase,
+                      isMet: state.hasUppercase,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildPasswordRequirement(
+                      label: localizations.password_special_char,
+                      isMet: state.hasSpecialChar,
+                    ),
                   ],
                 ),
               ),
@@ -105,6 +125,31 @@ class _UpdatePasswordViewState extends State<_UpdatePasswordView> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildPasswordRequirement({
+    required String label,
+    required bool isMet,
+  }) {
+    final colors = context.colors;
+    final typography = context.typography;
+
+    return Row(
+      children: [
+        Icon(
+          isMet ? Icons.check_circle : Icons.circle_outlined,
+          size: 16,
+          color: isMet ? Colors.green : colors.yellow,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: typography.label.small.copyWith(
+            color: isMet ? Colors.green : colors.yellow,
+          ),
+        ),
+      ],
     );
   }
 

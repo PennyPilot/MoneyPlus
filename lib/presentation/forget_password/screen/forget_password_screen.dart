@@ -113,15 +113,18 @@ class _ForgetPasswordView extends StatelessWidget {
                     const SizedBox(height: 12),
                     MTextField(
                       hint: l10n.forgetPasswordEmailHint,
-                      leading: SvgPicture.asset(
-                        width: 24,
-                        height: 24,
-                        AppAssets.icEmail,
+                      leading: Padding(
+                        padding: const EdgeInsetsGeometry.directional(end: 8),
+                        child: SvgPicture.asset(
+                          width: 24,
+                          height: 24,
+                          AppAssets.icEmail,
+                        ),
                       ),
                       value: state.email,
                       onChanged: (String value) {
                         context.read<ForgetPasswordCubit>().onEmailChanged(
-                          value,
+                          value.trim(),
                         );
                       },
                     ),

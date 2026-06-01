@@ -38,7 +38,7 @@ class _LoginFormState extends State<LoginForm> {
             padding: const EdgeInsetsGeometry.directional(end: 8),
             child: SvgPicture.asset(AppAssets.icEmail),
           ),
-          onChanged: widget.onEmailChanged,
+          onChanged: (val) => widget.onEmailChanged(val.trim()),
           keyboardType: TextInputType.emailAddress,
           value: widget.initialEmailValue,
         ),
