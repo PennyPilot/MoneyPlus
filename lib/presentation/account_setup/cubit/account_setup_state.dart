@@ -1,9 +1,9 @@
 import 'package:moneyplus/domain/entity/currency.dart';
 
 enum AccountSetupStep {
-  salaryManagementStep,
-  step2,
-  step3,
+  salaryManagement,
+  currentBalance,
+  categorySelection,
 }
 
 class AccountSetupState {
@@ -39,12 +39,23 @@ class AccountSetupState {
     this.currencies = const [],
     this.filteredCurrencies = const [],
     this.categories = const [],
-    this.suggestions = const [],
+    this.suggestions = const [
+      'Food',
+      'Transport',
+      'Shopping',
+      'Health',
+      'Education',
+      'Gift',
+      'Cafe',
+      'Work',
+      'Home',
+      'Travel'
+    ],
     this.isLoading = true,
     this.errorMessage = "",
     this.salaryError = "",
     this.salaryDayError = "",
-    this.accountStep = AccountSetupStep.salaryManagementStep,
+    this.accountStep = AccountSetupStep.salaryManagement,
     this.currentBalance = "",
     this.navigateToHome = false,
   });

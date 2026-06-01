@@ -9,6 +9,11 @@ class CreateAccountState {
   final bool isPasswordVisible;
   final bool isRegisterSuccess;
   final String? errorMessage;
+  
+  // Password Validation Flags
+  final bool hasMinLength;
+  final bool hasUppercase;
+  final bool hasSpecialChar;
 
   const CreateAccountState({
     this.email = "",
@@ -19,6 +24,9 @@ class CreateAccountState {
     this.isRegisterSuccess = false,
     this.isPasswordVisible = false,
     this.errorMessage,
+    this.hasMinLength = false,
+    this.hasUppercase = false,
+    this.hasSpecialChar = false,
   });
 
   CreateAccountState copyWith({
@@ -27,10 +35,12 @@ class CreateAccountState {
     String? password,
     bool? isLoading,
     bool? isEnabled,
-    bool? showPasswordRequirements,
     bool? isPasswordVisible,
     String? errorMessage,
     bool? isRegisterSuccess,
+    bool? hasMinLength,
+    bool? hasUppercase,
+    bool? hasSpecialChar,
   }) {
     return CreateAccountState(
       email: email ?? this.email,
@@ -41,6 +51,9 @@ class CreateAccountState {
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
       errorMessage: errorMessage ?? this.errorMessage,
       isRegisterSuccess: isRegisterSuccess ?? this.isRegisterSuccess,
+      hasMinLength: hasMinLength ?? this.hasMinLength,
+      hasUppercase: hasUppercase ?? this.hasUppercase,
+      hasSpecialChar: hasSpecialChar ?? this.hasSpecialChar,
     );
   }
 

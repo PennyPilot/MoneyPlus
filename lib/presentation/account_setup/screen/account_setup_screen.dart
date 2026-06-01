@@ -84,7 +84,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
               leading: AppBarCircleButton(
                 assetPath: AppAssets.icArrowLeft,
                 onTap: () {
-                  if (state.accountStep == AccountSetupStep.step1) {
+                  if (state.accountStep == AccountSetupStep.salaryManagement) {
                     LoginRoute(showResumeHint: true).go(context);
                   } else {
                     context.read<AccountSetupCubit>().onPreviousStep();
@@ -126,19 +126,21 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                           });
                         },
                         children: [
-                          SingleChildScrollView(child: Step1(state: state)),
                           SingleChildScrollView(
-                              child: Step2(
+                              child: SalaryManagementStep(state: state)),
+                          SingleChildScrollView(
+                              child: CurrentBalanceStep(
                                   currency:
                                       state.selectedCurrency?.abbreviation ??
                                           "",
                                   currentBalanceState: state.currentBalance)),
-                          SingleChildScrollView(child: Step3(state: state))
+                          SingleChildScrollView(
+                              child: CategorySelectionStep(state: state))
                         ],
                       ),
                     ),
                     DefaultButton(
-                      text: state.accountStep == AccountSetupStep.step3
+                      text: state.accountStep == AccountSetupStep.categorySelection
                           ? l10n.finishSetup
                           : l10n.next,
                       isEnabled: state.isButtonEnabled,
