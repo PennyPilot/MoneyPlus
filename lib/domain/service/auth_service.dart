@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
-
 import '../../core/errors/result.dart';
+import '../entity/auth_status.dart';
 import '../entity/user.dart' as user_entity;
 
 abstract class AuthService {
@@ -13,7 +12,9 @@ abstract class AuthService {
     required String password,
   });
 
-  Stream<AuthState> get onAuthStateChange;
+  Stream<AuthStatus> get onAuthStatusChange;
+
+  Future<void> refreshAuthStatus();
 
   Future<String?> get userEmail;
 

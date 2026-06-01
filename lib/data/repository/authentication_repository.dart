@@ -1,6 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 import '../../core/errors/result.dart';
+import '../../domain/entity/auth_status.dart';
 import '../../domain/entity/user.dart';
 import '../../domain/repository/authentication_repository.dart';
 import '../../domain/service/auth_service.dart';
@@ -23,7 +23,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Stream<AuthState> get onAuthStateChange => authService.onAuthStateChange;
+  Stream<AuthStatus> get onAuthStatusChange => authService.onAuthStatusChange;
+
+  @override
+  Future<void> refreshAuthStatus() => authService.refreshAuthStatus();
 
   @override
   Future<Result<bool>> resetPasswordForEmail(String email) {

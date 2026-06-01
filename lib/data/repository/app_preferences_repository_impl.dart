@@ -36,6 +36,52 @@ class AppPreferencesRepositoryImpl implements AppPreferencesRepository {
     await _sharedPreferences.setString(_languageKey, language.name);
   }
 
+  @override
+  Future<void> saveAccountSetupProgress(Map<String, dynamic> progress) async {
+    for (final entry in progress.entries) {
+      if (entry.value is String) {
+        await _sharedPreferences.setString(entry.key, entry.value as String);
+      } else if (entry.value is int) {
+        await _sharedPreferences.setInt(entry.key, entry.value as int);
+      } else if (entry.value is double) {
+        await _sharedPreferences.setDouble(entry.key, entry.value as double);
+      } else if (entry.value is bool) {
+        await _sharedPreferences.setBool(entry.key, entry.value as bool);
+      } else if (entry.value is List<String>) {
+        await _sharedPreferences.setStringList(entry.key, entry.value as List<String>);
+      }
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>?> getAccountSetupProgress() async {
+    final keys = [
+      'name', 'email', 'password', 'step', 'salary', 'salaryDay', 
+      'currencyId', 'balance', 'categories'
+    ];
+    final progress = <String, dynamic>{};
+    bool hasData = false;
+    for (final key in keys) {
+      final value = _sharedPreferences.get(key);
+      if (value != null) {
+        progress[key] = value;
+        hasData = true;
+      }
+    }
+    return hasData ? progress : null;
+  }
+
+  @override
+  Future<void> clearAccountSetupProgress() async {
+    final keys = [
+      'name', 'email', 'password', 'step', 'salary', 'salaryDay', 
+      'currencyId', 'balance', 'categories'
+    ];
+    for (final key in keys) {
+      await _sharedPreferences.remove(key);
+    }
+  }
+
   static const String _languageKey = "APP_LANGUAGE";
   static const String _themeKey = "APP_THEME";
 }
