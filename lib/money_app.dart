@@ -38,15 +38,9 @@ class AuthRedirectNotifier extends ChangeNotifier {
   }
 
   void _onAuthStatusChange(AuthStatus status) {
-    final bool wasInitialized = _isInitialized;
     _status = status;
     _isInitialized = true;
-
-    if (!wasInitialized) {
-      Future.microtask(notifyListeners);
-    } else {
-      notifyListeners();
-    }
+    notifyListeners();
   }
 
   void clearPasswordRecovery() {
@@ -93,7 +87,7 @@ class _MoneyAppViewState extends State<MoneyAppView> {
     _authRedirectNotifier.addListener(_onAuthReady);
   }
 
-  void _onAuthReady() async {
+  void _onAuthReady() {
     if (!_authRedirectNotifier.isInitialized) return;
     _authRedirectNotifier.removeListener(_onAuthReady);
 
@@ -130,7 +124,6 @@ class _MoneyAppViewState extends State<MoneyAppView> {
     }
 
     if (path == RoutePaths.updatePassword && isPasswordRecovery) {
-      Future.microtask(() => _authRedirectNotifier.clearPasswordRecovery());
       return null;
     }
 
@@ -144,7 +137,9 @@ class _MoneyAppViewState extends State<MoneyAppView> {
       RoutePaths.accountSetup,
     }.contains(path);
 
-    if (!isAuthenticated && !isPublicRoute) return RoutePaths.login;
+    if (!isAuthenticated && !isPublicRoute) {
+      return RoutePaths.login;
+    }
 
     if (isAuthenticated) {
       if (isAccountSetupIncomplete) {

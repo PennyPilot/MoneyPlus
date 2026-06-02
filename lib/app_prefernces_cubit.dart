@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:moneyplus/app_preferences_state.dart';
 
@@ -29,7 +30,7 @@ class AppPreferencesCubit extends Cubit<AppPreferencesState> {
   }
 
   Future<AppLanguage> getLanguage() async {
-    final language = await appThemeRepository.getAppLanguage();
+    final AppLanguage language = await appThemeRepository.getAppLanguage();
     emit(state.copyWith(appLanguage: language));
     return language;
   }

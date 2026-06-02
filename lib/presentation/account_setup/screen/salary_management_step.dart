@@ -12,16 +12,16 @@ import '../../../domain/entity/currency.dart';
 import '../cubit/account_setup_cubit.dart';
 import '../widget/currency_bottom_sheet.dart';
 
-class Step1 extends StatefulWidget {
+class SalaryManagementStep extends StatefulWidget {
   final AccountSetupState state;
 
-  const Step1({super.key, required this.state});
+  const SalaryManagementStep({super.key, required this.state});
 
   @override
-  State<Step1> createState() => _Step1State();
+  State<SalaryManagementStep> createState() => _SalaryManagementStepState();
 }
 
-class _Step1State extends State<Step1> {
+class _SalaryManagementStepState extends State<SalaryManagementStep> {
 
   @override
   Widget build(BuildContext context) {
