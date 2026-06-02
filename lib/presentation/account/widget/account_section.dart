@@ -15,38 +15,42 @@ Widget accountSection(
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      GestureDetector(
-        onTap: onTap,
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: colors.surfaceHigh,
-                  borderRadius: BorderRadius.circular(12),
+      Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: colors.surfaceHigh,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 11),
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    iconPath,
+                    width: 24,
+                    height: 24,
+                    colorFilter:
+                        ColorFilter.mode(colors.primary, BlendMode.srcIn),
+                  ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 11),
-                alignment: Alignment.center,
-                child: SvgPicture.asset(
-                  iconPath,
-                  width: 24,
-                  height: 24,
-                  colorFilter: ColorFilter.mode(colors.primary, BlendMode.srcIn),
+                const SizedBox(width: 8),
+                Text(
+                  title,
+                  style: typography.label.large.copyWith(
+                    color: colors.title,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                title,
-                style: typography.label.large.copyWith(
-                  color: colors.title,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

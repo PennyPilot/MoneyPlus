@@ -30,14 +30,7 @@ class AppPreferencesCubit extends Cubit<AppPreferencesState> {
   }
 
   Future<AppLanguage> getLanguage() async {
-    AppLanguage language = await appThemeRepository.getAppLanguage();
-    
-    if (language == AppLanguage.system) {
-      final String platformLang = PlatformDispatcher.instance.locale.languageCode;
-      language = platformLang == AppLanguage.ar.name ? AppLanguage.ar : AppLanguage.en;
-      await appThemeRepository.setAppLanguage(language);
-    }
-
+    final AppLanguage language = await appThemeRepository.getAppLanguage();
     emit(state.copyWith(appLanguage: language));
     return language;
   }
