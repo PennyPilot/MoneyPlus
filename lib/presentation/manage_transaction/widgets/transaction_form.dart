@@ -32,9 +32,10 @@ class TransactionForm extends StatelessWidget {
     this.onCurrencySelected,
   });
 
+  @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 120), // Added 120px bottom padding
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
       children: [
         _buildScanButton(context),
         _buildAmountSection(context),

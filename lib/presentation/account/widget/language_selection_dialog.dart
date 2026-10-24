@@ -74,6 +74,12 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
               title: l10n.arabic,
               language: AppLanguage.ar,
             ),
+            const SizedBox(height: 12),
+            _buildLanguageOption(
+              context,
+              title: l10n.system,
+              language: AppLanguage.system,
+            ),
             const SizedBox(height: 32),
             Row(
               children: [

@@ -9,15 +9,15 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../design_system/theme/money_extension_context.dart';
 import '../../../design_system/widgets/selected_category_item.dart';
 
-class Step3 extends StatefulWidget {
+class CategorySelectionStep extends StatefulWidget {
   final AccountSetupState state;
-  const Step3({super.key, required this.state});
+  const CategorySelectionStep({super.key, required this.state});
 
   @override
-  State<Step3> createState() => _Step3State();
+  State<CategorySelectionStep> createState() => CategorySelectionStepState();
 }
 
-class _Step3State extends State<Step3> {
+class CategorySelectionStepState extends State<CategorySelectionStep> {
   final TextEditingController categoryController = TextEditingController();
   String _searchQuery = '';
 

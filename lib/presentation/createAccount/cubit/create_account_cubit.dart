@@ -14,11 +14,13 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
   Future<void> init() async {
     final progress = await _preferencesRepository.getAccountSetupProgress();
     if (progress != null) {
+      final password = progress['password'] as String? ?? state.password;
       emit(state.copyWith(
         name: progress['name'] as String? ?? state.name,
         email: progress['email'] as String? ?? state.email,
-        password: progress['password'] as String? ?? state.password,
+        password: password,
       ));
+      _updatePasswordValidation(password);
       enable();
     }
   }
@@ -35,11 +37,16 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
 
   void passwordChanged(String value) {
     emit(state.copyWith(password: value));
-    if (_validator.isPasswordValid(state.password)) {
-      enable();
-    } else {
-      emit(state.copyWith(isEnabled: false));
-    }
+    _updatePasswordValidation(value);
+    enable();
+  }
+
+  void _updatePasswordValidation(String password) {
+    emit(state.copyWith(
+      hasMinLength: _validator.hasMinLength(password),
+      hasUppercase: _validator.hasUppercase(password),
+      hasSpecialChar: _validator.hasSpecialChar(password),
+    ));
   }
 
   void enable() {

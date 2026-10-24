@@ -90,7 +90,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     _textField(
                       hint: localizations.email,
                       value: state.email,
-                      onChanged: cubit.emailChanged,
+                      onChanged: (val) => cubit.emailChanged(val.trim()),
                       assetPath: AppAssets.icEmail,
                     ),
                     const SizedBox(height: 12),
@@ -101,12 +101,20 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       onPasswordChanged: cubit.passwordChanged,
                       onToggleVisibility: cubit.togglePasswordVisibility,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      localizations.passwordLimit,
-                      style: typography.label.small.copyWith(
-                        color: colors.yellow,
-                      ),
+                    const SizedBox(height: 12),
+                    _buildPasswordRequirement(
+                      label: localizations.password_min_length,
+                      isMet: state.hasMinLength,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildPasswordRequirement(
+                      label: localizations.password_uppercase,
+                      isMet: state.hasUppercase,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildPasswordRequirement(
+                      label: localizations.password_special_char,
+                      isMet: state.hasSpecialChar,
                     ),
                   ],
                 ),
@@ -132,6 +140,32 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildPasswordRequirement({
+    required String label,
+    required bool isMet,
+  }) {
+    final colors = context.colors;
+    final typography = context.typography;
+
+    return Row(
+      children: [
+        Icon(
+          isMet ? Icons.check_circle : Icons.circle_outlined,
+          size: 16,
+          color: isMet ? Colors.green : colors.yellow,
+
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: typography.label.small.copyWith(
+            color: isMet ? Colors.green : colors.yellow,
+          ),
+        ),
+      ],
     );
   }
 

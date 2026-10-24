@@ -151,14 +151,14 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
         state.salaryDay.isNotEmpty && (salaryDay < 1 || salaryDay > 28);
 
     bool isButtonEnable = switch (state.accountStep) {
-      AccountSetupStep.step1 =>
+      AccountSetupStep.salaryManagement =>
         state.selectedCurrency != null &&
             state.salary.isNotEmpty &&
             !isSalaryInvalid &&
             state.salaryDay.isNotEmpty &&
             !isSalaryDayInvalid,
-      AccountSetupStep.step2 => state.currentBalance.isNotEmpty,
-      AccountSetupStep.step3 => state.categories.isNotEmpty,
+      AccountSetupStep.currentBalance => state.currentBalance.isNotEmpty,
+      AccountSetupStep.categorySelection => state.categories.isNotEmpty,
     };
 
     emit(state.copyWith(
@@ -170,17 +170,17 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   void onNextStep() {
     switch (state.accountStep) {
-      case AccountSetupStep.step1:
-        emit(state.copyWith(accountStep: AccountSetupStep.step2));
+      case AccountSetupStep.salaryManagement:
+        emit(state.copyWith(accountStep: AccountSetupStep.currentBalance));
         _preferencesRepository.saveAccountSetupProgress({'step': 1});
         _validate();
         break;
-      case AccountSetupStep.step2:
-        emit(state.copyWith(accountStep: AccountSetupStep.step3));
+      case AccountSetupStep.currentBalance:
+        emit(state.copyWith(accountStep: AccountSetupStep.categorySelection));
         _preferencesRepository.saveAccountSetupProgress({'step': 2});
         _validate();
         break;
-      case AccountSetupStep.step3:
+      case AccountSetupStep.categorySelection:
         _validate();
         submitAccountSetupData();
         break;
@@ -189,15 +189,15 @@ class AccountSetupCubit extends Cubit<AccountSetupState> {
 
   void onPreviousStep() {
     switch (state.accountStep) {
-      case AccountSetupStep.step1:
+      case AccountSetupStep.salaryManagement:
         break;
-      case AccountSetupStep.step2:
-        emit(state.copyWith(accountStep: AccountSetupStep.step1));
+      case AccountSetupStep.currentBalance:
+        emit(state.copyWith(accountStep: AccountSetupStep.salaryManagement));
         _preferencesRepository.saveAccountSetupProgress({'step': 0});
         _validate();
         break;
-      case AccountSetupStep.step3:
-        emit(state.copyWith(accountStep: AccountSetupStep.step2));
+      case AccountSetupStep.categorySelection:
+        emit(state.copyWith(accountStep: AccountSetupStep.currentBalance));
         _preferencesRepository.saveAccountSetupProgress({'step': 1});
         _validate();
         break;

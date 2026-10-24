@@ -29,8 +29,8 @@ class BreakDownCategory {
 
     factory BreakDownCategory.fromJson(Map<String, dynamic> json) => BreakDownCategory(
         id: json["id"],
-        name: json["name"],
-        spend: json["spend"]?.toDouble(),
-        percentage: json["percentage"]?.toDouble(),
+        name: json["name"] ?? '',
+        spend: (json["spend"] as num? ?? 0).toDouble(),
+        percentage: (json["percentage"] as num? ?? 0).toDouble(),
     );
 }

@@ -208,5 +208,8 @@
   "resume_setup_title": "استئناف الإعداد؟",
   "resume_setup_subtitle": "يبدو أنك لم تنتهِ من إعداد حسابك. اضغط على استئناف للمتابعة.",
   "resume_setup_button": "استئناف التقدم",
-  "resume_setup_discard": "تجاهل"
+  "resume_setup_discard": "تجاهل",
+  "password_min_length": "8 أحرف على الأقل",
+  "password_uppercase": "حرف كبير واحد على الأقل",
+  "password_special_char": "رمز واحد على الأقل"
 }

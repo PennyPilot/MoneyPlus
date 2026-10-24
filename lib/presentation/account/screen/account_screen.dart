@@ -179,21 +179,17 @@ class AccountScreen extends StatelessWidget {
                       _showLogoutConfirmation(context);
                     },
                   ),
-                  const SizedBox(height: 24),
-
+                  const SizedBox(height: 48),
                   Align(
                     alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        "${l10n.appVersion} 1.0",
-                        style: typography.label.small.copyWith(
-                          color: colors.body,
-                        ),
+                    child: Text(
+                      "${l10n.appVersion} 1.0",
+                      style: typography.label.small.copyWith(
+                        color: colors.body,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 100), // Bottom padding for edge-to-edge NavBar
+                  const SizedBox(height: 120),
                 ],
               ),
             ),
